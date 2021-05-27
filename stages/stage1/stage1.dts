@@ -8,12 +8,8 @@
 	#address-cells = <0x02>;
 	#size-cells = <0x02>;
 
-	aliases {
-		serial0 = "/soc/serial@235200000";
-	};
-
 	chosen {
-		bootargs = "earlycon=apple_uart,0x235200000 console=tty0";
+		bootargs = "";
 	};
 
 	memory@800000000 {
@@ -22,6 +18,8 @@
 	};
 
 	framebuffer@9e0df8000 {
+		#address-cells = <0x02>;
+		#size-cells = <0x02>;
 		compatible = "simple-framebuffer";
 		reg = <0x0b 0xdf438000 0x00 0x3e80000>;
 		format = "x8r8g8b8";
