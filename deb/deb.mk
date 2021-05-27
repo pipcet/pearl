@@ -4,6 +4,9 @@
 build/deb/libc.deb: | build/deb/
 	wget -O $@ http://http.us.debian.org/debian/pool/main/g/glibc/libc6_2.31-12_arm64.deb
 
+build/deb/libcrypt.deb: | build/deb/
+	wget -O $@ http://http.us.debian.org/debian/pool/main/libx/libxcrypt/libcrypt1_4.4.18-4_arm64.deb
+
 build/deb/perl.deb: | build/deb/
 	wget -O $@ http://http.us.debian.org/debian/pool/main/p/perl/perl_5.32.1-4_arm64.deb
 
@@ -30,6 +33,7 @@ build/deb/libyaml.deb: | build/deb/
 
 build/deb.tar.gz: \
 	build/deb/libc.deb \
+	build/deb/libcrypt.deb \
 	build/deb/perl.deb \
 	build/deb/perl-base.deb \
 	build/deb/perl-modules.deb \
