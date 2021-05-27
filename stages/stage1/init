@@ -8,13 +8,9 @@ tar xzf /deb.tar.gz
 tar xzf /dt.tar.gz
 export PATH=/bin:/usr/bin
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
-sleep 10
 dt extract-bootargs /boot/bootargs.dtp
-sleep 10
 cat /boot/bootargs.dtp
-sleep 10
 dt extract-adt /boot/adt
-sleep 10
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
 sleep 10
 dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
@@ -43,5 +39,4 @@ sleep 10
 # /bin/kexec -fix /m1n1.macho.image --dtb=/boot/fdt
 # /bin/kexec -fix /m1n1.macho.image --dtb=/sys/firmware/fdt
 
-sleep 30
-/bin/kexec -fix /boot/Image --dtb=/sys/firmware/fdt # /boot/next-stage.dtb
+/bin/kexec -fix /boot/stage2.image --dtb=/boot/next-stage.dtb
