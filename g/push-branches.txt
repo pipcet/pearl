@@ -1,3 +1,4 @@
+submodule/linux pipcet pearl
 busybox pipcet pearl
 debootstrap pipcet pearl
 kexec-tools pipcet pearl
