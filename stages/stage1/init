@@ -6,6 +6,7 @@ mount -t configfs configfs sys/kernel/config
 mkdir -p /boot
 tar xzf /deb.tar.gz
 tar xzf /dt.tar.gz
+export PATH=/bin:/usr/bin
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 sleep 10
 dt extract-bootargs /boot/bootargs.dtp
