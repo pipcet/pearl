@@ -30,3 +30,4 @@ build/pearl.macho: build/stages/stage1/stage1.macho
 	$(CP) $< $@
 
 .SECONDARY:
+.PHONY: %}
