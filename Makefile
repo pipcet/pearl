@@ -1,5 +1,4 @@
 CROSS_COMPILE ?= aarch64-linux-gnu-
-M1N1DEVICE ?= $(shell ls /dev/ttyACM* | tail -1)
 MKDIR ?= mkdir -p
 CP ?= cp
 CAT ?= cat
@@ -108,6 +107,8 @@ build/%.image.macho: build/%.image build/host/image-to-macho
 	build/host/image-to-macho $< $@
 
 include github/github.mk
+
+include m1n1.mk
 
 .SECONDARY:
 .PHONY: %}
