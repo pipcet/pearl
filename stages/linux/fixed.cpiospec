@@ -36,3 +36,4 @@ slink /bin/touch busybox 777 0 0
 slink /bin/true busybox 777 0 0
 slink /bin/umount busybox 777 0 0
 slink /bin/vi busybox 777 0 0
+slink /dev/stdin /proc/self/fd/0 777 0 0
