@@ -1,0 +1,64 @@
+#!/bin/sh
+busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
+mount -t proc proc proc
+mount -t sysfs sys sys
+mount -t configfs configfs sys/kernel/config
+tar xzvf /perl.tar.gz
+tar xzvf /perl2.tar.gz
+tar xvf /m1lli-scripts.tar
+cp /dt /bin
+export PATH=/bin/:/usr/bin/:/
+cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
+mkdir /sys/kernel/config/usb_gadget/G1
+echo 0x2 > /sys/kernel/config/usb_gadget/G1/bDeviceClass
+echo 0x100 > /sys/kernel/config/usb_gadget/G1/bcdDevice
+echo 0x200 > /sys/kernel/config/usb_gadget/G1/bcdUSB
+echo 0x40 > /sys/kernel/config/usb_gadget/G1/bMaxPacketSize0
+mkdir /sys/kernel/config/usb_gadget/G1/strings/0x409
+echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/product
+echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
+echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
+echo 0x1337 > /sys/kernel/config/usb_gadget/G1/idVendor
+echo 0xbeef > /sys/kernel/config/usb_gadget/G1/idProduct
+mkdir /sys/kernel/config/usb_gadget/G1/strings/0x409
+echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
+echo pipcet@gmail.com > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
+echo m1lli > /sys/kernel/config/usb_gadget/G1/strings/0x409/product
+mkdir /sys/kernel/config/usb_gadget/G1/configs/c.1
+mkdir /sys/kernel/config/usb_gadget/G1/configs/c.1/strings/0x409
+echo -ne '\x09\x02\x35\x00\x02\x01\x00\xc0\xfa\x09\x04\x00\x00\x01\x02\x02\x00\x00\x05\x24\x06\x00\x01\x07\x05\x81\x03\x80\x00\x0a\x09\x04\x01\x00\x02\x0a\x00\x00\x00\x07\x05\x02\x02\x00\x02\x0a\x07\x05\x82\x02\x00\x02\x0a' > /sys/kernel/config/usb_gadget/G1/configs/c.1/strings/0x409/configuration
+mkdir /sys/kernel/config/usb_gadget/G1/functions/acm.usb0
+mkdir /sys/kernel/config/usb_gadget/G1/functions/eem.usb0
+mkdir /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0
+(cd /sys/kernel/config/usb_gadget/G1; ln -s functions/acm.usb0 configs/c.1; ln -s functions/eem.usb0 configs/c.1; ln -s functions/mass_storage.usb0 configs/c.1)
+echo 502280000.dwc3 > /sys/kernel/config/usb_gadget/G1/UDC
+sleep 1
+echo "restarting dwc3"
+(cd /sys/bus/platform/drivers/dwc3;
+ echo 502280000.dwc3 > unbind;
+ sleep 1
+ echo 502280000.dwc3 > bind)
+while true; do
+    tee /dev/console < /dev/ttyGS0 | sh | tee /dev/console > /dev/ttyGS0
+done &
+dd if=/dev/zero of=/commfile bs=1M count=1024
+dd if=/sys/firmware/fdt of=/commfile conv=notrunc
+echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
+
+dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
+dt extract-bootargs /boot/bootargs.dtp
+dt extract-adt /boot/adt
+dt tunables /boot/adt /boot/linux.dtb /boot/tunables.dtp
+dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
+cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp > /boot/next-stage.dtp
+dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
+
+dt dtp-to-dtb /boot/fdt.dtb.dtp /boot/fdt.dtb.dtp.dtb
+dt dtb-to-dtp /boot/fdt.dtb.dtp.dtb /boot/fdt.dtb.dtp.dtb.dtp
+diff -u /boot/fdt.dtb.dtp.dtb.dtp /boot/next-stage.dtp
+
+(sleep 1m && ! test -e /noboot && /bin/kexec -fix /boot/Image --dtb=/sys/firmware/fdt --initrd=/boot/initfs --command-line="clk_ignore_unused root=/dev/nvme0n1p4 1") &
+read; touch /noboot
+while true; do
+    ash
+done
