@@ -3,6 +3,7 @@ busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
+mkdir -p /boot
 tar xzf /deb.tar.gz
 tar xzf /dt.tar.gz
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
