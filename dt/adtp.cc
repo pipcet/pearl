@@ -534,12 +534,16 @@ ADTProp *ADTProp::parse()
 int main(int argc, char **argv)
 {
   FILE *f = fopen(argv[1], "r");
-  if (f == NULL)
+  if (f == NULL) {
+    perror("failed to open file");
     return 1;
+  }
 
   void *data = malloc(1024 * 1024);
-  if (data == NULL)
+  if (data == NULL) {
+    perror("failed to malloc");
     return 1;
+  }
   size_t size = fread(data, 1, 1024 * 1024, f);
 
   void *end = (void*)((char *)data + size);
