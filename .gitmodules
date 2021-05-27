@@ -1,0 +1,4 @@
+[submodule "submodule/linux"]
+	path = submodule/linux
+	url = https://github.com/pipcet/linux
+	branch = pearl
