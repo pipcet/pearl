@@ -66,10 +66,15 @@ build/stages/$(stage)/initfs/bin/busybox: build/busybox/busybox | build/stages/$
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/stages/$(stage)/initfs/deb.tar.gz: build/deb.tar.gz | build/stages/$(stage)/
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/stages/$(stage)/$(stage).cpiospec: \
 	stages/$(stage)/fixed.cpiospec \
 	build/stages/$(stage)/initfs/init \
-	build/stages/$(stage)/initfs/bin/busybox
+	build/stages/$(stage)/initfs/bin/busybox \
+	build/stages/$(stage)/initfs/deb.tar.gz
 	(cat $$<; $$(foreach file,$$(patsubst build/stages/$(stage)/initfs/%,/%,$$(wordlist 2,$$(words $$^),$$^)),echo dir $$(dir $$(patsubst %/,%,$$(file))) 755 0 0; echo file $$(file) $(PWD)/build/stages/$(stage)/initfs/$$(file) 755 0 0;)) | sort | uniq > $$@
 
 build/stages/$(stage)/initfs/init: stages/$(stage)/init | build/stages/$(stage)/initfs/
