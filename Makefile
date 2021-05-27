@@ -30,6 +30,22 @@ build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
 	$(CP) $< $@
 
 define perstage
+linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
+	$$(MKDIR) build/linux/$(stage)
+	$$(CP) $$< build/linux/$(stage)/.config
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
+	diff -u $$< build/linux/$(stage)/.config || true
+	$$(CP) $$< $$<.old
+	$$(CP) build/linux/$(stage)/.config $$<
+
+linux/$(stage){menuconfig}: build/stages/$(stage)/linux.config
+	$$(MKDIR) build/linux/$(stage)
+	$$(CP) $$< build/linux/$(stage)/.config
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) menuconfig
+	diff -u $$< build/linux/$(stage)/.config || true
+	$$(CP) $$< $$<.old
+	$$(CP) build/linux/$(stage)/.config $$<
+
 build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
