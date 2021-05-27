@@ -1,0 +1,9 @@
+#!/bin/bash
+cat g/remotes.txt | (while read name repo url; do
+    echo "fetch-$repo-$name!:"
+    echo -e "\t(cd $repo; git fetch $name)"
+    echo
+    REMS="$REMS fetch-$repo-$name!"
+done;
+echo -n "fetch-all!: $REMS"
+echo)

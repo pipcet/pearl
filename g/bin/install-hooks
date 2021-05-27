@@ -1,0 +1,4 @@
+#!/bin/bash
+find .git -name hooks | while read; do
+    ln -rsf g/git/hooks/* "$REPLY";
+done

@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+my %lines;
+while (<>) {
+    chomp;
+    $lines{$_} = $_;
+}
+ line:
+for my $line (keys %lines) {
+    my ($name, $dir, $url, $fetch_or_push) = split / /, $line;
+    print "$line\n";
+    print "self $dir . (fetch)\n";
+    print "self $dir . (push)\n";
+}
+

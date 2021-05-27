@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+my %lines;
+while (<>) {
+    chomp;
+    $lines{$_} = $_;
+}
+ line:
+for my $line (keys %lines) {
+    my ($name, $dir, $url, $fetch_or_push) = split / /, $line;
+    next if ($name eq "origin");
+    print "$line\n";
+}
+

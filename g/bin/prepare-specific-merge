@@ -1,0 +1,21 @@
+#!/bin/bash
+if git worktree add --detach $TMPDIR $BRANCH &&
+	(cd $TMPDIR; git branch -D merge || true) &&
+	(cd $TMPDIR; git checkout -b merge) &&
+	(cd $TMPDIR; git merge --no-commit upstream); then
+    if [ -n "$(cd $TMPDIR; git status -s)" ]; then
+	if (cd $TMPDIR; git commit -m merge); then
+	    echo "$(date):" successful merge prepared in $REPO >> ../g/merges.txt
+	else
+	    echo "$(date):" merge failed in $REPO >> ../g/merges.txt
+	fi
+    else
+	echo "$(date):" nothing to merge in $REPO >> ../g/merges.txt
+    fi
+else
+    echo "$(date):" merge failed in $REPO >> ../g/merges.txt
+fi
+
+git worktree remove --force $TMPDIR &&
+    rm -rf $TMPDIR
+

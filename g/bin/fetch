@@ -1,0 +1,4 @@
+#!/bin/bash
+git fetch --all
+./g/bin/fetch-upstream
+git submodule foreach --recursive git fetch --all

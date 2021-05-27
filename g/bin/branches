@@ -1,0 +1,18 @@
+#!/usr/bin/perl
+my @remotes = `git submodule foreach --recursive 'echo \$toplevel/\$sm_path'`;
+map { chomp } @remotes;
+my %branches = ();
+for my $line (`cat g/branches.txt`) {
+    chomp $line;
+    my ($dir, $name, $remote) = split / /, $line;
+    $branches{$dir} = { name => $name, remote => $remote };
+}
+for my $remote (@remotes) {
+    for my $i (0 .. length ($remote) - 1) {
+	my $prefix = substr($remote, $i);
+	if (exists $branches{$prefix}) {
+	    system("(cd $prefix; git checkout $branches{$prefix}{remote}; git checkout -b $branches{$prefix}{name})");
+	    last;
+	}
+    }
+}

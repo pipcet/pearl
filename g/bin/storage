@@ -1,0 +1,14 @@
+#!/bin/bash
+pwd=$(pwd)
+find .git/modules -name objects -type d | while read modpath; do
+    echo "$pwd/.git/objects" > $modpath/info/alternates
+done
+git submodule foreach --recursive 'echo $displaypath' | egrep -v '^Entering' | while read sm_path; do
+    dotdot=$(echo "$sm_path" | sed -e 's/[^\/]*/\.\./g');
+    (cd $sm_path;
+     # git remote add storage $dotdot;
+     # git push storage refs/heads/'*':"refs/heads/storage/$sm_path/g/heads/"'*';
+     # git push storage refs/remotes/origin/'*':"refs/heads/storage/$sm_path/g/remotes/origin/"'*';
+     git repack -a -d -l);
+done
+git repack -k -a -d -l

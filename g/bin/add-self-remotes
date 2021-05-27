@@ -1,0 +1,1 @@
+git submodule foreach --recursive 'git remote add self . || true'

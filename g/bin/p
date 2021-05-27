@@ -1,0 +1,9 @@
+#!/bin/bash
+while [ x"$(basename $(pwd))" != xg ] || ! [ -d g ]; do
+    cd ..
+done
+DELAY=1
+while ! git push; do
+    sleep $DELAY
+    DELAY=$(($DELAY * 2))
+done

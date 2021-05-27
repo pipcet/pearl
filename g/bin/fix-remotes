@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+while (<>) {
+    chomp;
+    my ($name, $dir, $url, $fetch_or_push) = split / /;
+    if ($fetch_or_push eq "(fetch)") {
+	$url =~ s/git\@github.com:/https:\/\/github.com\//g;
+    }
+    if ($fetch_or_push eq "(push)") {
+	$url =~ s/https:\/\/github.com\/pipcet/git\@github.com:pipcet/g;
+    }
+    next if $name eq "origin";
+    print join(" ", ($name, $dir, $url, $fetch_or_push)) . "\n";
+}

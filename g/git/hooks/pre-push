@@ -1,0 +1,25 @@
+#!/usr/bin/bash -x
+toplevel=$(git rev-parse --show-superproject-working-tree)
+if [ x"$IN_RECURSIVE_PUSH" = x ] && [ x"$toplevel" != x ]; then
+    # do not add IN_RECURSIVE_PUSH=1 here, we want to make it to the
+    # toplevel (confusingly, $toplevel is only the immediate parent's
+    # toplevel)
+    # echo "Recursing into $toplevel"
+    # (cd "$toplevel"; git push || exit 1)
+    :
+fi
+if [ x"$IN_RECURSIVE_PUSH" = x ] && [ -e g/canonical.txt ]; then
+    OLDHEAD=$(git rev-parse HEAD)
+    if [ -e g/canonical.txt ]; then
+	if ! IN_RECURSIVE_PUSH=1 g/bin/push-canon; then
+	    exit 1
+	fi
+    fi
+    [ -e g/remotes.txt ] && IN_RECURSIVE_PUSH=1 g/bin/push-remotes
+    if [ $(git rev-parse HEAD) != $OLDHEAD ]; then
+	exit 1
+    fi
+fi
+exit 0
+# [ -e g/canonical.txt ] && IN_RECURSIVE_PUSH=1 g/bin/fetch-canon
+# [ -e g/remotes.txt ] && IN_RECURSIVE_PUSH=1 g/bin/fetch-upstream

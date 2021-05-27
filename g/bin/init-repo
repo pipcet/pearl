@@ -1,0 +1,15 @@
+#!/bin/bash -x
+# git clone git@github.com:pipcet/g -o pipcet --reference-if-able ... --no-tags
+#git submodule update --init --progress --remote --jobs 4
+#(cd asmjs; for repo in binaryen binutils-gdb gcc glibc musl ncurses wabt; do git submodule update --init --progress --remote --jobs 4 --reference ../$repo subrepos/$repo; done)
+#(cd asmjs; git submodule update --init --progress --remote --jobs 4 --recursive)
+#(cd wasm; for repo in bash binaryen binutils-gdb coreutils emacs gcc glibc gnulib libtool ncurses perl python wabt zsh; do git submodule update --init --progress --remote --jobs 4 --reference ../$repo subrepos/$repo; done)
+#(cd wasm; git submodule update --init --progress --remote --jobs 4 --recursive)
+git submodule update --init --progress --jobs 4 --recursive --reference $(pwd)
+./g/bin/install-hooks
+./g/bin/pipcet
+while ! ./g/bin/install-remotes < g/remotes.txt; do true; done
+# ./g/bin/canonical
+# ./g/bin/storage2
+# ./g/bin/storage
+# git submodule foreach --recursive 'git remote remove origin || :'

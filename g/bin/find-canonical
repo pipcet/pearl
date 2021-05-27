@@ -1,0 +1,60 @@
+#!/usr/bin/perl
+open $fh, "git submodule foreach --quiet --recursive pwd|";
+while (<$fh>) {
+    chomp;
+    my $path = $_;
+    my @remotes = `cd ${path}; git remote -v show`;
+    for my $remote (@remotes) {
+	chomp $remote;
+	my ($name, $url) = ($remote =~ /^(.+?)[ \t]+(.+?)[ \t]+(.+)$/);
+	$urls{$url}{$path} = 1;
+	$urls{$path}{$path} = 1;
+    }
+}
+
+my $ids = 1;
+
+for my $url (keys %urls) {
+    for my $path1 (keys %{$urls{$url}}) {
+	$ids{$path1} = $ids++;
+    }
+}
+
+for my $url (keys %urls) {
+    for my $path1 (keys %{$urls{$url}}) {
+	for my $path2 (keys %{$urls{$url}}) {
+	    my $a = ($ids{$path1} < $ids{$path2}) ? $ids{$path1} : $ids{$path2};
+	    my $b = ($ids{$path1} < $ids{$path2}) ? $ids{$path2} : $ids{$path1};
+	    if ($a != $b) {
+		$tab{$b} = $a;
+	    }
+	}
+    }
+}
+
+for my $path (keys %ids) {
+    while (exists $tab{$ids{$path}}) {
+	$ids{$path} = $tab{$ids{$path}};
+    }
+}
+
+my %revids;
+for my $path (keys %ids) {
+    $revids{$ids{$path}}{$path} = 1;
+}
+
+for my $id (keys %revids) {
+    if (scalar keys %{$revids{$id}} > 1) {
+	my @paths = (sort keys %{$revids{$id}});
+	@paths = sort { length $a <=> length $b } @paths;
+	@paths = map { $_ = substr($_, length(`pwd`)) } @paths;
+	for my $i (1 .. $#paths) {
+	    my $branch = `cd $paths[$i]; git branch --show-current`;
+	    chomp $branch;
+	    if ($branch eq "") {
+		$branch = "HEAD";
+	    }
+	    print "$paths[$i] $paths[0] $branch\n";
+	}
+    }
+}

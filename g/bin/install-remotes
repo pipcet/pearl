@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+my %lines;
+while (<>) {
+    chomp;
+    $lines{$_} = $_;
+}
+ line:
+for my $line (keys %lines) {
+    my ($name, $dir, $url, $fetch_or_push) = split / /, $line;
+    my @olines = `cd $dir; git remote -v show`;
+    for my $oline (@olines) {
+	chomp $oline;
+	$oline =~ s/\t/ /g;
+	{
+	    my ($name, $url, $fetch_or_push) = split / /, $oline;
+	    $oline = "$name $dir $url $fetch_or_push";
+	}
+	if ($line eq $oline) {
+	    next line;
+	}
+    }
+    warn("cd $dir; git remote set-url " . ($fetch_or_push eq "(fetch)" ? "" : "--push") . " $name $url");
+    system("cd $dir; git remote add $name $url");
+    system("cd $dir; git remote set-url " . ($fetch_or_push eq "(fetch)" ? "" : "--push") . " $name $url") and die;
+    die;
+}
+for my $line (keys %lines) {
+    my ($name, $dir, $url, $fetch_or_push) = split / /, $line;
+    my @olines = `cd $dir; git remote -v show`;
+  oline:
+    for my $oline (@olines) {
+	chomp $oline;
+	$oline =~ s/\t/ /g;
+	my ($name, $url, $fetch_or_push) = split / /, $oline;
+	{
+	    $oline = "$name $dir $url $fetch_or_push";
+	}
+	if (exists $lines{$oline}) {
+	    next oline;
+	} else {
+	    warn "no $oline";
+	    warn("cd $dir; git remote remove $name");
+	    system("cd $dir; git remote remove $name") and die;
+	    die;
+	}
+    }
+}

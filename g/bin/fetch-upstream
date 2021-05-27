@@ -1,0 +1,4 @@
+#!/bin/bash -x
+cat g/remotes.txt | while read remote canon url; do
+    (cd $canon && git fetch $remote master:$remote)
+done

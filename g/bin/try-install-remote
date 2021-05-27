@@ -1,0 +1,4 @@
+#!/usr/bin/perl
+my ($smpath, $name, $url, $fetch_or_push) = split / /, shift;
+system("git remote add $name $url");
+system("git remote set-url " . ($fetch_or_push eq "(fetch)") ? "" : "--push" . " $name $url");

@@ -1,0 +1,61 @@
+#!/usr/bin/perl
+exit if $ENV{GIT_MSG};
+my $commit_msg_file = shift;
+my $commit_source = shift;
+my $sha1 = shift;
+
+use File::Slurp qw(write_file read_file);
+
+my $non_subrepos = 0;
+my $subrepos = 0;
+my %subrepos;
+my %paths;
+my $msg = "";
+for my $line (`git status -s`) {
+    chomp $line;
+    if ($line =~ /^M. subrepos\/([^\/]*)$/) {
+        $subrepos{$1} = 1;
+	$subrepos = 1;
+    } elsif ($line =~ /^[ADM]. (.*)$/) {
+	$paths{$1} = 1;
+        $non_subrepos = 1;
+    }
+}
+if ($subrepos && !$non_subrepos) {
+    my @subrepos = sort keys %subrepos;
+    my $subrepos = join(", ", @subrepos);
+    for my $subrepo (@subrepos) {
+	my $line = `(cd subrepos/$subrepo; git log -1 --pretty='%s (%H)')`;
+	chomp $line;
+	my $body = `(cd subrepos/$subrepo; git log -1 --pretty='%b')`;
+	chomp $body;
+	$msg .= <<"EOF";
+$subrepo: $line$body
+
+EOF
+    }
+    if (@subrepos > 1) {
+	$msg = <<"EOF" . $msg;
+Update subrepos ($subrepos)
+
+EOF
+    } else {
+	$msg = "Update " . $msg;
+    }
+} elsif (scalar keys %paths == 1) {
+    $msg = join(", ", sort keys %paths) . ": " . $msg;
+}
+
+my $oldmsg = read_file($commit_msg_file);
+if (substr($oldmsg, 0, length $msg) eq $msg) {
+    $msg = "";
+}
+while ($msg ne "" && $oldmsg ne "" && substr ($oldmsg, 0, 1) ne "#") {
+    $oldmsg = substr ($oldmsg, 1);
+}
+
+if ($oldmsg =~ /^#/) {
+    $oldmsg = "\n\n$oldmsg";
+}
+
+write_file($commit_msg_file, "$msg" . "$oldmsg");

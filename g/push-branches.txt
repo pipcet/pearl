@@ -1,0 +1,7 @@
+busybox pipcet pearl
+debootstrap pipcet pearl
+kexec-tools pipcet pearl
+linux pipcet pearl
+m1lli pipcet pearl
+m1n1 pipcet pearl
+preloader-m1 pipcet pearl

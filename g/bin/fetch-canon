@@ -1,0 +1,5 @@
+#!/bin/bash
+cat g/canonical.txt | while read dir canon branch; do
+    (cd $dir && git fetch --all)
+done
+git submodule foreach --recursive 'git push self remotes/upstream/master:upstream || true'

@@ -1,0 +1,5 @@
+#!/bin/bash -x
+tac g/upstream-branches.txt | while read canon branch; do
+    (cd $canon && git push self upstream/$branch:upstream)
+done
+exit 0

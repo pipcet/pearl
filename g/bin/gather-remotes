@@ -1,0 +1,1 @@
+git submodule --quiet foreach --recursive 'git remote -v show | while read NAME REPLY; do echo "$NAME" $displaypath "$REPLY"; done' | sed -e 's/\t/ /g' | sort

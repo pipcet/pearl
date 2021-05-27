@@ -1,0 +1,43 @@
+#!/bin/bash -x
+if [ x"$GIT_MSG" = x ]; then
+    GIT_MSG="$(git log -1 --pretty='%s (%H)'; echo; git log -1 --pretty='%b')"
+fi
+toplevel="$(git rev-parse --show-toplevel)"
+super_toplevel="$(git rev-parse --show-superproject-working-tree)"
+toptoplevel=$toplevel;
+while true; do
+    parent=$(cd $toptoplevel; git rev-parse --show-superproject-working-tree)
+    if [ x$parent = x ]; then
+	break
+    fi
+    toptoplevel=$parent
+done
+if [ "$toplevel" = "$super_toplevel" ] || [ x"$super_toplevel" = x ]; then
+    exit 0;
+fi
+subrepo="$(echo $toplevel | cut -c $((2 + $(echo -n "$super_toplevel" | wc -c)))-)"
+echo "subrepo $subrepo" > /dev/stderr
+cd "$super_toplevel"
+GIT_MSG="$subrepo: $GIT_MSG"
+(unset GIT_DIR; unset GIT_INDEX_FILE; GIT_MSG="$GIT_MSG" git commit -m "$GIT_MSG" -- $subrepo)
+if [ x$IN_RECURSIVE_COMMIT != x ]; then
+    : # exit 0
+fi
+subsubrepo="$(echo $toplevel | cut -c $((2 + $(echo -n "$toptoplevel" | wc -c)))-)"
+echo "subsubrepo $subsubrepo" > /dev/stderr
+if ! test -e $toptoplevel/g/canonical.txt; then
+    exit 0
+fi
+cat $toptoplevel/g/canonical.txt | while read path canon branch; do
+    if [ $canon = $subsubrepo ]; then
+	cat $toptoplevel/g/canonical.txt | while read path2 canon2 branch2; do
+	    if [ $canon2 = $canon ]; then
+		(cd $toptoplevel/$path2; unset GIT_DIR; unset GIT_INDEX_FILE; IN_RECURSIVE_COMMIT=1 GIT_MSG="$GIT_MSG" git pull --no-edit canon $branch2)
+	    fi
+	done
+    fi
+    if [ $path = $subsubrepo ]; then
+	GIT_MSG="$subrepo: $GIT_MSG" git push canon $branch:$branch
+	(cd $toptoplevel/$canon; unset GIT_DIR; unset GIT_INDEX_FILE; git checkout $branch; GIT_MSG="$subrepo: $GIT_MSG" $toptoplevel/g/git/hooks/post-commit)
+    fi
+done

@@ -1,0 +1,2 @@
+#!/bin/bash
+git submodule foreach --recursive 'git pull --no-edit '"$@"'; git pull --no-edit upstream master '"$@"'; git push pipcet || :'

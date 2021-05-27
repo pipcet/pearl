@@ -1,0 +1,4 @@
+#!/bin/bash
+git submodule foreach --quiet --recursive 'echo git remote add local/$displaypath $displaypath/' | while read; do $REPLY; done
+git submodule foreach --quiet --recursive 'echo git remote add pipcet/$displaypath $(git remote show pipcet | grep "^  Fetch URL:" | sed -e "s/  Fetch URL: //")' | while read; do $REPLY; done
+git submodule foreach --quiet --recursive 'echo git remote add upstream/$displaypath $(git remote show upstream | grep "^  Fetch URL:" | sed -e "s/  Fetch URL: //")' | while read; do $REPLY; done

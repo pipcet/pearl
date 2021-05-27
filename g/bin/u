@@ -1,0 +1,12 @@
+#!/bin/bash
+while [ x"$(basename $(pwd))" != xg ] || ! [ -d g ]; do
+    cd ..
+done
+git fetch --no-tags --all -j 64
+git submodule foreach --recursive 'git fetch --all --no-tags'
+tac g/upstream-branches.txt | while read canon branch; do
+    (cd $canon && git push self upstream/$branch:refs/heads/upstream)
+done
+./g/bin/prepare-merge
+git submodule foreach --recursive 'git fetch self --no-tags || :'
+git submodule foreach --recursive 'git fetch canon --no-tags || :'

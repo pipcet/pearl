@@ -1,0 +1,13 @@
+#!/usr/bin/perl
+my ($smpath, $name, $url, $fetch_or_push) = split / /, shift;
+
+my @current = `git remote -v show`;
+for my $current (@current) {
+    chomp $current;
+    $current =~ s/\t/ /g;
+    if ($current eq "$name $url $fetch_or_push") {
+	exit 0;
+    }
+}
+
+system("git remote remove $name");
