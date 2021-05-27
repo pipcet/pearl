@@ -107,5 +107,7 @@ include macho-tools/macho-tools.mk
 build/%.image.macho: build/%.image build/host/image-to-macho
 	build/host/image-to-macho $< $@
 
+include github/github.mk
+
 .SECONDARY:
 .PHONY: %}
