@@ -4,6 +4,7 @@ mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 tar xzf /deb.tar.gz
+tar xzf /dt.tar.gz
 /bin/sh
 cp /dt /bin
 cp /adtdump /bin
