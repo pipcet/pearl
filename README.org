@@ -1,0 +1,10 @@
+* pearl
+
+GNU/Linux on Apple M1-based hardware, including, in particular, a MacBook Pro called "pearl". No relationship to [[https://www.perl.com][Perl]], though we do use that.
+
+Ideally, this repository will contain everything you need to build and run Debian GNU/Linux on any M1 machine.
+
+** See Also
+
+*** [[ttps://www.corellium.com][Corellium]]'s port at [[https://github.com/corellium/linux-m1]]
+*** [[https://github.com/AsahiLinux/linux][Asahi Linux]] at [[https://github.com/AsahiLinux]]
