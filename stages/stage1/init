@@ -5,19 +5,22 @@ mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 tar xzf /deb.tar.gz
 tar xzf /dt.tar.gz
-/bin/sh
-cp /dt /bin
-cp /adtdump /bin
-export PATH=/bin/:/usr/bin/:/
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
-PATH=/bin/:/usr/bin/:/ dt extract-bootargs /boot/bootargs.dtp
+sleep 10
+dt extract-bootargs /boot/bootargs.dtp
+sleep 10
 cat /boot/bootargs.dtp
 sleep 10
 dt extract-adt /boot/adt
+sleep 10
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
+sleep 10
 dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
+sleep 10
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp > /boot/next-stage.dtp
+sleep 10
 dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
+sleep 10
 
 dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=7 seek=72 conv=notrunc
 dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=6 seek=73 conv=notrunc
@@ -29,8 +32,11 @@ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 
 dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=0 seek=79 conv=notrunc
 
 dt dtb-to-dtp /boot/next-stage.dtb /boot/next-stage.dtb.dtp
+sleep 10
 grep 'reserved-memory' /boot/next-stage.dtb.dtp
+sleep 10
 grep 'framebuffer' /boot/next-stage.dtb.dtp
+sleep 10
 
 # /bin/kexec -fix /m1n1.macho.image --dtb=/boot/fdt
 # /bin/kexec -fix /m1n1.macho.image --dtb=/sys/firmware/fdt
