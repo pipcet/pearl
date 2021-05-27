@@ -21,3 +21,4 @@ jobs:
     - run: make -kj3 build/stages/stage1/stage1.image
     - run: make -kj3 build/stages/stage1/stage1.image.macho
     - run: make -kj3 build/pearl.macho
+    - run: make -kj3 build/pearl.macho{artifact}
