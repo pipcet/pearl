@@ -29,3 +29,4 @@ stampserver: g/stampserver/stampserver.pl | stamp/
 build/pearl.macho: build/stages/stage1/stage1.macho
 	$(CP) $< $@
 
+.SECONDARY:
