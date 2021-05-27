@@ -66,7 +66,7 @@ build/stages/$(stage)/initfs/bin/busybox: build/busybox/busybox | build/stages/$
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/stages/$(stage)/initfs/bin/kexec: build/kexec-tools/kexec | build/stages/$(stage)/bin/
+build/stages/$(stage)/initfs/bin/kexec: build/kexec/kexec | build/stages/$(stage)/bin/
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
