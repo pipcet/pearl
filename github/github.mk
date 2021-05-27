@@ -19,3 +19,8 @@ build/%{artifact}: build/%
 	$(MKDIR) build/artifacts/up
 	$(CP) $< build/artifacts/up
 	$(MAKE) build/artifacts{push}
+{release}:
+	this_release_date="$$(date --iso)"; \
+	node ./github/release.js $$this_release_date $$this_release_date > github/release.json; \
+	curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases" --data '@github/release.json'; \
+	$(MAKE) ship/$$this_release_date!
