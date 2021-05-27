@@ -203,7 +203,7 @@ int main(int argc, char **argv)
   SNIPPET(save_boot_args);
   //SNIPPET(disable_timers);
   //SNIPPET(x8r8g8b8);
-  SNIPPET(perform_alignment_4);
+  SNIPPET(perform_alignment);
   SNIPPET(enable_all_clocks);
   //SNIPPET(bring_up_phys_2);
   SNIPPET(restore_boot_args);
