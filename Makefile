@@ -56,7 +56,7 @@ build/stages/$(stage)/$(stage).image: | build/stages/$(stage)/
 build/stages/$(stage)/initfs/init: | build/stages/$(stage)/initfs/
 endef
 
-$(foreach stage,stage1,$(eval $(perstage)))
+$(foreach stage,stage1 linux,$(eval $(perstage)))
 %.dtb.h: %.dtb
 	(echo "{";  cat $< | od -tx4 --width=4 -Anone -v | sed -e 's/ \(.*\)/\t0x\1,/'; echo "};") > $@
 
