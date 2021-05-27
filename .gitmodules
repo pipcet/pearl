@@ -6,3 +6,7 @@
 	path = submodule/m1n1
 	url = https://github.com/pipcet/m1n1
 	branch = pearl
+[submodule "submodule/busybox"]
+	path = submodule/busybox
+	url = https://github.com/pipcet/busybox
+	branch = pearl
