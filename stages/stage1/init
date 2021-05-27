@@ -3,13 +3,8 @@ busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
-ln -sf / usr
-tar xzvf /perl.tar.gz
-tar xzvf /perl2.tar.gz
-ln -sf . /usr/lib/aarch64-linux-gnu
-ln -sf perl5 /usr/lib/perl
-ln -sf 5.29.3 /usr/lib/perl5/5.32
-tar xvf /m1lli-scripts.tar
+tar xzf /deb.tar.gz
+/bin/sh
 cp /dt /bin
 cp /adtdump /bin
 export PATH=/bin/:/usr/bin/:/
