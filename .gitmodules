@@ -2,3 +2,7 @@
 	path = submodule/linux
 	url = https://github.com/pipcet/linux
 	branch = pearl
+[submodule "submodule/m1n1"]
+	path = submodule/m1n1
+	url = https://github.com/pipcet/m1n1
+	branch = pearl
