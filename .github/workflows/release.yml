@@ -1,0 +1,21 @@
+on:
+  push:
+    branches: [ release ]
+jobs:
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set env variables
+      uses: ./github/env/
+    - run: sudo apt-get install binutils-aarch64-linux-gnu
+    - run: sudo apt-get install device-tree-compiler
+    - run: sudo apt-get install g++-aarch64-linux-gnu
+    - run: sudo apt-get install gcc-aarch64-linux-gnu
+    - run: make -kj3 build/pearl.macho{release}
+    - run: make -kj3 {release}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
