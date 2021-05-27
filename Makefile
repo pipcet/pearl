@@ -65,6 +65,8 @@ build/stages/stage1/stage1.dts.dtb: stages/stage1/stage1.dts
 	$(DTC) -Idts -Odtb $< > $@.tmp && mv $@.tmp $@
 build/stages/stage1/stage1.image: build/stages/stage1/stage1.dts.dtb.h
 
+include deb/deb.mk
+
 build/%..h: build/%.c.S.elf.bin.s.h
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
