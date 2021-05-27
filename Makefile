@@ -10,7 +10,7 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 # INCLUDE_DEBOOTSTRAP = t
 INCLUDE_MODULES = t
 
-all:
+all: build/pearl.macho
 
 %/:
 	$(MKDIR) $@
@@ -24,3 +24,8 @@ stamp/%: | stamp/
 # echo $((1024*1024)) | sudo tee /proc/sys/fs/inotify/max_user_watches
 stampserver: g/stampserver/stampserver.pl | stamp/
 	inotifywait -m -r . | perl g/stampserver/stampserver.pl
+
+# Alias target
+build/pearl.macho: build/stages/stage1/stage1.macho
+	$(CP) $< $@
+
