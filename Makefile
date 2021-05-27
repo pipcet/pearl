@@ -27,7 +27,7 @@ stampserver: g/stampserver/stampserver.pl | stamp/
 	inotifywait -m -r . | perl g/stampserver/stampserver.pl
 
 # Alias target
-build/pearl.macho: build/stages/stage1/stage1.macho
+build/pearl.macho: build/stages/stage1/stage1.macho | build/
 	$(CP) $< $@
 
 define perstage
