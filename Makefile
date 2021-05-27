@@ -6,6 +6,7 @@ CAT ?= cat
 TAR ?= tar
 PWD = $(shell pwd)
 SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
+DTC ?= dtc
 
 # INCLUDE_DEBOOTSTRAP = t
 INCLUDE_MODULES = t
