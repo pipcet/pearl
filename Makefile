@@ -66,6 +66,10 @@ build/stages/$(stage)/initfs/bin/busybox: build/busybox/busybox | build/stages/$
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/stages/$(stage)/initfs/bin/kexec: build/kexec-tools/kexec | build/stages/$(stage)/bin/
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/stages/$(stage)/initfs/deb.tar.gz: build/deb.tar.gz | build/stages/$(stage)/
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
@@ -141,6 +145,8 @@ build/%.image.macho: build/%.image build/host/image-to-macho
 	build/host/image-to-macho $< $@
 
 include busybox/busybox.mk
+
+include kexec/kexec.mk
 
 include dt/dt.mk
 
