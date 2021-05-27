@@ -115,6 +115,12 @@
 	};
 
 	soc {
+		compatible = "simple-bus";
+		#address-cells = <0x02>;
+		#size-cells = <0x02>;
+		ranges;
+		dma-coherent;
+
 		interrupt-controller@23b100000 {
 			compatible = "apple,aic";
 			#interrupt-cells = <0x03>;
