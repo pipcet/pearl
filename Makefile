@@ -46,7 +46,7 @@ linux/$(stage){menuconfig}: build/stages/$(stage)/linux.config
 	$$(CP) $$< $$<.old
 	$$(CP) build/linux/$(stage)/.config $$<
 
-build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
+build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config build/stages/$(stage)/$(stage).cpiospec
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
