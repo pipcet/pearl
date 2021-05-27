@@ -1,0 +1,43 @@
+#!/bin/sh
+busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
+mount -t proc proc proc
+mount -t sysfs sys sys
+mount -t configfs configfs sys/kernel/config
+ln -sf / usr
+tar xzvf /perl.tar.gz
+tar xzvf /perl2.tar.gz
+ln -sf . /usr/lib/aarch64-linux-gnu
+ln -sf perl5 /usr/lib/perl
+ln -sf 5.29.3 /usr/lib/perl5/5.32
+tar xvf /m1lli-scripts.tar
+cp /dt /bin
+cp /adtdump /bin
+export PATH=/bin/:/usr/bin/:/
+dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
+PATH=/bin/:/usr/bin/:/ dt extract-bootargs /boot/bootargs.dtp
+cat /boot/bootargs.dtp
+sleep 10
+dt extract-adt /boot/adt
+dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
+dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
+cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp > /boot/next-stage.dtp
+dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
+
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=7 seek=72 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=6 seek=73 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=5 seek=74 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=4 seek=75 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=3 seek=76 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=2 seek=77 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=1 seek=78 conv=notrunc
+dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=0 seek=79 conv=notrunc
+
+dt dtb-to-dtp /boot/next-stage.dtb /boot/next-stage.dtb.dtp
+grep 'reserved-memory' /boot/next-stage.dtb.dtp
+grep 'framebuffer' /boot/next-stage.dtb.dtp
+
+# /bin/kexec -fix /m1n1.macho.image --dtb=/boot/fdt
+# /bin/kexec -fix /m1n1.macho.image --dtb=/sys/firmware/fdt
+
+sleep 30
+/bin/kexec -fix /boot/Image --dtb=/sys/firmware/fdt # /boot/next-stage.dtb

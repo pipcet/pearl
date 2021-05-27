@@ -1,0 +1,12 @@
+dir /dev 755 0 0
+nod /dev/mem 644 0 0 c 1 1
+nod /dev/null 644 0 0 c 1 3
+nod /dev/zero 644 0 0 c 1 5
+nod /dev/console 644 0 0 c 5 1
+nod /dev/tty1 644 0 0 c 4 1
+nod /dev/tty2 644 0 0 c 4 2
+nod /dev/tty3 644 0 0 c 4 3
+nod /dev/tty4 644 0 0 c 4 4
+dir /proc 755 0 0
+dir /sys 755 0 0
+slink /bin/sh busybox 777 0 0
