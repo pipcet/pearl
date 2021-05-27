@@ -1,0 +1,4 @@
+* stage2
+
+The stage2 kernel, which interacts with hardware and boots the final
+kernel.
