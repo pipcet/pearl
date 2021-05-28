@@ -18,12 +18,7 @@ all: build/pearl.macho
 clean:
 	rm -rf build
 
-stamp/%: | stamp/
-	touch $@
-
-# echo $((1024*1024)) | sudo tee /proc/sys/fs/inotify/max_user_watches
-stampserver: g/stampserver/stampserver.pl | stamp/
-	inotifywait -m -r . | perl g/stampserver/stampserver.pl
+include g/stampserver/stampserver.mk
 
 # Alias target
 build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
