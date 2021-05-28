@@ -20,14 +20,14 @@ sleep 10
 dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
 sleep 10
 
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=7 seek=72 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=6 seek=73 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=5 seek=74 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=4 seek=75 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=3 seek=76 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=2 seek=77 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=1 seek=78 conv=notrunc
-dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=0 seek=79 conv=notrunc
+(dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=7 seek=72 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=6 seek=73 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=5 seek=74 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=4 seek=75 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=3 seek=76 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=2 seek=77 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=1 seek=78 conv=notrunc
+ dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=0 seek=79 conv=notrunc) 2>/dev/null
 
 dt dtb-to-dtp /boot/next-stage.dtb /boot/next-stage.dtb.dtp
 sleep 10
