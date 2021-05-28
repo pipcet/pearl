@@ -37,11 +37,11 @@ build/stages/$(stage)/initfs/bin/kexec: build/kexec/kexec | build/stages/$(stage
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/stages/$(stage)/initfs/deb.tar.gz: build/deb.tar.gz | build/stages/$(stage)/
+build/stages/$(stage)/initfs/deb.tar: build/deb.tar | build/stages/$(stage)/
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/stages/$(stage)/initfs/dt.tar.gz: build/dt.tar.gz | build/stages/$(stage)/
+build/stages/$(stage)/initfs/dt.tar: build/dt.tar | build/stages/$(stage)/
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
@@ -66,11 +66,11 @@ build/stages/stage1/stage1.dts.dtb: stages/stage1/stage1.dts
 	$(DTC) -Idts -Odtb $< > $@.tmp && mv $@.tmp $@
 build/stages/stage1/stage1.image: build/stages/stage1/stage1.dts.dtb.h
 
-build/initfs/common/kexec.tar.gz: build/kexec/kexec
+build/initfs/common/kexec.tar: build/kexec/kexec
 	$(MKDIR) $(dir $@)
 	$(MKDIR) build/initfs/common/bin
 	$(CP) $< build/initfs/common/bin
-	(cd build/kexec; tar cz bin/kexec) > $@
+	(cd build/initfs/common; tar c bin/kexec) > $@
 
 build/initfs/common.cpio: initfs/common.cpiospec build/stages/linux/linux.image
 	(cd build/linux/linux; $(PWD)/submodule/linux/usr/gen_initramfs.sh -o $(PWD)/$@ ../../../$<)
