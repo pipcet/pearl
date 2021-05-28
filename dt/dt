@@ -679,7 +679,6 @@ sub tunables {
 	    $adt{$prop} = DTNode->new("str-le8", $pval) if $pval =~ /^\[(.*)\]$/;
 	    $adt{$prop} = DTNode->new("string", $pval) if $pval =~ /^\"(.*)\"$/;
 	    die $pval unless $adt{$prop};
-	    warn ($prop . " " . $adt{$prop});
 	}
     }
 
@@ -891,7 +890,6 @@ if ($ARGV[0] eq "--help") {
     my $dtp = read_file($argv[1]);
     my $dts = dtp_to_dts($dtp);
     my $dtb = dts_to_dtb($dts);
-    warn "file $argv[1] $argv[2] @argv";
     write_file($argv[2], $dtb) or die;
 } elsif ($ARGV[0] eq "tunables") {
     my $adt = read_file($ARGV[1]);
