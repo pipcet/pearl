@@ -47,6 +47,10 @@ build/stages/$(stage)/initfs/dt.tar: build/dt.tar | build/stages/$(stage)/
 
 build/stages/$(stage)/$(stage).image: | build/stages/$(stage)/
 build/stages/$(stage)/initfs/init: | build/stages/$(stage)/initfs/
+
+build/initfs/common/$(stage).dtb: build/stages/$(stage)/$(stage).dtb
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
 endef
 
 include linux/linux.mk
@@ -72,10 +76,13 @@ build/initfs/common/kexec.tar: build/kexec/kexec
 build/initfs/common.cpio: initfs/common.cpiospec build/stages/linux/linux.image
 	(cd build/linux/linux; $(PWD)/submodule/linux/usr/gen_initramfs.sh -o $(PWD)/$@ ../../../$<)
 
-build/initfs/complete.cpio: initfs/complete.cpiospec build/stages/linux/linux.image build/initfs/bin/busybox )build/initfs/init build/initfs/common.cpio build/initfs/common.tar
+build/initfs/complete.cpiospec: initfs/complete.cpiospec build/initfs/bin/busybox build/initfs/init build/initfs/common.cpio build/initfs/common.tar
+	(cat $<; $(foreach file,$(patsubst build/stages/$(stage)/initfs/%,/%,$(wordlist 2,$(words $^),$^)),echo dir $(dir $(patsubst %/,%,$(file))) 755 0 0; echo file $(file) $(PWD)/$(file) 755 0 0;)) | sort | uniq > $@
+
+build/initfs/complete.cpio: build/initfs/complete.cpiospec
 	(cd build/linux/linux; $(PWD)/submodule/linux/usr/gen_initramfs.sh -o $(PWD)/$@ ../../../$<)
 
-build/initfs/init: stages/stage1/init
+build/initfs/bin/stage1: stages/stage1/init
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
 
