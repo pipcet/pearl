@@ -33,10 +33,10 @@ build/initfs/common/$(stage).image: build/stages/$(stage)/$(stage).image
 	$$(CP) $$< $$@
 endef
 
-build/initfs/common/dt.tar.gz: build/dt.tar.gz
+build/initfs/common/dt.tar: build/dt.tar
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
 
-build/initfs/common/deb.tar.gz: build/deb.tar.gz
+build/initfs/common/deb.tar: build/deb.tar
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
