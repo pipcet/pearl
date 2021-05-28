@@ -13,26 +13,15 @@ tar xvf /common/kexec.tar
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
-dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
-dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
+dt tunables /boot/adt /common/stage2.dtb /boot/tunables.dtp
+dt dtb-to-dtp /common/stage2.dtb /boot/fixed.dtp
 grep 'reserved-memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
-cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/next-stage.dtp
-dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
-
-(dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=7 seek=72 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=6 seek=73 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=5 seek=74 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=4 seek=75 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=3 seek=76 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=2 seek=77 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=1 seek=78 conv=notrunc
- dd if=/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg bs=1 count=1 of=/m1n1.macho.image skip=0 seek=79 conv=notrunc) 2>/dev/null
-
-dt dtb-to-dtp /boot/next-stage.dtb /boot/next-stage.dtb.dtp
-grep 'reserved-memory' /boot/next-stage.dtb.dtp
-grep 'framebuffer' /boot/next-stage.dtb.dtp
-
-# /bin/kexec -fix /m1n1.macho.image --dtb=/boot/fdt
-# /bin/kexec -fix /m1n1.macho.image --dtb=/sys/firmware/fdt
-
-/bin/kexec -fix /boot/stage2.image --dtb=/boot/next-stage.dtb
+cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
+dt dtp-to-dtb /boot/stage2.dtp /boot/stage2.dtb
+rm /init
+ln -sf /bin/stage2 /init
+ls / /bin /bin/sh /bin/busybox /init /common.cpio /common.tar | cpio -H newc -od . > /boot/stage2.cpio
+ls -l /boot/stage2.cpio
+echo /bin/kexec -fix /common/stage2.image --dtb=/boot/stage2.dtb --initrd=/boot/stage2.cpio
+sleep 30
+/bin/kexec -fix /common/stage2.image --dtb=/boot/stage2.dtb --initrd=/boot/stage2.cpio
