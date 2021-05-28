@@ -25,10 +25,11 @@ build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
 	$(CP) $< $@
 
 define perstage
-build/stages/$(stage)/linux.config: stages/$(stage)/linux.config build/stages/$(stage)/$(stage).cpiospec
+build/stages/$(stage)/linux.config: stages/$(stage)/linux.config
+	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/stages/$(stage)/initfs/bin/busybox: build/busybox/busybox | build/stages/$(stage)/bin/
+build/stages/$(stage)/initfs/common.tar: build/initfs/common.tar
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
@@ -55,12 +56,46 @@ include linux/linux.mk
 
 $(foreach stage,stage1 stage2 linux,$(eval $(perstage)))
 $(foreach stage,stage1 stage2 linux,$(eval $(linux-perstage)))
+
+build/stages/stage1/linux.config: build/initfs/complete.cpio
+
 %.dtb.h: %.dtb
 	(echo "{";  cat $< | od -tx4 --width=4 -Anone -v | sed -e 's/ \(.*\)/\t0x\1,/'; echo "};") > $@
 
 build/stages/stage1/stage1.dts.dtb: stages/stage1/stage1.dts
 	$(DTC) -Idts -Odtb $< > $@.tmp && mv $@.tmp $@
 build/stages/stage1/stage1.image: build/stages/stage1/stage1.dts.dtb.h
+
+build/initfs/common/kexec.tar.gz: build/kexec/kexec
+	$(MKDIR) $(dir $@)
+	$(MKDIR) build/initfs/common/bin
+	$(CP) $< build/initfs/common/bin
+	(cd build/kexec; tar cz bin/kexec) > $@
+
+build/initfs/common.cpio: initfs/common.cpiospec build/stages/linux/linux.image
+	(cd build/linux/linux; $(PWD)/submodule/linux/usr/gen_initramfs.sh -o $(PWD)/$@ ../../../$<)
+
+build/initfs/complete.cpio: initfs/complete.cpiospec build/stages/linux/linux.image build/initfs/bin/busybox )build/initfs/init build/initfs/common.cpio build/initfs/common.tar
+	(cd build/linux/linux; $(PWD)/submodule/linux/usr/gen_initramfs.sh -o $(PWD)/$@ ../../../$<)
+
+build/initfs/init: stages/stage1/init
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
+
+build/initfs/bin/busybox: build/busybox/busybox
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
+
+build/initfs/common.tar: \
+	build/initfs/common/dt.tar.gz \
+	build/initfs/common/deb.tar.gz \
+	build/initfs/common/kexec.tar.gz
+	$(MKDIR) $(dir $@)
+	(cd build/initfs; tar c $(^:build/initfs/%=%)) > $@
+
+build/initfs/common.tar: \
+	build/initfs/common/stage2.image \
+	build/initfs/common/linux.image
 
 include stages/stages.mk
 
