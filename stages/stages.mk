@@ -1,9 +1,5 @@
 define perstage
 build/stages/$(stage)/$(stage).image: | build/stages/$(stage)/
-
-build/initfs/common/boot/$(stage).dtb: build/stages/$(stage)/$(stage).dtb
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
 endef
 
 # Linux stages
