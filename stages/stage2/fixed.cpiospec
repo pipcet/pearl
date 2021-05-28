@@ -9,5 +9,6 @@ nod /dev/tty3 644 0 0 c 4 3
 nod /dev/tty4 644 0 0 c 4 4
 dir /proc 755 0 0
 dir /sys 755 0 0
+dir /mnt 755 0 0
 slink /bin/sh busybox 777 0 0
 slink /dev/stdin /proc/self/fd/0 777 0 0
