@@ -46,7 +46,8 @@ include dt/dt.mk
 
 include github/github.mk
 
-include m1n1.mk
+include m1n1/m1n1.mk
+
 include stages/stages.mk
 
 
