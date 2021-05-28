@@ -43,7 +43,16 @@ dd if=/dev/zero of=/commfile bs=1M count=1024
 dd if=/sys/firmware/fdt of=/commfile conv=notrunc
 echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
 
-(sleep 1m && ! test -e /noboot && /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --initrd=/boot/linux.initfs --command-line="clk_ignore_unused root=/dev/nvme0n1p4 1") &
+dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
+dt extract-bootargs /boot/bootargs.dtp
+dt extract-adt /boot/adt
+dt tunables /boot/adt /boot/linux.dtb /boot/tunables.dtp
+dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
+grep 'reserved-memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
+cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/next-stage.dtp
+dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
+
+(sleep 1m && ! test -e /noboot && /bin/kexec -fix /boot/linux.image --dtb=/boot/next-stage.dtb --initrd=/boot/linux.initfs --command-line="clk_ignore_unused root=/dev/nvme0n1p4 1") &
 read; touch /noboot
 while true; do
     ash
