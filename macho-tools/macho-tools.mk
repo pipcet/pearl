@@ -7,3 +7,6 @@ build/host/image-to-macho: build/macho-tools/enable-all-clocks..h
 build/host/image-to-macho: build/macho-tools/save-boot-args..h
 build/host/image-to-macho: build/macho-tools/restore-boot-args..h
 build/host/image-to-macho: build/macho-tools/nop..h
+
+build/%.image.macho: build/%.image build/host/image-to-macho
+	build/host/image-to-macho $< $@
