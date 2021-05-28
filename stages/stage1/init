@@ -4,9 +4,11 @@ mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 mkdir -p /boot
-tar xzf /deb.tar.gz
-tar xzf /dt.tar.gz
 export PATH=/bin:/usr/bin
+tar xvf /common.tar
+tar xvf /common/deb.tar
+tar xvf /common/dt.tar
+tar xvf /common/kexec.tar
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
