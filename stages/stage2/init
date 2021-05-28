@@ -4,8 +4,8 @@ mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 mkdir -p /boot
-tar xzvf /deb.tar.gz
-tar xzvf /dt.tar.gz
+tar xzf /deb.tar.gz
+tar xzf /dt.tar.gz
 export PATH=/bin/:/usr/bin/:/
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
@@ -19,7 +19,6 @@ echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo 0x1337 > /sys/kernel/config/usb_gadget/G1/idVendor
 echo 0xbeef > /sys/kernel/config/usb_gadget/G1/idProduct
-mkdir /sys/kernel/config/usb_gadget/G1/strings/0x409
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo pipcet@gmail.com > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo m1lli > /sys/kernel/config/usb_gadget/G1/strings/0x409/product
