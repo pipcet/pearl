@@ -11,6 +11,13 @@
 
 #define PACKED __attribute__((packed))
 
+#define abort() do {					\
+  fprintf(stderr, "aborting at %d\n", __LINE__);	\
+  abort();						\
+  } while (0)
+
+
+
 class ADTStream {
 public:
   void *data;
