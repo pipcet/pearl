@@ -25,7 +25,6 @@ build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
 
 include dtc/dtc.mk
 
-include stages/stages.mk
 
 include linux/linux.mk
 
@@ -48,6 +47,7 @@ include dt/dt.mk
 include github/github.mk
 
 include m1n1.mk
+include stages/stages.mk
 
 
 .SECONDARY:
