@@ -37,6 +37,10 @@ build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/deb.tar: build/deb.tar
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init
@@ -46,6 +50,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
+build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 
 build/packs/$(pack).cpio: build/packs/$(pack).cpiospec build/stages/linux/linux.image
 	(cd build/linux/linux; $$(PWD)/submodule/linux/usr/gen_initramfs.sh -o $$(PWD)/$$@ ../../../$$<)
