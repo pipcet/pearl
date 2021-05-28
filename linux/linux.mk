@@ -1,4 +1,8 @@
 define linux-perstage
+build/stages/$(stage)/linux.config: stages/$(stage)/linux.config
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
@@ -28,7 +32,7 @@ build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
 
 build/stages/$(stage)/$(stage).image: stamp/linux
 
-build/initfs/common/$(stage).image: build/stages/$(stage)/$(stage).image
+build/initfs/common/boot/$(stage).image: build/stages/$(stage)/$(stage).image
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 endef
