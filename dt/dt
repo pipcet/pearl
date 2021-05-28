@@ -817,7 +817,7 @@ sub dtp_to_dts {
 sub dts_to_dtb {
     my $dts = shift;
     my $dtb = "";
-    run(["dtc", "-Idts", "-Odtb"], \$dts, \$dtb) or die;
+    run(["dtc", "-q", "-Idts", "-Odtb"], \$dts, \$dtb) or die;
 
     return $dtb;
 }
@@ -825,7 +825,7 @@ sub dts_to_dtb {
 sub dtb_to_dts {
     my $dts = "";
     my $dtb = shift;
-    run(["dtc", "-Idtb", "-Odts"], \$dtb, \$dts) or die;
+    run(["dtc", "-q", "-Idtb", "-Odts"], \$dtb, \$dts) or die;
 
     return $dts;
 }
@@ -877,7 +877,7 @@ if ($ARGV[0] eq "--help") {
     write_file($ARGV[2], $dtp) or die;
 } elsif ($ARGV[0] eq "dtb-to-dtp") {
     my $dts = "";
-    run(["dtc", "-Idtb", "-Odts", $ARGV[1]], \$stdin, \$dts) or die;
+    run(["dtc", "-q", "-Idtb", "-Odts", $ARGV[1]], \$stdin, \$dts) or die;
     my $dtp = dts_to_dtp($dts);
     write_file($ARGV[2], $dtp) or die;
 } elsif ($ARGV[0] eq "dts-to-dtp") {
