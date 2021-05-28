@@ -6,10 +6,10 @@ mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 cpio -id < /common.cpio
-tar xvf /common.tar
-tar xvf /deb.tar
-tar xvf /dt.tar
-tar xvf /kexec.tar
+tar xf /common.tar
+tar xf /deb.tar
+tar xf /dt.tar
+tar xf /kexec.tar
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
