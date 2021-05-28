@@ -1,4 +1,5 @@
 #!/bin/sh
+busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 mkdir /mnt
 mount -t proc proc /proc
 mount -t sysfs sys /sys
@@ -7,4 +8,4 @@ ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
 mount $ROOT /mnt
 cp modules/*.ko /mnt
 sync
-exec /bin/busybox switch_root /mnt /sbin/init
+exec switch_root /mnt /sbin/init
