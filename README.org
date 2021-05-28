@@ -7,4 +7,9 @@ Ideally, this repository will contain everything you need to build and run Debia
 ** See Also
 
 *** [[https://www.corellium.com][Corellium]]'s port at [[https://github.com/corellium/linux-m1]]
+
+Works, but appears to have been abandoned for now.
+
 *** [[https://github.com/AsahiLinux/linux][Asahi Linux]] at [[https://github.com/AsahiLinux]]
+
+Still in the very early stages.
