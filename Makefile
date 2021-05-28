@@ -87,9 +87,9 @@ build/initfs/bin/busybox: build/busybox/busybox
 	$(CP) $< $@
 
 build/initfs/common.tar: \
-	build/initfs/common/dt.tar.gz \
-	build/initfs/common/deb.tar.gz \
-	build/initfs/common/kexec.tar.gz
+	build/initfs/common/dt.tar \
+	build/initfs/common/deb.tar \
+	build/initfs/common/kexec.tar
 	$(MKDIR) $(dir $@)
 	(cd build/initfs; tar c $(^:build/initfs/%=%)) > $@
 
