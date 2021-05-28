@@ -30,34 +30,6 @@ build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
 	$(CP) $< $@
 
 define perstage
-linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
-	diff -u $$< build/linux/$(stage)/.config || true
-	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(stage)/.config $$<
-
-linux/$(stage){menuconfig}:
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) stages/$(stage)/linux.config build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) menuconfig
-	diff -u stages/$(stage)/linux.config build/linux/$(stage)/.config || true
-	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
-
-build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config build/stages/$(stage)/$(stage).cpiospec
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
-	diff -u $$< build/linux/$(stage)/.config || true
-	$$(MAKE) -C build/linux/$(stage) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
-	$$(CP) build/linux/$(stage)/arch/arm64/boot/Image $$@
-
-build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
-	$$(CP) build/linux/$(stage)/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $$@
-
-build/stages/$(stage)/$(stage).image: stamp/linux
-
 build/stages/$(stage)/linux.config: stages/$(stage)/linux.config build/stages/$(stage)/$(stage).cpiospec
 	$$(CP) $$< $$@
 
@@ -94,7 +66,10 @@ build/stages/$(stage)/$(stage).image: | build/stages/$(stage)/
 build/stages/$(stage)/initfs/init: | build/stages/$(stage)/initfs/
 endef
 
+include linux/linux.mk
+
 $(foreach stage,stage1 stage2 linux,$(eval $(perstage)))
+$(foreach stage,stage1 stage2 linux,$(eval $(linux-perstage)))
 %.dtb.h: %.dtb
 	(echo "{";  cat $< | od -tx4 --width=4 -Anone -v | sed -e 's/ \(.*\)/\t0x\1,/'; echo "};") > $@
 
