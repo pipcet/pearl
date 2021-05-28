@@ -55,7 +55,7 @@ endef
 
 include linux/linux.mk
 
-$(foreach stage,stage1 stage2 linux,$(eval $(perstage)))
+$(foreach stage,stage1 stage2 linux m1n1 debian macos parasite,$(eval $(perstage)))
 $(foreach stage,stage1 stage2 linux,$(eval $(linux-perstage)))
 
 build/stages/stage1/linux.config: build/initfs/complete.cpio
