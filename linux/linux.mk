@@ -27,4 +27,16 @@ build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
 	$$(CP) build/linux/$(stage)/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $$@
 
 build/stages/$(stage)/$(stage).image: stamp/linux
+
+build/initfs/common/$(stage).image: build/stages/$(stage)/$(stage).image
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
 endef
+
+build/initfs/common/dt.tar.gz: build/dt.tar.gz
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
+
+build/initfs/common/deb.tar.gz: build/deb.tar.gz
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
