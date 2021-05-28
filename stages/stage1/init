@@ -1,4 +1,4 @@
-#!/bin/sh -x
+#!/bin/sh
 busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 mount -t proc proc proc
 mount -t sysfs sys sys
