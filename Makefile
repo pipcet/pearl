@@ -49,7 +49,6 @@ include github/github.mk
 
 include m1n1.mk
 
-include initfs/initfs.mk
 
 .SECONDARY:
 .PHONY: %}
