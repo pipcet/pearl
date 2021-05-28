@@ -1,3 +1,6 @@
+stages += stage1
+linux-stages += stage1
+
 build/stages/stage1/stage1.cpiospec: \
 	build/stages/stage1/initfs/boot/stage2.image \
 	build/stages/stage1/initfs/boot/stage2.dtb
