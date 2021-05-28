@@ -14,7 +14,8 @@ linux/$(stage){menuconfig}:
 	diff -u stages/$(stage)/linux.config build/linux/$(stage)/.config || true
 	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
 
-build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config build/stages/$(stage)/$(stage).cpiospec
+
+build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
