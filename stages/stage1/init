@@ -7,21 +7,18 @@ mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 cpio -id < /common.cpio
 tar xvf /common.tar
-tar xvf /common/deb.tar
-tar xvf /common/dt.tar
-tar xvf /common/kexec.tar
+tar xvf /deb.tar
+tar xvf /dt.tar
+tar xvf /kexec.tar
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
-dt tunables /boot/adt /common/stage2.dtb /boot/tunables.dtp
-dt dtb-to-dtp /common/stage2.dtb /boot/fixed.dtp
+dt tunables /boot/adt /stage2.dtb /boot/tunables.dtp
+dt dtb-to-dtp /stage2.dtb /boot/fixed.dtp
 grep 'reserved-memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
 dt dtp-to-dtb /boot/stage2.dtp /boot/stage2.dtb
 rm /init
-ln -sf /bin/stage2 /init
-ls / /bin /bin/sh /bin/busybox /init /common.cpio /common.tar | cpio -H newc -od . > /boot/stage2.cpio
-ls -l /boot/stage2.cpio
-echo /bin/kexec -fix /common/stage2.image --dtb=/boot/stage2.dtb --initrd=/boot/stage2.cpio
-sleep 30
-/bin/kexec -fix /common/stage2.image --dtb=/boot/stage2.dtb --initrd=/boot/stage2.cpio
+ln -sf bin/stage2 /init
+ls -d bin bin/stage2 bin/sh bin/busybox init common.cpio common.tar | cpio -H newc -o > /boot/stage2.cpio
+/bin/kexec -fix /stage2.image --dtb=/boot/stage2.dtb --ramdisk=/boot/stage2.cpio
