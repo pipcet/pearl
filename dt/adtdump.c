@@ -49,9 +49,9 @@ int main(int argc, char **argv)
   for (unsigned long off = 0; off < reg[1]; off += 4) {
     *p2++ = *p++;
     if (p2 - p3 >= 0x4000)
-      p3 += write(1, p3, p2 - p3);
+      p3 += write(1, p3, (char *)p2 - (char *)p3)/sizeof(p3[0]);
   }
-  p3 += write(1, p3, p2 - p3);
+  p3 += write(1, p3, (char *)p2 - (char *)p3)/sizeof(p3[0]);
   return 0;
 
  error:
