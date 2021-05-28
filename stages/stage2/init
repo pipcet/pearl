@@ -1,12 +1,16 @@
 #!/bin/sh
+export PATH=/bin/:/usr/bin/:/
 busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
+mkdir -p boot proc sys
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
-mkdir -p /boot
-tar xzf /deb.tar
-tar xzf /dt.tar
-export PATH=/bin/:/usr/bin/:/
+cpio -id < /common.cpio
+tar xf /common.tar
+tar xf /deb.tar
+tar xf /dt.tar
+tar xf /kexec.tar
+
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
 echo 0x2 > /sys/kernel/config/usb_gadget/G1/bDeviceClass
