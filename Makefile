@@ -45,9 +45,6 @@ build/stages/$(stage)/initfs/dt.tar: build/dt.tar | build/stages/$(stage)/
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/stages/$(stage)/initfs/init: stages/$(stage)/init | build/stages/$(stage)/initfs/
-	$$(CP) $$< $$@
-
 build/stages/$(stage)/$(stage).image: | build/stages/$(stage)/
 build/stages/$(stage)/initfs/init: | build/stages/$(stage)/initfs/
 endef
@@ -81,6 +78,10 @@ build/initfs/complete.cpio: initfs/complete.cpiospec build/stages/linux/linux.im
 build/initfs/init: stages/stage1/init
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
+
+build/initfs/init: build/initfs/bin/stage1
+	$(MKDIR) $(dir $@)
+	ln -sf bin/stage1 $@
 
 build/initfs/bin/busybox: build/busybox/busybox
 	$(MKDIR) $(dir $@)
