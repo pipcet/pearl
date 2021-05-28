@@ -4,8 +4,8 @@ mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
 mkdir -p /boot
-tar xzf /deb.tar.gz
-tar xzf /dt.tar.gz
+tar xzf /deb.tar
+tar xzf /dt.tar
 export PATH=/bin/:/usr/bin/:/
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
