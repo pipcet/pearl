@@ -17,20 +17,15 @@ all: build/pearl.macho
 clean:
 	rm -rf build
 
-include g/stampserver/stampserver.mk
-
 # Alias target
 build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
 	$(CP) $< $@
 
+include g/stampserver/stampserver.mk
+
 include dtc/dtc.mk
 
-
 include linux/linux.mk
-
-build/stages/stage1/linux.config: build/initfs/complete.cpio
-
-build/stages/stage1/stage1.image: build/stages/stage1/stage1.dts.dtb.h
 
 include deb/deb.mk
 
@@ -50,6 +45,7 @@ include m1n1/m1n1.mk
 
 include stages/stages.mk
 
+include packs/packs.mk
 
 .SECONDARY:
 .PHONY: %}
