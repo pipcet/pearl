@@ -3,10 +3,9 @@ busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
-tar xzvf /perl.tar.gz
-tar xzvf /perl2.tar.gz
-tar xvf /m1lli-scripts.tar
-cp /dt /bin
+mkdir -p /boot
+tar xzvf /deb.tar.gz
+tar xzvf /dt.tar.gz
 export PATH=/bin/:/usr/bin/:/
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
@@ -45,19 +44,7 @@ dd if=/dev/zero of=/commfile bs=1M count=1024
 dd if=/sys/firmware/fdt of=/commfile conv=notrunc
 echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
 
-dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
-dt extract-bootargs /boot/bootargs.dtp
-dt extract-adt /boot/adt
-dt tunables /boot/adt /boot/linux.dtb /boot/tunables.dtp
-dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
-cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp > /boot/next-stage.dtp
-dt dtp-to-dtb /boot/next-stage.dtp /boot/next-stage.dtb
-
-dt dtp-to-dtb /boot/fdt.dtb.dtp /boot/fdt.dtb.dtp.dtb
-dt dtb-to-dtp /boot/fdt.dtb.dtp.dtb /boot/fdt.dtb.dtp.dtb.dtp
-diff -u /boot/fdt.dtb.dtp.dtb.dtp /boot/next-stage.dtp
-
-(sleep 1m && ! test -e /noboot && /bin/kexec -fix /boot/Image --dtb=/sys/firmware/fdt --initrd=/boot/initfs --command-line="clk_ignore_unused root=/dev/nvme0n1p4 1") &
+(sleep 1m && ! test -e /noboot && /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --initrd=/boot/initfs --command-line="clk_ignore_unused root=/dev/nvme0n1p4 1") &
 read; touch /noboot
 while true; do
     ash
