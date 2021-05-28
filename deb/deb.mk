@@ -31,7 +31,7 @@ build/deb/libfdt1.deb: | build/deb/
 build/deb/libyaml.deb: | build/deb/
 	wget -O $@ http://http.us.debian.org/debian/pool/main/liby/libyaml/libyaml-0-2_0.2.2-1_arm64.deb
 
-build/deb.tar.gz: \
+build/deb.tar: \
 	build/deb/libc.deb \
 	build/deb/libcrypt.deb \
 	build/deb/perl.deb \
@@ -44,4 +44,4 @@ build/deb.tar.gz: \
 	build/deb/libyaml.deb
 	$(MKDIR) build/deb-tmp
 	for file in $^; do dpkg -x $$file build/deb-tmp; done
-	(cd build/deb-tmp; tar cz .) > $@
+	(cd build/deb-tmp; tar c .) > $@
