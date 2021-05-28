@@ -1,10 +1,11 @@
 #!/bin/sh
+export PATH=/bin:/usr/bin
 busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
+mkdir -p proc sys boot
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t configfs configfs sys/kernel/config
-mkdir -p /boot
-export PATH=/bin:/usr/bin
+cpio -id < /common.cpio
 tar xvf /common.tar
 tar xvf /common/deb.tar
 tar xvf /common/dt.tar
