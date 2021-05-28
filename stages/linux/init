@@ -3,7 +3,8 @@ mkdir /mnt
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 mount -t devtmpfs dev /dev
-mount /dev/nvme0n1p4 /mnt
+ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
+mount $ROOT /mnt
 cp modules/*.ko /mnt
 sync
 exec /bin/busybox switch_root /mnt /sbin/init
