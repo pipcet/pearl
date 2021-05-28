@@ -7,3 +7,10 @@ build/stages/stage1/stage1.cpio: build/packs/pearl.cpio
 
 build/stages/stage1/stage1.image: \
 	build/stages/stage1/stage1.cpio
+
+build/stages/stage1/stage1.image: \
+	build/stages/stage1/stage1.dts.dtb.h
+
+build/stages/stage1/stage1.dts: stages/stage1/stage1.dts
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
