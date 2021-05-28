@@ -99,7 +99,7 @@ build/initfs/common.tar: \
 	build/initfs/common/deb.tar \
 	build/initfs/common/kexec.tar
 	$(MKDIR) $(dir $@)
-	(cd build/initfs; tar c $(^:build/initfs/%=%)) > $@
+	(cd build/initfs/common; tar c $(^:build/initfs/common/%=%)) > $@
 
 build/initfs/common.tar: \
 	build/initfs/common/stage2.image \
