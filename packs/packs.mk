@@ -59,6 +59,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/gadget
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
