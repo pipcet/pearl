@@ -6,7 +6,7 @@ build/deb/Packages: | build/deb/
 	curl http://http.us.debian.org/debian/dists/sid/main/binary-all/Packages.xz | xzcat >> $@
 
 build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
-	wget -O $@ http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<)
+	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
 build/deb.tar: \
 	build/deb/libc6.deb \
