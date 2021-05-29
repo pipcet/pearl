@@ -8,5 +8,5 @@ mount $ROOT /mnt
 cp modules/*.ko /mnt
 mkdir /mnt/persist
 sync
-mount --bind /persist /mnt/persist
+cp persist/* /mnt/persist
 exec switch_root /mnt /sbin/init
