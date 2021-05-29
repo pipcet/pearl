@@ -14,3 +14,6 @@
 	path = submodule/kexec-tools
 	url = https://github.com/pipcet/kexec-tools
 	branch = pearl
+[submodule "submodule/debootstrap"]
+	path = submodule/debootstrap
+	url = https://github.com/pipcet/debootstrap
