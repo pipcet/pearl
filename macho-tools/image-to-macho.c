@@ -25,6 +25,9 @@ static
 static
 #include "nop..h"
 
+static
+#include "bring-up-phys..h"
+
 #define PRELUDE_SIZE 16384
 #define IMAGE_PADDING (1 << 21)
 #define VIRT_BASE 0xfffffe0007000000
