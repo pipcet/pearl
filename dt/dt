@@ -282,7 +282,7 @@ sub new_from_fusemap {
 sub new_from_pcie {
     my ($class, %h) = @_;
     my $abuf = $h{abuf};
-    my $areg = $h{areg};
+    my $areg = $h{areg} || $h{aparentreg};
     return unless $areg;
     my $range = $h{range};
     my $base = $h{base};
@@ -360,6 +360,7 @@ sub tunable {
     my $adtreg = $adtdev . ".reg";
     my $adtparent = $adtdev;
     $adtparent =~ s/\.[^.]*$//;
+    my $adtparentreg = $adtparent . ".reg";
 
     for my $lnode (sort keys %dt) {
 	my $rawnode = $lnode;
@@ -389,9 +390,12 @@ sub tunable {
 	if ($adtparent eq $anode) {
 	    $props{aparent} = $adt{$anode};
 	}
+	if ($adtparentreg eq $anode) {
+	    $props{aparentreg} = $adt{$anode};
+	}
     }
 
-    unless (exists $props{abuf}) {
+    unless (exists $props{abuf} or exists $props{aparent}) {
 	warn "no abuf for $adtnode";
 	return;
     }
