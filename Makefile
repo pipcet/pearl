@@ -43,6 +43,8 @@ include github/github.mk
 
 include m1n1/m1n1.mk
 
+include debootstrap/debootstrap.mk
+
 include stages/stages.mk
 
 include packs/packs.mk
