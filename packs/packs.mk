@@ -41,6 +41,14 @@ build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/boot/linux.image: build/stages/linux/linux.image
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
+build/packs/$(pack)/boot/linux.dtb: build/stages/linux/linux.dtb
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack)/deb.tar: build/deb.tar
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
@@ -49,11 +57,15 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 
 build/packs/$(pack).cpio: build/packs/$(pack).cpiospec build/stages/linux/linux.image
