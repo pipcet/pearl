@@ -5,3 +5,6 @@ build/%.dtb.h: build/%.dtb
 
 build/%.dts.dtb: build/%.dts
 	$(DTC) -Idts -Odtb $< > $@.tmp && mv $@.tmp $@
+
+build/%.dtb.dts: build/%.dtb
+	$(DTC) -Idtb -Odts $< > $@.tmp && mv $@.tmp $@
