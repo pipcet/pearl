@@ -13,7 +13,7 @@ build/artifacts/up/pearl.macho: build/pearl.macho build/artifact-timestamp | bui
 	$(CP) $< $@
 
 build/artifacts{push}:
-	(cd build/artifacts/up; for file in *; do if [ "$$file" -nt ../../artifact-timestamp ]; then name=$$(basename "$$file"); (cd $(PWD); bash github/ul-artifact "$$name" "build/artifacts/up/$$name"); fi; done)
+	(cd build/artifacts/up; for file in *; do name=$$(basename "$$file"); (cd $(PWD); bash github/ul-artifact "$$name" "build/artifacts/up/$$name"); done)
 
 build/%{artifact}: build/%
 	$(MKDIR) build/artifacts/up
