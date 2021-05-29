@@ -29,6 +29,10 @@ build/packs/$(pack)/bin/%: build/dt/bin/%
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/init: packs/$(pack)/bin/init
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
@@ -43,7 +47,7 @@ build/packs/$(pack)/deb.tar: build/deb.tar
 
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
-build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init
+build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
