@@ -609,6 +609,7 @@ sub setup_tunables {
 	tunable("arm-io.apcie.pci-bridge0.pcie-rc-tunables",
 		"soc.pcie.tunable-port0",
 		pcie => parent => 1, range => 0);
+	if (0) {
 	tunable("arm-io.apcie.pci-bridge1.apcie-config-tunables",
 		"soc.pcie.tunable-port1-config",
 		pcie => parent => 1, range => 10);
@@ -636,6 +637,7 @@ sub setup_tunables {
 	tunable("chosen.mac-address-ethernet0",
 		"chosen.hwaddr-eth0",
 		plain =>);
+	}
 	tunable("arm-io.pmgr.voltage-states1",
 		"soc.cpufreq.tunable-ecpu-states",
 		plain => xor => 0);
