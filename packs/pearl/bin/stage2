@@ -5,6 +5,12 @@ dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 
+gadget &
+
+sleep 15
+
+sh
+
 echo linux > persist/stage
 find persist >> /file.list
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
