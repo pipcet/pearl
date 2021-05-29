@@ -7,9 +7,11 @@ dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 
 gadget &
 
+(read; touch /noboot) &
+
 sleep 15
 
-sh
+while [ -e /noboot ]; do sh; done
 
 echo linux > persist/stage
 find persist >> /file.list
