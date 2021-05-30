@@ -1,8 +1,5 @@
 submodule/linux pipcet pearl
-busybox pipcet pearl
-debootstrap pipcet pearl
-kexec-tools pipcet pearl
-linux pipcet pearl
-m1lli pipcet pearl
-m1n1 pipcet pearl
-preloader-m1 pipcet pearl
+submodule/busybox pipcet pearl
+submodule/debootstrap pipcet pearl
+submodule/kexec-tools pipcet pearl
+submodule/m1n1 pipcet pearl
