@@ -5,15 +5,16 @@ dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 
+(while sleep 1; do receive-commfile; done) &
 gadget &
 
-(read; touch /noboot) &
-
-sleep 15
-
-while [ -e /noboot ]; do sh; done
+if timeout 15 sh -c read; then
+    touch /noboot
+    while [ -e /noboot ]; do sh; done
+fi
 
 echo linux > persist/stage
 find persist >> /file.list
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
 /bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio
+
