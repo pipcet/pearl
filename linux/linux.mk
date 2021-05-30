@@ -27,6 +27,13 @@ build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
 	$$(MAKE) -C build/linux/$(stage) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
 	$$(CP) build/linux/$(stage)/arch/arm64/boot/Image $$@
 
+build/stages/$(stage)/$(stage)-modules.tar: build/stages/$(stage)/$(stage).image
+	rm -rf $$@.d
+	$$(MKDIR) $$@.d
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) modules
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) INSTALL_MOD_PATH=$$@.d modules_install
+	$$(TAR) -C $$@.d -c . > $$@
+
 build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
 	$$(CP) build/linux/$(stage)/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $$@
 
