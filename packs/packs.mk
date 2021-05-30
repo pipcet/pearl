@@ -59,6 +59,10 @@ build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
@@ -74,6 +78,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
+build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 
 build/packs/$(pack).cpio: build/packs/$(pack).cpiospec build/stages/linux/linux.image
