@@ -20,4 +20,5 @@ jobs:
     - run: sudo apt-get install device-tree-compiler
     - run: make -kj3 build/stages/linux/linux.image
     - run: make -kj3 build/stages/linux/linux.image.macho
+    - run: make -kj3 build/stages/linux/linux.image{artifact}
     - run: make -kj3 build/stages/linux/linux.image.macho{artifact}
