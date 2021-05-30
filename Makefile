@@ -18,7 +18,7 @@ clean:
 	rm -rf build
 
 # Alias target
-build/pearl.macho: build/stages/stage1/stage1.image.macho | build/
+build/pearl.macho: build/images/pearl/pearl.image.macho | build/
 	$(CP) $< $@
 
 include g/stampserver/stampserver.mk
