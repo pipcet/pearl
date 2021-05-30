@@ -5,7 +5,7 @@ mount -t sysfs sys /sys
 mount -t devtmpfs dev /dev
 ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
 mount $ROOT /mnt
-cp modules/*.ko /mnt
+cp modules.tar /persist
 mkdir /mnt/persist
 sync
 cp persist/* /mnt/persist
