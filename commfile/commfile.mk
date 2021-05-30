@@ -9,7 +9,8 @@ build/commfile/receive-commfile: commfile/receive-commfile.c
 %.image.commfile: %.image
 	$(MKDIR) $@.d
 	$(CP) $< $@.d
-	tar -C $@.d -c . > $@
+	$(CP) commfile/$(notdir $*).sh $@.d/script
+	tar -C $@.d -cz . > $@
 
 %.commfile{send}: %.commfile
 	$(SUDO) commfile/send-commfile $<
