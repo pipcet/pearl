@@ -35,14 +35,6 @@
 		#size-cells = <0x02>;
 		ranges;
 
-		fw_area@800000000 {
-			reg = <0x08 0x00 0x2 0>;
-		};
-
-		fw_area@b00000000 {
-			reg = <0x0b 0x00 0x0 0xd9498000>;
-		};
-
 		fw_area@9e0000000 {
 			reg = <0x0b 0xd9498000 0x00 0x26b68000>;
 			no-map;
