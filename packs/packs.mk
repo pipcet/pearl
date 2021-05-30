@@ -55,6 +55,10 @@ build/packs/$(pack)/deb.tar: build/deb.tar
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1/m1n1.macho.image
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
