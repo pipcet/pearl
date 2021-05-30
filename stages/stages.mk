@@ -16,9 +16,6 @@ include stages/macos/macos.mk
 # parasite stage
 include stages/parasite/parasite.mk
 
-# debian stage
-include stages/debian/debian.mk
-
 $(foreach stage,$(stages),$(eval $(perstage)))
 
 $(foreach stage,$(linux-stages),$(eval $(linux-perstage)))
