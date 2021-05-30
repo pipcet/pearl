@@ -11,7 +11,6 @@ echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo 0x1337 > /sys/kernel/config/usb_gadget/G1/idVendor
 echo 0xbeef > /sys/kernel/config/usb_gadget/G1/idProduct
-mkdir /sys/kernel/config/usb_gadget/G1/strings/0x409
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo pipcet@gmail.com > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo m1lli > /sys/kernel/config/usb_gadget/G1/strings/0x409/product
