@@ -1,0 +1,2 @@
+#!/bin/sh
+kexec -fix --fdt=/sys/firmware/fdt /boot/m1n1.image
