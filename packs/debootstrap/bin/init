@@ -2,7 +2,7 @@
 /bin/busybox find / >> file.list
 /bin/busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 export PATH=/bin:/usr/bin
-tar xvf /deb.tar
+tar xf /deb.tar
 ln -sf /proc/self/fd/0 /dev/stdin
 mkdir -p boot proc sys tmp persist
 mount -t proc proc proc
