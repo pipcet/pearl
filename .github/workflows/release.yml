@@ -16,6 +16,7 @@ jobs:
     - run: sudo apt-get install g++-aarch64-linux-gnu
     - run: sudo apt-get install gcc-aarch64-linux-gnu
     - run: make -kj3 build/pearl.macho{release}
+    - run: make -kj3 build/debootstrap.macho{release}
     - run: make -kj3 {release}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
