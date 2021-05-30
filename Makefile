@@ -42,17 +42,22 @@ include kexec/kexec.mk
 
 include dt/dt.mk
 
-include github/github.mk
+# Utilities not required for ordinary booting
+include commfile/commfile.mk
 
 include m1n1/m1n1.mk
 
 include debootstrap/debootstrap.mk
 
+# Stages, packs, images
 include stages/stages.mk
 
 include packs/packs.mk
 
 include images/images.mk
+
+# GitHub integration
+include github/github.mk
 
 .SECONDARY:
 .PHONY: %}
