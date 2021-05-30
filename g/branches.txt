@@ -1,6 +1,4 @@
 submodule/linux pearl pipcet/pearl
-busybox pearl pipcet/pearl
-kexec-tools pearl pipcet/pearl
-m1lli pearl pipcet/pearl
-m1n1 pearl pipcet/pearl
-preloader-m1 pearl pipcet/pearl
+submodule/busybox pearl pipcet/pearl
+submodule/kexec-tools pearl pipcet/pearl
+submodule/m1n1 pearl pipcet/pearl
