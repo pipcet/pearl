@@ -31,7 +31,7 @@ build/stages/$(stage)/$(stage)-modules.tar: build/stages/$(stage)/$(stage).image
 	rm -rf $$@.d
 	$$(MKDIR) $$@.d
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) modules
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) INSTALL_MOD_PATH=$$@.d modules_install
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) INSTALL_MOD_PATH=$(PWD)/$$@.d modules_install
 	$$(TAR) -C $$@.d -c . > $$@
 
 build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
@@ -63,7 +63,6 @@ linux/$(image){menuconfig}:
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) menuconfig
 	diff -u images/$(image)/linux.config build/linux/$(image)/.config || true
 	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
-
 
 build/images/$(image)/$(image).image: build/images/$(image)/linux.config
 	$$(MKDIR) build/linux/$(image)
