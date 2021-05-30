@@ -7,13 +7,13 @@ dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 
 gadget &
 
-(read; touch /noboot) &
+(sleep 15 && ! [ -e /noboot ] &&
+     (echo linux > persist/stage
+      find persist >> /file.list
+      cat /file.list | cpio -H newc -o > /boot/linux.cpio
+      /bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio)) &
 
-sleep 15
+(read; touch /noboot)
 
 while [ -e /noboot ]; do sh; done
 
-echo linux > persist/stage
-find persist >> /file.list
-cat /file.list | cpio -H newc -o > /boot/linux.cpio
-/bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio
