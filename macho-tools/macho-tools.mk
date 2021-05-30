@@ -18,3 +18,6 @@ build/host/macho-to-image: build/macho-tools/disable-timers..h
 
 build/%.image.macho: build/%.image build/host/image-to-macho
 	build/host/image-to-macho $< $@
+
+build/%.macho.image: build/%.macho build/host/macho-to-image
+	build/host/macho-to-image $< $@
