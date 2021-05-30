@@ -7,15 +7,9 @@ while (<>) {
 	$flags{$flag} = 1;
     }
     next unless $flags{CLOSE_WRITE};
-    if ($dir =~ /^\.\/linux\// &&
-	$dir !~ /^\.\/linux\/o(|-.*)\//) {
-	warn "linux changed ($dir)";
-	system("touch stamp/linux");
-    }
-    for my $module (qw(busybox kexec-tools)) {
-	if (substr($dir, 0, length($module) + 2) eq "./$module") {
-	    warn "$module changed ($dir)";
-	    system("touch stamp/$module");
-	}
+    if ($dir =~ /^\.\/submodule\/(.*?)\/.*$/) {
+	my $module = $1;
+	warn "$module changed ($dir)";
+	system("touch stamp/$module");
     }
 }
