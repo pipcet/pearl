@@ -1,5 +1,7 @@
 include packs/pearl/pearl.mk
 
+include packs/debian/debian.mk
+
 define perpack
 build/packs/$(pack)/bin/kexec: build/kexec/kexec
 	$$(MKDIR) $$(dir $$@)
