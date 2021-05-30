@@ -11,10 +11,12 @@
 primary_entry:
 	isb
 	b 1f
+	.align 3
 bootargs:
-	.quad 0 // bootargs argument, to be fixed by code
+	.ascii "bootargs"
+	.align 3
 original_base:
-	.quad 0
+	.ascii "origbase"
 1:
 2:
 	adr x1, stack
