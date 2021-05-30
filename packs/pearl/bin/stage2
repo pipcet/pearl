@@ -5,6 +5,7 @@ dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 
+(while sleep 1; do receive-commfile; done) &
 gadget &
 
 if timeout 15 sh -c read; then
