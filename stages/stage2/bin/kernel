@@ -1,2 +1,0 @@
-#!/bin/sh
-kexec -fix /boot/Image --dtb=/boot/fdt --initrd=/boot/initfs
