@@ -17,8 +17,11 @@ all: build/pearl.macho
 clean:
 	rm -rf build
 
-# Alias target
+# Alias targets
 build/pearl.macho: build/images/pearl/pearl.image.macho | build/
+	$(CP) $< $@
+
+build/debootstrap.macho: build/images/debootstrap/debootstrap.image.macho | build/
 	$(CP) $< $@
 
 include g/stampserver/stampserver.mk
