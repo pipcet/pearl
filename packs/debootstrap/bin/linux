@@ -12,4 +12,4 @@ tar xvf /debootstrap.tar
 sync
 mkdir /debian/persist
 cp -av /persist/* /debian/persist
-switch_root /debian /bin/bash
+exec switch_root /debian /bin/bash
