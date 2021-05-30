@@ -1,6 +1,6 @@
 include packs/pearl/pearl.mk
 
-include packs/debian/debian.mk
+include packs/debootstrap/debootstrap.mk
 
 define perpack
 build/packs/$(pack)/bin/kexec: build/kexec/kexec
