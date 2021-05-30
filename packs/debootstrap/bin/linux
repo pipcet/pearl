@@ -13,3 +13,4 @@ sync
 mkdir /debian/persist
 cp -av /persist/* /debian/persist
 exec switch_root /debian /bin/bash
+/bin/sh
