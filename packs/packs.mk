@@ -55,7 +55,7 @@ build/packs/$(pack)/deb.tar: build/deb.tar
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
-build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1/m1n1.macho.image
+build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1.macho.image
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
@@ -67,6 +67,10 @@ build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
@@ -74,11 +78,13 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/gadget
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
