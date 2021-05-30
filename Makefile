@@ -49,5 +49,7 @@ include stages/stages.mk
 
 include packs/packs.mk
 
+include images/images.mk
+
 .SECONDARY:
 .PHONY: %}
