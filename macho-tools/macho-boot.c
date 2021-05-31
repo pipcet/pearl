@@ -109,14 +109,10 @@ void boot_macho(unsigned long bootargs, void *macho, void *base)
   void *safebase = base + vlen;
   if (safebase != macho) {
     memcpy(safebase, macho, flen);
-    typeof(&boot_macho) new_boot_macho;
-    new_boot_macho = boot_macho;
-    new_boot_macho = ((void *)new_boot_macho) + (safebase - macho);
     boot_macho(bootargs, safebase, base);
   }
   typeof (&macho_entry) actual_pc;
   actual_pc = (void *)pc - (void *)vmin + base;
-  u64 phys_pc = (u64)-1;
   FOR_EACH_COMMAND(command) {
     switch (command->type) {
     case MACHO_COMMAND_SEGMENT_64: {
