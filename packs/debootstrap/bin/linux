@@ -11,7 +11,8 @@ mount -t devtmpfs dev /debian/dev
 cd /debian
 tar xf /debootstrap.tar
 sync
-cp modules.tar /persist
+cp /modules.tar /persist
+cp /blobs.tar /persist
 mkdir /debian/persist
 cp -av /persist/* /debian/persist
 cat > /debian/init <<EOF
