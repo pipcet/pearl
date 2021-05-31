@@ -1,3 +1,5 @@
 *~
 /build/
 /stamp/
+/blobs/brcm.tar
+/blobs/wifi.tar
