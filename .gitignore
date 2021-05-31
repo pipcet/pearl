@@ -3,3 +3,5 @@
 /stamp/
 /blobs/brcm.tar
 /blobs/wifi.tar
+/blobs/etc.tar
+/blobs/usr-local.tar
