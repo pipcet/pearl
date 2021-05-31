@@ -9,7 +9,7 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 # INCLUDE_DEBOOTSTRAP = t
 INCLUDE_MODULES = t
 
-all: build/pearl.macho
+all: build/pearl.macho build/debootstrap.macho build/m1n1.macho
 
 %/:
 	$(MKDIR) $@
