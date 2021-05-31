@@ -1,3 +1,3 @@
-build/blobs.tar: $(wildcard build/blobs/*.tar)
+build/blobs.tar: $(wildcard blobs/*.tar)
 	$(MKDIR) $(dir $@)
-	(cd build/blobs; tar c $(^:build/blobs/%=%)) > $@
+	(cd blobs; tar c $(^:blobs/%=%)) > $@
