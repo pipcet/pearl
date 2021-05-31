@@ -1,7 +1,5 @@
 define linux-perstage
-build/stages/$(stage)/linux.config: stages/$(stage)/linux.config
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
+build/stages/$(stage)/linux.config: stages/$(stage)/linux.config ; $$(COPY)
 
 linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
@@ -39,9 +37,7 @@ build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
 
 build/stages/$(stage)/$(stage).image: stamp/linux
 
-build/initfs/common/boot/$(stage).image: build/stages/$(stage)/$(stage).image
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
+build/initfs/common/boot/$(stage).image: build/stages/$(stage)/$(stage).image ; $$(COPY)
 endef
 
 define linux-perimage
@@ -77,15 +73,8 @@ build/images/$(image)/$(image).dtb: build/images/$(image)/$(image).image
 
 build/images/$(image)/$(image).image: stamp/linux
 
-build/initfs/common/boot/$(image).image: build/images/$(image)/$(image).image
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
+build/initfs/common/boot/$(image).image: build/images/$(image)/$(image).image ; $$(COPY)
 endef
 
-build/initfs/common/dt.tar: build/dt.tar
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
-
-build/initfs/common/deb.tar: build/deb.tar
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
+build/initfs/common/dt.tar: build/dt.tar ; $(COPY)
+build/initfs/common/deb.tar: build/deb.tar ; $(COPY)
