@@ -6,6 +6,8 @@ TAR ?= tar
 PWD = $(shell pwd)
 SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 
+include lib/lib.mk
+
 # INCLUDE_DEBOOTSTRAP = t
 INCLUDE_MODULES = t
 
