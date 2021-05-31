@@ -16,6 +16,10 @@ build/host/macho-to-image: build/macho-tools/macho-boot..h
 build/host/macho-to-image: build/macho-tools/image-header..h
 build/host/macho-to-image: build/macho-tools/disable-timers..h
 
+build/macho-image-fill: macho-tools/macho-image-fill
+	$(MKDIR) $(dir $@)
+	$(CP) $< $@
+
 build/%.image.macho: build/%.image build/host/image-to-macho
 	build/host/image-to-macho $< $@
 
