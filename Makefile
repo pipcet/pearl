@@ -42,6 +42,8 @@ include kexec/kexec.mk
 
 include dt/dt.mk
 
+include blobs/blobs.mk
+
 # Utilities not required for ordinary booting
 include commfile/commfile.mk
 
