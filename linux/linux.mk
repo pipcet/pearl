@@ -9,7 +9,7 @@ linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
 	diff -u $$< build/linux/$(stage)/.config || true
 	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(stage)/.config $$<
+	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
 
 linux/$(stage){menuconfig}:
 	$$(MKDIR) build/linux/$(stage)
@@ -55,7 +55,7 @@ linux/$(image){oldconfig}: build/images/$(image)/linux.config
 	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) oldconfig
 	diff -u $$< build/linux/$(image)/.config || true
 	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(image)/.config $$<
+	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
 
 linux/$(image){menuconfig}:
 	$$(MKDIR) build/linux/$(image)
