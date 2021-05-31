@@ -61,5 +61,4 @@ include images/images.mk
 # GitHub integration
 include github/github.mk
 
-.SECONDARY:
 .PHONY: %}
