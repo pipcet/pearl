@@ -1,3 +1,4 @@
+0:
 	nop
 	b primary_entry
 	.quad 0
@@ -11,12 +12,12 @@
 primary_entry:
 	isb
 	b 1f
-	.align 3
 bootargs:
-	.ascii "bootargs"
-	.align 3
+	.quad 0 // bootargs argument, to be fixed by code
 original_base:
-	.ascii "origbase"
+	.quad 0 // original base address, to be fixed by code
+length_of_header:
+	.quad 256*1024 // length of header, to be fixed by code
 1:
 2:
 	adr x1, stack
@@ -29,5 +30,8 @@ original_base:
 	.endr
 stack:
 1:
-	adr x0, bootargs
-	ldr x1, original_base
+	ldr x0, bootargs
+	ldr x1, length_of_header
+	adr x2, 0b
+	add x1, x1, x2
+	ldr x2, original_base
