@@ -3,12 +3,12 @@ use bytes;
 use strict;
 use File::Slurp qw(read_file write_file);
 my $macho_file = $ARGV[0];
-my $bootargs_address = $ARGV[1];
-my $original_base_address = $ARGV[2];
+my $bootargs_address = $ARGV[1] // unpack("Q", read_file("/sys/firmware/devicetree/base/reserved-memory/bootargs@800000000/reg"));
+my $original_base_address = $ARGV[2] // unpack("Q", read_file("/sys/firmware/devicetree/base/reserved-memory/base@800000000/reg"));
 
 my $macho = read_file($macho_file) or die;
 
-substr $macho, 64, 8, unpack("Q", $bootargs_address);
-substr $macho, 72, 8, unpack("Q", $original_base_address);
+substr $macho, 64, 8, pack("Q", $bootargs_address);
+substr $macho, 72, 8, pack("Q", $original_base_address);
 
 write_file($macho_file, $macho) or die;
