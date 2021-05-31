@@ -104,11 +104,10 @@ void boot_macho(unsigned long bootargs, void *macho, void *base)
   u64 flen = fmax - fmin;
   void *safebase = base + vlen;
   if (safebase != macho) {
-    memcpy(safebase, macho, flen);
     boot_macho(bootargs, safebase, base);
+    memmove(safebase, macho, flen);
   }
-  typeof (&macho_entry) actual_pc;
-  actual_pc = (void *)pc - (void *)vmin + base;
+  typeof(&macho_entry) actual_pc = (void *)pc - (void *)vmin + base;
   FOR_EACH_COMMAND(command) {
     switch (command->type) {
     case MACHO_COMMAND_SEGMENT_64: {
@@ -118,7 +117,7 @@ void boot_macho(unsigned long bootargs, void *macho, void *base)
       u64 fsize = command->u.segment_64.filesize;
 
       memset((void *)base + vmaddr - vmin, 0, vmsize);
-      memcpy((void *)base + vmaddr - vmin, safebase + faddr, fsize);
+      memmove((void *)base + vmaddr - vmin, macho + faddr, fsize);
     }
     }
   }
