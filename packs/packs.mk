@@ -71,6 +71,10 @@ build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
 
+build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill
+	$$(MKDIR) $$(dir $$@)
+	$$(CP) $$< $$@
+
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
@@ -78,6 +82,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/gadget
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
