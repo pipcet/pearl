@@ -41,17 +41,15 @@ struct macho_command {
       command < last_command;						\
       command = ((void*)command) + command->size)
 
-static inline void memcpy(void *p, void *q, size_t len)
+static inline void memmove(void *p, void *q, size_t len)
 {
   unsigned __int128 *p128 = p;
   unsigned __int128 *q128 = q;
 
   len += 15;
-  len &= -16L;
-  while (len) {
+  len /= 16;
+  while (len--)
     *p128++ = *q128++;
-    len -= 16;
-  }
 }
 
 static inline void memset(void *p, int c_ignored, size_t len)
@@ -59,11 +57,9 @@ static inline void memset(void *p, int c_ignored, size_t len)
   unsigned __int128 *p128 = p;
 
   len += 15;
-  len &= -16L;
-  while (len) {
+  len /= 16;
+  while (len--)
     *p128++ = 0;
-    len -= 16;
-  }
 }
 
 void boot_macho(unsigned long, void *, void *)
