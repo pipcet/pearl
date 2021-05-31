@@ -3,14 +3,6 @@ include packs/pearl/pearl.mk
 include packs/debootstrap/debootstrap.mk
 
 define perpack
-build/packs/$(pack)/bin/kexec: build/kexec/kexec
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) -a $$< $$@
-
-build/packs/$(pack)/bin/busybox: build/busybox/busybox
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) -a $$< $$@
-
 build/packs/$(pack)/common.tar: $(common-$(pack):%=build/packs/$(pack)/common/%)
 	$$(MKDIR) $$(dir $$@)
 	(cd build/packs/$(pack); tar c $$(^:build/packs/$(pack)/%=%)) > $$@
@@ -23,57 +15,22 @@ build/packs/$(pack).cpiospec: packs/$(pack)/$(pack).cpiospec
 	$$(MKDIR) $$(dir $$@)
 	(cat $$<; $$(foreach file,$$(patsubst build/packs/$(pack)/%,/%,$$(wordlist 2,$$(words $$^),$$^)),echo dir $$(dir $(patsubst %/,%,$$(file))) 755 0 0; echo file $$(file) $$(PWD)/build/packs/$(pack)/$$(file) 755 0 0;)) | sort | uniq > $$@
 
-build/packs/$(pack)/%: packs/$(pack)/%
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
 
-build/packs/$(pack)/bin/%: build/dt/bin/%
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/init: packs/$(pack)/bin/init
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/boot/linux.image: build/stages/linux/linux.image
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/boot/linux.dtb: build/stages/linux/linux.dtb
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/deb.tar: build/deb.tar
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1.macho.image
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
-
-build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
+build/packs/$(pack)/%: packs/$(pack)/% ; $$(COPY)
+build/packs/$(pack)/bin/%: build/dt/bin/% ; $$(COPY)
+build/packs/$(pack)/bin/busybox: build/busybox/busybox; $$(COPY)
+build/packs/$(pack)/bin/kexec: build/kexec/kexec; $$(COPY)
+build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1 ; $$(COPY)
+build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill ; $$(COPY)
+build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile ; $$(COPY)
+build/packs/$(pack)/boot/linux.dtb: build/stages/linux/linux.dtb ; $$(COPY)
+build/packs/$(pack)/boot/linux.image: build/stages/linux/linux.image ; $$(COPY)
+build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1.macho.image ; $$(COPY)
+build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb ; $$(COPY)
+build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image ; $$(COPY)
+build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
+build/packs/$(pack)/init: packs/$(pack)/bin/init ; $$(COPY)
+build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
 
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
