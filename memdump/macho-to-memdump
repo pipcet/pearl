@@ -823,18 +823,13 @@ my $devmem = DevMem->new;
 my $bootargs = $devmem->fdtrange("/sys/firmware/devicetree/base/reserved-memory/bootargs\@800000000/reg");
 # my $adt = $devmem->fdtrange("/sys/firmware/devicetree/base/reserved-memory/adt\@800000000/reg");
 # $adt = scalar read_file("adt");
-# 
-# 
 # my $adtv = adtnode()->read($adt);
 my $bootargsv = bootargs()->read($bootargs);
-# 
-# my %ranges;
-# 
 # my $bl64 = beglen(u64, u64);
 # warn $adtv->lookup("chosen\0", "memory-map\0", "SEPFW")->field_by_name("data")->data;
 # $ranges{SEPFW} = $bl64->read($adtv->lookup("chosen\0", "memory-map\0", "SEPFW")->field_by_name("data")->data);
 
-my $macho = scalar read_file("m1n1.macho");
+my $macho = scalar read_file($ARGV[0]);
 my $machov = macho()->read($macho);
 my ($base) = $devmem->fdtbeglen("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg");
 
