@@ -12,7 +12,7 @@
 primary_entry:
 	isb
 	b 1f
-	.align 3
+	.align 4
 current_base:
 	.ascii "currbase"
 bootargs:
@@ -36,4 +36,5 @@ entry:
 	.endr
 stack:
 1:
-	adr x0, bootargs
+	adr x0, 0b
+	str x0, [x0, 0x50]
