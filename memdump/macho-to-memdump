@@ -802,6 +802,10 @@ sub macho_command {
 	    struct [ size(33 * 8) ],
 	    pc => u64,
 	],
+	unknown => struct [
+	    u32,
+	    size(u32),
+	],
 	]
 }
 
