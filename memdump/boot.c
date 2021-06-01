@@ -47,8 +47,6 @@ void boot_memdump(struct memdump_args *args)
 {
   memmove(args->original_base, args->current_base + args->length_of_header,
 	  args->length_of_memdump);
-  //memset(0xbdf438000, 0, 1600 * 2560 * 4);
-  memset(0xbdf438000, ~0L, 1600 * 2560 * 4);
   asm volatile("isb");
   args->entry(args->bootargs);
 }
