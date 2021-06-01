@@ -8,6 +8,7 @@ typedef unsigned u32;
 extern void macho_entry(void *) __attribute__((noreturn));
 
 struct memdump_args {
+  unsigned long header[10];
   void *current_base;
   void *bootargs;
   void *original_base;
@@ -27,17 +28,17 @@ static inline void memmove(void *p, void *q, size_t len)
     *p128++ = *q128++;
 }
 
-#if 0
-static inline void memset(void *p, int c_ignored, size_t len)
+static inline void memset(void *p, unsigned long pattern64, size_t len)
 {
   unsigned __int128 *p128 = p;
-
+  unsigned __int128 pattern = pattern64;
+  pattern <<= 64;
+  pattern += pattern64;
   len += 15;
   len /= 16;
   while (len--)
-    *p128++ = 0;
+    *p128++ = pattern;
 }
-#endif
 
 void boot_memdump(struct memdump_args *args)
   __attribute__((noreturn));
@@ -46,6 +47,8 @@ void boot_memdump(struct memdump_args *args)
 {
   memmove(args->original_base, args->current_base + args->length_of_header,
 	  args->length_of_memdump);
-
+  //memset(0xbdf438000, 0, 1600 * 2560 * 4);
+  memset(0xbdf438000, ~0L, 1600 * 2560 * 4);
+  asm volatile("isb");
   args->entry(args->bootargs);
 }
