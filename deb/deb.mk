@@ -9,7 +9,7 @@ build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
 libc-debs = libc6 libcrypt1
-perl-debs = perl perl-base perl-modules-5.32 libfile-slurp-perl libipc-run-perl
+perl-debs = perl perl-base perl-modules-5.32 libfile-slurp-perl libipc-run-perl libsys-mmap-perl
 dtc-debs = device-tree-compiler libfdt1 libyaml-0-2
 lvm-debs = \
 	lvm2 \
