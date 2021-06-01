@@ -20,3 +20,7 @@
 [submodule "submodule/memtool"]
 	path = submodule/memtool
 	url = https://github.com/pipcet/memtool
+[submodule "submodule/u-boot"]
+	path = submodule/u-boot
+	url = https://github.com/kettenis/u-boot/
+	branch = apple-m1-m1n1-nvme
