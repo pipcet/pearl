@@ -32,12 +32,8 @@ lvm-debs = \
 	liblz4-1 \
 	liblzma5 \
 	libmd0 \
-	libpcre2 \
-	libpcre2-8 \
 	libpcre2-8-0 \
-	libpcre2-16 \
 	libpcre2-16-0 \
-	libpcre2-32 \
 	libpcre2-32-0 \
 	libpopt0 \
 	libselinux1 \
