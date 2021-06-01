@@ -1,8 +1,6 @@
 #!/usr/bin/perl
 use strict;
 use bytes;
-use Data::Dumper;
-use Carp::Always;
 
 package DevMem;
 
@@ -47,8 +45,6 @@ sub fdtrange {
 }
 
 package Stream;
-
-use Data::Dumper;
 
 sub new {
     my ($class, $data) = @_;
@@ -362,8 +358,6 @@ sub data {
 	my ($stream, $self, @path) = @_;
 	$self->{off} = $stream->{off} unless defined $self->{off};
 	unless (defined $self->size) {
-	    die Dumper($self, $path[0]) unless defined $path[0]->size;
-	    die if $path[0]->size < $path[0]->size_read($stream);
 	    $self->size($path[0]->size - $path[0]->size_read($stream));
 	}
 	$self->data($stream->raw($self->size, $self, @path),
@@ -468,8 +462,6 @@ sub count(@) {
 		}
 	    } elsif (!ref $spec) {
 		my $child = $sizepath[0]->field_by_name($spec);
-		die Dumper($sizepath[0]) unless defined $child;
-		die Dumper(\@sizepath, $spec, $self) unless defined $child;
 		unshift @sizepath, $child;
 	    }
 	}
@@ -524,8 +516,6 @@ sub repeat {
 	    my $preoff = $stream->{off};
 	    $spec->reader->($stream, $element, $self, @path);
 	    my $postoff = $stream->{off};
-	    die Dumper($element)
-		unless $postoff - $preoff == $element->size_read($stream);
 	    $count-- if defined $count;
 	    $size -= $element->size_read($stream) if defined $size;
 	    $self->element($i => $element);
@@ -671,7 +661,6 @@ sub struct($) {
     $ret->writer(sub {
 	my ($stream, $self, @path) = @_;
 	for my $field (@fields) {
-	    die Dumper($self->{fields}) unless $self->{fields}{$field};
 	    $field->writer->($stream, $self->{fields}{$field}, $self, @path);
 	}
 		 });
@@ -824,9 +813,7 @@ sub macho {
 }
 
 use File::Slurp qw(read_file);
-use Data::Dumper;
 
-#warn Dumper(macho->{reader}(Stream->new(read_file("m1n1.macho"))));
 # my $object = adtnode;
 # my $value = $object->read(join("", read_file("adt")));
 # $value->fetch_prop_by_name("name");
@@ -881,7 +868,8 @@ sub macho_image {
 
     $ret->{image} = "\0" x ($vmax - $vmin);
 
-    $ret->{pc} = $pc;
+    warn $pc->value, ($pc->value - $vmin);
+    $ret->{pc} = $pc->value;
 
     for my $command ($macho->field_by_name(commands=>)->elements) {
 	if ($command->field_by_name(segment=>)) {
@@ -901,7 +889,7 @@ sub macho_image {
 my $macho_image = macho_image($machov, $macho);
 my $image_macho = $macho_image->{image};
 my $image_sepfw = "";
-my $off_adt = $base + length($image_macho) + length($image_sepfw);
+my $off_adt = length($image_macho) + length($image_sepfw);
 my $image_adt = "";
 my $off_bootargs = $off_adt + length($image_adt);
 
@@ -914,7 +902,11 @@ my $image_bootargs = $bootargsv->write;
 
 my $image = $image_macho . $image_sepfw . $image_adt . $image_bootargs;
 
+my $phys_pc = $macho_image->{pc} - $macho_image->{vrange}[0] + $phys_base;
+my $phys_bootargs = $phys_base + $off_bootargs;
 my $fh;
 open $fh, ">memdump";
 print $fh $image;
 close $fh;
+
+system("memdump-to-image memdump image $phys_bootargs $phys_base $phys_pc")
