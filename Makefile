@@ -38,6 +38,8 @@ include snippet/snippet.mk
 
 include macho-tools/macho-tools.mk
 
+include memdump/memdump.mk
+
 include busybox/busybox.mk
 
 include kexec/kexec.mk
