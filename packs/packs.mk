@@ -35,6 +35,7 @@ build/packs/$(pack)/boot/u-boot.image: build/u-boot/u-boot.bin ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/init: packs/$(pack)/bin/init ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
+build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
 
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
@@ -57,6 +58,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 # build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
