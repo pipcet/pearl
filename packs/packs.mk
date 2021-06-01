@@ -28,6 +28,7 @@ build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile ; $$(C
 build/packs/$(pack)/boot/linux.dtb: build/stages/linux/linux.dtb ; $$(COPY)
 build/packs/$(pack)/boot/linux.image: build/stages/linux/linux.image ; $$(COPY)
 build/packs/$(pack)/boot/m1n1.macho.image: build/m1n1.macho.image ; $$(COPY)
+build/packs/$(pack)/boot/m1n1.macho: build/m1n1.macho ; $$(COPY)
 build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb ; $$(COPY)
 build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
@@ -50,6 +51,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
