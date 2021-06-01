@@ -53,6 +53,8 @@ include commfile/commfile.mk
 
 include m1n1/m1n1.mk
 
+include u-boot/u-boot.mk
+
 include debootstrap/debootstrap.mk
 
 # Stages, packs, images
