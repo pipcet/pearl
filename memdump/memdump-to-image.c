@@ -15,11 +15,11 @@ typedef unsigned int u32;
    as binary code in the (native) binaries. */
 
 static
-#include "memdump-boot..h"
+#include "boot..h"
 ;
 
 static
-#include "memdump-image-header..h"
+#include "image..h"
 ;
 
 int main(int argc, char **argv)
@@ -49,13 +49,13 @@ int main(int argc, char **argv)
   memset(buf, 0, prelude_size + memdump_size);
 
   void *p = buf;
-  memcpy(p, memdump_image_header, sizeof(image_header));
+  memcpy(p, image, sizeof(image));
   *((unsigned long *)p + 2) = prelude_size + memdump_size;
-  p += sizeof(image_header);
+  p += sizeof(image);
   //memcpy(p, disable_timers, sizeof(disable_timers));
   //p += sizeof(disable_timers);
-  memcpy(p, memdump_boot, sizeof(memdump_boot));
-  p += sizeof(memdump_boot);
+  memcpy(p, boot, sizeof(boot));
+  p += sizeof(boot);
 
   void *memdump = buf + prelude_size;
   assert(p <= memdump);
