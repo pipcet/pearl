@@ -7,4 +7,3 @@ build/packs/debootstrap.cpiospec: build/packs/debootstrap/debootstrap.tar
 build/packs/debootstrap.cpiospec: build/packs/debootstrap/blobs.tar
 
 build/packs/debootstrap/debootstrap.tar: build/debootstrap/stage15.tar; $(COPY)
-build/packs/debootstrap/blobs.tar: build/blobs.tar ; $(COPY)
