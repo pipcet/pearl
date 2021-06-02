@@ -57,7 +57,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho
 # build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
-# build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
