@@ -1,8 +1,159 @@
-* pearl
+* Pearl
 
 GNU/Linux on Apple M1-based hardware, including, in particular, a MacBook Pro called "pearl". No relationship to [[https://www.perl.com][Perl]], though we do use that.
 
 Ideally, this repository will contain everything you need to build and run Debian GNU/Linux on any M1 machine.
+
+* What?
+
+We distribute two Mach-O files, which can be installed using =kmutil= on an M1-based MacOS machine and will start a usable Linux kernel, in addition to being able to do other things. The small distribution assumes that a Linux root file system has already been set up, the large distribution doesn't and includes a minimal [[https://debian.org][Debian]] root file system.
+
+The kernel is based on the work done by [[https://corellium.com][Corellium]], but will be updated to include any drivers upstreamed by the [[https://github.com/AsahiLinux][Asahi Linux]] project, and hopefully to include further drivers and features absent from the other two projects.
+
+** Differences
+
+It would be much nicer to have one project rather than three of them, but there appears to have been a falling out between contributors to the other two projects, and the last I've heard is that the Asahi Linux project's main contributor (or benevolent dictator) has decided not to include any code from (or credit for) Corellium in the drivers to be submitted to upstream Linux. In addition, it has been said that even simply looking at those drivers and using them as a source of documentation is frowned upon.
+
+In addition, the FDT device trees used by the Asahi Linux project are going to be very different from the one used by Corellium.
+
+The Asahi Linux project has decided to go with a long chain of complicated and somewhat independent boot loaders as part of their boot process: it has been suggested that this sequence might look like this:
+
+- iBoot
+- m1n1
+- U-Boot
+- GRUB
+- Linux
+
+By contrast, the Pearl boot process looks like this:
+
+- iBoot
+- Linux
+- Linux
+- Linux
+
+That means we only need to write device drivers once, and we can use all devices that have a Linux driver.
+
+** Status
+
+The current status is that Pearl is a usable everyday desktop system, including everything I use on a daily basis, with the exception of audio support.
+
+| Feature              | Upstream   | Asahi   | Corellium     | Pearl      |
+|----------------------+------------+---------+---------------+------------|
+| kernel version       | 5.13.0-rc4 | ?       | February 2021 | 5.13.0-rc4 |
+| audio                | no         | no      | no            | no         |
+| bluetooth            | no         | no      | no            | no         |
+| resume/suspend       | no         | no      | no            | no         |
+| SMP                  | partial    | partial | yes           | yes        |
+| keyboard/touchpad    | no         | no      | yes           | yes        |
+| backlight blanking   | no         | no      | no            | yes        |
+| keyboard backlight   | no         | no      | no            | yes        |
+| kexecs other kernels | yes        | yes     | no            | yes        |
+| KVM support          | no         | no      | no            | yes        |
+| WiFi                 | no         | no      | yes           | yes        |
+| USB host support     | no         | yes     | yes           | yes        |
+| USB gadget support   | no         | no      | no            | yes        |
+| NVMe support         | no         | no      | yes           | yes        |
+
+** Testing
+
+Testers are desperately wanted! Please contact me at =pipcet@gmail.com= if you have M1 hardware and want to try Pearl.
+
+* How?
+
+This repository contains somewhat minimalistic code to turn a Linux kernel image (such as =arch/arm64/boot/Image=) into a Mach-O object file which can be loaded by iBoot. There is some boilerplate code because iBoot does not allow Mach-O kernels to make alignment requests, but apart from that, we jump straight into the kernel.
+
+That initial kernel does not rely on the existence of a complete device tree; instead, it sets up a minimal device tree (but it does so in the kernel, with all library functions available and no need for duplicating them in the boot loader) which contains the ADT range, the kernel launches userspace, userspace code transforms the ADT into an FDT, and userspace finally kexecs a second kernel which makes use of the FDT to talk to hardware.
+
+That second kernel can then perform as much or as little I/O as the user desires, using standard Linux device drivers, to load a third kernel.
+
+For debugging and development, the second kernel can also load something different, such as m1n1 or U-Boot (further options would be MacOS or GRUB, but those don't work yet), but that's not what the ordinary boot process would look like.
+
+As a special case, the second kernel can load an updated version of itself; this is important because the first version is signed by =kmutil= and is difficult to replace, while the second version need not be and can be provided over the net straight from a development machine.
+
+What is installed using =kmutil= is a Mach-O containing:
+
+- minimal boilerplate code to realign the image
+- a Linux kernel image for the first kernel, containing:
+  - an initrd; containing:
+    - a Linux kernel image for the second kernel
+    - tools to manipulate the device trees
+    - kexec, to execute the second kernel
+    - [optionally] a default Linux kernel image for the third kernel
+    - [optionally] code for a boot menu
+    - [optionally] lvm2, cryptsetup, etc.
+    - [optionally] m1n1, as a Mach-O file
+    - [optionally] U-Boot, as a Linux image file
+    - [optionally][some day] the MacOS kernel, as a Mach-O file
+
+** Interaction
+
+The first kernel does not have device drivers and cannot interact with the user in any meaningful fashion; it cannot even reboot the machine.
+
+The second kernel does have device drivers, so it can be controlled using the keyboard; it also presents a USB gadget on one of the USB Type C ports which can be used to control it or upload a third-stage kernel. Unfortunately, I do not have hardware with fixed Ethernet connectivity, but it would certainly make sense to boot over the network. Booting over WiFi should also be supported at some point, though it requires additional blobs.
+
+** initramfs
+
+There is a single compressed initramfs included in the Mach-O image. The second kernel is launched with a second initramfs which is constructed by the first kernel, and mostly identical to the first initramfs. The third kernel is also used with an initramfs, which is provided along with that kernel.
+
+** Blobs
+
+Unfortunately, the WiFi module requires firmware which currently needs to be copied from the MacOS installation. For legal reasons, we can't provide it.
+
+Similarly, the MacOS kernel itself cannot be redistributed.
+
+Furthermore, WiFi requires knowing the ESSID and passphrase for a network, and asking for that on every boot is annoying.
+
+So I'm working on a facility to include an arbitrary "blobs" tarball containing those files, to be created by the user as part of the build process.
+
+** SMP
+
+The protocol used to start secondary CPU cores on M1 machines cannot be restarted in the obvious fashion: once the CPU is running, it can never go back to behaving as it did initially.
+
+It's possible to virtualize this, or otherwise expose a mechanism for a started CPU to go back to a spin table whence it can jump into another kernel, but that requires code duplication.
+
+Instead, Pearl simply leaves the starting of the secondary CPUs to the final kernel, leaving them in the same state as iBoot. That means less performance for the first stages, but that's not expected to become a problem.
+
+* Why Not?
+
+The Pearl images do not use [[https://github.com/AsahiLinux/m1n1][m1n1]] or [[https://github.com/kettenis/u-boot][U-Boot]] as part of the normal boot process. There are many reasons for this, but the main reason is that the historic reasons for the existence of boot loaders do not apply to the M1 platform.
+
+** Objections
+
+*** "Hardware initialization belongs in the boot loader"
+
+No. It doesn't. Linux should accept hardware in whatever reasonable state it's in, and the boot loader should be free to leave hardware in any reasonable state.
+
+*** "Converting the Apple Device Tree to the Linux FDT should happen in the boot loader"
+
+No. It's a non-trivial task, requiring code which pulls in many dependencies (to do it properly, at least). It's best left to userspace, and it's entirely possible to launch the initial userspace without an FDT.
+
+*** "Without the FDT, we don't even know where the frame buffer is"
+
+The minimal device tree set up by the kernel itself is based on the boot args structure which does specify the frame buffer parameters.
+
+*** "Your Mach-O files are too large"
+
+It's true that they are larger than they would otherwise be, but I don't think that's relevant at this point. A complete image will be somewhere in the 30-40 MB range, still much less than MacOS. Images which contain Debian root file systems are obviously larger.
+
+*** "Your code can't use printf"
+
+There is no code that would need to. All we do is realignment (and that's an unfortunate iBoot limitation), then we're in the kernel image and use whatever printing functions are enabled there.
+
+*** "Your code can't show a logo"
+
+I consider that a good thing.
+
+*** "We need to be able to use the same kernel image with different boot loader binaries"
+
+I don't understand this point at all. Changing a kernel should be trivial, it's changing the boot loader that is cumbersome and hard to do, requiring physical interaction with the MacOS Recovery Mode. We should minimize having to do that.
+
+*** "We shouldn't support dual-booting because iBoot does"
+
+I see absolutely no reason to cooperate with the Apple boot process more than necessary. The right approach here is to install a single Mach-O "kernel" image, then never touch it again. Long-pressing the power button is annoying and unnecessary; it should not be required for ordinary day-to-day use of MacOS and Linux.
+
+*** "We need m1n1 to experiment with hardware"
+
+We do, which is why you can kexec m1n1.
 
 ** See Also
 
@@ -13,3 +164,13 @@ Works, but appears to have been abandoned for now.
 *** [[https://github.com/AsahiLinux/linux][Asahi Linux]] at [[https://github.com/AsahiLinux]]
 
 Still in the very early stages.
+
+*** The [[https://github.com/kettenis/u-boot][U-Boot]] port at https://github.com/kettenis/u-boot
+
+This works well enough to load OpenBSD from disk, apparently!
+
+*** The [[http://www.openbsd.org][OpenBSD]] port at https://github.com/openbsd/src
+
+** Contact
+
+Feel free to contact me at =pipcet@gmail.com=, on GitHub, or in any of the other usual ways. So far, there has been too little communication rather than too much of it.
