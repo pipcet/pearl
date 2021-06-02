@@ -24,3 +24,7 @@
 	path = submodule/u-boot
 	url = https://github.com/pipcet/uboot/
 	branch = pearl
+[submodule "submodule/grub"]
+	path = submodule/grub
+	url = https://github.com/pipcet/grub
+	branch = pearl
