@@ -22,6 +22,7 @@ build/packs/$(pack)/bin/busybox: build/busybox/busybox; $$(COPY)
 build/packs/$(pack)/bin/kexec: build/kexec/kexec; $$(COPY)
 build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1 ; $$(COPY)
 build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill ; $$(COPY)
+build/packs/$(pack)/bin/memtool: build/memtool/memtool ; $$(COPY)
 build/packs/$(pack)/bin/memdump-to-image: build/memdump/memdump-to-image ; $$(COPY)
 build/packs/$(pack)/bin/macho-to-memdump: build/memdump/macho-to-memdump ; $$(COPY)
 build/packs/$(pack)/bin/receive-commfile: build/commfile/receive-commfile ; $$(COPY)
@@ -47,6 +48,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-to-memdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memdump-to-image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memtool
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
