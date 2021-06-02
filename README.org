@@ -174,3 +174,87 @@ This works well enough to load OpenBSD from disk, apparently!
 ** Contact
 
 Feel free to contact me at =pipcet@gmail.com=, on GitHub, or in any of the other usual ways. So far, there has been too little communication rather than too much of it.
+
+** Technical things
+
+*** Device Tree representations
+
+Both Linux FDT device trees and Apple ADT device trees represent hierarchies of nodes containing other nodes and leaf properties; each property has a name and contains a sized array of untyped data.
+
+I've found it convenient to represent them in a simple text format containing lines like this:
+
+=top.middle.lower.property = <0x12345678>=
+
+It's much easier to manipulate such lines using standard GNU/Linux utilities.
+
+*** Binary parsing
+
+We need to parse, without including too many dependencies, various binary data:
+
+- Mach-O images
+- the bootargs structure
+- ADT
+- FDT
+- Linux image files
+
+I've decided on using a simple ad-hoc perl solution for that, rather than including Python in the initramfs. It is, however, a little nicer than the built-in =unpack= function: ADTs are represented as:
+
+#+BEGIN_SRC perl
+sub adtnode() {
+    struct [
+	count(props => u32),
+	count(nodes => u32),
+	props => repeat(\&adtprop),
+	nodes => repeat(\&adtnode),
+	]
+}
+
+sub adtprop() {
+    struct [
+	name => string 32,
+	size => size(data => u32),
+	data => data,
+	align(4)
+	]
+}
+#+END_SRC
+
+*** Compression
+
+I'm trying to compress everything once only, but currently the initial kernel image is actually uncompressed; the initramfs is compressed, though.
+
+*** USB Gadget
+
+The second stage presents a USB gadget exposing an ACM interface (which is piped to a shell) and a mass storage interface (which can be used to write an image to be unpacked and executed). There's also an Ethernet device, but that's not used yet.
+
+**** ACM "protocol"
+
+Piped directly to a shell.
+
+**** Commfile protocol
+
+Quite simple, but sophisticated enough to prevent writing to random USB devices, and also to ensure writes are not reordered to the point where we try to boot a partially-loaded kernel.
+
+*** kexec
+
+We're using kexec-tools without any additional modifications, but the kernel includes patches by @mzyngier to properly exclude reserved memory ranges as possible locations for kernel images.
+
+** Problems
+
+*** USB ports
+
+The main problem, right now, is that USB ports cannot be switched freely between host, gadget, and power modes. Right now, it is fixed that the first port is always in power mode, the second port is in gadget mode during the second stage and in host mode otherwise.
+
+This will need to be changed to support Macs with USB keyboards, though those tend to have enough USB ports that this shouldn't be a problem.
+
+*** Backlight brightness level
+
+MacOS appears to have a bug which makes it reset the backlight level to "very dim" when it is booted. However, it's possible to use =nvram= to set the right level in Recovery Mode.
+
+*** That boot chime
+
+It's possible to disable the somewhat annoying boot chime using =nvram= or the MacOS configuration utilities.
+
+** Contact
+
+Feel free to contact me at =pipcet@gmail.com=, on GitHub, or in any of the other usual ways. So far, there has been too little communication rather than too much of it.
