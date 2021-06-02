@@ -235,9 +235,23 @@ Piped directly to a shell.
 
 Quite simple, but sophisticated enough to prevent writing to random USB devices, and also to ensure writes are not reordered to the point where we try to boot a partially-loaded kernel.
 
+The commfile is currently limited to 1 GB.
+
 *** kexec
 
 We're using kexec-tools without any additional modifications, but the kernel includes patches by @mzyngier to properly exclude reserved memory ranges as possible locations for kernel images.
+
+*** CI/CD
+
+We're reusing some CI/CD scripts I've written for other occasions, so artifacts (one including Debian, one not including it) are produced automatically by pushes to the =main= branch, and releases containing those files are produced automatically by pushes to the =release= branch. That means that the precise files included in the automatic releases haven't been tested, and often the similar artifact versions haven't been tested, either.
+
+*** ADT Tunables
+
+There are a number of ADT properties representing, in one of several ad-hoc formats, "tunables", which describe bits to be set and cleared in MMIO space. The Corellium pre-loader code translates those to a common format to be applied by Linux drivers, increasing the number of ad-hoc tunable representations by one.
+
+We do the same thing, but we use userspace code rather than pre-loader code.
+
+One particular issue is the existence of fuse maps which represent values to be copied from one register to another. What the Corellium code does is to read the source registers at pre-loader time; our current code reads them from userspace using =/dev/mem=. Ideally, we'd read them only when they're actually applied, but that would necessitate yet another ad-hoc format to encode them.
 
 ** Problems
 
@@ -254,6 +268,20 @@ MacOS appears to have a bug which makes it reset the backlight level to "very di
 *** That boot chime
 
 It's possible to disable the somewhat annoying boot chime using =nvram= or the MacOS configuration utilities.
+
+*** Page size
+
+We're currently using 16 KB pages, while most distribution kernels use 4 KB pages. The CPU's MMU supports using 4 KB pages, but it appears the IOMMU does not, and the Linux code assumes identical page sizes for both.
+
+This breaks Debian's Emacs package, but the bug has been reported and will be fixed in the next Emacs release; in any case, building Emacs from source works fine.
+
+*** x8r8g8b8
+
+When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works fine for the boot loaders and Linux but isn't supported by X.org. Putting the framebuffer into x8r8g8b8 mode works, but it means colors will be off either before or after the switch. In keeping with our "stall when possible" strategy, we use userspace code to switch the framebuffer just before X starts, and accept that the white-on-black text appears as green-on-black before then.
+
+*** Color problems
+
+There appears to be a bug somewhere that affects, in particular, videos shown in browser windows, where black sometimes shows up as a solid blue color.
 
 ** Contact
 
