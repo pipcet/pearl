@@ -57,6 +57,8 @@ include u-boot/u-boot.mk
 
 include debootstrap/debootstrap.mk
 
+include memtool/memtool.mk
+
 # Stages, packs, images
 include stages/stages.mk
 
