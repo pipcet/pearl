@@ -8,4 +8,4 @@ build/grub/emu/grub-mkimage: stamp/grub | build/grub/emu/
 	(cd submodule/grub; sh bootstrap)
 	(cd build/grub/emu; $(PWD)/submodule/grub/configure --host=aarch64-linux-gnu --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=emu --prefix=$(PWD)/build/prefix)
 	$(MAKE) -C build/grub/emu
-	$(MAKE) -C build/grub/efi install
+	$(MAKE) -C build/grub/emu install
