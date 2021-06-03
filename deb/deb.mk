@@ -8,6 +8,17 @@ build/deb/Packages: | build/deb/
 build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
+dropbear-debs = \
+	dropbear-bin \
+	libgmp10 \
+	libtomcrypt1 \
+	libtommath1 \
+	zlib1g
+
+mojo-debs = \
+	libmojolicious-perl \
+	libmojo-ioloop-readwriteprocess-perl
+
 libc-debs = libc6 libcrypt1
 perl-debs = perl perl-base perl-modules-5.32 libfile-slurp-perl libipc-run-perl libsys-mmap-perl
 dtc-debs = device-tree-compiler libfdt1 libyaml-0-2
@@ -48,7 +59,9 @@ build/deb.tar: \
 	$(libc-debs:%=build/deb/%.deb) \
 	$(perl-debs:%=build/deb/%.deb) \
 	$(dtc-debs:%=build/deb/%.deb) \
-	$(lvm-debs:%=build/deb/%.deb)
+	$(lvm-debs:%=build/deb/%.deb) \
+	$(mojo-debs:%=build/deb/%.deb) \
+	$(dropbear-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp
 	$(MKDIR) build/deb-tmp
 	for file in $^; do dpkg -x $$file build/deb-tmp; done
