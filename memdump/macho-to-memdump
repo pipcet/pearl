@@ -727,9 +727,6 @@ sub framebuffer {
 	]
 }
 
-sub satisfies {
-}
-
 sub adtnode();
 sub adtprop();
 
