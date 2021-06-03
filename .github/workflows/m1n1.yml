@@ -18,7 +18,7 @@ jobs:
     - run: sudo apt-get install binutils-aarch64-linux-gnu
     - run: sudo apt-get install g++-aarch64-linux-gnu
     - run: sudo apt-get install device-tree-compiler
-    - run: make -kj3 build/stages/m1n1/m1n1.macho
-    - run: make -kj3 build/stages/m1n1/m1n1.macho{artifact}
-    - run: make -kj3 build/stages/m1n1/m1n1.macho.image
-    - run: make -kj3 build/stages/m1n1/m1n1.macho.image{artifact}
+    - run: make -j3 build/stages/m1n1/m1n1.macho
+    - run: make -j3 build/stages/m1n1/m1n1.macho{artifact}
+    - run: make -j3 build/stages/m1n1/m1n1.macho.image
+    - run: make -j3 build/stages/m1n1/m1n1.macho.image{artifact}
