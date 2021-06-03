@@ -1,0 +1,8 @@
+submodule/busybox upstream/master
+submodule/debootstrap upstream/master
+submodule/grub upstream/master
+submodule/kexec-tools upstream/master
+submodule/linux upstream/master
+submodule/m1n1 upstream/main
+submodule/memtool upstream/master
+submodule/u-boot upstream/apple-m1-m1n1-nvme
