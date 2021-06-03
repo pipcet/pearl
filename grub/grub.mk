@@ -1,7 +1,7 @@
 submodule/grub/grub-core/lib/gnulib/stdlib.in.h:
 	(cd submodule/grub; sh bootstrap)
 
-build/grub/efi/Makefile:
+build/grub/efi/Makefile: submodule/grub/grub-core/lib/gnulib/stdlib.in.h | build/grub/efi/
 	(cd build/grub/efi; $(PWD)/submodule/grub/configure --host=$(NATIVE_TRIPLE) --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=efi --prefix=$(PWD)/build/prefix)
 
 build/grub/efi/grub-mkimage: stamp/grub submodule/grub/grub-core/lib/gnulib/stdlib.in.h build/grub/efi/Makefile | build/grub/efi/
