@@ -19,6 +19,17 @@ mojo-debs = \
 	libmojolicious-perl \
 	libmojo-ioloop-readwriteprocess-perl
 
+wifi-debs = \
+	wpasupplicant \
+	libdbus-1-3 \
+	libnl-3-200 \
+	libnl-genl-3-200 \
+	libnl-route-3-200 \
+	libpcsclite1 \
+	libssl1.1 \
+	libsystemd0 \
+	dhcpcd5
+
 libc-debs = libc6 libcrypt1
 perl-debs = perl perl-base perl-modules-5.32 libfile-slurp-perl libipc-run-perl libsys-mmap-perl
 dtc-debs = device-tree-compiler libfdt1 libyaml-0-2
@@ -61,6 +72,7 @@ build/deb.tar: \
 	$(dtc-debs:%=build/deb/%.deb) \
 	$(lvm-debs:%=build/deb/%.deb) \
 	$(mojo-debs:%=build/deb/%.deb) \
+	$(wifi-debs:%=build/deb/%.deb) \
 	$(dropbear-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp
 	$(MKDIR) build/deb-tmp
