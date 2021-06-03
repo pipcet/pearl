@@ -6,3 +6,6 @@ build/u-boot/u-boot.dtb: build/u-boot/u-boot.bin
 
 build/u-boot.image.gz: build/u-boot/u-boot.bin
 	gzip < $< > $@
+
+build/u-boot-plus-grub.image: build/u-boot/u-boot.bin build/grub/grub.efi
+	cat $^ > $@
