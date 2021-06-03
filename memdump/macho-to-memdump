@@ -513,9 +513,7 @@ sub repeat {
 		$spec = $spec->();
 	    }
 	    my $element = Value->new($spec);
-	    my $preoff = $stream->{off};
 	    $spec->reader->($stream, $element, $self, @path);
-	    my $postoff = $stream->{off};
 	    $count-- if defined $count;
 	    $size -= $element->size_read($stream) if defined $size;
 	    $self->element($i => $element);
