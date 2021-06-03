@@ -253,6 +253,20 @@ We do the same thing, but we use userspace code rather than pre-loader code.
 
 One particular issue is the existence of fuse maps which represent values to be copied from one register to another. What the Corellium code does is to read the source registers at pre-loader time; our current code reads them from userspace using =/dev/mem=. Ideally, we'd read them only when they're actually applied, but that would necessitate yet another ad-hoc format to encode them.
 
+*** Boot matrix
+
+Is a direct boot supported from <row> to <column>?
+
+|        | iBoot | stage2 | m1n1 | U-Boot | GRUB | Linux |
+| iBoot  | no    | yes    | yes  | no     | no   | yes   |
+| stage2 | no    | yes    | yes  | yes    | no   | yes   |
+| m1n1   | no    | yes    | yes  | yes    | no   | yes   |
+| U-Boot | no    | yes    | no   | ?      | yes  | yes   |
+| GRUB   | no    | yes*   | no   | no     | no   | yes*  |
+| Linux  | no    | no     | no   | no     | no   | no    |
+
+(* - requires EFI_STUB build, untested)
+
 ** Problems
 
 *** USB ports
