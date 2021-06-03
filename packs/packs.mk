@@ -33,6 +33,7 @@ build/packs/$(pack)/boot/m1n1.macho: build/m1n1.macho ; $$(COPY)
 build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb ; $$(COPY)
 build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.image: build/u-boot/u-boot.bin ; $$(COPY)
+build/packs/$(pack)/boot/u-boot-plus-grub.image: build/u-boot-plus-grub.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/init: packs/$(pack)/bin/init ; $$(COPY)
@@ -61,6 +62,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/stage2.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot-plus-grub.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
