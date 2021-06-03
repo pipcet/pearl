@@ -1,22 +1,10 @@
-build/%..h: build/%.c.S.elf.bin.s.h
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
-
-build/%..h: build/%.S.elf.bin.s.h
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
-
-build/include/snippet.h: snippet/snippet.h | build/include/
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
-
-build/%.S: %.S
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
-
-build/%.c: %.c
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
+build/%..h: build/%.c.S.elf.bin.s.h ; $(COPY)
+build/%..h: build/%.S.elf.bin.s.h ; $(COPY)
+build/%..bin: build/%.c.S.elf.bin ; $(COPY)
+build/%..bin: build/%.S.elf.bin ; $(COPY)
+build/include/snippet.h: snippet/snippet.h | build/include/ ; $(COPY)
+build/%.S: %.S ; $(COPY)
+build/%.c: %.c ; $(COPY)
 
 build/%.c.S: build/%.c build/include/snippet.h
 	$(CROSS_COMPILE)gcc -Ibuild/$(dir $<) -Ibuild/include -fno-builtin -ffunction-sections -march=armv8.5-a -Os -S -o $@ $<
