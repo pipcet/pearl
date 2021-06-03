@@ -19,5 +19,5 @@ jobs:
     - run: sudo apt-get install g++-aarch64-linux-gnu
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install autopoint
-    - run: make -kj3 build/debootstrap.macho
-    - run: make -kj3 build/debootstrap.macho{artifact}
+    - run: make -j3 build/debootstrap.macho
+    - run: make -j3 build/debootstrap.macho{artifact}
