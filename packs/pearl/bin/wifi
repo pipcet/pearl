@@ -18,4 +18,5 @@ sleep 5
 dhcpcd
 sleep 5
 mkdir /etc/dropbear
-dropbear -R -B -F -E -s &
+echo "root:x:0:0:root:/:/bin/sh" >> /etc/passwd
+dropbear -R -B -F -E &
