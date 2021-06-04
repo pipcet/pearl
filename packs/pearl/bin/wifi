@@ -1,0 +1,20 @@
+#!/bin/sh
+cd /
+tar xf modules.tar
+depmod -a
+modprobe brcmfmac
+sleep 3
+rmmod brcmfmac
+mkdir -p /lib/firmware /usr/share/firmware
+tar xf blobs.tar
+tar -C /lib/firmware -x < brcm.tar
+tar -C /usr/share/firmware -x < wifi.tar
+tar xf etc.tar
+modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
+sleep 3
+wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf &
+sleep 5
+dhcpcd
+sleep 5
+mkdir /etc/dropbear
+dropbear -R -B -F -E -s &
