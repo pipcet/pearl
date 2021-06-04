@@ -1,6 +1,7 @@
 *~
 /build/
 /stamp/
+/blobs/macos.tar
 /blobs/brcm.tar
 /blobs/wifi.tar
 /blobs/etc.tar
