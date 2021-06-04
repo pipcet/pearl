@@ -1,19 +1,6 @@
 #!/bin/sh
-mount -t configfs configfs sys/kernel/config
-cp persist/tunables.dtp persist/resmem.dtp persist/bootargs.dtp boot
-dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
-cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
-dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
-
-(while sleep 1; do receive-commfile; done) &
-gadget &
-
-if timeout 45 sh -c read; then
-    touch /noboot
-    while [ -e /noboot ]; do sh; done
-fi
-
-echo linux > persist/stage
+cd /
+echo stage2 > persist/stage
 find persist >> /file.list
-cat /file.list | cpio -H newc -o > /boot/linux.cpio
-/bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio
+cat /file.list | cpio -H newc -o > /boot/stage2.cpio
+/bin/kexec -fix /boot/stage2.image --dtb=/boot/stage2.dtb --ramdisk=/boot/stage2.cpio
