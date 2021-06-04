@@ -10,6 +10,7 @@ tar xf blobs.tar
 tar -C /lib/firmware -x < brcm.tar
 tar -C /usr/share/firmware -x < wifi.tar
 tar xf etc.tar
+. /etc/mac_address.conf
 modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
 sleep 3
 wpa_supplicant -iwlan0 -c/etc/wpa_supplicant.conf &
