@@ -1,18 +1,5 @@
 #!/bin/sh
-mkdir mnt
-mount -t proc proc /proc
-mount -t sysfs sys /sys
-mount -t devtmpfs dev /dev
-cp modules.tar /persist
-while true; do
-    ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
-    mount $ROOT /mnt && continue
-    ([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
-    vgchange -ay
-    (cd /sys/class/block; for DM in $(ls -d dm-*); do
-	 NAME=$(cat $DM/dm/name)
-	 ln -sf $DM /dev/$NAME
-	 [ -e /dev/$NAME-decrypted ] || cryptsetup open /dev/$NAME $NAME-decrypted;
-     done)
-    /bin/sh
-done
+echo linux > persist/stage
+find persist >> /file.list
+cat /file.list | cpio -H newc -o > /boot/linux.cpio
+/bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio
