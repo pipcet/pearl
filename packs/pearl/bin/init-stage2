@@ -1,4 +1,4 @@
 #!/bin/sh
 prepare-linux
 interactor
-linux
+stage3
