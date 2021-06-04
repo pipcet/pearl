@@ -19,4 +19,5 @@ dhcpcd
 sleep 5
 mkdir /etc/dropbear
 echo "root:x:0:0:root:/:/bin/sh" >> /etc/passwd
+[ x"$PASSWD" != x ] && yes "$PASSWD" | passwd
 dropbear -R -B -F -E &
