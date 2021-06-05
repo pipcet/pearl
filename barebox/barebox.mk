@@ -8,7 +8,7 @@ barebox/barebox{oldconfig}: barebox/barebox.config stamp/barebox | build/barebox
 	$(MAKE) -C submodule/barebox O=$(PWD)/build/barebox oldconfig ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	$(CP) build/barebox/.config $<
 
-build/barebox/images/start_dt_2nd.pblb: barebox/barebox.config stamp/barebox | build/barebox/
+build/barebox/images/barebox-dt-2nd.img: barebox/barebox.config stamp/barebox | build/barebox/
 	$(CP) $< build/barebox/.config
 	$(MAKE) -C submodule/barebox O=$(PWD)/build/barebox CROSS_COMPILE=$(CROSS_COMPILE) ARCH=arm64
 
