@@ -43,8 +43,10 @@ build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
 
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/barebox
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/busybox
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/dt
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/enable-wdt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/gadget
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-linux
