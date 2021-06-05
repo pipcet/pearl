@@ -6,5 +6,5 @@ STAGE=$(cat /persist/stage)
 
 if timeout 45 sh -c read; then
     touch /noboot
-    while [ -e /noboot ]; do sh; done
 fi
+while [ -e /noboot ]; do sh; done
