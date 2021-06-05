@@ -56,6 +56,8 @@ include m1n1/m1n1.mk
 
 include u-boot/u-boot.mk
 
+include barebox/barebox.mk
+
 include grub/grub.mk
 
 include debootstrap/debootstrap.mk
