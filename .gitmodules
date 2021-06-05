@@ -28,3 +28,7 @@
 	path = submodule/grub
 	url = https://github.com/pipcet/grub
 	branch = pearl
+[submodule "submodule/barebox"]
+	path = submodule/barebox
+	url = https://github.com/pipcet/barebox
+	branch = pearl
