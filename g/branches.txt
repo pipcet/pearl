@@ -1,6 +1,7 @@
-submodule/linux pearl pipcet/pearl
+submodule/barebox pearl pipcet/pearl
 submodule/busybox pearl pipcet/pearl
 submodule/kexec-tools pearl pipcet/pearl
+submodule/linux pearl pipcet/pearl
 submodule/m1n1 pearl pipcet/pearl
 submodule/memtool pearl pipcet/pearl
 submodule/u-boot pearl pipcet/pearl
