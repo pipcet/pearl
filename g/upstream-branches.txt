@@ -1,3 +1,4 @@
+submodule/barebox upstream/master
 submodule/busybox upstream/master
 submodule/debootstrap upstream/master
 submodule/grub upstream/master
