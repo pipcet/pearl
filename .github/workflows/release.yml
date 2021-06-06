@@ -16,6 +16,7 @@ jobs:
     - run: sudo apt-get install g++-aarch64-linux-gnu
     - run: sudo apt-get install gcc-aarch64-linux-gnu
     - run: sudo apt-get install autopoint
+    - run: sudo apt-get install lzop
     - run: make -j3 build/pearl.macho{release}
     - run: make -j3 build/debootstrap.macho{release}
     - run: make -j3 build/m1n1.macho{release}
