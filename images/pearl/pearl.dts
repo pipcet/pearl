@@ -14,20 +14,19 @@
 
 	memory@800000000 {
 		device_type = "memory";
-		reg = <0x08 0x00 0x4 0x00>;
+		reg = "memorygoeshere!";
 	};
 
 	framebuffer@9e0df8000 {
 		#address-cells = <0x02>;
 		#size-cells = <0x02>;
 		compatible = "simple-framebuffer";
-		reg = <0x0b 0xdf438000 0x00 0x3e80000>;
+		reg = "framebuffer!!!!";
 		format = "x8r8g8b8";
-		height = <0x640>;
-		stride = <0x2800>;
-		width = <0xa00>;
+		height = "HEI";
+		stride = "STR";
+		width = "WID";
 		status = "okay";
-		backlight = <0x02>;
 	};
 
 	reserved-memory {
@@ -36,7 +35,7 @@
 		ranges;
 
 		fw_area@9e0000000 {
-			reg = <0x0b 0xd9498000 0x00 0x26b68000>;
+		        reg = "endofmemory!!!!";
 			no-map;
 		};
 
