@@ -74,7 +74,7 @@ build/deb.tar: \
 	$(mojo-debs:%=build/deb/%.deb) \
 	$(wifi-debs:%=build/deb/%.deb) \
 	$(dropbear-debs:%=build/deb/%.deb)
-	rm -rf build/deb-tmp
-	$(MKDIR) build/deb-tmp
-	for file in $^; do dpkg -x $$file build/deb-tmp; done
+	rm -rf build/deb-tmp build/deb-tmp-ar
+	$(MKDIR) build/deb-tmp build/deb-tmp-ar
+	for file in $^; do ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; done
 	(cd build/deb-tmp; tar c .) > $@
