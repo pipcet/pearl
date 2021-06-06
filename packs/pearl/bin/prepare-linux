@@ -5,6 +5,6 @@ dt dtb-to-dtp /boot/linux.dtb /boot/fixed.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
 cp /boot/linux.dtp /boot/stage3.dtp
 echo "chosen.bootargs = \"nosmp clk_ignore_unused\"" >> /boot/stage3.dtp
-echo "chosen.bootargs = \"nosmp clk_ignore_unused root=/dev/topia-btrfs\"" >> /boot/linux.dtp
+echo "chosen.bootargs = \"clk_ignore_unused root=/dev/topia-btrfs\"" >> /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 dt dtp-to-dtb /boot/stage3.dtp /boot/stage3.dtb
