@@ -6,8 +6,8 @@ mount -t devtmpfs dev /dev
 cp modules.tar /persist
 while true; do
     ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
-    mount $ROOT /mnt && continue
     ([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
+    mount $ROOT /mnt && continue
     vgchange -ay
     (cd /sys/class/block; for DM in $(ls -d dm-*); do
 	 NAME=$(cat $DM/dm/name)
