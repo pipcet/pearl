@@ -1,11 +1,10 @@
-build/dt/bin/dt: dt/dt
-	$(MKDIR) $(dir $@)
-	$(CP) $< $@
+build/dt/bin/dt: dt/dt | build/dt/bin/
+	$(COPY)
 
-build/dt/bin/adtdump: dt/adtdump.c
+build/dt/bin/adtdump: dt/adtdump.c | build/dt/bin/
 	$(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
-build/dt/bin/adtp: dt/adtp.cc
+build/dt/bin/adtp: dt/adtp.cc | build/dt/bin/
 	$(CROSS_COMPILE)g++ -Os -static -o $@ $<
 
 build/dt.tar: build/dt/bin/dt build/dt/bin/adtdump build/dt/bin/adtp
