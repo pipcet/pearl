@@ -1,7 +1,8 @@
 name: debootstrap
 on:
+  workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ main, test ]
   pull_request:
     branches: [ main ]
 jobs:
