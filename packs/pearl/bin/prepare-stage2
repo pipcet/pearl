@@ -1,6 +1,7 @@
 #!/bin/sh
 cd /
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
+dt dtb-to-dtp /sys/firmware/fdt /persist/stage1.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
