@@ -5,7 +5,7 @@ START_SNIPPET {
   asm volatile("adr %0, ." : "=r" (pc));
   unsigned long page = (pc & ~16383);
   unsigned long image = page + 16384;
-  unsigned long newimage = 0xa80000000;
+  unsigned long newimage = 0x880000000;
   if (image != newimage) {
     unsigned long size = ((unsigned long *)image)[2];
     __int128 *p = (void *)image + size;
