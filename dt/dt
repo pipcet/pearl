@@ -164,27 +164,29 @@ sub new_from_fancy {
     my @abuf = $abuf->le32;
 
     for (my $ai = 0; $ai < @abuf; $ai++) {
-	my $offs = $abuf[$ai];
-	my $size = $offs >> 24;
-	$offs &= 0xffffff;
-	if ($size == 255) {
-	    $ai += 2;
-	    next;
-	}
-	if ($size == 0 || $size == 32) {
-	    my $addr = $base + $offs;
-	    my $mask = $abuf[$ai + 1];
-	    my $value = $abuf[$ai + 2];
-	    my $size = 32;
+	eval {
+	    my $offs = $abuf[$ai];
+	    my $size = $offs >> 24;
+	    $offs &= 0xffffff;
+	    if ($size == 255) {
+		$ai += 2;
+		next;
+	    }
+	    if ($size == 0 || $size == 32) {
+		my $addr = $base + $offs;
+		my $mask = $abuf[$ai + 1];
+		my $value = $abuf[$ai + 2];
+		my $size = 32;
 
-	    push @{$ret->{items}}, TunableItem->new(
-		addr => $addr,
-		mask => $mask,
-		value => $value,
-		size => $size,
-		);
-	    $ai += 2;
-	}
+		push @{$ret->{items}}, TunableItem->new(
+		    addr => $addr,
+		    mask => $mask,
+		    value => $value,
+		    size => $size,
+		    );
+		$ai += 2;
+	    }
+	};
     }
 
     return $ret;
@@ -202,18 +204,20 @@ sub new_from_legacy {
     my @areg = $areg->ranges;
 
     for (my $ai = 0; $ai < @abuf; $ai += 4) {
-	my $range_id = $abuf[$ai];
-	my $offs = $abuf[$ai + 1];
-	my $addr = $areg[$range_id][0] + $offs;
-	my $mask = $abuf[$ai + 2];
-	my $value = $abuf[$ai + 3];
+	eval {
+	    my $range_id = $abuf[$ai];
+	    my $offs = $abuf[$ai + 1];
+	    my $addr = $areg[$range_id][0] + $offs;
+	    my $mask = $abuf[$ai + 2];
+	    my $value = $abuf[$ai + 3];
 
-	push @{$ret->{items}}, TunableItem->new(
-	    addr => $addr,
-	    mask => $mask,
-	    value => $value,
-	    size => 32,
-	    );
+	    push @{$ret->{items}}, TunableItem->new(
+		addr => $addr,
+		mask => $mask,
+		value => $value,
+		size => 32,
+		);
+	};
     }
 
     return $ret;
@@ -289,18 +293,20 @@ sub new_from_pcie {
     my $ret = bless {}, $class;
     my @abuf = $abuf->le32;
     for (my $ai = 0; $ai < @abuf; $ai += 6) {
-	my $size = $abuf[$ai + 1];
-	my $offs = $abuf[$ai + 0];
-	my $addr = ($areg->ranges)[$range][0] + $offs + $base;
-	my $mask = $abuf[$ai + 2];
-	my $value = $abuf[$ai + 4];
+	eval {
+	    my $size = $abuf[$ai + 1];
+	    my $offs = $abuf[$ai + 0];
+	    my $addr = ($areg->ranges)[$range][0] + $offs + $base;
+	    my $mask = $abuf[$ai + 2];
+	    my $value = $abuf[$ai + 4];
 
-	push @{$ret->{items}}, TunableItem->new(
-	    addr => $addr,
-	    mask => $mask,
-	    value => $value,
-	    size => $size,
-	    );
+	    push @{$ret->{items}}, TunableItem->new(
+		addr => $addr,
+		mask => $mask,
+		value => $value,
+		size => $size,
+		);
+	};
     }
 
     return $ret;
@@ -916,3 +922,5 @@ if ($ARGV[0] eq "--help") {
     usage();
     exit(1);
 }
+
+# Swiss Army knife of Device Tree manipulation.
