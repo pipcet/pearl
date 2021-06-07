@@ -23,3 +23,4 @@ jobs:
     - run: sudo apt-get install lzop
     - run: make -j3 build/debootstrap.macho
     - run: make -j3 build/debootstrap.macho{artifact}
+    - run: make -j3 build/images/debootstrap/debootstrap.image{artifact}
