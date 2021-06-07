@@ -715,7 +715,7 @@ sub usage {
     warn "${program} adt-to-dtp <adt file> <dtp file>: convert ADT binary format to DT property format\n";
     warn "${program} dtb-to-dtp <adt file> <dtp file>: convert DTB binary format to DT property format\n";
     warn "${program} dtp-to-dtb <adt file> <dtp file>: convert DT property format to DTB binary format\n";
-    warn "${program} tunables <adt file> <dtp file> <output dtp file>: extract tunables from ADT binary format\n";
+    warn "${program} tunables <adt file> <dtb file> <output dtp file>: extract tunables from ADT binary format\n";
     warn "${program} extract-adt <adt file>: extract ADT from currently executing firmware\n";
     warn "${program} dts-to-dtp <adt file> <dtp file>: convert DT source format to DT property format\n";
     warn "${program} dtp-to-dts <adt file> <dtp file>: convert DT property format to DT source format\n";
