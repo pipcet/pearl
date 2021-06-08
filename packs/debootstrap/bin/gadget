@@ -11,7 +11,6 @@ echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo 0x1337 > /sys/kernel/config/usb_gadget/G1/idVendor
 echo 0xbeef > /sys/kernel/config/usb_gadget/G1/idProduct
-mkdir /sys/kernel/config/usb_gadget/G1/strings/0x409
 echo 0x6666 > /sys/kernel/config/usb_gadget/G1/strings/0x409/serialnumber
 echo pipcet@gmail.com > /sys/kernel/config/usb_gadget/G1/strings/0x409/manufacturer
 echo m1lli > /sys/kernel/config/usb_gadget/G1/strings/0x409/product
@@ -32,6 +31,11 @@ sleep 1
 while true; do
     tee /dev/console < /dev/ttyGS0 | sh | tee /dev/console > /dev/ttyGS0
 done &
-dd if=/dev/zero of=/commfile bs=1M count=1024
-dd if=/sys/firmware/fdt of=/commfile conv=notrunc
+dd if=/dev/zero of=/commfile bs=1M count=1024 2>/dev/null
+dd if=/sys/firmware/fdt of=/commfile conv=notrunc 2>/dev/null
 echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
+echo "USB gadget live. Interfaces (* means broken):"
+echo " acm          - root shell (/dev/ttyACM*)"
+echo " mass-storage - commfile interface (/dev/sd[a-z])"
+echo "*eem          - IP gadget (network interface usb*)"
+echo
