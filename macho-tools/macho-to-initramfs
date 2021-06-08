@@ -1,10 +1,21 @@
 #!/usr/bin/perl
+
+# find the first ZSTD signature in the input and print the rest of the
+# file. Depending on your file, that might or might not be the ZSTD
+# you're looking for. Run twice to search for the second signature,
+# and so on.
+
+# Piping the result into zstd -d works, since that ignores trailing
+# non-ZSTD data.
+
 use strict;
+use bytes;
+
 my $data = join("", <>);
 
 my @offs;
 
-for my $i (0 .. length($data)) {
+for my $i (1 .. length($data)) {
     if (substr($data, $i, 4) eq "\x28\xb5\x2f\xfd") {
 	push @offs, $i;
     }
