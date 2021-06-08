@@ -1,8 +1,60 @@
 #!/bin/sh
-(while sleep 1; do receive-commfile; done) &
-gadget &
+STAGE=$(cat /persist/stage)
+mkdir -p /etc /run /dev/pts
+echo "root:x:0:0:root:/:/bin/sh" >> /etc/passwd
+mount -t devpts devpts /dev/pts
+ln -sf pts/ptmx /dev
 
-if timeout 45 sh -c read; then
-    touch /noboot
-    while [ -e /noboot ]; do sh; done
-fi
+mkdir -p /var/help
+echo "Help" > /var/help/001-title
+
+cat > .screenrc <<EOF
+split
+split -v
+focus next
+focus next
+split -v
+focus next
+focus next
+caption "menu"
+screen -t "menu" echo "I'm a menu"
+focus next
+caption "help"
+screen -t "help" watch -n 1 sh 'cat /var/help/*'
+focus next
+caption "dmesg"
+screen -t "dmesg" dmesg -L always -D -P -w
+console on
+focus next
+caption "shell"
+screen -t "shell" /bin/busybox
+EOF
+
+# screen -c .screenrc < /dev/tty1 &
+
+(while sleep 1; do receive-commfile; done) &
+[ "$STAGE" = "stage2" ] && gadget
+[ "$STAGE" = "stage3" ] && wifi &
+
+touch /noboot
+cat > /var/help/050-shell <<EOF
+Shell commands (* - currently broken):
+ linux       - boot Linux
+ stage3      - enter stage3
+ m1n1        - launch m1n1
+ u-boot      - launch Das U-Boot
+ barebox     - launch barebox
+*macos       - launch macOS
+*grub        - launch grub
+
+ gadget      - (re)start USB gadget [stage2]
+*wifi        - (re)start WiFi gadget [stage3]
+
+ memtool     - inspect or modify memory or MMIO
+ x8r8g8b8    - fix framebuffer colors
+ x2r10g10b10 - break framebuffer colors
+ enable-wdt  - enable the Watchdog Timer
+*reboot      - reboot immediately
+EOF
+
+while [ -e /noboot ]; do sh; done
