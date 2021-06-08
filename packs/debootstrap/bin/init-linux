@@ -3,16 +3,22 @@ mkdir mnt
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 mount -t devtmpfs dev /dev
-cp modules.tar /persist
-while true; do
-    ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
-    mount $ROOT /mnt && continue
-    ([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
-    vgchange -ay
-    (cd /sys/class/block; for DM in $(ls -d dm-*); do
-	 NAME=$(cat $DM/dm/name)
-	 ln -sf $DM /dev/$NAME
-	 [ -e /dev/$NAME-decrypted ] || cryptsetup open /dev/$NAME $NAME-decrypted;
-     done)
-    /bin/sh
-done
+mkdir -p debian debian/mnt debian/proc debian/sys debian/dev
+mount --bind debian debian
+mount -t proc proc /debian/proc
+mount -t sysfs sys /debian/sys
+mount -t devtmpfs dev /debian/dev
+cd /debian
+tar xf /debootstrap.tar
+sync
+cp /modules.tar /persist
+cp /blobs.tar /persist
+mkdir /debian/persist
+cp -av /persist/* /debian/persist
+cat > /debian/init <<EOF
+/debootstrap/debootstrap --second-stage
+(echo x; echo x) | passwd root
+
+exec /sbin/init
+EOF
+exec chroot /debian /bin/bash /init
