@@ -4,7 +4,5 @@ STAGE=$(cat /persist/stage)
 [ "$STAGE" = "stage2" ] && gadget &
 [ "$STAGE" = "stage3" ] && wifi &
 
-if timeout 45 sh -c read; then
-    touch /noboot
-fi
+touch /noboot
 while [ -e /noboot ]; do sh; done
