@@ -20,7 +20,7 @@ linux/$(stage){menuconfig}:
 build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) olddefconfig
 	diff -u $$< build/linux/$(stage)/.config || true
 	$$(MAKE) -C build/linux/$(stage) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
 	$$(CP) build/linux/$(stage)/arch/arm64/boot/Image $$@
@@ -63,7 +63,7 @@ linux/$(image){menuconfig}:
 build/images/$(image)/$(image).image: build/images/$(image)/linux.config
 	$$(MKDIR) build/linux/$(image)
 	$$(CP) $$< build/linux/$(image)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) oldconfig
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) olddefconfig
 	diff -u $$< build/linux/$(image)/.config || true
 	$$(MAKE) -C build/linux/$(image) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
 	$$(CP) build/linux/$(image)/arch/arm64/boot/Image $$@
