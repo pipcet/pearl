@@ -1,24 +1,5 @@
 #!/bin/sh
-mkdir mnt
-mount -t proc proc /proc
-mount -t sysfs sys /sys
-mount -t devtmpfs dev /dev
-mkdir -p debian debian/mnt debian/proc debian/sys debian/dev
-mount --bind debian debian
-mount -t proc proc /debian/proc
-mount -t sysfs sys /debian/sys
-mount -t devtmpfs dev /debian/dev
-cd /debian
-tar xf /debootstrap.tar
-sync
-cp /modules.tar /persist
-cp /blobs.tar /persist
-mkdir /debian/persist
-cp -av /persist/* /debian/persist
-cat > /debian/init <<EOF
-/debootstrap/debootstrap --second-stage
-(echo x; echo x) | passwd root
-
-exec /sbin/init
-EOF
-exec chroot /debian /bin/bash /init
+echo linux > persist/stage
+find persist >> /file.list
+cat /file.list | cpio -H newc -o > /boot/linux.cpio
+/bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio
