@@ -769,7 +769,10 @@ sub bootargs {
 	machine_type => u32,
 	u32,
 	adt => beglen(u64, u32),
-	cmdline => string 256,
+	cmdline => string 608,
+	u32,
+	boot_flags => u64,
+	mem_size_actual => u64,
 	align(16384),
 	]
 }
