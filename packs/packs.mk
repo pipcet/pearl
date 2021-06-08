@@ -69,6 +69,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage3
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/u-boot
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/wifi
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/x2r10g10b10
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/barebox.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
