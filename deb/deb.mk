@@ -76,5 +76,5 @@ build/deb.tar: \
 	$(dropbear-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
-	for file in $^; do ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; done
+	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file build/deb-tmp; else; ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; fi; done
 	(cd build/deb-tmp; tar c .) > $@
