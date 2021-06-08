@@ -7,7 +7,7 @@ while (1) {
     my $data = read_file($ARGV[0]);
     for my $dev (glob "/sys/class/block/*") {
 	$dev =~ s/^\/sys\/class\/block\///;
-	if ($dev =~ /sd[b-z]/) {
+	if ($dev =~ /sd[a-z]/) {
 	    my $fh;
 	    open $fh, "+</dev/$dev" or next;
 	    warn "opened dev $dev";
