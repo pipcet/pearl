@@ -39,7 +39,7 @@ The current status is that Pearl is a usable everyday desktop system, including 
 
 | Feature              | Upstream   | Asahi   | Corellium     | Pearl      |
 |----------------------+------------+---------+---------------+------------|
-| kernel version       | 5.13.0-rc4 | ?       | February 2021 | 5.13.0-rc4 |
+| kernel version       | 5.13.0-rc5 | ?       | February 2021 | 5.13.0-rc5 |
 | audio                | no         | no      | no            | no         |
 | bluetooth            | no         | no      | no            | no         |
 | resume/suspend       | no         | no      | no            | no         |
