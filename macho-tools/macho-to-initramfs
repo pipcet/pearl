@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+use strict;
+my $data = join("", <>);
+
+my @offs;
+
+for my $i (0 .. length($data)) {
+    if (substr($data, $i, 4) eq "\x28\xb5\x2f\xfd") {
+	push @offs, $i;
+    }
+}
+
+die "no ZSTD signature found" unless @offs;
+
+print substr($data, $offs[0]);
