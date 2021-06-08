@@ -1,6 +1,14 @@
 define linux-perstage
 build/stages/$(stage)/linux.config: stages/$(stage)/linux.config ; $$(COPY)
 
+linux/$(stage){olddefconfig}: build/stages/$(stage)/linux.config
+	$$(MKDIR) build/linux/$(stage)
+	$$(CP) $$< build/linux/$(stage)/.config
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) olddefconfig
+	diff -u $$< build/linux/$(stage)/.config || true
+	$$(CP) $$< $$<.old
+	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
+
 linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
 	$$(MKDIR) build/linux/$(stage)
 	$$(CP) $$< build/linux/$(stage)/.config
@@ -44,6 +52,14 @@ define linux-perimage
 build/images/$(image)/linux.config: images/$(image)/linux.config
 	$$(MKDIR) $$(dir $$@)
 	$$(CP) $$< $$@
+
+linux/$(image){olddefconfig}: build/images/$(image)/linux.config
+	$$(MKDIR) build/linux/$(image)
+	$$(CP) $$< build/linux/$(image)/.config
+	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) olddefconfig
+	diff -u $$< build/linux/$(image)/.config || true
+	$$(CP) $$< $$<.old
+	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
 
 linux/$(image){oldconfig}: build/images/$(image)/linux.config
 	$$(MKDIR) build/linux/$(image)
