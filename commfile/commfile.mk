@@ -10,7 +10,7 @@ build/commfile/receive-commfile: commfile/receive-commfile.c
 	$(MKDIR) $@.d
 	$(CP) $< $@.d
 	$(CP) -a commfile/$(notdir $*).sh $@.d/script
-	tar -C $@.d -cz . > $@
+	tar -C $@.d -c . | gzip -1 > $@
 
 %.commfile{send}: %.commfile
 	$(SUDO) commfile/send-commfile $<
