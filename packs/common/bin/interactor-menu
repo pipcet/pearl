@@ -32,11 +32,12 @@ while true; do
 	echo "' 'stage3      're-enter stage3' \\" >> "$MENUFILE"
     fi
     [ "$(cat /persist/stage)" = "stage2" ] &&
-	echo "' 'gadget      '(re)start USB gadget [stage2]' \\" >> "$MENUFILE"
+	echo "' 'gadget      '(re)start USB gadget' \\" >> "$MENUFILE"
     [ "$(cat /persist/stage)" = "stage3" ] &&
-	echo "'*'wifi        '(re)start WiFi gadget [stage3]' \\" >> "$MENUFILE"
+	echo "'*'wifi        '(re)start WiFi gadget' \\" >> "$MENUFILE"
     echo "' 'x8r8g8b8    'fix framebuffer colors' \\" >> "$MENUFILE"
     echo "' 'x2r10g10b10 'break framebuffer colors' \\" >> "$MENUFILE"
+    echo "' 'dwc3 'reload dwc3 driver' \\" >> "$MENUFILE"
     echo "' 'enable-wdt  'enable the Watchdog Timer (will reboot)' \\" >> "$MENUFILE"
     echo "'*'reboot      'reboot immediately' \\" >> "$MENUFILE"
     echo "' 'reboot-wdt  'reboot immediately using WDT' \\" >> "$MENUFILE"

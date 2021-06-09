@@ -10,7 +10,14 @@ build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 
 dialog-debs = \
 	dialog \
+	libncurses6 \
 	libncursesw6
+
+procps-debs = \
+	procps \
+	libprocps8 \
+	libtinfo6 \
+	libsystemd0
 
 screen-debs = \
 	screen \
@@ -92,7 +99,8 @@ build/deb.tar: \
 	$(wifi-debs:%=build/deb/%.deb) \
 	$(dropbear-debs:%=build/deb/%.deb) \
 	$(screen-debs:%=build/deb/%.deb) \
-	$(dialog-debs:%=build/deb/%.deb)
+	$(dialog-debs:%=build/deb/%.deb) \
+	$(procps-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
 	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file build/deb-tmp; else ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; fi; done
