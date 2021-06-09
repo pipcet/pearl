@@ -1,6 +1,0 @@
-#!/bin/sh
-cd /
-echo stage3 > persist/stage
-find persist >> /file.list
-cat /file.list | cpio -H newc -o > /boot/stage3.cpio
-/bin/kexec -fix /boot/linux.image --dtb=/boot/stage3.dtb --ramdisk=/boot/stage3.cpio --command-line="nosmp clk_ignore_unused"

@@ -1,2 +1,0 @@
-#!/bin/sh
-memtool mw 0x230850030 0x5000
