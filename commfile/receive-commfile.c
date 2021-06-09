@@ -24,6 +24,13 @@ int main(void)
       return -1;
     if (sscanf(buf, "%lld", &size) != 1)
       continue;
+    {
+      FILE *f = fopen("/var/help/002-state", "w");
+      if (f) {
+	fprintf(f, "%ld-byte commfile being loaded\n", size - 32);
+	fclose(f);
+      }
+    }
     if (pread(fd, buf, 32, size) != 32)
       return -1;
     if (strncmp(buf, "READY", 32) != 0)
@@ -35,7 +42,7 @@ int main(void)
     {
       FILE *f = fopen("/var/help/002-state", "w");
       if (f) {
-	fprintf(f, "%ld-byte commfile being loaded\n", size - 32);
+	fprintf(f, "%ld-byte commfile being booted\n", size - 32);
 	fclose(f);
       }
     }
