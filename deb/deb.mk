@@ -8,6 +8,10 @@ build/deb/Packages: | build/deb/
 build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
+dialog-debs = \
+	dialog \
+	libncursesw6
+
 screen-debs = \
 	screen \
 	libtinfo6 \
@@ -77,6 +81,8 @@ lvm-debs = \
 	libuuid1 \
 	libzstd1
 
+debs = libc perl dtc lvm mojo wifi dropbear screen
+
 build/deb.tar: \
 	$(libc-debs:%=build/deb/%.deb) \
 	$(perl-debs:%=build/deb/%.deb) \
@@ -85,7 +91,8 @@ build/deb.tar: \
 	$(mojo-debs:%=build/deb/%.deb) \
 	$(wifi-debs:%=build/deb/%.deb) \
 	$(dropbear-debs:%=build/deb/%.deb) \
-	$(screen-debs:%=build/deb/%.deb)
+	$(screen-debs:%=build/deb/%.deb) \
+	$(dialog-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
 	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file build/deb-tmp; else ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; fi; done
