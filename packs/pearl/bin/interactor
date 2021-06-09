@@ -28,8 +28,8 @@ focus next
 caption "menu"
 screen -t "menu" /bin/interactor-menu
 focus next
-caption "help"
-screen -t "help" watch /bin/help'
+# caption "help"
+screen watch /bin/help'
 focus next
 caption "dmesg"
 screen -t "dmesg" cat /proc/kmsg
