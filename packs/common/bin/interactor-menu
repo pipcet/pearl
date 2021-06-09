@@ -89,7 +89,7 @@ while true; do
 	$COMMAND
     elif [ "$COMMAND" = "dmesg" ]; then
 	dmesg > /var/dmesg
-	dialog --textbox /var/dmesg
+	dialog --textbox /var/dmesg 0 0
 	rm /var/dmesg
     fi;
     (sleep 3 && rm -f /var/help/002-state) &
