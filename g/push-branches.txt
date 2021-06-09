@@ -1,6 +1,7 @@
 submodule/barebox pipcet pearl
 submodule/busybox pipcet pearl
 submodule/debootstrap pipcet pearl
+submodule/grub pipcet pearl
 submodule/kexec-tools pipcet pearl
 submodule/linux pipcet pearl
 submodule/m1n1 pipcet pearl
