@@ -10,7 +10,8 @@ START_SNIPPET {
   unsigned long size = ((unsigned long *)image)[2];
   if (UNALIGNED(image)) {
     unsigned long newimage =
-      (image + size + 16384 + ((1 << 21) - 1)) & ~((1L<<21)-1);
+      (image + size + 2 * 1024 * 1024 + ((1 << 21) - 1)) & ~((1L<<21)-1);
+    newimage = 0x880000000;
     __int128 *p = (void *)image + size;
     while (--p != (__int128 *)page) {
       p[(newimage - image)/16] = *p;
