@@ -13,11 +13,9 @@ while (1) {
 	    warn "opened dev $dev";
 	    my $str;
 	    next unless sysread($fh, $str, 32) == 32;
-	    warn $str;
 	    unless ($str eq "m1lli is ready and waiting\n\0\0\0\0\0") {
 		sysseek($fh, 1024 * 1024, SEEK_SET);
 		next unless sysread($fh, $str, 27) == 27;
-		warn $str;
 		next unless ($str eq "m1lli is ready and waiting\n");
 	    }
 	    my $size = length($data) + 32;
