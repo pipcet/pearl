@@ -28,7 +28,7 @@ focus next
 caption string "menu"
 screen -t "menu" /bin/interactor-menu
 focus next
-screen /usr/bin/watch -t -d -n 2 /bin/help
+screen /usr/bin/watch -t -n .5 /bin/help
 focus next
 caption string "dmesg"
 screen -t "dmesg" cat /proc/kmsg
