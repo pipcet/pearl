@@ -8,6 +8,15 @@ ln -sf pts/ptmx /dev
 mkdir -p /var/help
 echo "Help" > /var/help/001-title
 
+cat > /bin/help <<EOF
+for a in /var/help/*; do
+    cat \$a
+    echo
+done
+EOF
+
+chmod u+x /bin/help
+
 cat > .screenrc <<EOF
 split
 split -v
@@ -17,24 +26,29 @@ split -v
 focus next
 focus next
 caption "menu"
-screen -t "menu" echo "I'm a menu"
+screen -t "menu" /bin/interactor-menu
 focus next
 caption "help"
-screen -t "help" watch -n 1 sh 'cat /var/help/*'
+screen -t "help" watch /bin/help'
 focus next
 caption "dmesg"
-screen -t "dmesg" dmesg -L always -D -P -w
+screen -t "dmesg" cat /proc/kmsg
 console on
 focus next
 caption "shell"
-screen -t "shell" /bin/busybox
+screen -t "shell"
+focus next
 EOF
 
-# screen -c .screenrc < /dev/tty1 &
-
 (while sleep 1; do receive-commfile; done) &
+
 [ "$STAGE" = "stage2" ] && gadget
 [ "$STAGE" = "stage3" ] && wifi &
+
+echo 4 5 4 4 > /proc/sys/kernel/printk
+
+screen -c .screenrc < /dev/tty1 > /dev/tty1 2> /dev/tty1
+(sleep 15; TERM=linux screen -m -x -c .screenrc < /dev/ttyGS0 > /dev/ttyGS0 2> /dev/ttyGS0) &
 
 touch /noboot
 cat > /var/help/050-shell <<EOF
@@ -42,7 +56,7 @@ Shell commands (* - currently broken):
  linux       - boot Linux
  stage3      - enter stage3
  m1n1        - launch m1n1
- u-boot      - launch Das U-Boot
+ u-boot      - launch U-Boot
  barebox     - launch barebox
 *macos       - launch macOS
 *grub        - launch grub
