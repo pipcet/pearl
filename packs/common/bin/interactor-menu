@@ -50,7 +50,7 @@ while true; do
     COMMAND="$(cat /var/dialog-response)"
     echo "$COMMAND" > /var/last-button
     COMMAND="$(echo "$COMMAND"|sed -e 's/^.//')"
-    echo "executing command $COMMAND" > /var/help/001-state
+    echo "Currently executing command $COMMAND" > /var/help/002-state
     if [ "$COMMAND"x = x ]; then
 	true
     elif [ "$COMMAND" = "shell" ]; then
@@ -92,5 +92,5 @@ while true; do
 	dialog --textbox /var/dmesg
 	rm /var/dmesg
     fi;
-    (sleep 3 && rm /var/help/001-state) &
+    (sleep 3 && rm -f /var/help/002-state) &
 done
