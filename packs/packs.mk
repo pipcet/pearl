@@ -15,8 +15,8 @@ build/packs/$(pack).cpiospec: packs/$(pack)/$(pack).cpiospec
 	$$(MKDIR) $$(dir $$@)
 	(cat $$<; $$(foreach file,$$(patsubst build/packs/$(pack)/%,/%,$$(wordlist 2,$$(words $$^),$$^)),echo dir $$(dir $(patsubst %/,%,$$(file))) 755 0 0; echo file $$(file) $$(PWD)/build/packs/$(pack)/$$(file) 755 0 0;)) | sort | uniq > $$@
 
-
 build/packs/$(pack)/%: packs/$(pack)/% ; $$(COPY)
+build/packs/$(pack)/%: packs/pearl/% ; $$(COPY)
 build/packs/$(pack)/bin/%: build/dt/bin/% ; $$(COPY)
 build/packs/$(pack)/bin/busybox: build/busybox/busybox; $$(COPY)
 build/packs/$(pack)/bin/kexec: build/kexec/kexec; $$(COPY)
