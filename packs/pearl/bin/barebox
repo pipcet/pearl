@@ -1,3 +1,4 @@
 #!/bin/sh
 # enable-wdt
+x2r10g10b10
 kexec -fix /boot/barebox.image --dtb=/boot/u-boot.dtb
