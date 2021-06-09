@@ -80,6 +80,15 @@ while true; do
 	$COMMAND
     elif [ "$COMMAND" = "enable-wdt" ]; then
 	$COMMAND
+    elif [ "$COMMAND" = "dwc3" ]; then
+	DEVS="$(cd /sys/bus/platform/drivers/dwc3; echo *.dwc3)"
+	DEVS="$DEVS 502280000.dwc3"
+	for dev in $DEVS; do
+	    cd /sys/bus/platform/drivers/dwc3; echo $dev > unbind
+	done
+	for dev in $DEVS; do
+	    cd /sys/bus/platform/drivers/dwc3; echo $dev > bind
+	done
     elif [ "$COMMAND" = "reboot" ]; then
 	$COMMAND
     elif [ "$COMMAND" = "reboot-wdt" ]; then
