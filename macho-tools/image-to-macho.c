@@ -201,7 +201,6 @@ int main(int argc, char **argv)
   for (uint32_t *p = buf + HDR_SIZE; (void *)p < buf + prelude_size;)
     SNIPPET(nop);
   uint32_t *p = buf + HDR_SIZE;
-  p = buf + HDR_SIZE;
 
   SNIPPET(save_boot_args);
   //SNIPPET(disable_timers);
