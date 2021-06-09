@@ -1,55 +1,18 @@
 #!/bin/sh
-mkfifo /var/dialog-response
-
-(while true; do
-     COMMAND="$(cat /var/dialog-response)"
-     echo "$COMMAND" > /var/last-button
-     COMMAND="$(echo "$COMMAND"|sed -e 's/^.//')"
-     echo "executing command $COMMAND" > /var/help/001-state
-     if [ "$COMMAND"x = x ]; then
-	 true
-     elif [ "$COMMAND" = "shell" ]; then
-	 screen -X ':focus bottom'
-     elif [ "$COMMAND" = "stage2" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "stage3" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "linux" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "m1n1" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "u-boot" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "grub" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "macos" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "gadget" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "wifi" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "x8r8g8b8" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "x2r10g10b10" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "enable-wdt" ]; then
-	 $COMMAND
-     elif [ "$COMMAND" = "reboot" ]; then
-	 $COMMAND
-     fi;
-     sleep 3 && rm /var/help/001-state
- done) &
+echo " shell" > /var/last-button
 
 while true; do
-    MENUFILE="/var/menu.new"
+    MENUFILE="/var/menu"
     STAGE="$(cat /persist/stage)"
     > "$MENUFILE"
-    echo "dialog --output-fd 3 --cr-wrap \\"
+    LAST_COMMAND="$([ -e /var/last-button ] && cat /var/last-button)"
+    echo "dialog --output-fd 3 --cr-wrap \\" >> "$MENUFILE"
     if [ "x$LAST_COMMAND" != "x" ]; then
 	echo "--default-item \"$LAST_COMMAND\" \\" >> "$MENUFILE"
     fi
     echo "--menu 'User-Friendly Menu (* marks broken options)' 0 0 0 \\" >> "$MENUFILE"
     echo "' 'shell 'Shell prompt' \\" >> "$MENUFILE"
+    echo "' 'dmesg 'Kernel messages' \\" >> "$MENUFILE"
     echo "' 'linux 'Boot Linux' \\" >> "$MENUFILE"
     if [ "$STAGE" != "stage2" ]; then
 	echo "' 'stage2      'enter stage2' \\" >> "$MENUFILE"
@@ -77,16 +40,57 @@ while true; do
     echo "' 'enable-wdt  'enable the Watchdog Timer (will reboot)' \\" >> "$MENUFILE"
     echo "'*'reboot      'reboot immediately' \\" >> "$MENUFILE"
     echo "' 'reboot-wdt  'reboot immediately using WDT' \\" >> "$MENUFILE"
-    LAST_COMMAND="$([ -e /var/last-button ] && cat /var/last-button)"
+    echo "' 'reboot-recovery  'reboot to Recovery Mode using WDT' \\" >> "$MENUFILE"
     echo "LAST_COMMAND $LAST_COMMAND" >> /last-command-log
     echo "" >> "$MENUFILE"
     echo "> /var/menu" >> "$MENUFILE"
 
-    if cmp /var/menu "$MENUFILE" > /dev/null; then
-	sleep 1
-    else
-	kill %2
-	cp "$MENUFILE" /var/menu
-	sh /var/menu "$([ -e /var/last-button ] && cat /var/last-button)" 3> /var/dialog-response &
-    fi
+    sh /var/menu "$([ -e /var/last-button ] && cat /var/last-button)" 3> /var/dialog-response
+    rm /var/menu
+    COMMAND="$(cat /var/dialog-response)"
+    echo "$COMMAND" > /var/last-button
+    COMMAND="$(echo "$COMMAND"|sed -e 's/^.//')"
+    echo "executing command $COMMAND" > /var/help/001-state
+    if [ "$COMMAND"x = x ]; then
+	true
+    elif [ "$COMMAND" = "shell" ]; then
+	screen -X ':focus bottom'
+    elif [ "$COMMAND" = "stage2" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "stage3" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "linux" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "m1n1" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "u-boot" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "grub" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "macos" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "gadget" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "wifi" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "x8r8g8b8" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "x2r10g10b10" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "enable-wdt" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "reboot" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "reboot-wdt" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "reboot-recovery" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "barebox" ]; then
+	$COMMAND
+    elif [ "$COMMAND" = "dmesg" ]; then
+	dmesg > /var/dmesg
+	dialog --textbox /var/dmesg
+	rm /var/dmesg
+    fi;
+    (sleep 3 && rm /var/help/001-state) &
 done
