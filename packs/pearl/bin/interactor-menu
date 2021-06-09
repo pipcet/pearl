@@ -1,0 +1,92 @@
+#!/bin/sh
+mkfifo /var/dialog-response
+
+(while true; do
+     COMMAND="$(cat /var/dialog-response)"
+     echo "$COMMAND" > /var/last-button
+     COMMAND="$(echo "$COMMAND"|sed -e 's/^.//')"
+     echo "executing command $COMMAND" > /var/help/001-state
+     if [ "$COMMAND"x = x ]; then
+	 true
+     elif [ "$COMMAND" = "shell" ]; then
+	 screen -X ':focus bottom'
+     elif [ "$COMMAND" = "stage2" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "stage3" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "linux" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "m1n1" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "u-boot" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "grub" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "macos" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "gadget" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "wifi" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "x8r8g8b8" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "x2r10g10b10" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "enable-wdt" ]; then
+	 $COMMAND
+     elif [ "$COMMAND" = "reboot" ]; then
+	 $COMMAND
+     fi;
+     sleep 3 && rm /var/help/001-state
+ done) &
+
+while true; do
+    MENUFILE="/var/menu.new"
+    STAGE="$(cat /persist/stage)"
+    > "$MENUFILE"
+    echo "dialog --output-fd 3 --cr-wrap \\"
+    if [ "x$LAST_COMMAND" != "x" ]; then
+	echo "--default-item \"$LAST_COMMAND\" \\" >> "$MENUFILE"
+    fi
+    echo "--menu 'User-Friendly Menu (* marks broken options)' 0 0 0 \\" >> "$MENUFILE"
+    echo "' 'shell 'Shell prompt' \\" >> "$MENUFILE"
+    echo "' 'linux 'Boot Linux' \\" >> "$MENUFILE"
+    if [ "$STAGE" != "stage2" ]; then
+	echo "' 'stage2      'enter stage2' \\" >> "$MENUFILE"
+    fi
+    if [ "$STAGE" != "stage3" ]; then
+	echo "' 'stage3      'enter stage3' \\" >> "$MENUFILE"
+    fi
+    echo "' 'm1n1        'launch m1n1' \\" >> "$MENUFILE"
+    echo "' 'u-boot      'launch U-Boot' \\" >> "$MENUFILE"
+    echo "'*'grub        'launch grub' \\" >> "$MENUFILE"
+    echo "' 'barebox     'launch barebox' \\" >> "$MENUFILE"
+    echo "'*'macos       'launch macOS' \\" >> "$MENUFILE"
+    if [ "$STAGE" = "stage2" ]; then
+	echo "' 'stage2      're-enter stage2' \\" >> "$MENUFILE"
+    fi
+    if [ "$STAGE" = "stage3" ]; then
+	echo "' 'stage3      're-enter stage3' \\" >> "$MENUFILE"
+    fi
+    [ "$(cat /persist/stage)" = "stage2" ] &&
+	echo "' 'gadget      '(re)start USB gadget [stage2]' \\" >> "$MENUFILE"
+    [ "$(cat /persist/stage)" = "stage3" ] &&
+	echo "'*'wifi        '(re)start WiFi gadget [stage3]' \\" >> "$MENUFILE"
+    echo "' 'x8r8g8b8    'fix framebuffer colors' \\" >> "$MENUFILE"
+    echo "' 'x2r10g10b10 'break framebuffer colors' \\" >> "$MENUFILE"
+    echo "' 'enable-wdt  'enable the Watchdog Timer (will reboot)' \\" >> "$MENUFILE"
+    echo "'*'reboot      'reboot immediately' \\" >> "$MENUFILE"
+    echo "' 'reboot-wdt  'reboot immediately using WDT' \\" >> "$MENUFILE"
+    LAST_COMMAND="$([ -e /var/last-button ] && cat /var/last-button)"
+    echo "LAST_COMMAND $LAST_COMMAND" >> /last-command-log
+    echo "" >> "$MENUFILE"
+    echo "> /var/menu" >> "$MENUFILE"
+
+    if cmp /var/menu "$MENUFILE" > /dev/null; then
+	sleep 1
+    else
+	kill %2
+	cp "$MENUFILE" /var/menu
+	sh /var/menu "$([ -e /var/last-button ] && cat /var/last-button)" 3> /var/dialog-response &
+    fi
+done
