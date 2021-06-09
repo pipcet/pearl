@@ -54,6 +54,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage3
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor-menu
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
@@ -64,10 +65,12 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-stage2
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/reboot-wdt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage3
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/u-boot
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/usbnet
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/wifi
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/x2r10g10b10
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/x8r8g8b8
