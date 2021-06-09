@@ -15,12 +15,11 @@ build/packs/$(pack).cpiospec: packs/$(pack)/$(pack).cpiospec
 	$$(MKDIR) $$(dir $$@)
 	(cat $$<; $$(foreach file,$$(patsubst build/packs/$(pack)/%,/%,$$(wordlist 2,$$(words $$^),$$^)),echo dir $$(dir $(patsubst %/,%,$$(file))) 755 0 0; echo file $$(file) $$(PWD)/build/packs/$(pack)/$$(file) 755 0 0;)) | sort | uniq > $$@
 
+build/packs/$(pack)/%: packs/common/% ; $$(COPY)
 build/packs/$(pack)/%: packs/$(pack)/% ; $$(COPY)
-build/packs/$(pack)/%: packs/pearl/% ; $$(COPY)
 build/packs/$(pack)/bin/%: build/dt/bin/% ; $$(COPY)
 build/packs/$(pack)/bin/busybox: build/busybox/busybox; $$(COPY)
 build/packs/$(pack)/bin/kexec: build/kexec/kexec; $$(COPY)
-build/packs/$(pack)/bin/m1n1: packs/$(pack)/bin/m1n1 ; $$(COPY)
 build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill ; $$(COPY)
 build/packs/$(pack)/bin/memtool: build/memtool/memtool ; $$(COPY)
 build/packs/$(pack)/bin/memdump-to-image: build/memdump/memdump-to-image ; $$(COPY)
@@ -37,7 +36,6 @@ build/packs/$(pack)/boot/barebox.image: build/barebox/images/barebox-dt-2nd.img 
 build/packs/$(pack)/boot/u-boot-plus-grub.image: build/u-boot-plus-grub.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
-build/packs/$(pack)/init: packs/$(pack)/bin/init ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
 build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
 
