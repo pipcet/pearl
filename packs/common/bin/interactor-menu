@@ -54,7 +54,7 @@ while true; do
     if [ "$COMMAND"x = x ]; then
 	true
     elif [ "$COMMAND" = "shell" ]; then
-	screen -X ':focus bottom'
+	screen -X 'focus bottom'
     elif [ "$COMMAND" = "stage2" ]; then
 	$COMMAND
     elif [ "$COMMAND" = "stage3" ]; then
