@@ -47,7 +47,7 @@ EOF
 
 echo 4 5 4 4 > /proc/sys/kernel/printk
 
-screen -c .screenrc < /dev/tty1
+screen -c .screenrc < /dev/tty1 &
 (sleep 15; TERM=linux screen -m -x -c .screenrc < /dev/ttyGS0 &)
 
 
