@@ -33,6 +33,7 @@ build/packs/$(pack)/boot/stage2.dtb: build/stages/stage2/stage2.dtb ; $$(COPY)
 build/packs/$(pack)/boot/stage2.image: build/stages/stage2/stage2.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.image: build/u-boot/u-boot.bin ; $$(COPY)
 build/packs/$(pack)/boot/barebox.image: build/barebox/images/barebox-dt-2nd.img ; $$(COPY)
+build/packs/$(pack)/boot/barebox.dtb: build/barebox/images/barebox-dt-2nd.img ; $$(CP) build/barebox/arch/arm/dts/apple-m1-j274.dtb $$@
 build/packs/$(pack)/boot/u-boot-plus-grub.image: build/u-boot-plus-grub.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
@@ -73,6 +74,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/wifi
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/x2r10g10b10
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/x8r8g8b8
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/barebox.image
+build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/barebox.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/linux.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/m1n1.macho
