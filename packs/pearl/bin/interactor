@@ -25,17 +25,16 @@ focus next
 split -v
 focus next
 focus next
-caption "menu"
+caption string "menu"
 screen -t "menu" /bin/interactor-menu
 focus next
-# caption "help"
-screen watch /bin/help'
+screen watch /bin/help
 focus next
-caption "dmesg"
+caption string "dmesg"
 screen -t "dmesg" cat /proc/kmsg
 console on
 focus next
-caption "shell"
+caption string "shell"
 screen -t "shell"
 focus next
 EOF
@@ -48,8 +47,7 @@ EOF
 echo 4 5 4 4 > /proc/sys/kernel/printk
 
 screen -c .screenrc < /dev/tty1 &
-(sleep 15; TERM=linux screen -m -x -c .screenrc < /dev/ttyGS0 &)
-
+(sleep 15; TERM=linux screen -m -x < /dev/ttyGS0) &
 
 touch /noboot
 cat > /var/help/050-shell <<EOF
@@ -72,4 +70,4 @@ Shell commands (* - currently broken):
 *reboot      - reboot immediately
 EOF
 
-while [ -e /noboot ]; do sh; done
+while [ -e /noboot ]; do sleep 10; done
