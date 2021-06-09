@@ -89,6 +89,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
+build/packs/$(pack).cpiospec: build/packs/$(pack)/stage2-modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 
 build/packs/$(pack).cpio: build/packs/$(pack).cpiospec build/stages/linux/linux.image
