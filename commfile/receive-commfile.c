@@ -32,6 +32,13 @@ int main(void)
     if (!data)
       return -1;
     pread(fd, data, size - 32, 32);
+    {
+      FILE *f = fopen("/var/help/002-state", "w");
+      if (f) {
+	fprintf(f, "%ld-byte commfile being loaded\n", size - 32);
+	fclose(f);
+      }
+    }
     FILE *f = popen("tar xz", "w");
     fwrite(data, 1, size - 32, f);
     fclose(f);
