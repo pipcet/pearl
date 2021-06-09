@@ -34,8 +34,9 @@ sleep 1
 dd if=/dev/zero of=/commfile bs=1M count=1024 2>/dev/null
 dd if=/sys/firmware/fdt of=/commfile conv=notrunc 2>/dev/null
 echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
-echo "USB gadget live. Interfaces (* means broken):"
-echo " acm          - root shell (/dev/ttyACM*)"
-echo " mass-storage - commfile interface (/dev/sd[a-z])"
-echo "*eem          - IP gadget (network interface usb*)"
-echo
+cat > /var/help/051-usb <<EOF
+USB gadget live. Interfaces (* means broken):
+ acm          - root shell (/dev/ttyACM*)
+ mass-storage - commfile interface (/dev/sd[a-z])
+*eem          - IP gadget (network interface usb*)
+EOF
