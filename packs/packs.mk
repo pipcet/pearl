@@ -64,6 +64,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-stage2
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/reboot-recovery
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/reboot-wdt
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/stage2
