@@ -38,6 +38,7 @@ build/packs/$(pack)/boot/u-boot-plus-grub.image: build/u-boot-plus-grub.image ; 
 build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
+build/packs/$(pack)/stage2-modules.tar: build/stages/stage2/stage2-modules.tar ; $$(COPY)
 build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
 
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
