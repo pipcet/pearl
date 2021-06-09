@@ -1,5 +1,5 @@
 #!/bin/sh
-mkdir /persist
+mkdir -p /persist
 cat /proc/iomem > /persist/stage1-iomem.txt
 prepare-stage2
 stage2
