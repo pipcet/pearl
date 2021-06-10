@@ -1,0 +1,116 @@
+#!/usr/bin/perl
+use strict;
+use IPC::Run qw(run);
+use File::Slurp qw(write_file read_file);
+
+my %broken = {
+    reboot => 1,
+    grub => 1,
+    macos => 1,
+};
+
+sub switch_to_shell {
+    run(["screen", "-X", "focus", "bottom"]);
+}
+
+sub dialog {
+    my ($title, $entries) = @_;
+    my @entries = @$entries;
+    my @args;
+    my $response;
+
+    while (@entries) {
+	my $tag = shift @entries;
+	my $desc = shift @entries;
+
+	push @args, ((($broken{$tag}) ? "*" : " ") . $tag);
+	push @args, $desc;
+    }
+    run(["dialog", "--output-fd", "3", "--menu", $title, 0, 0, 0,
+	 @args], '3>', \$response);
+
+    return $response = substr($response, 1);
+}
+
+sub dialog_booting {
+    my $title = "Boot Menu";
+    my @entries =
+	(linux => "boot Linux",
+	 stage3 => "(re)enter stage3",
+	 stage2 => "(re)enter stage2",
+	 m1n1 => "launch m1n1",
+	 barebox => "launch barebox",
+	 "u-boot" => "launch U-Boot",
+	 grub => "launch GRUB",
+	 macos => "boot macOS");
+
+    my $response = dialog($title, \@entries);
+
+    system($response);
+}
+
+sub dialog_hardware {
+    my $title = "Hardware Menu";
+    my @entries =
+	(gadget => "(re)start USB gadget",
+	 wifi => "(re)start WiFi",
+	 "x8r8g8b8" => "fix framebuffer colors",
+	 "x2r10g10b10" => "break framebuffer colors",
+	 dwc3 => "re-initialize USB",
+	 nvme => "initialize NVMe",
+	 "enable-wdt", "enable Watchdog Timer",
+	 "reboot", "reboot immediately",
+	 "reboot-wdt", "reboot immediately using WDT",
+	 "reboot-recovery", "reboot to Recovery Mode using WDT",
+	 "poweroff", "shut down system");
+
+    my $response = dialog($title, \@entries);
+
+    system($response);
+}
+
+sub dialog_info {
+    my $title = "Info Menu";
+    my @entries =
+	(uname => `uname -a`,
+	 dmesg => "kernel messages",
+	 uptime => `cat /proc/uptime`);
+
+    my $response = dialog($title, \@entries);
+
+    if ($response eq "dmesg") {
+	my $dmesg;
+	run(["dmesg"], '>', \$dmesg);
+	write_file("/var/dmesg", $dmesg);
+	run(["dialog", "--textbox", "/var/dmesg", 0, 0])
+    }
+    if ($response eq "uname") {
+	my $uname;
+	run(["uname", "-a"], '>', \$uname);
+	write_file("/var/dmesg", $uname);
+	run(["dialog", "--textbox", "/var/dmesg", 0, 0])
+    }
+}
+
+sub dialog_main {
+    my $title = "User-Friendly Menu (* marks broken options)";
+    my @entries =
+	(shell => "Shell prompt - Ctrl-D to return",
+	 linux => "Boot Linux",
+	 booting => "Booting",
+	 hardware => "Hardware",
+	 info => "Information");
+    my %next =
+	(shell => \&switch_to_shell,
+	 linux => sub { run(["linux"]) },
+	 booting => \&dialog_booting,
+	 hardware => \&dialog_hardware,
+	 info => \&dialog_info);
+    my $response = dialog($title, \@entries);
+
+    $next{$response}->();
+}
+
+while (1) {
+    dialog_main;
+}
