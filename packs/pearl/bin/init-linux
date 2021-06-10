@@ -3,7 +3,12 @@ mkdir mnt
 mount -t proc proc /proc
 mount -t sysfs sys /sys
 mount -t devtmpfs dev /dev
+mount -t configfs config /sys/kernel/config
+mount -t debugfs debug /sys/kernel/debug
 cp modules.tar /persist
+cd /
+tar xvf modules.tar
+modprobe pcie-apple-m1-nvme
 while true; do
     ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
     ([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
