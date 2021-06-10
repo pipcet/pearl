@@ -35,14 +35,15 @@ sub dialog {
 sub dialog_booting {
     my $title = "Boot Menu";
     my @entries =
-	(linux => "boot Linux",
-	 stage3 => "(re)enter stage3",
+	(stage3 => "(re)enter stage3",
 	 stage2 => "(re)enter stage2",
 	 m1n1 => "launch m1n1",
 	 barebox => "launch barebox",
 	 "u-boot" => "launch U-Boot",
 	 grub => "launch GRUB",
-	 macos => "boot macOS");
+	 macos => "boot macOS",
+	 linux => "boot Linux",
+	 );
 
     my $response = dialog($title, \@entries);
 
