@@ -55,6 +55,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage3
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor-menu
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor-perl
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
@@ -63,6 +64,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memdump-to-image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memtool
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/receive-commfile
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/once-sh
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/prepare-stage2
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/reboot-recovery
