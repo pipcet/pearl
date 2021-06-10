@@ -21,7 +21,7 @@ build/macho-image-fill: macho-tools/macho-image-fill
 	$(CP) $< $@
 
 build/%.image.macho: build/%.image build/host/image-to-macho
-	build/host/image-to-macho $< $@
+	build/host/image-to-macho $< $@ --version "$* of `date --iso=s`"
 
 build/%.macho.image: build/%.macho build/host/macho-to-image
 	build/host/macho-to-image $< $@
