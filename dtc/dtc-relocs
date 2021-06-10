@@ -42,7 +42,7 @@ for my $i (0 .. length($fdt1) - 1) {
     }
 }
 
-my @words = map { sprintf("0x%08x", $_) } unpack("L>*", $fdt1);
+my @words = map { sprintf("0x%08x", $_) } unpack("L<*", $fdt1);
 
 for my $i (sort { $a <=> $b } keys %relocs) {
     next if ($i % 4);
