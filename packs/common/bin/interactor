@@ -6,7 +6,8 @@ mount -t devpts devpts /dev/pts
 ln -sf pts/ptmx /dev
 
 mkdir -p /var/help
-cat /persist/stage1-uname.txt > /var/help/001-title
+echo "$(cat /persist/stage)" of "$(/bin/adtdump --macho-header|/bin/macho-version)" > /var/help/001-title
+cat /persist/stage1-uname.txt >> /var/help/001-title
 uname -a >> /var/help/001-title
 
 cat > /bin/help <<EOF
