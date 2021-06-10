@@ -6,7 +6,6 @@ mount -t devpts devpts /dev/pts
 ln -sf pts/ptmx /dev
 
 mkdir -p /var/help
-echo "Help" > /var/help/001-title
 cat /persist/stage1-uname.txt > /var/help/001-title
 uname -a >> /var/help/001-title
 
@@ -28,7 +27,7 @@ split -v
 focus next
 focus next
 caption string "menu"
-screen -t "menu" /bin/interactor-menu
+screen -t "menu" /bin/interactor-perl
 focus next
 screen /usr/bin/watch -t -n .5 /bin/help
 focus next
@@ -37,7 +36,7 @@ screen -t "dmesg" cat /proc/kmsg
 console on
 focus next
 caption string "shell"
-screen -t "shell"
+screen -t "shell" /bin/once-sh
 focus next
 EOF
 
