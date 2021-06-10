@@ -1,3 +1,10 @@
+#define REG(x,y) <${cpu_to_be32((x)>>32)} \
+	          ${cpu_to_be32((x)&U32_MAX)} \
+		  ${cpu_to_be32((y)>>32)} \
+		  ${cpu_to_be32((y)&U32_MAX)}>
+
+#define INT(x) <${cpu_to_be32(x)}>
+
 /dts-v1/;
 
 / {
@@ -109,6 +116,13 @@
 		#size-cells = <0x02>;
 		ranges;
 		dma-coherent;
+
+		/* You might think the minimal kernel does not require
+		 * an interrupt controller, and you'd be right: in ARM
+		 * terminology, the minimal kernel uses only FIQs, no *
+		 * IRQs. However, FIQ handling is currently done in the
+		 * AIC driver; it shouldn't be, and this shouldn't be
+		 * here. */
 
 		interrupt-controller@23b100000 {
 			compatible = "apple,aic";
