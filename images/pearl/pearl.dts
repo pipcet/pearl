@@ -21,52 +21,66 @@
 
 	memory@800000000 {
 		device_type = "memory";
-		reg = "memorygoeshere!";
+		reg = REG(0x800000000, bootargs->mem_size_actual);
 	};
 
 	framebuffer@9e0df8000 {
 		#address-cells = <0x02>;
 		#size-cells = <0x02>;
 		compatible = "simple-framebuffer";
-		reg = "framebuffer!!!!";
+		reg = REG(bootargs->framebuffer.phys_base,
+		          bootargs->framebuffer.stride *
+			  bootargs->framebuffer.height);
 		format = "x8r8g8b8";
-		height = "HEI";
-		stride = "STR";
-		width = "WID";
+		height = INT(bootargs->framebuffer.height);
+		stride = INT(bootargs->framebuffer.stride);
+		width = INT(bootargs->framebuffer.width);
 		status = "okay";
 	};
 
+	/* Technically, these areas shouldn't overlap. */
 	reserved-memory {
 		#address-cells = <0x02>;
 		#size-cells = <0x02>;
 		ranges;
 
+		/* The area at the end of memory. Not actually at 9e0000000
+		 * on most machines. */
 		fw_area@9e0000000 {
-		        reg = "endofmemory!!!!";
+		        reg = REG(bootargs->start_of_usable_memory
+			          + bootargs->mem_size,
+				  bootargs->mem_size_actual
+				  - bootargs->mem_size);
 			no-map;
 		};
 
-		smpentry@803400000 {
-			reg = <0x08 0x4df4000 0x00 0x4000>;
-			no-map;
-		};
-
+		/* The Apple Device tree. */
 		adt@800000000 {
-			reg = "adtgoeshere!!!!";
+			reg = REG(bootargs->adt_virt_base
+			          - bootargs->virt_base
+				  + bootargs->phys_base,
+				  (u64)bootargs->adt_size);
 			no-map;
 		};
 
+		/* The bootargs structure. */
 		bootargs@800000000 {
-			reg = "bootargsgohere!";
+			reg = REG(bootargs_phys, 0x4000LL);
 			no-map;
 		};
 
+		/* Other memory below the start of usable memory, currently
+		 * including the original kernel .macho. */
 		kmem@800000000 {
-			reg = "kmemgoeshere!!!";
+			reg = REG(0x800000000,
+			          bootargs->start_of_usable_memory
+				  - 0x800000000);
 		};
 
+		/* The start of the macho header of the original kernel
+		 * .macho */
 		base@800000000 {
-			reg = "basegoeshere!!!";
+			reg = REG(base, 0x4000LL);
 		};
 	};
 
