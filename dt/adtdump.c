@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 {
   char *path;
   char *errorstr = NULL;
-  if (argc < 2 || strcmp(argv[1], "--bootargs")) {
+  if (argc < 2 || !strcmp(argv[1], "--adt")) {
     asprintf(&path, "/sys/firmware/devicetree/base/reserved-memory/adt@800000000/reg");
   } else if (!strcmp(argv[1], "--macho-header")) {
     asprintf(&path, "/sys/firmware/devicetree/base/reserved-memory/base@800000000/reg");
