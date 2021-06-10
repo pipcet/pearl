@@ -17,6 +17,7 @@ int main(void)
   write(fd, "m1lli is ready and waiting\n", strlen("m1lli is ready and waiting\n"));
   lseek(fd, 0, SEEK_SET);
   write(fd, "m1lli is ready and waiting\n", strlen("m1lli is ready and waiting\n"));
+  int seen_message = 0;
   while (true) {
     char buf[32];
     unsigned long long size;
@@ -24,7 +25,8 @@ int main(void)
       return -1;
     if (sscanf(buf, "%lld", &size) != 1)
       continue;
-    {
+    if (!seen_message) {
+      seen_message = 1;
       FILE *f = fopen("/var/help/002-state", "w");
       if (f) {
 	fprintf(f, "%ld-byte commfile being loaded\n", size - 32);
