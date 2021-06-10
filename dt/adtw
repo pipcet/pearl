@@ -1,0 +1,71 @@
+#!/usr/bin/perl
+use bytes;
+use strict;
+
+my $root_node = { name => "", props => [], children => [] };
+
+sub node {
+    my @path = @_;
+    return $root_node unless @path;
+    my $name = pop @path;
+    my $parent = node(@path);
+    unless (grep { $_->{name} eq $name } @{$parent->{children}}) {
+	push @{$parent->{children}}, { name => $name, props => [], children => [] };
+    }
+    for my $c (@{$parent->{children}}) {
+	return $c if ($c->{name} eq $name);
+    }
+    die;
+}
+
+my $rev = "";
+
+my @lines = <>;
+map { chomp } @lines;
+my @props;
+for my $line (@lines) {
+    if ($line =~ /^(.*)\.(.*?) = (.*)$/) {
+	my ($node, $name, $data) = ($1, $2, $3);
+	my $str;
+	if ($data =~ /^\[(.*?)\]$/) {
+	    $str = pack("C*", map { hex } split(" ", $1));
+	} elsif ($data =~ /^<(.*?)>$/) {
+	    $str = pack("L<*", map { hex } split(" ", $1));
+	} else {
+	    die;
+	}
+	push @{node(split(".", $node))->{props}}, [$name, $str];
+    }
+}
+
+sub print_prop {
+    my ($prop) = @_;
+    my ($name, $str) = @$prop;
+    while (length($name) < 32) {
+	$name .= "\0";
+    }
+    print $name;
+    print pack("L<", length($str));
+    print $str;
+}
+
+sub print_node {
+    my ($node) = @_;
+    my $name = $node->{name};
+    while (length($name) < 32) {
+	$name .= "\0";
+    }
+    print $name;
+    print pack("L<", @{$node->{props}});
+    print pack("L<", @{$node->{children}});
+    for my $prop (@{$node->{props}}) {
+	print_prop($prop);
+    }
+    for my $c (@{$node->{children}}) {
+	print_node($c);
+    }
+}
+
+use Data::Dumper;
+warn Dumper($root_node);
+print_node($root_node);
