@@ -36,6 +36,11 @@ static
 int main(int argc, char **argv)
 {
   const size_t prelude_size = PRELUDE_SIZE;
+  const char *version = NULL;
+  if (argc > 4 && !strcmp(argv[3], "--version")) {
+    version = argv[4];
+    argc = 3;
+  }
   if (argc != 3) {
   error:
     fprintf(stderr, "usage: %s <Linux image> <macho>\n",
@@ -190,6 +195,8 @@ int main(int argc, char **argv)
   hdr->thread.flavor = ARM_THREAD_STATE64;
   hdr->thread.count = 68;
   hdr->thread.pc = VIRT_BASE - prelude_size + HDR_SIZE;
+  if (version && (void *)(hdr + 1) + strlen(version) + 2 < (void *)hdr + HDR_SIZE)
+    sprintf((void *)hdr + HDR_SIZE - strlen(version) - 2, "%c%s", 0, version);
   void *image = buf + prelude_size;
 #define MOV_X0_0 0xd2800000
   assert(HDR_SIZE >= sizeof(*hdr));
