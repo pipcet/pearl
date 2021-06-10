@@ -4,6 +4,9 @@ build/dt/bin/dt: dt/dt | build/dt/bin/
 build/dt/bin/adtdump: dt/adtdump.c | build/dt/bin/
 	$(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
+build/dt/bin/macho-version: dt/macho-version.c | build/dt/bin/
+	$(CROSS_COMPILE)gcc -Os -static -o $@ $<
+
 build/dt/bin/adtp: dt/adtp.cc | build/dt/bin/
 	$(CROSS_COMPILE)g++ -Os -static -o $@ $<
 
