@@ -60,6 +60,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-to-memdump
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-version
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memdump-to-image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/memtool
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/m1n1
