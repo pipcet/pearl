@@ -893,17 +893,17 @@ my $off_bootargs = $off_adt + length($image_adt);
 my $phys_base = $bootargsv->field_by_name(phys_base=>)->value;
 my $virt_base = $bootargsv->field_by_name(virt_base=>)->value;
 my $virt_adt = $off_adt + $base - $phys_base + $virt_base;
-$bootargsv->field_by_name(adt=>)->value(beg=>$off_adt);
+$bootargsv->field_by_name(adt=>)->value(beg=>$virt_adt);
 $bootargsv->field_by_name(adt=>)->value(len=>$off_bootargs - $off_adt);
 my $image_bootargs = $bootargsv->write;
 
 my $image = $image_macho . $image_sepfw . $image_adt . $image_bootargs;
 
-my $phys_pc = $macho_image->{pc} - $macho_image->{vrange}[0] + $phys_base;
-my $phys_bootargs = $phys_base + $off_bootargs;
+my $phys_pc = $macho_image->{pc} - $macho_image->{vrange}[0] + $base;
+my $phys_bootargs = $base + $off_bootargs;
 my $fh;
 open $fh, ">memdump";
 print $fh $image;
 close $fh;
 
-system("memdump-to-image memdump image $phys_bootargs $phys_base $phys_pc")
+system("memdump-to-image memdump image $phys_bootargs $base $phys_pc")
