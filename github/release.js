@@ -8,7 +8,6 @@ let json = {};
 json.tag_name = this_release_date;
 json.name = `${this_release_date} (automatic release)`;
 json.prerelease = true;
-json.draft = true;
 let body = `\n\n`;
 body += log;
 json.body = body;
