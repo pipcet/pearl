@@ -16,4 +16,4 @@ build/emacs/emacs.tar: | build/emacs/
 	rm -rf build/emacs/emacs/libexec/emacs/*/aarch64-linux-gnu/movemail
 	rm -rf build/emacs/emacs/share/emacs/*/etc/NEWS*
 	rm -rf build/emacs/emacs/share/emacs/*/etc/images
-	tar -C $(PWD)/build/emacs -cvf emacs.tar emacs
+	tar -C $(PWD)/build/emacs -cvf build/emacs/emacs.tar emacs
