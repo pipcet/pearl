@@ -8,6 +8,48 @@ build/deb/Packages: | build/deb/
 build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
+emacs-debs = \
+	emacs-nox \
+	emacs-bin-common \
+	emacs-common \
+	emacsen-common \
+	libacl1 \
+	libasound2 \
+	libdbus-1-3 \
+	libgmp10 \
+	libgnutls30 \
+	libgpm2 \
+	libjansson4 \
+	liblcms2-2 \
+	libselinux1 \
+	libsystemd0 \
+	libtinfo6 \
+	libxml2 \
+	zlib1g \
+	libhogweed6 \
+	libidn2-0 \
+	libnettle8 \
+	libp11-kit0 \
+	libtasn1-6 \
+	libunistring2 \
+	libpcre2-8-0 \
+	libgcrypt20 \
+	liblz4-1 \
+	liblzma5 \
+	libzstd1 \
+	libicu67 \
+	libffi7 \
+	libgpg-error0
+
+udev-debs = \
+	udev \
+	libacl1 \
+	libblkid1 \
+	libkmod2 \
+	libselinux1 \
+	libudev1 \
+	util-linux
+
 dialog-debs = \
 	dialog \
 	libncurses6 \
@@ -100,6 +142,7 @@ build/deb.tar: \
 	$(dropbear-debs:%=build/deb/%.deb) \
 	$(screen-debs:%=build/deb/%.deb) \
 	$(dialog-debs:%=build/deb/%.deb) \
+	$(emacs-debs:%=build/deb/%.deb) \
 	$(procps-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
