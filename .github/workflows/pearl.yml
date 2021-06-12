@@ -21,6 +21,7 @@ jobs:
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install autopoint
     - run: sudo apt-get install lzop
+    - run: sudo apt-get install libipc-run-perl
     - run: make -j3 build/stages/stage1/stage1.image
     - run: make -j3 build/stages/stage1/stage1.image.macho
     - run: make -j3 build/pearl.macho
