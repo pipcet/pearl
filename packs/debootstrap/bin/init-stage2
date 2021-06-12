@@ -1,3 +1,4 @@
 #!/bin/sh
 prepare-linux
+tar xf /stage2-modules.tar
 linux
