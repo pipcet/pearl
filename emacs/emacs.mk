@@ -1,13 +1,14 @@
 build/ncurses/ncurses.tar: | build/ncurses/
-	(cd build/ncurses; $(PWD)/submodule/ncurses/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=$(PWD)/build/emacs/emacs)
-	$(MAKE) -C build/ncurses
-	$(MAKE) -C build/ncurses install
+	$(MKDIR) build/ncurses/src
+	(cd build/ncurses/src; $(PWD)/submodule/ncurses/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=$(PWD)/build/ncurses/ncurses)
+	$(MAKE) -C build/ncurses/src
+	$(MAKE) -C build/ncurses/src install
 	touch $@
 
 build/emacs/emacs.tar: build/ncurses/ncurses.tar | build/emacs/
 	cp -a submodule/emacs build/emacs/src
 	(cd build/emacs/src && sh autogen.sh)
-	(cd build/emacs/src && ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu CFLAGS="-Os -static" --without-all --without-json --without-x --prefix=$(PWD)/build/emacs/emacs)
+	(cd build/emacs/src && ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu LDFLAGS="-L$(PWD)/build/ncurses/ncurses/lib" CFLAGS="-Os -static" --without-all --without-json --without-x --prefix=$(PWD)/build/emacs/emacs)
 	$(MAKE) -C build/emacs/src/src emacs
 	rm -rf build/emacs/emacs
 	$(MAKE) -C build/emacs/src install
