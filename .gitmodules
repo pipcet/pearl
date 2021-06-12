@@ -36,3 +36,7 @@
 	path = submodule/emacs
 	url = https://github.com/pipcet/emacs
 	branch = pearl
+[submodule "submodule/ncurses"]
+	path = submodule/ncurses
+	url = https://github.com/pipcet/ncurses
+	branch = pearl
