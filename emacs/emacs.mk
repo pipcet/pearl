@@ -1,6 +1,6 @@
 build/ncurses/ncurses.tar: | build/ncurses/
 	$(MKDIR) build/ncurses/src
-	(cd build/ncurses/src; $(PWD)/submodule/ncurses/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=$(PWD)/build/ncurses/ncurses)
+	(cd build/ncurses/src; $(PWD)/submodule/ncurses/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=$(PWD)/build/ncurses/ncurses --disable-stripping)
 	$(MAKE) -C build/ncurses/src
 	$(MAKE) -C build/ncurses/src install
 	touch $@
