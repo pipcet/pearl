@@ -39,7 +39,8 @@ emacs-debs = \
 	libzstd1 \
 	libicu67 \
 	libffi7 \
-	libgpg-error0
+	libgpg-error0 \
+	libstdc++6
 
 udev-debs = \
 	udev \
