@@ -18,6 +18,7 @@ jobs:
     - run: sudo apt-get install gcc-aarch64-linux-gnu
     - run: sudo apt-get install binutils-aarch64-linux-gnu
     - run: sudo apt-get install g++-aarch64-linux-gnu
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install autopoint
     - run: sudo apt-get install lzop
