@@ -1,5 +1,5 @@
 build/debootstrap/stage1.tar: | build/debootstrap/
-	sudo DEBOOTSTRAP_DIR=$(PWD)/submodule/debootstrap ./submodule/debootstrap/debootstrap --foreign --arch=arm64 --include=dash,wget,busybox,busybox-static,network-manager,openssh-client,net-tools,libpam-systemd,cryptsetup,lvm2 sid build/debootstrap/stage1 http://deb.debian.org/debian
+	sudo DEBOOTSTRAP_DIR=$(PWD)/submodule/debootstrap ./submodule/debootstrap/debootstrap --foreign --arch=arm64 --include=dash,wget,busybox,busybox-static,network-manager,openssh-client,net-tools,libpam-systemd,cryptsetup,lvm2,memtool sid build/debootstrap/stage1 http://deb.debian.org/debian
 	(cd build/debootstrap/stage1; sudo tar c .) > $@
 
 build/debootstrap/stage15.tar: build/debootstrap/stage1.tar
