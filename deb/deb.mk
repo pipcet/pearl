@@ -8,6 +8,10 @@ build/deb/Packages: | build/deb/
 build/deb/%.deb: build/deb/Packages deb/deb.pl | build/deb/
 	curl http://http.us.debian.org/debian/$(shell perl deb/deb.pl "$*" < $<) > $@
 
+nvme-debs = \
+	nvme-cli \
+	libuuid1
+
 emacs-debs = \
 	emacs-nox \
 	emacs-bin-common \
@@ -143,6 +147,7 @@ build/deb.tar: \
 	$(dropbear-debs:%=build/deb/%.deb) \
 	$(screen-debs:%=build/deb/%.deb) \
 	$(dialog-debs:%=build/deb/%.deb) \
+	$(nvme-debs:%=build/deb/%.deb) \
 	$(procps-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
