@@ -40,8 +40,11 @@ build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
 build/packs/$(pack)/stage2-modules.tar: build/stages/stage2/stage2-modules.tar ; $$(COPY)
 build/packs/$(pack)/emacs.tar: build/emacs/emacs.tar ; $$(COPY)
+build/packs/$(pack)/ncurses.tar: build/ncurses/ncurses.tar ; $$(COPY)
+build/packs/$(pack)/share/boot.el: boot.el/boot.el ; $$(COPY)
 build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
 
+build/packs/$(pack).cpiospec: build/packs/$(pack)/share/boot.el
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtdump
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/adtp
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/barebox
@@ -95,7 +98,9 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/stage2-modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/emacs.tar
+build/packs/$(pack).cpiospec: build/packs/$(pack)/ncurses.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
+build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/menu
 
 build/packs/$(pack).cpio: build/packs/$(pack).cpiospec build/stages/linux/linux.image
 	(cd build/linux/linux; $$(PWD)/submodule/linux/usr/gen_initramfs.sh -o $$(PWD)/$$@ ../../../$$<)
