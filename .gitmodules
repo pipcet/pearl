@@ -40,3 +40,7 @@
 	path = submodule/ncurses
 	url = https://github.com/pipcet/ncurses
 	branch = pearl
+[submodule "submodule/busybocs"]
+	path = submodule/busybocs
+	url = https://github.com/pipcet/busybocs
+	branch = main
