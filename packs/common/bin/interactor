@@ -48,8 +48,10 @@ EOF
 
 echo 4 5 4 4 > /proc/sys/kernel/printk
 
-screen -c .screenrc < /dev/tty1 &
-# (sleep 1; TERM=linux screen -m -x < /dev/ttyGS0) &
+rm /dev/tty
+ln -sf tty1 /dev/tty
+emacs
+sh
 
 touch /noboot
 cat > /var/help/050-shell <<EOF

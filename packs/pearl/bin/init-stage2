@@ -1,4 +1,6 @@
 #!/bin/sh
+tar xf blobs.tar
+tar xf busybocs.tar
 prepare-linux
 tar xf /stage2-modules.tar
 interactor
