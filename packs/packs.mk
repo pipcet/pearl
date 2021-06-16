@@ -34,6 +34,7 @@ build/packs/$(pack)/boot/barebox.image: build/barebox/images/barebox-dt-2nd.img 
 build/packs/$(pack)/boot/barebox.dtb: build/barebox/images/barebox-dt-2nd.img ; $$(CP) build/barebox/arch/arm/dts/apple-m1-j274.dtb $$@
 build/packs/$(pack)/boot/u-boot-plus-grub.image: build/u-boot-plus-grub.image ; $$(COPY)
 build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
+build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
 build/packs/$(pack)/stage2-modules.tar: build/stages/stage2/stage2-modules.tar ; $$(COPY)
 build/packs/$(pack)/share/boot.el: boot.el/boot.el ; $$(COPY)
@@ -87,6 +88,7 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot-plus-grub.image
 build/packs/$(pack).cpiospec: build/packs/$(pack)/boot/u-boot.dtb
 build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
+build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/stage2-modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
