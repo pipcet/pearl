@@ -19,7 +19,6 @@ build/packs/$(pack)/%: packs/common/% ; $$(COPY)
 build/packs/$(pack)/%: packs/$(pack)/% ; $$(COPY)
 build/packs/$(pack)/bin/%: build/dt/bin/% ; $$(COPY)
 build/packs/$(pack)/bin/busybox: build/busybox/busybox; $$(COPY)
-build/packs/$(pack)/bin/kexec: build/kexec/kexec; $$(COPY)
 build/packs/$(pack)/bin/macho-image-fill: build/macho-image-fill ; $$(COPY)
 build/packs/$(pack)/bin/memtool: build/memtool/memtool ; $$(COPY)
 build/packs/$(pack)/bin/memdump-to-image: build/memdump/memdump-to-image ; $$(COPY)
@@ -60,7 +59,6 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/init-stage3
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor-menu
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/interactor-perl
-build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/kexec
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/linux
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-image-fill
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/macho-to-memdump
