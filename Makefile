@@ -29,21 +29,13 @@ build/debootstrap.macho: build/images/debootstrap/debootstrap.image.macho | buil
 
 include g/stampserver/stampserver.mk
 
-include dtc/dtc.mk
-
 include linux/linux.mk
-
-include deb/deb.mk
 
 include snippet/snippet.mk
 
 include macho-tools/macho-tools.mk
 
 include memdump/memdump.mk
-
-include busybox/busybox.mk
-
-include kexec/kexec.mk
 
 include dt/dt.mk
 
@@ -62,12 +54,8 @@ include grub/grub.mk
 
 include debootstrap/debootstrap.mk
 
-include memtool/memtool.mk
-
 # Utilities required experimentally
 include busybocs/busybocs.mk
-
-include emacs/emacs.mk
 
 # Stages, packs, images
 include stages/stages.mk
