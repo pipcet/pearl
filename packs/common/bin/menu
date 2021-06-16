@@ -1,0 +1,4 @@
+#!/bin/sh
+tar xf /emacs.tar
+tar xf /ncurses.tar
+/bin/emacs --load /share/boot.el --eval '(eval-buffer)'
