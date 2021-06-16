@@ -38,7 +38,6 @@ build/packs/$(pack)/boot/u-boot.dtb: build/u-boot/u-boot.dtb ; $$(COPY)
 build/packs/$(pack)/deb.tar: build/deb.tar ; $$(COPY)
 build/packs/$(pack)/modules.tar: build/stages/linux/linux-modules.tar ; $$(COPY)
 build/packs/$(pack)/stage2-modules.tar: build/stages/stage2/stage2-modules.tar ; $$(COPY)
-build/packs/$(pack)/emacs.tar: build/emacs/emacs.tar ; $$(COPY)
 build/packs/$(pack)/ncurses.tar: build/ncurses/ncurses.tar ; $$(COPY)
 build/packs/$(pack)/share/boot.el: boot.el/boot.el ; $$(COPY)
 build/packs/$(pack)/blobs.tar: build/blobs.tar ; $$(COPY)
@@ -95,7 +94,6 @@ build/packs/$(pack).cpiospec: build/packs/$(pack)/blobs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/deb.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/modules.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/stage2-modules.tar
-build/packs/$(pack).cpiospec: build/packs/$(pack)/emacs.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/ncurses.tar
 build/packs/$(pack).cpiospec: build/packs/$(pack)/init
 build/packs/$(pack).cpiospec: build/packs/$(pack)/bin/menu
