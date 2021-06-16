@@ -2,9 +2,9 @@ name: pearl
 on:
   workflow_dispatch:
   push:
-    branches: [ main, emacs ]
+    branches: [ main, emacs, busybocs ]
   pull_request:
-    branches: [ main, emacs ]
+    branches: [ main, emacs, busybocs ]
 jobs:
   all:
     name: all
