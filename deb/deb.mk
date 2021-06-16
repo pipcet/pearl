@@ -140,15 +140,7 @@ debs = libc perl dtc lvm mojo wifi dropbear screen
 build/deb.tar: \
 	$(libc-debs:%=build/deb/%.deb) \
 	$(perl-debs:%=build/deb/%.deb) \
-	$(dtc-debs:%=build/deb/%.deb) \
-	$(lvm-debs:%=build/deb/%.deb) \
-	$(mojo-debs:%=build/deb/%.deb) \
-	$(wifi-debs:%=build/deb/%.deb) \
-	$(dropbear-debs:%=build/deb/%.deb) \
-	$(screen-debs:%=build/deb/%.deb) \
-	$(dialog-debs:%=build/deb/%.deb) \
-	$(nvme-debs:%=build/deb/%.deb) \
-	$(procps-debs:%=build/deb/%.deb)
+	$(dtc-debs:%=build/deb/%.deb)
 	rm -rf build/deb-tmp build/deb-tmp-ar
 	$(MKDIR) build/deb-tmp build/deb-tmp-ar
 	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file build/deb-tmp; else ar -x $$file --output build/deb-tmp-ar && tar -C build/deb-tmp -axf build/deb-tmp-ar/data.tar.*; rm -rf build/deb-tmp-ar; fi; done
