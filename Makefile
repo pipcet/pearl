@@ -65,6 +65,8 @@ include debootstrap/debootstrap.mk
 include memtool/memtool.mk
 
 # Utilities required experimentally
+include busybocs/busybocs.mk
+
 include emacs/emacs.mk
 
 # Stages, packs, images
