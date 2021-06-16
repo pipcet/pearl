@@ -1,2 +1,2 @@
 #!/bin/sh
-kexec -fix ./pearl.image --dtb=/sys/firmware/fdt
+kexec --mem-max=0x900000000 -fix ./pearl.image --dtb=/sys/firmware/fdt
