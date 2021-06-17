@@ -77,3 +77,6 @@
 [submodule "userspace/nvme-cli/nvme-cli"]
 	path = userspace/nvme-cli/nvme-cli
 	url = https://github.com/linux-nvme/nvme-cli
+[submodule "userspace/libaio/libaio"]
+	path = userspace/libaio/libaio
+	url = https://pagure.io/libaio.git
