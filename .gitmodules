@@ -104,3 +104,7 @@
 [submodule "userspace/slurp/slurp"]
 	path = userspace/slurp/slurp
 	url = https://github.com/perhunter/slurp
+[submodule "userspace/perl/perl"]
+	path = userspace/perl/perl
+	url = https://github.com/pipcet/perl
+	branch = pearl
