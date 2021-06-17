@@ -29,3 +29,5 @@ jobs:
     - run: make -j3 build/done/glibc/stage1/install
     - run: make -j3 build/done/gcc/gcc/install
     - run: make -j3 build/done/glibc/glibc/install
+    - run: make -j3 build/done/busybox/install
+    - run: make -j3 build/done/kexec-tools/install
