@@ -47,3 +47,7 @@
 [submodule "userspace/kexec-tools/kexec-tools"]
 	path = userspace/kexec-tools/kexec-tools
 	url = https://github.com/horms/kexec-tools
+[submodule "toolchain/binutils-gdb/binutils-gdb"]
+	path = toolchain/binutils-gdb/binutils-gdb
+	url = https://github.com/pipcet/binutils-gdb
+	branch = pearl
