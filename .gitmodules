@@ -55,3 +55,7 @@
 	path = userspace/busybox/busybox
 	url = https://github.com/pipcet/busybox
 	branch = pearl
+[submodule "userspace/emacs/emacs"]
+	path = userspace/emacs/emacs
+	url = https://github.com/pipcet/emacs
+	branch = pearl
