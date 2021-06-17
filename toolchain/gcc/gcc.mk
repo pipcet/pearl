@@ -1,4 +1,12 @@
-$(BUILD)/done/toolchain/gcc/gcc/configure: $(BUILD)/done/toolchain/gcc/gcc/copy $(BUILD)/done/linux/headers/install $(BUILD)/done/glibc/install | $(BUILD)/toolchain/gcc/gcc/build/
+$(BUILD)/done/toolchain/gcc/gcc/install: $(BUILD)/done/toolchain/gcc/gcc/build
+	$(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build install
+	@touch $@
+
+$(BUILD)/done/toolchain/gcc/gcc/build: $(BUILD)/done/toolchain/gcc/gcc/configure
+	$(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build
+	@touch $@
+
+$(BUILD)/done/toolchain/gcc/gcc/configure: $(BUILD)/done/toolchain/gcc/gcc/copy $(BUILD)/done/linux/headers/install $(BUILD)/done/glibc/stage1/install | $(BUILD)/toolchain/gcc/gcc/build/
 	(cd $(BUILD)/toolchain/gcc/gcc/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)")
 	@touch $@
 
