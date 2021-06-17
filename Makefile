@@ -11,6 +11,11 @@ CROSS_CFLAGS = -Os --sysroot=$(BUILD)/install -B$(BUILD)/install -L$(BUILD)/inst
 CROSS_CC = $(BUILD)/install/bin/aarch64-linux-gnu-gcc
 CROSS_PATH = $(BUILD)/install/bin
 
+define COPY
+	$(MKDIR) -p $(dir $@)
+	$(CP) -a $< $@
+endef
+
 all:
 
 %/:
