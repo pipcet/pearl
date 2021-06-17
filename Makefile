@@ -39,6 +39,7 @@ $(BUILD)/done/install/mkdir: | $(BUILD)/done/install/
 	mkdir -p $(BUILD)/install $(BUILD)/install/include
 	ln -sf . $(BUILD)/install/usr
 	ln -sf . $(BUILD)/install/local
+	ln -sf bin $(BUILD)/install/sbin
 	touch $@
 
 build/%: $(PWD)/build/%
