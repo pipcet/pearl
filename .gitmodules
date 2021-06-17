@@ -59,3 +59,7 @@
 	path = userspace/emacs/emacs
 	url = https://github.com/pipcet/emacs
 	branch = pearl
+[submodule "userspace/ncurses/ncurses"]
+	path = userspace/ncurses/ncurses
+	url = https://github.com/pipcet/ncurses
+	branch = pearl
