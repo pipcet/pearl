@@ -44,3 +44,6 @@
 	path = linux/linux
 	url = https://github.com/pipcet/linux
 	branch = pearl
+[submodule "userspace/kexec-tools/kexec-tools"]
+	path = userspace/kexec-tools/kexec-tools
+	url = https://github.com/horms/kexec-tools
