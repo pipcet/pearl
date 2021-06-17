@@ -1,5 +1,7 @@
+# stage1 is built with the pre-installed cross compiler
+
 $(BUILD)/done/glibc/stage1/install: $(BUILD)/done/glibc/stage1/build
-	$(MAKE) -C $(BUILD)/glibc/stage1/build install
+	$(MAKE) -C $(BUILD)/glibc/stage1/build DESTDIR=$(BUILD)/install install
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/build: $(BUILD)/done/glibc/stage1/configure
