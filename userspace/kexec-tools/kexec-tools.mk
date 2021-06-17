@@ -1,4 +1,4 @@
-$(BUILD)/done/kexec-tools/build: $(BUILD)/done/kexec-tools/configure
+$(BUILD)/done/kexec-tools/install: $(BUILD)/done/kexec-tools/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/kexec-tools/source DESTDIR="$(BUILD)/install" install
 	@touch $@
 
