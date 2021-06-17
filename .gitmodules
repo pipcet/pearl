@@ -51,3 +51,7 @@
 	path = toolchain/binutils-gdb/binutils-gdb
 	url = https://github.com/pipcet/binutils-gdb
 	branch = pearl
+[submodule "userspace/busybox/busybox"]
+	path = userspace/busybox/busybox
+	url = https://github.com/pipcet/busybox
+	branch = pearl
