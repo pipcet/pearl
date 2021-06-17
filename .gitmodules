@@ -108,3 +108,6 @@
 	path = userspace/perl/perl
 	url = https://github.com/pipcet/perl
 	branch = pearl
+[submodule "userspace/wpa/wpa"]
+	path = userspace/wpa/wpa
+	url = https://salsa.debian.org/debian/wpa.git
