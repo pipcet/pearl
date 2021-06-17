@@ -98,3 +98,6 @@
 [submodule "userspace/dtc/dtc"]
 	path = userspace/dtc/dtc
 	url = https://github.com/pipcet/dtc
+[submodule "userspace/IPC-Run/IPC-Run"]
+	path = userspace/IPC-Run/IPC-Run
+	url = https://github.com/toddr/IPC-Run
