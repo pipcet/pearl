@@ -63,3 +63,6 @@
 	path = userspace/ncurses/ncurses
 	url = https://github.com/pipcet/ncurses
 	branch = pearl
+[submodule "userspace/cryptsetup/cryptsetup"]
+	path = userspace/cryptsetup/cryptsetup
+	url = https://gitlab.com/cryptsetup/cryptsetup
