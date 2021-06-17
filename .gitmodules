@@ -95,3 +95,6 @@
 [submodule "userspace/json-c/json-c"]
 	path = userspace/json-c/json-c
 	url = https://github.com/json-c/json-c
+[submodule "userspace/dtc/dtc"]
+	path = userspace/dtc/dtc
+	url = https://github.com/pipcet/dtc
