@@ -1,9 +1,9 @@
 $(BUILD)/done/perl/install: $(BUILD)/done/perl/build
-	$(NATIVE_CODE_ENV) $(MAKE) -C $(BUILD)/perl/build install
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/perl/build install
 	@touch $@
 
 $(BUILD)/done/perl/build: $(BUILD)/done/perl/configure
-	$(NATIVE_CODE_ENV) $(MAKE) -C $(BUILD)/perl/build
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/perl/build
 	@touch $@
 
 $(BUILD)/done/perl/configure: $(BUILD)/done/perl/copy $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
