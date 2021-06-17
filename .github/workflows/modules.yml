@@ -14,7 +14,7 @@ jobs:
       with:
         submodules: recursive
     - name: Set env variables
-      uses: ./github/env/
+      uses: ./g/github/env/
     - run: sudo apt-get install gcc-aarch64-linux-gnu
     - run: sudo apt-get install binutils-aarch64-linux-gnu
     - run: sudo apt-get install g++-aarch64-linux-gnu
@@ -23,3 +23,4 @@ jobs:
     - run: sudo apt-get install lzop
     - run: sudo apt-get install libipc-run-perl
     - run: make -j3 build/done/toolchain/gcc/stage1/install
+    - run: make -j3 build/done/linux/headers/install
