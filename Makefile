@@ -20,7 +20,7 @@ include toolchain/toolchain.mk
 
 include linux/linux.mk
 
-include userspace/usperspace.mk
+include userspace/userspace.mk
 
 include local/local.mk
 
