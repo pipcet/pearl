@@ -1,4 +1,4 @@
-name: pearl
+name: modules
 on:
   workflow_dispatch:
   push:
