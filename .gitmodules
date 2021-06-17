@@ -70,3 +70,7 @@
 	path = userspace/lvm2/lvm2
 	url = https://github.com/pipcet/lvm2
 	branch = pearl
+[submodule "userspace/memtool/memtool"]
+	path = userspace/memtool/memtool
+	url = https://github.com/pipcet/memtool
+	branch = pearl
