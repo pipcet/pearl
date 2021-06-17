@@ -80,3 +80,6 @@
 [submodule "userspace/libaio/libaio"]
 	path = userspace/libaio/libaio
 	url = https://pagure.io/libaio.git
+[submodule "userspace/util-linux/util-linux"]
+	path = userspace/util-linux/util-linux
+	url = https://salsa.debian.org/debian/util-linux
