@@ -36,3 +36,7 @@
 	path = toolchain/gcc/gcc
 	url = https://github.com/pipcet/gcc
 	branch = pearl
+[submodule "userspace/glibc/glibc"]
+	path = userspace/glibc/glibc
+	url = https://github.com/pipcet/glibc
+	branch = pearl

@@ -20,6 +20,8 @@ include toolchain/toolchain.mk
 
 include linux/linux.mk
 
+include userspace/usperspace.mk
+
 include local/local.mk
 
 include bootloaders/bootloaders.mk
