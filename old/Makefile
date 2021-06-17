@@ -1,12 +1,3 @@
-CROSS_COMPILE ?= aarch64-linux-gnu-
-MKDIR ?= mkdir -p
-CP ?= cp
-CAT ?= cat
-TAR ?= tar
-PWD = $(shell pwd)
-SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
-NATIVE_TRIPLE ?= amd64-linux-gnu
-
 include lib/lib.mk
 
 # INCLUDE_DEBOOTSTRAP = t
