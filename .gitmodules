@@ -92,3 +92,6 @@
 [submodule "userspace/popt/popt"]
 	path = userspace/popt/popt
 	url = https://github.com/rpm-software-management/popt
+[submodule "userspace/json-c/json-c"]
+	path = userspace/json-c/json-c
+	url = https://github.com/json-c/json-c
