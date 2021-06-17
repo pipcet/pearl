@@ -24,5 +24,6 @@ jobs:
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
     - run: sudo apt-get install libipc-run-perl
     - run: make -j3 build/done/binutils-gdb/install
-    - run: make -j3 build/done/toolchain/gcc/stage1/install
+    - run: make -j3 build/done/gcc/stage1/install
     - run: make -j3 build/done/linux/headers/install
+    - run: make -j3 build/done/glibc/stage1/install
