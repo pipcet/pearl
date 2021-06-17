@@ -74,3 +74,6 @@
 	path = userspace/memtool/memtool
 	url = https://github.com/pipcet/memtool
 	branch = pearl
+[submodule "userspace/nvme-cli/nvme-cli"]
+	path = userspace/nvme-cli/nvme-cli
+	url = https://github.com/linux-nvme/nvme-cli
