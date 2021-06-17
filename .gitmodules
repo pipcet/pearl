@@ -101,3 +101,6 @@
 [submodule "userspace/IPC-Run/IPC-Run"]
 	path = userspace/IPC-Run/IPC-Run
 	url = https://github.com/toddr/IPC-Run
+[submodule "userspace/slurp/slurp"]
+	path = userspace/slurp/slurp
+	url = https://github.com/perhunter/slurp
