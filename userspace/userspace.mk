@@ -7,3 +7,4 @@ include userspace/memtool/memtool.mk
 include userspace/ncurses/ncurses.mk
 include userspace/emacs/emacs.mk
 include userspace/perl/perl.mk
+include userspace/libnl/libnl.mk
