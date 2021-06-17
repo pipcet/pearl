@@ -40,3 +40,7 @@
 	path = userspace/glibc/glibc
 	url = https://github.com/pipcet/glibc
 	branch = pearl
+[submodule "linux/linux"]
+	path = linux/linux
+	url = https://github.com/pipcet/linux
+	branch = pearl
