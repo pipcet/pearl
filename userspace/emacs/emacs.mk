@@ -1,5 +1,5 @@
 $(BUILD)/done/emacs/cross/install: $(BUILD)/done/emacs/cross/build
-	$(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/install install
+	$(NATIVE_CODE_ENV) $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/install install
 	@touch $@
 
 $(BUILD)/done/emacs/cross/build: $(BUILD)/done/emacs/cross/configure
