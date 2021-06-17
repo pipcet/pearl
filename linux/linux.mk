@@ -1,4 +1,4 @@
-$(BUILD)/done/linux/headers/install: $(BUILD)/done/linux/headers/copy $(BUILD)/done/toolchain/gcc/stage1/install
+$(BUILD)/done/linux/headers/install: $(BUILD)/done/linux/headers/copy $(BUILD)/done/gcc/stage1/install
 	$(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/install headers_install
 	@touch $@
 
