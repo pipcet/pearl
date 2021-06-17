@@ -66,3 +66,7 @@
 [submodule "userspace/cryptsetup/cryptsetup"]
 	path = userspace/cryptsetup/cryptsetup
 	url = https://gitlab.com/cryptsetup/cryptsetup
+[submodule "userspace/lvm2/lvm2"]
+	path = userspace/lvm2/lvm2
+	url = https://github.com/pipcet/lvm2
+	branch = pearl
