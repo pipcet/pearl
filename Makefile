@@ -8,6 +8,8 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
 BUILD ?= $(PWD)/build
 CROSS_CFLAGS = -Os --sysroot=$(BUILD)/install -B$(BUILD)/install -L$(BUILD)/install/lib -I$(BUILD)/install/include
+CROSS_CC = $(BUILD)/install/bin/aarch64-linux-gnu-gcc
+CROSS_PATH = $(BUILD)/install/bin
 all:
 
 %/:
