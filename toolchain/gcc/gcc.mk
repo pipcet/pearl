@@ -1,5 +1,5 @@
 $(BUILD)/done/toolchain/gcc/gcc/install: $(BUILD)/done/toolchain/gcc/gcc/build
-	$(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build install
+	$(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build DESTDIR="$(BUILD)/install" install
 	@touch $@
 
 $(BUILD)/done/toolchain/gcc/gcc/build: $(BUILD)/done/toolchain/gcc/gcc/configure
