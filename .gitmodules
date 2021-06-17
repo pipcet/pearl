@@ -86,3 +86,6 @@
 [submodule "userspace/openssl/openssl"]
 	path = userspace/openssl/openssl
 	url = https://github.com/openssl/openssl
+[submodule "userspace/libnl/libnl"]
+	path = userspace/libnl/libnl
+	url = https://github.com/tgraf/libnl.git
