@@ -17,3 +17,12 @@ clean:
 	rm -rf build
 
 include toolchain/toolchain.mk
+
+include linux/linux.mk
+
+include local/local.mk
+
+include bootloaders/bootloaders.mk
+
+build/%: $(PWD)/build/%
+	@true

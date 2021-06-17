@@ -32,3 +32,7 @@
 	path = submodule/barebox
 	url = https://github.com/pipcet/barebox
 	branch = pearl
+[submodule "toolchain/gcc/gcc"]
+	path = toolchain/gcc/gcc
+	url = https://github.com/pipcet/gcc
+	branch = pearl
