@@ -8,8 +8,8 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
 BUILD ?= $(PWD)/build
 CROSS_CFLAGS = -Os --sysroot=$(BUILD)/install -B$(BUILD)/install -L$(BUILD)/install/lib -I$(BUILD)/install/include
-CROSS_CC = $(BUILD)/install/bin/aarch64-linux-gnu-gcc
-CROSS_PATH = $(BUILD)/install/bin
+CROSS_CC = $(BUILD)/toolchain/bin/aarch64-linux-gnu-gcc
+CROSS_PATH = $(BUILD)/toolchain/bin
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/install LD_LIBRARY_PATH=$(BUILD)/install/lib
 
 define COPY

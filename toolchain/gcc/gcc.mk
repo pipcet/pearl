@@ -27,5 +27,5 @@ $(BUILD)/done/gcc/stage1/configure: $(BUILD)/done/gcc/stage1/copy $(BUILD)/done/
 	@touch $@
 
 $(BUILD)/done/gcc/stage1/copy: | $(BUILD)/done/gcc/stage1/ $(BUILD)/gcc/stage1/source/
-	$(CP) -a toolchain/gcc/gcc/* $(BUILD)/gcc/stage1/source/
+	$(CP) -a toolchain/gcc/gcc/* $(BUILD:$(PWD)/%=%)/gcc/stage1/source/
 	@touch $@

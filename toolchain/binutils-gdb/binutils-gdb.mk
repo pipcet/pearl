@@ -1,5 +1,5 @@
 $(BUILD)/done/binutils-gdb/install: $(BUILD)/done/binutils-gdb/build
-	$(MAKE) -C $(BUILD)/binutils-gdb/source DESTDIR=$(BUILD)/toolchain install
+	$(MAKE) -C $(BUILD)/binutils-gdb/source install
 	@touch $@
 
 $(BUILD)/done/binutils-gdb/build: $(BUILD)/done/binutils-gdb/configure

@@ -3,7 +3,7 @@ $(BUILD)/done/busybox/menuconfig: $(BUILD)/done/busybox/configure
 	$(CP) $(BUILD)/busybox/build/.config userspace/busybox/busybox.config
 
 $(BUILD)/done/busybox/install: $(BUILD)/done/busybox/build
-	$(MAKE) -C $(BUILD)/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" install
 	@touch $@
 
 $(BUILD)/done/busybox/build: $(BUILD)/done/busybox/configure
