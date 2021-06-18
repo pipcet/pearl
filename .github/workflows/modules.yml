@@ -34,6 +34,12 @@ jobs:
     - run: make -j3 build/done/perl/install
     - run: make -j3 build/done/libnl/install
     - run: make -j3 build/done/memtool/install
+    - run: make -j3 build/done/libuiid/install
+    - run: make -j3 build/done/json-c/install
+    - run: make -j3 build/done/popt/install
+    - run: make -j3 build/done/libblkid/install
+    - run: make -j3 build/done/lvm2/install
+    - run: make -j3 build/done/openssl/install
     - run: make -j3 build/done/cryptsetup/install
     - run: make -j3 build/done/lvm2/install
     - run: make -j3 build/done/nvme-cli/install

@@ -82,7 +82,7 @@
 	url = https://pagure.io/libaio.git
 [submodule "userspace/util-linux/util-linux"]
 	path = userspace/util-linux/util-linux
-	url = https://git.kernel.org/pub/scm/utils/util-linux/util-linux.git
+	url = https://github.com/pipcet/util-linux
 [submodule "userspace/openssl/openssl"]
 	path = userspace/openssl/openssl
 	url = https://github.com/openssl/openssl

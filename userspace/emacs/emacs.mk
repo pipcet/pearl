@@ -1,13 +1,13 @@
 $(BUILD)/done/emacs/cross/install: $(BUILD)/done/emacs/cross/build
-	$(NATIVE_CODE_ENV) $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/install install
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/install install
 	@touch $@
 
 $(BUILD)/done/emacs/cross/build: $(BUILD)/done/emacs/cross/configure
-	$(NATIVE_CODE_ENV) $(MAKE) -C $(BUILD)/emacs/cross/
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross/
 	@touch $@
 
 $(BUILD)/done/emacs/cross/configure: $(BUILD)/done/emacs/cross/copy $(BUILD)/done/gcc/gcc/install $(BUILD)/done/glibc/glibc/install $(BUILD)/done/ncurses/install
-	(cd $(BUILD)/emacs/cross; ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
+	(cd $(BUILD)/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	@touch $@
 
 $(BUILD)/done/emacs/cross/copy: $(BUILD)/done/emacs/native/build | $(BUILD)/done/emacs/cross/ $(BUILD)/emacs/cross/

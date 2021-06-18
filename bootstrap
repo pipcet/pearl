@@ -1,0 +1,4 @@
+#!/bin/sh
+git submodule update --init --recursive || exit 1
+while ! ./g/bin/install-remotes < g/remotes.txt; do sleep 1; done
+git submodule foreach --recursive git fetch --all
