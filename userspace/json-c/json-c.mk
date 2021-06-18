@@ -6,7 +6,7 @@ $(BUILD)/json-c/done/build: $(BUILD)/json-c/done/configure
 	PATH="$(BUILD)/toolchain/bin:$$PATH" $(MAKE) -C $(BUILD)/json-c/build
 	@touch $@
 
-$(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
+$(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
 	(cd $(BUILD)/json-c/build; cmake -DCMAKE_LINKER=$(BUILD)/toolchain/bin/aarch64-linux-gnu-ld -DCMAKE_SHARED_LINKER=$(BUILD)/toolchain/bin/aarch64-linux-gnu-ld -DCMAKE_C_COMPILER=$(BUILD)/toolchain/bin/aarch64-linux-gnu-gcc -DCMAKE_C_FLAGS="-I$(BUILD)/install/include -L$(BUILD)/install/lib --sysroot=$(BUILD)/install" .)
 	@touch $@
 

@@ -6,7 +6,7 @@ $(BUILD)/emacs/done/cross/build: $(BUILD)/emacs/done/cross/configure
 	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross/
 	@touch $@
 
-$(BUILD)/emacs/done/cross/configure: $(BUILD)/emacs/done/cross/copy $(BUILD)/done/gcc/gcc/install $(BUILD)/done/glibc/glibc/install $(BUILD)/done/ncurses/install
+$(BUILD)/emacs/done/cross/configure: $(BUILD)/emacs/done/cross/copy $(BUILD)/gcc/done/gcc/install $(BUILD)/glibc/done/glibc/install $(BUILD)/ncurses/done/install
 	(cd $(BUILD)/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	@touch $@
 
