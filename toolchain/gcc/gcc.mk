@@ -1,5 +1,5 @@
 $(BUILD)/done/gcc/gcc/install: $(BUILD)/done/gcc/gcc/build
-	$(MAKE) -C $(BUILD)/gcc/gcc/build DESTDIR="$(BUILD)/install" install
+	$(MAKE) -C $(BUILD)/gcc/gcc/build DESTDIR="$(BUILD)/toolchain" install
 	@touch $@
 
 $(BUILD)/done/gcc/gcc/build: $(BUILD)/done/gcc/gcc/configure
@@ -23,7 +23,7 @@ $(BUILD)/done/gcc/stage1/build: $(BUILD)/done/gcc/stage1/configure
 	@touch $@
 
 $(BUILD)/done/gcc/stage1/configure: $(BUILD)/done/gcc/stage1/copy $(BUILD)/done/install/mkdir $(BUILD)/done/binutils-gdb/install | $(BUILD)/gcc/stage1/build/
-	(cd $(BUILD)/gcc/stage1/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c --disable-libcc1 --disable-shared --disable-nls --disable-threads --disable-bootstrap --prefix="$(BUILD)/install" --with-sysroot="$(BUILD)/install" --disable-libgcc --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --with-build-sysroot="$(BUILD)/install" --disable-c++tools)
+	(cd $(BUILD)/gcc/stage1/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c --disable-libcc1 --disable-shared --disable-nls --disable-threads --disable-bootstrap --prefix="$(BUILD)/toolchain" --with-sysroot="$(BUILD)/install" --disable-libgcc --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --with-build-sysroot="$(BUILD)/install" --disable-c++tools)
 	@touch $@
 
 $(BUILD)/done/gcc/stage1/copy: | $(BUILD)/done/gcc/stage1/ $(BUILD)/gcc/stage1/source/
