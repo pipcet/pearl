@@ -1,13 +1,13 @@
 $(BUILD)/done/openssl/install: $(BUILD)/done/openssl/build
-	$(MAKE) -C $(BUILD)/openssl/build install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/openssl/build install
 	@touch $@
 
 $(BUILD)/done/openssl/build: $(BUILD)/done/openssl/configure
-	$(MAKE) -C $(BUILD)/openssl/build CFLAGS="$(CROSS_CFLAGS)"
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/openssl/build CFLAGS="$(CROSS_CFLAGS)"
 	@touch $@
 
 $(BUILD)/done/openssl/configure: $(BUILD)/done/openssl/copy
-	(cd $(BUILD)/openssl/build/; CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(BUILD)/install)
+	(cd $(BUILD)/openssl/build/; PATH="$(CROSS_PATH):$$PATH" CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(BUILD)/install)
 	@touch $@
 
 $(BUILD)/done/openssl/copy: | $(BUILD)/done/openssl/ $(BUILD)/openssl/build/
