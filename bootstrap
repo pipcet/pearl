@@ -6,10 +6,8 @@ make -j13 build/done/binutils-gdb/install
 make -j13 build/done/gcc/stage1/install
 make -j13 build/done/linux/headers/install
 make -j13 build/done/glibc/stage1/install
-make -j13 build/install-stage1.tar{artifact}
 make -j13 build/done/gcc/gcc/install
 make -j13 build/done/glibc/glibc/install
-make -j13 build/install-stage2.tar{artifact}
 make -j13 build/done/busybox/install
 make -j13 build/done/kexec-tools/install
 make -j13 build/done/ncurses/install
@@ -26,7 +24,6 @@ make -j13 build/done/lvm2/install
 make -j13 build/done/openssl/install
 make -j13 build/done/cryptsetup/install
 make -j13 build/done/nvme-cli/install
-make -j13 build/install-userspace.tar{artifact}
 make -j13 build/done/linux/linux/image
 make -j13 build/done/linux/linux/modules
 make -j13 build/done/linux/stage2/image
