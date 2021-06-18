@@ -20,7 +20,6 @@ jobs:
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
     - run: sudo apt-get install libipc-run-perl
     - run: make -j13 build/binutils-gdb/done/install
-    - run: make -j13 build/gcc/done/stage1/install
     - run: make -j13 build/linux/done/headers/install
     - run: make -j13 build/glibc/done/stage1/install
     - run: make -j13 build/install-stage1.tar{artifact}
