@@ -29,3 +29,9 @@ $(BUILD)/done/gcc/stage1/configure: $(BUILD)/done/gcc/stage1/copy $(BUILD)/done/
 $(BUILD)/done/gcc/stage1/copy: | $(BUILD)/done/gcc/stage1/ $(BUILD)/gcc/stage1/source/
 	$(CP) -a toolchain/gcc/gcc/* $(BUILD:$(PWD)/%=%)/gcc/stage1/source/
 	@touch $@
+
+$(BUILD)/done/gcc/stage1/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/done/gcc/stage1/
+	@touch $@
+
+$(BUILD)/done/gcc/gcc/checkout: $(BUILD)/done/gcc/stage1/checkout
+	@touch $@

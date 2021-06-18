@@ -13,3 +13,6 @@ $(BUILD)/done/binutils-gdb/configure: $(BUILD)/done/binutils-gdb/copy
 $(BUILD)/done/binutils-gdb/copy: | $(BUILD)/binutils-gdb/source/ $(BUILD)/done/binutils-gdb/
 	$(CP) -a toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/binutils-gdb/source/
 	@touch $@
+
+$(BUILD)/done/binutils-gdb/checkout: toolchain/binutils-gdb/binutils-gdb{checkout}
+	@touch $@
