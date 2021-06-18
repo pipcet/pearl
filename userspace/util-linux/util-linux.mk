@@ -12,7 +12,7 @@ $(BUILD)/done/libuuid/configure: $(BUILD)/done/libuuid/copy $(BUILD)/done/glibc/
 	@touch $@
 
 $(BUILD)/done/libuuid/copy: | $(BUILD)/done/libuuid/ $(BUILD)/libuuid/build/
-	cp -a userspace/util-linux/* $(BUILD)/libuuid/build/
+	cp -a userspace/util-linux/util-linux/* $(BUILD)/libuuid/build/
 	@touch $@
 
 $(BUILD)/done/libblkid/install: $(BUILD)/done/libblkid/build
