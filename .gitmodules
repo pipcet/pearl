@@ -119,3 +119,7 @@
 	path = bootloaders/barebox/barebox
 	url = https://github.com/pipcet/barebox
 	branch = pearl
+[submodule "bootloaders/u-boot/u-boot"]
+	path = bootloaders/u-boot/u-boot
+	url = https://github.com/pipcet/uboot
+	branch = pearl
