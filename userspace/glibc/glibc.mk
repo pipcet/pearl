@@ -32,5 +32,20 @@ $(BUILD)/glibc/done/stage1/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/s
 	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/stage1/source/
 	@touch $@
 
+$(BUILD)/glibc/done/headers/install: $(BUILD)/glibc/done/headers/build
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/headers/build DESTDIR=$(BUILD)/install install-headers
+	@touch $@
+
+$(BUILD)/glibc/done/headers/build: $(BUILD)/glibc/done/headers/configure
+	@touch $@
+
+$(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy | $(BUILD)/glibc/headers/build/
+	(cd $(BUILD)/glibc/headers/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
+	@touch $@
+
+$(BUILD)/glibc/done/headers/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/headers/source/ $(BUILD)/glibc/done/headers/
+	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/headers/source/
+	@touch $@
+
 $(BUILD)/glibc/done/checkout: userspace/glibc/glibc{checkout} | $(BUILD)/glibc/done/
 	@touch $@
