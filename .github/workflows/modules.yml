@@ -34,4 +34,6 @@ jobs:
     - run: make -j3 build/done/ncurses/install
     - run: make -j3 build/done/emacs/cross/install
     - run: make -j3 build/done/perl/install
+    - run: make -j3 build/done/libnl/install
+    - run: make -j3 build/done/memtool/install
     - run: make -j3 build/install.tar{artifact}

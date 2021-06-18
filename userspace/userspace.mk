@@ -8,3 +8,7 @@ include userspace/ncurses/ncurses.mk
 include userspace/emacs/emacs.mk
 include userspace/perl/perl.mk
 include userspace/libnl/libnl.mk
+include userspace/cryptsetup/cryptsetup.mk
+include userspace/util-linux/util-linux.mk
+include userspace/json-c/json-c.mk
+include userspace/popt/popt.mk
