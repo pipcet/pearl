@@ -33,5 +33,5 @@ jobs:
     - run: make -j3 build/done/kexec-tools/install
     - run: make -j3 build/done/ncurses/install
     - run: make -j3 build/done/emacs/cross/install
-    . run: make -j3 build/done/perl/install
+    - run: make -j3 build/done/perl/install
     - run: make -j3 build/install.tar{artifact}
