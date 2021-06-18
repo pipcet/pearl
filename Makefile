@@ -49,4 +49,9 @@ $(BUILD)/done/install/mkdir: | $(BUILD)/done/install/ $(BUILD)/install/include/ 
 build/%: $(PWD)/build/%
 	@true
 
+%.dts.h: %.dts dtc/dtc-relocs
+	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
+
 .PHONY: %}
+
+.SECONDARY:
