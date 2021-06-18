@@ -36,4 +36,5 @@ jobs:
     - run: make -j3 build/done/perl/install
     - run: make -j3 build/done/libnl/install
     - run: make -j3 build/done/memtool/install
+    - run: make -j3 build/done/cryptsetup/install
     - run: make -j3 build/install.tar{artifact}
