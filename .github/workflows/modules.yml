@@ -15,10 +15,6 @@ jobs:
         submodules: recursive
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install gcc-aarch64-linux-gnu
-    - run: sudo apt-get install binutils-aarch64-linux-gnu
-    - run: sudo apt-get install g++-aarch64-linux-gnu
-    - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install autopoint
     - run: sudo apt-get install lzop
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
@@ -30,6 +26,7 @@ jobs:
     - run: make -j3 build/install-stage1.tar{artifact}
     - run: make -j3 build/done/gcc/gcc/install
     - run: make -j3 build/done/glibc/glibc/install
+    - run: make -j3 build/install-stage2.tar{artifact}
     - run: make -j3 build/done/busybox/install
     - run: make -j3 build/done/kexec-tools/install
     - run: make -j3 build/done/ncurses/install
@@ -38,4 +35,11 @@ jobs:
     - run: make -j3 build/done/libnl/install
     - run: make -j3 build/done/memtool/install
     - run: make -j3 build/done/cryptsetup/install
-    - run: make -j3 build/install.tar{artifact}
+    - run: make -j3 build/done/lvm2/install
+    - run: make -j3 build/done/nvme-cli/install
+    - run: make -j3 build/install-userspace.tar{artifact}
+    - run: make -j3 build/done/linux/linux/image
+    - run: make -j3 build/done/linux/linux/modules
+    - run: make -j3 build/done/linux/stage2/image
+    - run: make -j3 build/done/linux/stage2/modules
+    - run: make -j3 build/done/linux/stage1/image
