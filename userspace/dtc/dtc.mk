@@ -1,19 +1,19 @@
-$(BUILD)/done/dtc/install: $(BUILD)/done/dtc/build
+$(BUILD)/dtc/done/install: $(BUILD)/dtc/done/build
 	$(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/install" CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build install
 	@touch $@
 
-$(BUILD)/done/dtc/build: $(BUILD)/done/dtc/configure
+$(BUILD)/dtc/done/build: $(BUILD)/dtc/done/configure
 	$(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/install" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build
 	@touch $@
 
-$(BUILD)/done/dtc/configure: $(BUILD)/done/dtc/copy
+$(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy
 	@touch $@
 
-$(BUILD)/done/dtc/copy: $(BUILD)/done/dtc/checkout | $(BUILD)/done/dtc/ $(BUILD)/dtc/build/
+$(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)/dtc/build/
 	cp -a userspace/dtc/dtc/* $(BUILD)/dtc/build/
 	@touch $@
 
-$(BUILD)/done/dtc/checkout: userspace/dtc/dtc{checkout} | $(BUILD)/done/dtc/
+$(BUILD)/dtc/done/checkout: userspace/dtc/dtc{checkout} | $(BUILD)/dtc/done/
 	@touch $@
 
 DTC ?= dtc

@@ -1,36 +1,36 @@
-$(BUILD)/done/libuuid/install: $(BUILD)/done/libuuid/build
+$(BUILD)/libuuid/done/install: $(BUILD)/libuuid/done/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libuuid/build DESTDIR=$(BUILD)/install install
 	@touch $@
 
-$(BUILD)/done/libuuid/build: $(BUILD)/done/libuuid/configure
+$(BUILD)/libuuid/done/build: $(BUILD)/libuuid/done/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libuuid/build
 	@touch $@
 
-$(BUILD)/done/libuuid/configure: $(BUILD)/done/libuuid/copy $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
+$(BUILD)/libuuid/done/configure: $(BUILD)/libuuid/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
 	(cd $(BUILD)/libuuid/build; PATH="$(CROSS_PATH):$$PATH" autoreconf -fi)
 	(cd $(BUILD)/libuuid/build; PATH="$(CROSS_PATH):$$PATH" ./configure --disable-all-programs --enable-libuuid --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/install/lib")
 	@touch $@
 
-$(BUILD)/done/libuuid/copy: $(BUILD)/done/util-linux/checkout | $(BUILD)/done/libuuid/ $(BUILD)/libuuid/build/
+$(BUILD)/libuuid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libuuid/done/ $(BUILD)/libuuid/build/
 	cp -a userspace/util-linux/util-linux/* $(BUILD)/libuuid/build/
 	@touch $@
 
-$(BUILD)/done/libblkid/install: $(BUILD)/done/libblkid/build
+$(BUILD)/libblkid/done/install: $(BUILD)/libblkid/done/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libblkid/build DESTDIR=$(BUILD)/install install
 	@touch $@
 
-$(BUILD)/done/libblkid/build: $(BUILD)/done/libblkid/configure
+$(BUILD)/libblkid/done/build: $(BUILD)/libblkid/done/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libblkid/build
 	@touch $@
 
-$(BUILD)/done/libblkid/configure: $(BUILD)/done/libblkid/copy $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
+$(BUILD)/libblkid/done/configure: $(BUILD)/libblkid/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
 	(cd $(BUILD)/libblkid/build; PATH="$(CROSS_PATH):$$PATH" autoreconf -fi)
 	(cd $(BUILD)/libblkid/build; PATH="$(CROSS_PATH):$$PATH" ./configure --disable-all-programs --enable-libblkid --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/install/lib")
 	@touch $@
 
-$(BUILD)/done/libblkid/copy: $(BUILD)/done/util-linux/checkout | $(BUILD)/done/libblkid/ $(BUILD)/libblkid/build/
+$(BUILD)/libblkid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libblkid/done/ $(BUILD)/libblkid/build/
 	cp -a userspace/util-linux/util-linux/* $(BUILD)/libblkid/build/
 	@touch $@
 
-$(BUILD)/done/util-linux/checkout: userspace/util-linux/util-linux{checkout} | $(BUILD)/done/util-linux/
+$(BUILD)/util-linux/done/checkout: userspace/util-linux/util-linux{checkout} | $(BUILD)/util-linux/done/
 	@touch $@

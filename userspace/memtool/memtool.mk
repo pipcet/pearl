@@ -1,19 +1,19 @@
-$(BUILD)/done/memtool/install: $(BUILD)/done/memtool/build
+$(BUILD)/memtool/done/install: $(BUILD)/memtool/done/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/memtool/build install
 	@touch $@
 
-$(BUILD)/done/memtool/build: $(BUILD)/done/memtool/configure
+$(BUILD)/memtool/done/build: $(BUILD)/memtool/done/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/memtool/build
 	@touch $@
 
-$(BUILD)/done/memtool/configure: $(BUILD)/done/memtool/copy
+$(BUILD)/memtool/done/configure: $(BUILD)/memtool/done/copy
 	(cd $(BUILD)/memtool/build; PATH="$(CROSS_PATH):$$PATH" autoreconf -ivf)
 	(cd $(BUILD)/memtool/build; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix="$(BUILD)/install" CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
 
-$(BUILD)/done/memtool/copy: $(BUILD)/done/memtool/checkout | $(BUILD)/done/memtool/ $(BUILD)/memtool/build/
+$(BUILD)/memtool/done/copy: $(BUILD)/memtool/done/checkout | $(BUILD)/memtool/done/ $(BUILD)/memtool/build/
 	$(CP) -a userspace/memtool/memtool/* $(BUILD)/memtool/build/
 	@touch $@
 
-$(BUILD)/done/memtool/checkout: userspace/memtool/memtool{checkout} | $(BUILD)/done/memtool/
+$(BUILD)/memtool/done/checkout: userspace/memtool/memtool{checkout} | $(BUILD)/memtool/done/
 	@touch $@

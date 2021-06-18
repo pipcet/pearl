@@ -1,18 +1,18 @@
-$(BUILD)/done/binutils-gdb/install: $(BUILD)/done/binutils-gdb/build
+$(BUILD)/binutils-gdb/done/install: $(BUILD)/binutils-gdb/done/build
 	$(MAKE) -C $(BUILD)/binutils-gdb/source install
 	@touch $@
 
-$(BUILD)/done/binutils-gdb/build: $(BUILD)/done/binutils-gdb/configure
+$(BUILD)/binutils-gdb/done/build: $(BUILD)/binutils-gdb/done/configure
 	$(MAKE) -C $(BUILD)/binutils-gdb/source
 	@touch $@
 
-$(BUILD)/done/binutils-gdb/configure: $(BUILD)/done/binutils-gdb/copy
+$(BUILD)/binutils-gdb/done/configure: $(BUILD)/binutils-gdb/done/copy
 	(cd $(BUILD)/binutils-gdb/source/; ../source/configure --target=aarch64-linux-gnu --prefix=$(BUILD)/toolchain)
 	@touch $@
 
-$(BUILD)/done/binutils-gdb/copy: $(BUILD)/done/binutils-gdb/checkout | $(BUILD)/binutils-gdb/source/ $(BUILD)/done/binutils-gdb/
+$(BUILD)/binutils-gdb/done/copy: $(BUILD)/binutils-gdb/done/checkout | $(BUILD)/binutils-gdb/source/ $(BUILD)/binutils-gdb/done/
 	$(CP) -a toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/binutils-gdb/source/
 	@touch $@
 
-$(BUILD)/done/binutils-gdb/checkout: toolchain/binutils-gdb/binutils-gdb{checkout} | $(BUILD)/done/binutils-gdb/
+$(BUILD)/binutils-gdb/done/checkout: toolchain/binutils-gdb/binutils-gdb{checkout} | $(BUILD)/binutils-gdb/done/
 	@touch $@

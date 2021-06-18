@@ -1,2 +1,2 @@
-$(BUILD)/done/wpa_supplicant/install: $(BUILD)/done/wpa_supplicant/build
-$(BUILD)/done/wpa_supplicant/build: $(BUILD)/done/wpa_supplicant/configure
+$(BUILD)/wpa_supplicant/done/install: $(BUILD)/wpa_supplicant/done/build
+$(BUILD)/wpa_supplicant/done/build: $(BUILD)/wpa_supplicant/done/configure

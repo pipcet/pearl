@@ -1,18 +1,18 @@
-$(BUILD)/done/openssl/install: $(BUILD)/done/openssl/build
+$(BUILD)/openssl/done/install: $(BUILD)/openssl/done/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/openssl/build install
 	@touch $@
 
-$(BUILD)/done/openssl/build: $(BUILD)/done/openssl/configure
+$(BUILD)/openssl/done/build: $(BUILD)/openssl/done/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/openssl/build CFLAGS="$(CROSS_CFLAGS)"
 	@touch $@
 
-$(BUILD)/done/openssl/configure: $(BUILD)/done/openssl/copy
+$(BUILD)/openssl/done/configure: $(BUILD)/openssl/done/copy
 	(cd $(BUILD)/openssl/build/; PATH="$(CROSS_PATH):$$PATH" CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(BUILD)/install)
 	@touch $@
 
-$(BUILD)/done/openssl/copy: $(BUILD)/done/openssl/checkout | $(BUILD)/done/openssl/ $(BUILD)/openssl/build/
+$(BUILD)/openssl/done/copy: $(BUILD)/openssl/done/checkout | $(BUILD)/openssl/done/ $(BUILD)/openssl/build/
 	cp -a userspace/openssl/openssl/* $(BUILD)/openssl/build/
 	@touch $@
 
-$(BUILD)/done/openssl/checkout: userspace/openssl/openssl{checkout} | $(BUILD)/done/openssl/
+$(BUILD)/openssl/done/checkout: userspace/openssl/openssl{checkout} | $(BUILD)/openssl/done/
 	@touch $@

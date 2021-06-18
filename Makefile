@@ -37,10 +37,10 @@ include bootloaders/bootloaders.mk
 
 include g/github/github.mk
 
-$(BUILD)/install%.tar: | $(BUILD)/done/install/
-	tar -C $(BUILD)/done/install -cf $@ .
+$(BUILD)/install%.tar: | $(BUILD)/install/
+	tar -C $(BUILD)/install -cf $@ .
 
-$(BUILD)/done/install/mkdir: | $(BUILD)/done/install/ $(BUILD)/install/include/ $(BUILD)/install/bin/
+$(BUILD)/install/done/mkdir: | $(BUILD)/install/done/ $(BUILD)/install/include/ $(BUILD)/install/bin/
 	ln -sf . $(BUILD)/install/usr
 	ln -sf . $(BUILD)/install/local
 	ln -sf bin $(BUILD)/install/sbin
