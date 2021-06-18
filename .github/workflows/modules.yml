@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        submodules: recursive
+        submodules: false
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install autopoint
