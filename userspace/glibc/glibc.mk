@@ -18,7 +18,7 @@ $(BUILD)/done/glibc/glibc/copy: | $(BUILD)/glibc/glibc/source/ $(BUILD)/done/gli
 
 
 $(BUILD)/done/glibc/stage1/install: $(BUILD)/done/glibc/stage1/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/stage1/build DESTDIR=$(BUILD)/install install-headers
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/stage1/build DESTDIR=$(BUILD)/install install-headers install
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/build: $(BUILD)/done/glibc/stage1/configure
