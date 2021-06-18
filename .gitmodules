@@ -115,3 +115,7 @@
 	path = bootloaders/m1n1/m1n1
 	url = https://github.com/pipcet/m1n1
 	branch = pearl
+[submodule "bootloaders/barebox/barebox"]
+	path = bootloaders/barebox/barebox
+	url = https://github.com/pipcet/barebox
+	branch = pearl
