@@ -34,7 +34,7 @@ jobs:
     - run: make -j3 build/done/perl/install
     - run: make -j3 build/done/libnl/install
     - run: make -j3 build/done/memtool/install
-    - run: make -j3 build/done/libuiid/install
+    - run: make -j3 build/done/libuuid/install
     - run: make -j3 build/done/json-c/install
     - run: make -j3 build/done/popt/install
     - run: make -j3 build/done/libblkid/install

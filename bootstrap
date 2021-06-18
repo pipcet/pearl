@@ -16,7 +16,7 @@ make -j13 build/done/emacs/cross/install
 make -j13 build/done/perl/install
 make -j13 build/done/libnl/install
 make -j13 build/done/memtool/install
-make -j13 build/done/libuiid/install
+make -j13 build/done/libuuid/install
 make -j13 build/done/json-c/install
 make -j13 build/done/popt/install
 make -j13 build/done/libblkid/install
