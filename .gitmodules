@@ -110,4 +110,4 @@
 	branch = pearl
 [submodule "userspace/wpa/wpa"]
 	path = userspace/wpa/wpa
-	url = https://salsa.debian.org/debian/wpa.git
+	url = https://github.com/pipcet/wpa
