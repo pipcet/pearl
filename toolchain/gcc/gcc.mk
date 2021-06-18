@@ -7,7 +7,7 @@ $(BUILD)/done/gcc/gcc/build: $(BUILD)/done/gcc/gcc/configure
 	@touch $@
 
 $(BUILD)/done/gcc/gcc/configure: $(BUILD)/done/gcc/gcc/copy $(BUILD)/done/linux/headers/install $(BUILD)/done/glibc/stage1/install | $(BUILD)/gcc/gcc/build/
-	(cd $(BUILD)/gcc/gcc/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/install")
+	(cd $(BUILD)/gcc/gcc/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c,lto --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/install")
 	@touch $@
 
 $(BUILD)/done/gcc/gcc/copy: | $(BUILD)/done/gcc/gcc/ $(BUILD)/gcc/gcc/source/
