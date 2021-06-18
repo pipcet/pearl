@@ -2,3 +2,33 @@
 git submodule update --init --recursive || exit 1
 while ! ./g/bin/install-remotes < g/remotes.txt; do sleep 1; done
 git submodule foreach --recursive git fetch --all
+make -j3 build/done/binutils-gdb/install
+make -j3 build/done/gcc/stage1/install
+make -j3 build/done/linux/headers/install
+make -j3 build/done/glibc/stage1/install
+make -j3 build/install-stage1.tar{artifact}
+make -j3 build/done/gcc/gcc/install
+make -j3 build/done/glibc/glibc/install
+make -j3 build/install-stage2.tar{artifact}
+make -j3 build/done/busybox/install
+make -j3 build/done/kexec-tools/install
+make -j3 build/done/ncurses/install
+make -j3 build/done/emacs/cross/install
+make -j3 build/done/perl/install
+make -j3 build/done/libnl/install
+make -j3 build/done/memtool/install
+make -j3 build/done/libuiid/install
+make -j3 build/done/json-c/install
+make -j3 build/done/popt/install
+make -j3 build/done/libblkid/install
+make -j3 build/done/libaio/install
+make -j3 build/done/lvm2/install
+make -j3 build/done/openssl/install
+make -j3 build/done/cryptsetup/install
+make -j3 build/done/nvme-cli/install
+make -j3 build/install-userspace.tar{artifact}
+make -j3 build/done/linux/linux/image
+make -j3 build/done/linux/linux/modules
+make -j3 build/done/linux/stage2/image
+make -j3 build/done/linux/stage2/modules
+make -j3 build/done/linux/stage1/image
