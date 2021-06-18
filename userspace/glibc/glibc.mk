@@ -25,7 +25,7 @@ $(BUILD)/done/glibc/stage1/build: $(BUILD)/done/glibc/stage1/configure
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/configure: $(BUILD)/done/glibc/stage1/copy | $(BUILD)/glibc/stage1/build/
-	(cd $(BUILD)/glibc/stage1/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="" --disable-shared)
+	(cd $(BUILD)/glibc/stage1/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/copy: | $(BUILD)/glibc/stage1/source/ $(BUILD)/done/glibc/stage1/
