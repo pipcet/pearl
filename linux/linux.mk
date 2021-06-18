@@ -10,10 +10,10 @@ $(BUILD)/done/linux/%/build: $(BUILD)/done/linux/%/configure
 
 $(BUILD)/done/linux/%/configure: linux/%.config $(BUILD)/done/linux/%/copy
 	cp $< $(BUILD)/linux/$*/build/.config
-	$(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
+	$(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
 
-$(BUILD)/done/linux/%/copy: $(BUILD)/done/linux/%/ $(BUILD)/linux/%/build/
+$(BUILD)/done/linux/%/copy: | $(BUILD)/done/linux/%/ $(BUILD)/linux/%/build/
 	cp -a linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
