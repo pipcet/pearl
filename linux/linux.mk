@@ -18,7 +18,7 @@ $(BUILD)/done/linux/%/configure: linux/%.config $(BUILD)/done/linux/%/copy
 	$(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
 
-$(BUILD)/done/linux/%/copy: | $(BUILD)/done/linux/%/ $(BUILD)/linux/%/build/
+$(BUILD)/done/linux/%/copy: $(BUILD)/done/linux/checkout | $(BUILD)/done/linux/%/ $(BUILD)/linux/%/build/
 	cp -a linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
@@ -30,5 +30,5 @@ $(BUILD)/done/linux/headers/copy: $(BUILD)/done/linux/checkout | $(BUILD)/done/l
 	$(CP) -a linux/linux/* $(BUILD)/linux/headers/source/
 	@touch $@
 
-$(BUILD)/done/linux/checkout: linux/linux{checkout}
+$(BUILD)/done/linux/checkout: linux/linux{checkout} | $(BUILD)/done/linux/
 	@touch $@

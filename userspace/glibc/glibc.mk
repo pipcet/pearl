@@ -28,6 +28,9 @@ $(BUILD)/done/glibc/stage1/configure: $(BUILD)/done/glibc/stage1/copy | $(BUILD)
 	(cd $(BUILD)/glibc/stage1/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
-$(BUILD)/done/glibc/stage1/copy: | $(BUILD)/glibc/stage1/source/ $(BUILD)/done/glibc/stage1/
+$(BUILD)/done/glibc/stage1/copy: $(BUILD)/done/glibc/checkout | $(BUILD)/glibc/stage1/source/ $(BUILD)/done/glibc/stage1/
 	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/stage1/source/
+	@touch $@
+
+$(BUILD)/done/glibc/checkout: userspace/glibc/glibc{checkout} | $(BUILD)/done/glibc/
 	@touch $@

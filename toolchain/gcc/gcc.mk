@@ -10,7 +10,7 @@ $(BUILD)/done/gcc/gcc/configure: $(BUILD)/done/gcc/gcc/copy $(BUILD)/done/linux/
 	(cd $(BUILD)/gcc/gcc/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c,lto --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/install")
 	@touch $@
 
-$(BUILD)/done/gcc/gcc/copy: | $(BUILD)/done/gcc/gcc/ $(BUILD)/gcc/gcc/source/
+$(BUILD)/done/gcc/gcc/copy: $(BUILD)/done/gcc/checkout | $(BUILD)/done/gcc/gcc/ $(BUILD)/gcc/gcc/source/
 	$(CP) -a toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
 	@touch $@
 
@@ -26,12 +26,9 @@ $(BUILD)/done/gcc/stage1/configure: $(BUILD)/done/gcc/stage1/copy $(BUILD)/done/
 	(cd $(BUILD)/gcc/stage1/build; ../source/configure --target=aarch64-linux-gnu --enable-languages=c --disable-libcc1 --disable-shared --disable-nls --disable-threads --disable-bootstrap --prefix="$(BUILD)/toolchain" --with-sysroot="$(BUILD)/install" --disable-libgcc --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --with-build-sysroot="$(BUILD)/install" --disable-c++tools)
 	@touch $@
 
-$(BUILD)/done/gcc/stage1/copy: | $(BUILD)/done/gcc/stage1/ $(BUILD)/gcc/stage1/source/
+$(BUILD)/done/gcc/stage1/copy: $(BUILD)/done/gcc/checkout | $(BUILD)/done/gcc/stage1/ $(BUILD)/gcc/stage1/source/
 	$(CP) -a toolchain/gcc/gcc/* $(BUILD:$(PWD)/%=%)/gcc/stage1/source/
 	@touch $@
 
-$(BUILD)/done/gcc/stage1/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/done/gcc/stage1/
-	@touch $@
-
-$(BUILD)/done/gcc/gcc/checkout: $(BUILD)/done/gcc/stage1/checkout
+$(BUILD)/done/gcc/checkout: $(BUILD)/done/gcc/stage1/checkout | $(BUILD)/done/gcc/gcc/
 	@touch $@
