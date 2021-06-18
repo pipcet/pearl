@@ -1,0 +1,81 @@
+#!/usr/bin/perl
+use strict;
+use bytes;
+use IPC::Run qw(run);
+
+my $data = join("", <>);
+
+my $count = 0;
+my %names;
+
+sub words {
+    my ($text) = @_;
+    $names{$count} = $text;
+    return 0x01010101 * $count++;
+}
+
+sub nonwords {
+    return 0xffffffff;
+}
+
+my $data1 = $data;
+$data1 =~ s/\$\{(.*?)\}/words($1)/ge;
+my $data2 = $data;
+$data2 =~ s/\$\{(.*?)\}/nonwords($1)/ge;
+
+my $fdt1;
+my $fdt2;
+
+run(["dtc", "-Idts", "-Odtb"], \$data1, \$fdt1) or die;
+run(["dtc", "-Idts", "-Odtb"], \$data2, \$fdt2) or die;
+
+die unless length($fdt1) == length($fdt2);
+
+my %relocs;
+
+$count = 0;
+for my $i (0 .. length($fdt1) - 1) {
+    next if $i % 4;
+    if (substr($fdt1, $i, 1) ne substr($fdt2, $i, 1)) {
+	my $index = unpack("C", substr($fdt1, $i, 1));
+	$relocs{$i} = $names{$index};
+    }
+}
+
+my @words = map { sprintf("0x%08x", $_) } unpack("L<*", $fdt1);
+
+for my $i (sort { $a <=> $b } keys %relocs) {
+    next if ($i % 4);
+    $words[$i/4] = $words[$i/4] . " /* replaced by FDT_INIT() */";
+}
+print "static u32 fdt[] = {\n";
+for my $word (@words) {
+    print "\t$word,\n";
+}
+print "};\n\n";
+
+print "#define FDT_INIT() do { \\\n";
+for my $i (sort { $a <=> $b } keys %relocs) {
+    next if ($i % 4);
+    print "\tfdt[$i/4] = $relocs{$i}; \\\n";
+}
+print "} while(0)\n\n";
+
+# This script takes an FDT template, in modified DTS syntax, as input,
+# and produces C code which will produce the corresponding FDT binary
+# tree at runtime, with substitutions of ${}-expressions. So you can write:
+#
+# memory { reg = <0 0 ${BIGMEM ? 8 : 4} 0}; };
+#
+# and you get a variable called "fdt" which represents the device
+# tree's static data, and a macro called "FDT_INIT()" which modifies
+# the appropriate elements of fdt to produce either "reg = <0 0 8 0>"
+# or "reg = <0 0 4 0>".
+#
+# The reason for its existence is the Apple M1 SOC platform, which
+# requires glue code to set up a minimal FDT based on iBoot's hand-off
+# data before launching the kernel proper.
+#
+# It's limited to replacing 32-bit words (but runs the input through
+# CPP so macros can help with that), and it can only handle 254
+# replacements.
