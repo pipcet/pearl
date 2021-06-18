@@ -15,6 +15,9 @@ $(BUILD)/done/busybox/configure: userspace/busybox/busybox.config $(BUILD)/done/
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" oldconfig
 	@touch $@
 
-$(BUILD)/done/busybox/copy: | $(BUILD)/done/busybox/ $(BUILD)/busybox/build/
+$(BUILD)/done/busybox/copy: $(BUILD)/done/busybox/checkout | $(BUILD)/done/busybox/ $(BUILD)/busybox/build/
 	$(CP) -a userspace/busybox/busybox/* $(BUILD)/busybox/build/
+	@touch $@
+
+$(BUILD)/done/busybox/checkout: userspace/busybox/busybox{checkout} | $(BUILD)/done/busybox/
 	@touch $@
