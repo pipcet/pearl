@@ -27,6 +27,7 @@ jobs:
     - run: make -j3 build/done/gcc/stage1/install
     - run: make -j3 build/done/linux/headers/install
     - run: make -j3 build/done/glibc/stage1/install
+    - run: make -j3 build/install-stage1.tar{artifact}
     - run: make -j3 build/done/gcc/gcc/install
     - run: make -j3 build/done/glibc/glibc/install
     - run: make -j3 build/done/busybox/install
