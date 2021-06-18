@@ -22,7 +22,7 @@ $(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%
 	cp -a linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
-$(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy
+$(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)/install/done/mkdir
 	$(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/install headers_install
 	@touch $@
 
