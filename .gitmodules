@@ -111,3 +111,7 @@
 [submodule "userspace/wpa/wpa"]
 	path = userspace/wpa/wpa
 	url = https://github.com/pipcet/wpa
+[submodule "bootloaders/m1n1/m1n1"]
+	path = bootloaders/m1n1/m1n1
+	url = https://github.com/pipcet/m1n1
+	branch = pearl

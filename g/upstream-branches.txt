@@ -1,3 +1,4 @@
+bootloaders/m1n1 upstream/main
 linux/linux upstream/master
 toolchain/binutils-gdb/binutils-gdb upstream/master
 toolchain/gcc/gcc upstream/trunk
@@ -20,4 +21,4 @@ userspace/perl/perl upstream/blead
 userspace/popt/popt upstream/master
 userspace/slurp/slurp upstream/master
 userspace/util-linux/util-linux upstream/master
-userspace/wpa/wpa upstream/master
+userspace/wpa/wpa upstream/debian/unstable

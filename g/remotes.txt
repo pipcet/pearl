@@ -1,5 +1,7 @@
 pipcet linux/linux https://github.com/pipcet/linux (fetch)
 pipcet linux/linux git@github.com:pipcet/linux (push)
+upstream bootloaders/m1n1/m1n1 https://github.com/AsahiLinux/m1n1 (fetch)
+upstream bootloaders/m1n1/m1n1 https://github.com/AsahiLinux/m1n1 (push)
 upstream linux/linux https://github.com/torvalds/linux (fetch)
 upstream linux/linux https://github.com/torvalds/linux (push)
 upstream toolchain/binutils-gdb/binutils-gdb git://sourceware.org/git/binutils-gdb.git (fetch)
