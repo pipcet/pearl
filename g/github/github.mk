@@ -39,3 +39,6 @@ build/github-releases{list}: .github-init | build/github-releases/
 	node ./github/release.js $$this_release_date $$this_release_date > github/release.json; \
 	curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases" --data '@github/release.json'; \
 	$(MAKE) $$this_release_date{release}
+
+%{checkout}:
+	git submodule update --depth=1 --single-branch --init --recursive $*
