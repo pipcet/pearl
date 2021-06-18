@@ -13,7 +13,6 @@ $(BUILD)/done/dtc/copy: | $(BUILD)/done/dtc/ $(BUILD)/dtc/build/
 	cp -a userspace/dtc/dtc/* $(BUILD)/dtc/build/
 	@touch $@
 
-
 DTC ?= dtc
 
 build/%.dtb.h: build/%.dtb
