@@ -1,15 +1,15 @@
 # stage1 is built with the pre-installed cross compiler
 
 $(BUILD)/done/glibc/glibc/install: $(BUILD)/done/glibc/glibc/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build DESTDIR=$(BUILD)/install install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build DESTDIR=$(BUILD)/install CXX="" install
 	@touch $@
 
 $(BUILD)/done/glibc/glibc/build: $(BUILD)/done/glibc/glibc/configure
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build CXX=""
 	@touch $@
 
 $(BUILD)/done/glibc/glibc/configure: $(BUILD)/done/glibc/glibc/copy | $(BUILD)/glibc/glibc/build/
-	(cd $(BUILD)/glibc/glibc/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
+	(cd $(BUILD)/glibc/glibc/build; PATH="$(CROSS_PATH):$$PATH" ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
 $(BUILD)/done/glibc/glibc/copy: | $(BUILD)/glibc/glibc/source/ $(BUILD)/done/glibc/glibc/
@@ -26,7 +26,7 @@ $(BUILD)/done/glibc/stage1/build: $(BUILD)/done/glibc/stage1/configure
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/configure: $(BUILD)/done/glibc/stage1/copy | $(BUILD)/glibc/stage1/build/
-	(cd $(BUILD)/glibc/stage1/build; ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
+	(cd $(BUILD)/glibc/stage1/build; ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
 $(BUILD)/done/glibc/stage1/copy: | $(BUILD)/glibc/stage1/source/ $(BUILD)/done/glibc/stage1/
