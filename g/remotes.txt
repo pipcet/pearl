@@ -6,6 +6,8 @@ upstream toolchain/binutils-gdb/binutils-gdb git://sourceware.org/git/binutils-g
 upstream toolchain/binutils-gdb/binutils-gdb git://sourceware.org/git/binutils-gdb.git (push)
 upstream toolchain/gcc/gcc git://gcc.gnu.org/git/gcc.git (fetch)
 upstream toolchain/gcc/gcc git://gcc.gnu.org/git/gcc.git (push)
+upstream userspace/IPC-Run/IPC-Run https://github.com/toddr/IPC-Run (fetch)
+upstream userspace/IPC-Run/IPC-Run https://github.com/toddr/IPC-Run (push)
 upstream userspace/busybox/busybox https://git.busybox.net/busybox (fetch)
 upstream userspace/busybox/busybox https://git.busybox.net/busybox (push)
 upstream userspace/cryptsetup/cryptsetup https://gitlab.com/cryptsetup/cryptsetup.git/ (fetch)
