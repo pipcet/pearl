@@ -1,6 +1,6 @@
 kernels = linux stage2 pearl
 
-$(BUILD)/done/linux/%.image: linux/%.config $(BUILD)/done/linux/%/build
+$(BUILD)/linux/%.image: linux/%.config $(BUILD)/done/linux/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
 $(BUILD)/done/linux/%/build: $(BUILD)/done/linux/%/configure

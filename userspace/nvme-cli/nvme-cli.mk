@@ -1,5 +1,5 @@
 $(BUILD)/done/nvme-cli/install: $(BUILD)/done/nvme-cli/build
-	PATH="$(CROSS_PATH):$$PATH" CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/install" $(MAKE) -C $(BUILD)/nvme-cli/build/install
+	PATH="$(CROSS_PATH):$$PATH" CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/install" $(MAKE) -C $(BUILD)/nvme-cli/build install-bin
 	@touch $@
 
 $(BUILD)/done/nvme-cli/build: $(BUILD)/done/nvme-cli/copy
