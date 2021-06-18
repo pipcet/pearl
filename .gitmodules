@@ -82,7 +82,7 @@
 	url = https://pagure.io/libaio.git
 [submodule "userspace/util-linux/util-linux"]
 	path = userspace/util-linux/util-linux
-	url = https://salsa.debian.org/debian/util-linux
+	url = https://git.kernel.org/pub/scm/utils/util-linux/util-linux.git
 [submodule "userspace/openssl/openssl"]
 	path = userspace/openssl/openssl
 	url = https://github.com/openssl/openssl
