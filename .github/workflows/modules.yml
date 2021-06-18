@@ -31,3 +31,4 @@ jobs:
     - run: make -j3 build/done/glibc/glibc/install
     - run: make -j3 build/done/busybox/install
     - run: make -j3 build/done/kexec-tools/install
+    - run: make -j3 build/install.tar{artifact}

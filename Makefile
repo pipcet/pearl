@@ -35,6 +35,11 @@ include local/local.mk
 
 include bootloaders/bootloaders.mk
 
+include g/github/github.mk
+
+$(BUILD)/install.tar: | $(BUILD)/done/install/
+	tar -C $(BUILD)/done/install -cf $@ .
+
 $(BUILD)/done/install/mkdir: | $(BUILD)/done/install/
 	mkdir -p $(BUILD)/install $(BUILD)/install/include
 	ln -sf . $(BUILD)/install/usr
@@ -44,3 +49,5 @@ $(BUILD)/done/install/mkdir: | $(BUILD)/done/install/
 
 build/%: $(PWD)/build/%
 	@true
+
+.PHONY: %}

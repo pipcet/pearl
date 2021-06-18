@@ -2,7 +2,7 @@
 
 .github-init:
 	bash github/artifact-init
-	touch $@
+	@touch $@
 
 build/artifact-timestamp:
 	touch $@
