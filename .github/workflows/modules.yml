@@ -38,10 +38,10 @@ jobs:
     - run: make -j3 build/done/json-c/install
     - run: make -j3 build/done/popt/install
     - run: make -j3 build/done/libblkid/install
+    - run: make -j3 build/done/libaio/install
     - run: make -j3 build/done/lvm2/install
     - run: make -j3 build/done/openssl/install
     - run: make -j3 build/done/cryptsetup/install
-    - run: make -j3 build/done/lvm2/install
     - run: make -j3 build/done/nvme-cli/install
     - run: make -j3 build/install-userspace.tar{artifact}
     - run: make -j3 build/done/linux/linux/image

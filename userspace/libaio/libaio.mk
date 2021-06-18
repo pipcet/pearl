@@ -1,9 +1,9 @@
 $(BUILD)/done/libaio/install: $(BUILD)/done/libaio/build
-	$(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/install/ install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/install/ install
 	@touch $@
 
 $(BUILD)/done/libaio/build: $(BUILD)/done/libaio/configure
-	$(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -I."
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -I."
 	@touch $@
 
 $(BUILD)/done/libaio/configure: $(BUILD)/done/libaio/copy $(BUILD)/done/libblkid/install $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
