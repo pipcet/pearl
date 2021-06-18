@@ -1,5 +1,6 @@
-#!/bin/sh
-git submodule update --init --recursive || exit 1
+#!/bin/bash
+set -o errexit
+git submodule update --init --recursive
 while ! ./g/bin/install-remotes < g/remotes.txt; do sleep 1; done
 git submodule foreach --recursive git fetch --all
 make -j13 build/done/binutils-gdb/install
