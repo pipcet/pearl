@@ -1,7 +1,7 @@
 # stage1 is built with the pre-installed cross compiler
 
 $(BUILD)/glibc/done/glibc/install: $(BUILD)/glibc/done/glibc/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build DESTDIR=$(BUILD)/install CXX="" install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/glibc/build DESTDIR=$(BUILD)/pearl/install CXX="" install
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/build: $(BUILD)/glibc/done/glibc/configure
@@ -18,7 +18,7 @@ $(BUILD)/glibc/done/glibc/copy: | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/do
 
 
 $(BUILD)/glibc/done/stage1/install: $(BUILD)/glibc/done/stage1/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/stage1/build DESTDIR=$(BUILD)/install install-headers install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/stage1/build DESTDIR=$(BUILD)/pearl/install install-headers install
 	@touch $@
 
 $(BUILD)/glibc/done/stage1/build: $(BUILD)/glibc/done/stage1/configure
@@ -33,7 +33,7 @@ $(BUILD)/glibc/done/stage1/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/s
 	@touch $@
 
 $(BUILD)/glibc/done/headers/install: $(BUILD)/glibc/done/headers/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/headers/build DESTDIR=$(BUILD)/install install-headers
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/headers/build DESTDIR=$(BUILD)/pearl/install install-headers
 	@touch $@
 
 $(BUILD)/glibc/done/headers/build: $(BUILD)/glibc/done/headers/configure

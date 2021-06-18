@@ -1,5 +1,5 @@
 $(BUILD)/kexec-tools/done/install: $(BUILD)/kexec-tools/done/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/kexec-tools/source DESTDIR="$(BUILD)/install" install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/kexec-tools/source DESTDIR="$(BUILD)/pearl/install" install
 	@touch $@
 
 $(BUILD)/kexec-tools/done/build: $(BUILD)/kexec-tools/done/configure

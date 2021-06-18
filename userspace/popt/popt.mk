@@ -1,5 +1,5 @@
 $(BUILD)/popt/done/install: $(BUILD)/popt/done/build
-	$(MAKE) -C $(BUILD)/popt/build DESTDIR="$(BUILD)/install" install
+	$(MAKE) -C $(BUILD)/popt/build DESTDIR="$(BUILD)/pearl/install" install
 	@touch $@
 
 $(BUILD)/popt/done/build: $(BUILD)/popt/done/configure

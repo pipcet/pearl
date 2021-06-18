@@ -8,7 +8,7 @@ $(BUILD)/memtool/done/build: $(BUILD)/memtool/done/configure
 
 $(BUILD)/memtool/done/configure: $(BUILD)/memtool/done/copy
 	(cd $(BUILD)/memtool/build; PATH="$(CROSS_PATH):$$PATH" autoreconf -ivf)
-	(cd $(BUILD)/memtool/build; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix="$(BUILD)/install" CFLAGS="$(CROSS_CFLAGS)")
+	(cd $(BUILD)/memtool/build; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
 
 $(BUILD)/memtool/done/copy: $(BUILD)/memtool/done/checkout | $(BUILD)/memtool/done/ $(BUILD)/memtool/build/

@@ -7,7 +7,7 @@ $(BUILD)/perl/done/build: $(BUILD)/perl/done/configure
 	@touch $@
 
 $(BUILD)/perl/done/configure: $(BUILD)/perl/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
-	(cd $(BUILD)/perl/build; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" sh ./Configure -der -Uversiononly -Uusemymalloc -Dtargetarch="aarch64-linux-gnu" -Dcc="aarch64-linux-gnu-gcc $(CORE_CFLAGS)" -Dccflags="$(CORE_CFLAGS)" -Doptimize="$(CORE_CFLAGS) -fno-strict-aliasing" -Dincpth='' -Dcccdlflags="-fPIC -Wl,--shared -shared" -Dlddlflags="-Wl,--shared -shared" -Uman1dir -Dusedevel -Dprefix="" -Dinstallprefix="$(BUILD)/install" -Dsysroot="$(BUILD)/install")
+	(cd $(BUILD)/perl/build; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" sh ./Configure -der -Uversiononly -Uusemymalloc -Dtargetarch="aarch64-linux-gnu" -Dcc="aarch64-linux-gnu-gcc $(CORE_CFLAGS)" -Dccflags="$(CORE_CFLAGS)" -Doptimize="$(CORE_CFLAGS) -fno-strict-aliasing" -Dincpth='' -Dcccdlflags="-fPIC -Wl,--shared -shared" -Dlddlflags="-Wl,--shared -shared" -Uman1dir -Dusedevel -Dprefix="" -Dinstallprefix="$(BUILD)/pearl/install" -Dsysroot="$(BUILD)/pearl/install")
 	@touch $@
 
 $(BUILD)/perl/done/copy: $(BUILD)/perl/done/checkout | $(BUILD)/perl/build/ $(BUILD)/perl/done/

@@ -1,9 +1,9 @@
 $(BUILD)/dtc/done/install: $(BUILD)/dtc/done/build
-	$(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/install" CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build install
+	$(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build install
 	@touch $@
 
 $(BUILD)/dtc/done/build: $(BUILD)/dtc/done/configure
-	$(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/install" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build
+	$(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/dtc/build
 	@touch $@
 
 $(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy

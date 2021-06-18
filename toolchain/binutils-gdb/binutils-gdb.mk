@@ -7,7 +7,7 @@ $(BUILD)/binutils-gdb/done/build: $(BUILD)/binutils-gdb/done/configure
 	@touch $@
 
 $(BUILD)/binutils-gdb/done/configure: $(BUILD)/binutils-gdb/done/copy
-	(cd $(BUILD)/binutils-gdb/source/; ../source/configure --target=aarch64-linux-gnu --prefix=$(BUILD)/toolchain)
+	(cd $(BUILD)/binutils-gdb/source/; ../source/configure --target=aarch64-linux-gnu --prefix=$(BUILD)/pearl/toolchain)
 	@touch $@
 
 $(BUILD)/binutils-gdb/done/copy: $(BUILD)/binutils-gdb/done/checkout | $(BUILD)/binutils-gdb/source/ $(BUILD)/binutils-gdb/done/

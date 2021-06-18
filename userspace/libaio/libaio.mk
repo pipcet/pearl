@@ -1,5 +1,5 @@
 $(BUILD)/libaio/done/install: $(BUILD)/libaio/done/build
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/install/ install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/pearl/install/ install
 	@touch $@
 
 $(BUILD)/libaio/done/build: $(BUILD)/libaio/done/configure

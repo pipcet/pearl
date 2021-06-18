@@ -1,5 +1,5 @@
 $(BUILD)/emacs/done/cross/install: $(BUILD)/emacs/done/cross/build
-	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/install install
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/pearl/install install
 	@touch $@
 
 $(BUILD)/emacs/done/cross/build: $(BUILD)/emacs/done/cross/configure
