@@ -3,6 +3,11 @@ kernels = linux stage2 pearl
 $(BUILD)/linux/%.image: linux/%.config $(BUILD)/done/linux/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
+
+$(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
+
 $(BUILD)/done/linux/%/build: $(BUILD)/done/linux/%/configure
 	$(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image
 	$(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
