@@ -9,6 +9,9 @@ $(BUILD)/done/libaio/build: $(BUILD)/done/libaio/configure
 $(BUILD)/done/libaio/configure: $(BUILD)/done/libaio/copy $(BUILD)/done/libblkid/install $(BUILD)/done/glibc/glibc/install $(BUILD)/done/gcc/gcc/install
 	@touch $@
 
-$(BUILD)/done/libaio/copy: | $(BUILD)/libaio/build/ $(BUILD)/done/libaio/
+$(BUILD)/done/libaio/copy: $(BUILD)/done/libaio/checkout | $(BUILD)/libaio/build/ $(BUILD)/done/libaio/
 	cp -a userspace/libaio/libaio/* $(BUILD)/libaio/build
+	@touch $@
+
+$(BUILD)/done/libaio/checkout: userspace/libaio/libaio{checkout} | $(BUILD)/done/libaio/
 	@touch $@

@@ -11,6 +11,9 @@ $(BUILD)/done/kexec-tools/configure: $(BUILD)/done/kexec-tools/copy
 	(cd $(BUILD)/kexec-tools/source; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
 
-$(BUILD)/done/kexec-tools/copy: | $(BUILD)/kexec-tools/source/ $(BUILD)/done/kexec-tools/
+$(BUILD)/done/kexec-tools/copy: $(BUILD)/done/kexec-tools/checkout | $(BUILD)/kexec-tools/source/ $(BUILD)/done/kexec-tools/
 	$(CP) -a userspace/kexec-tools/kexec-tools/* $(BUILD)/kexec-tools/source/
+	@touch $@
+
+$(BUILD)/done/kexec-tools/checkout: userspace/kexec-tools/kexec-tools{checkout} | $(BUILD)/done/kexec-tools/
 	@touch $@

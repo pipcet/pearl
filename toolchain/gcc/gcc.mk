@@ -30,5 +30,5 @@ $(BUILD)/done/gcc/stage1/copy: $(BUILD)/done/gcc/checkout | $(BUILD)/done/gcc/st
 	$(CP) -a toolchain/gcc/gcc/* $(BUILD:$(PWD)/%=%)/gcc/stage1/source/
 	@touch $@
 
-$(BUILD)/done/gcc/checkout: $(BUILD)/done/gcc/stage1/checkout | $(BUILD)/done/gcc/gcc/
+$(BUILD)/done/gcc/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/done/gcc/gcc/
 	@touch $@

@@ -10,7 +10,7 @@ $(BUILD)/done/emacs/cross/configure: $(BUILD)/done/emacs/cross/copy $(BUILD)/don
 	(cd $(BUILD)/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	@touch $@
 
-$(BUILD)/done/emacs/cross/copy: $(BUILD)/done/emacs/native/build | $(BUILD)/done/emacs/cross/ $(BUILD)/emacs/cross/
+$(BUILD)/done/emacs/cross/copy: $(BUILD)/done/emacs/native/build $(BUILD)/done/emacs/checkout | $(BUILD)/done/emacs/cross/ $(BUILD)/emacs/cross/
 	$(CP) -a $(BUILD)/emacs/native/* $(BUILD)/emacs/cross/
 	@touch $@
 
@@ -23,6 +23,9 @@ $(BUILD)/done/emacs/native/configure: $(BUILD)/done/emacs/native/copy
 	(cd $(BUILD)/emacs/native; ./configure)
 	@touch $@
 
-$(BUILD)/done/emacs/native/copy: | $(BUILD)/done/emacs/native/ $(BUILD)/emacs/native/
+$(BUILD)/done/emacs/native/copy: $(BUILD)/done/emacs/checkout | $(BUILD)/done/emacs/native/ $(BUILD)/emacs/native/
 	$(CP) -a userspace/emacs/emacs/* $(BUILD)/emacs/native/
+	@touch $@
+
+$(BUILD)/done/emacs/checkout: userspace/emacs/emacs{checkout} | $(BUILD)/done/emacs/
 	@touch $@

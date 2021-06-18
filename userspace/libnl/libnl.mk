@@ -11,6 +11,9 @@ $(BUILD)/done/libnl/configure: $(BUILD)/done/libnl/copy $(BUILD)/done/glibc/glib
 	(cd $(BUILD)/libnl/build; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/install/lib")
 	@touch $@
 
-$(BUILD)/done/libnl/copy: | $(BUILD)/done/libnl/ $(BUILD)/libnl/build/
+$(BUILD)/done/libnl/copy: $(BUILD)/done/libnl/checkout | $(BUILD)/done/libnl/ $(BUILD)/libnl/build/
 	$(CP) -a userspace/libnl/libnl/* $(BUILD)/libnl/build/
+	@touch $@
+
+$(BUILD)/done/libnl/checkout: userspace/libnl/libnl{checkout} | $(BUILD)/done/libnl/
 	@touch $@

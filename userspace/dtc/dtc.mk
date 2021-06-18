@@ -9,8 +9,11 @@ $(BUILD)/done/dtc/build: $(BUILD)/done/dtc/configure
 $(BUILD)/done/dtc/configure: $(BUILD)/done/dtc/copy
 	@touch $@
 
-$(BUILD)/done/dtc/copy: | $(BUILD)/done/dtc/ $(BUILD)/dtc/build/
+$(BUILD)/done/dtc/copy: $(BUILD)/done/dtc/checkout | $(BUILD)/done/dtc/ $(BUILD)/dtc/build/
 	cp -a userspace/dtc/dtc/* $(BUILD)/dtc/build/
+	@touch $@
+
+$(BUILD)/done/dtc/checkout: userspace/dtc/dtc{checkout} | $(BUILD)/done/dtc/
 	@touch $@
 
 DTC ?= dtc

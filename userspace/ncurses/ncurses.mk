@@ -10,6 +10,9 @@ $(BUILD)/done/ncurses/configure: $(BUILD)/done/ncurses/copy $(BUILD)/done/glibc/
 	(cd $(BUILD)/ncurses/build; PATH="$(CROSS_PATH):$$PATH" ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(BUILD)/install --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding)
 	@touch $@
 
-$(BUILD)/done/ncurses/copy: | $(BUILD)/done/ncurses/ $(BUILD)/ncurses/build/
+$(BUILD)/done/ncurses/copy: $(BUILD)/done/ncurses/checkout | $(BUILD)/done/ncurses/ $(BUILD)/ncurses/build/
 	$(CP) -a userspace/ncurses/ncurses/* $(BUILD)/ncurses/build/
+	@touch $@
+
+$(BUILD)/done/ncurses/checkout: userspace/ncurses/ncurses{checkout} | $(BUILD)/done/ncurses/
 	@touch $@
