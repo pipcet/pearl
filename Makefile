@@ -37,8 +37,8 @@ include bootloaders/bootloaders.mk
 
 include g/github/github.mk
 
-$(BUILD)/install%.tar: | $(BUILD)/pearl/install/
-	tar -C $(BUILD)/pearl/install -cf $@ .
+$(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
+	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
 $(BUILD)/pearl/done/install/mkdir: | $(BUILD)/pearl/done/install/ $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
 	ln -sf . $(BUILD)/pearl/install/usr
