@@ -22,4 +22,4 @@ $(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(modu
 	@touch $@
 
 $(BUILD)/userspace.tar: $(BUILD)/userspace/done/install
-	tar -C $(BUILD)/pearl/install -cf $@
+	tar -C $(BUILD)/pearl/install -cf $@ .
