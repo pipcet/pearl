@@ -49,6 +49,8 @@ include local/local.mk
 
 include bootloaders/bootloaders.mk
 
+include debian/debian.mk
+
 include g/github/github.mk
 
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
