@@ -16,6 +16,8 @@ $(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)
 $(BUILD)/dtc/done/checkout: userspace/dtc/dtc{checkout} | $(BUILD)/dtc/done/
 	@touch $@
 
+userspace-modules += dtc
+
 DTC ?= dtc
 
 build/%.dtb.h: build/%.dtb

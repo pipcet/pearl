@@ -17,3 +17,5 @@ $(BUILD)/kexec-tools/done/copy: $(BUILD)/kexec-tools/done/checkout | $(BUILD)/ke
 
 $(BUILD)/kexec-tools/done/checkout: userspace/kexec-tools/kexec-tools{checkout} | $(BUILD)/kexec-tools/done/
 	@touch $@
+
+userspace-modules += kexec-tools

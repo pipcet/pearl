@@ -15,6 +15,8 @@ $(BUILD)/libuuid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libuuid
 	cp -a userspace/util-linux/util-linux/* $(BUILD)/libuuid/build/
 	@touch $@
 
+userspace-modules += libuuid
+
 $(BUILD)/libblkid/done/install: $(BUILD)/libblkid/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libblkid/build DESTDIR=$(BUILD)/pearl/install install
 	@touch $@
@@ -32,5 +34,8 @@ $(BUILD)/libblkid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libblk
 	cp -a userspace/util-linux/util-linux/* $(BUILD)/libblkid/build/
 	@touch $@
 
+userspace-modules += libblkid
+
 $(BUILD)/util-linux/done/checkout: userspace/util-linux/util-linux{checkout} | $(BUILD)/util-linux/done/
 	@touch $@
+

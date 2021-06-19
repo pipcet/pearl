@@ -16,3 +16,5 @@ $(BUILD)/perl/done/copy: $(BUILD)/perl/done/checkout | $(BUILD)/perl/build/ $(BU
 
 $(BUILD)/perl/done/checkout: userspace/perl/perl{checkout} | $(BUILD)/perl/done/
 	@touch $@
+
+userspace-modules += perl

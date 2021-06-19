@@ -12,3 +12,5 @@ $(BUILD)/nvme-cli/done/copy: $(BUILD)/nvme-cli/done/checkout | $(BUILD)/nvme-cli
 
 $(BUILD)/nvme-cli/done/checkout: userspace/nvme-cli/nvme-cli{checkout} | $(BUILD)/nvme-cli/done/
 	@touch $@
+
+userspace-modules += nvme-cli

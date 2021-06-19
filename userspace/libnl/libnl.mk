@@ -17,3 +17,5 @@ $(BUILD)/libnl/done/copy: $(BUILD)/libnl/done/checkout | $(BUILD)/libnl/done/ $(
 
 $(BUILD)/libnl/done/checkout: userspace/libnl/libnl{checkout} | $(BUILD)/libnl/done/
 	@touch $@
+
+userspace-modules += libnl

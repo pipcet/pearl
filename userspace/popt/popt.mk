@@ -20,3 +20,5 @@ $(BUILD)/popt/done/copy: $(BUILD)/popt/done/checkout | $(BUILD)/popt/done/ $(BUI
 
 $(BUILD)/popt/done/checkout: userspace/popt/popt{checkout} | $(BUILD)/popt/done/
 	@touch $@
+
+userspace-modules += popt

@@ -16,3 +16,5 @@ $(BUILD)/ncurses/done/copy: $(BUILD)/ncurses/done/checkout | $(BUILD)/ncurses/do
 
 $(BUILD)/ncurses/done/checkout: userspace/ncurses/ncurses{checkout} | $(BUILD)/ncurses/done/
 	@touch $@
+
+userspace-modules += ncurses

@@ -15,4 +15,5 @@ include userspace/nvme-cli/nvme-cli.mk
 include userspace/openssl/openssl.mk
 include userspace/perl/perl.mk
 include userspace/popt/popt.mk
+include userspace/slurp/slurp.mk
 include userspace/util-linux/util-linux.mk

@@ -21,3 +21,5 @@ $(BUILD)/busybox/done/copy: $(BUILD)/busybox/done/checkout | $(BUILD)/busybox/do
 
 $(BUILD)/busybox/done/checkout: userspace/busybox/busybox{checkout} | $(BUILD)/busybox/done/
 	@touch $@
+
+userspace-modules += busybox

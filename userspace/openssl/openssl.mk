@@ -16,3 +16,5 @@ $(BUILD)/openssl/done/copy: $(BUILD)/openssl/done/checkout | $(BUILD)/openssl/do
 
 $(BUILD)/openssl/done/checkout: userspace/openssl/openssl{checkout} | $(BUILD)/openssl/done/
 	@touch $@
+
+userspace-modules += openssl

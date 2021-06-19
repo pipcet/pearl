@@ -51,3 +51,5 @@ $(BUILD)/glibc/done/headers/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/
 
 $(BUILD)/glibc/done/checkout: userspace/glibc/glibc{checkout} | $(BUILD)/glibc/done/
 	@touch $@
+
+userspace-modules += glibc

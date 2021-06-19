@@ -15,3 +15,5 @@ $(BUILD)/libaio/done/copy: $(BUILD)/libaio/done/checkout | $(BUILD)/libaio/build
 
 $(BUILD)/libaio/done/checkout: userspace/libaio/libaio{checkout} | $(BUILD)/libaio/done/
 	@touch $@
+
+userspace-modules += libaio

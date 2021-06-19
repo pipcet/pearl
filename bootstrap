@@ -13,6 +13,8 @@ make -j13 build/kexec-tools/done/install
 make -j13 build/ncurses/done/install
 make -j13 build/emacs/done/cross/install
 make -j13 build/perl/done/install
+make -j13 build/IPC-Run/done/install
+make -j13 build/slurp/done/install
 make -j13 build/libnl/done/install
 make -j13 build/memtool/done/install
 make -j13 build/libuuid/done/install

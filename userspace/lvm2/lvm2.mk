@@ -17,3 +17,4 @@ $(BUILD)/lvm2/done/copy: $(BUILD)/lvm2/done/checkout | $(BUILD)/lvm2/build/ $(BU
 $(BUILD)/lvm2/done/checkout: userspace/lvm2/lvm2{checkout} | $(BUILD)/lvm2/done/
 	@touch $@
 
+userspace-modules += lvm2

@@ -29,3 +29,5 @@ $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/d
 
 $(BUILD)/emacs/done/checkout: userspace/emacs/emacs{checkout} | $(BUILD)/emacs/done/
 	@touch $@
+
+userspace-modules += emacs

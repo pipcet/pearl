@@ -17,3 +17,6 @@ $(BUILD)/cryptsetup/done/copy: $(BUILD)/cryptsetup/done/checkout | $(BUILD)/cryp
 
 $(BUILD)/cryptsetup/done/checkout: userspace/cryptsetup/cryptsetup{checkout} | $(BUILD)/cryptsetup/done/
 	@touch $@
+
+userspace-modules += cryptsetup
+

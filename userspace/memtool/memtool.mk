@@ -17,3 +17,5 @@ $(BUILD)/memtool/done/copy: $(BUILD)/memtool/done/checkout | $(BUILD)/memtool/do
 
 $(BUILD)/memtool/done/checkout: userspace/memtool/memtool{checkout} | $(BUILD)/memtool/done/
 	@touch $@
+
+userspace-modules += memtool
