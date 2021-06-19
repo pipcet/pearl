@@ -2,6 +2,9 @@ $(BUILD)/gcc/done/gcc/install: $(BUILD)/gcc/done/gcc/build
 	$(MAKE) -C $(BUILD)/gcc/gcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	@touch $@
 
+$(BUILD)/gcc.tar: $(BUILD)/gcc/done/gcc/build
+	tar -C $(BUILD) -cf $@ gcc/gcc/build
+
 $(BUILD)/gcc/done/gcc/build: $(BUILD)/gcc/done/gcc/configure
 	$(MAKE) -C $(BUILD)/gcc/gcc/build
 	@touch $@
