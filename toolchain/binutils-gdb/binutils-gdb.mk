@@ -2,7 +2,7 @@ $(BUILD)/binutils-gdb/done/install: $(BUILD)/binutils-gdb/done/build
 	$(MAKE) -C $(BUILD)/binutils-gdb/source install
 	@touch $@
 
-$(BUILD)/binutils-gdb/binutils-gdb.tar: $(BUILD)/binutils-gdb/done/build
+$(BUILD)/binutils-gdb.tar: $(BUILD)/binutils-gdb/done/build
 	tar -C $(BUILD)/binutils-gdb -cf $@ done build
 
 $(BUILD)/binutils-gdb/done/build: $(BUILD)/binutils-gdb/done/configure
