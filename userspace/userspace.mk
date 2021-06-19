@@ -20,3 +20,6 @@ include userspace/util-linux/util-linux.mk
 
 $(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(module)/done/%) | $(BUILD)/userspace/done/
 	@touch $@
+
+$(BUILD)/userspace.tar: $(BUILD)/userspace/done/install
+	tar -C $(BUILD)/install -cf $@
