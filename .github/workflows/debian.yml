@@ -7,7 +7,7 @@ on:
     branches: [ main, restructure ]
 jobs:
   deb:
-    name: deb.tar
+    name: deb
     runs-on: ubuntu-latest
     - uses: actions/checkout@v2
       with:
