@@ -1,9 +1,9 @@
 $(BUILD)/json-c/done/install: $(BUILD)/json-c/done/build
-	PATH="$(BUILD)/toolchain/bin:$$PATH" $(MAKE) -C $(BUILD)/json-c/build DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/json-c/build DESTDIR="$(BUILD)/pearl/install" install
 	@touch $@
 
 $(BUILD)/json-c/done/build: $(BUILD)/json-c/done/configure
-	PATH="$(BUILD)/toolchain/bin:$$PATH" $(MAKE) -C $(BUILD)/json-c/build
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/json-c/build
 	@touch $@
 
 $(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
