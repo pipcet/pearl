@@ -15,6 +15,13 @@ WITH_CROSS_CFLAGS = CFLAGS="$(CROSS_CFLAGS)"
 WITH_CROSS_COMPILE = CROSS_COMPILE=aarch64-linux-gnu-
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
 WITH_QEMU = $(NATIVE_CODE_ENV)
+define pearl-static-file
+$(BUILD)/initramfs/pearl.cpio: $(1)
+endef
+
+define pearl-static
+$(foreach file,$(1),$(eval $(call pearl-static-file,$(file))))
+endef
 
 define COPY
 	$(MKDIR) -p $(dir $@)
