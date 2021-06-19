@@ -34,6 +34,8 @@ $(BUILD)/glibc/done/stage1/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/s
 
 $(BUILD)/glibc/done/headers/install: $(BUILD)/glibc/done/headers/build
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/glibc/headers/build DESTDIR=$(BUILD)/pearl/install install-headers
+	$(MKDIR) $(BUILD)/pearl/install/include/gnu/
+	touch $(BUILD)/pearl/install/include/gnu/stubs.h
 	@touch $@
 
 $(BUILD)/glibc/done/headers/build: $(BUILD)/glibc/done/headers/configure

@@ -8,8 +8,8 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
 BUILD ?= $(PWD)/build
 CROSS_CFLAGS = -Os --sysroot=$(BUILD)/pearl/install -B$(BUILD)/pearl/install -L$(BUILD)/pearl/install/lib -I$(BUILD)/pearl/install/include
-CROSS_CC = $(BUILD)/toolchain/bin/aarch64-linux-gnu-gcc
-CROSS_PATH = $(BUILD)/toolchain/bin
+CROSS_CC = $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gcc
+CROSS_PATH = $(BUILD)/pearl/toolchain/bin
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
 
 define COPY
