@@ -5,7 +5,7 @@ while ! ./g/bin/install-remotes < g/remotes.txt; do sleep 1; done
 git submodule foreach --recursive git fetch --all
 make -j13 build/binutils-gdb/done/install
 make -j13 build/linux/done/headers/install
-make -j13 build/glibc/done/stage1/install
+make -j13 build/glibc/done/headers/install
 make -j13 build/gcc/done/gcc/install
 make -j13 build/glibc/done/glibc/install
 make -j13 build/busybox/done/install
