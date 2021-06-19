@@ -10,7 +10,6 @@ $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
 $(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
 	@touch $@
 
 $(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy
