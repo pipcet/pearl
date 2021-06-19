@@ -1,2 +1,2 @@
 #!/usr/bin/bash
-node github/ul-artifact.js "$@"
+node g/github/ul-artifact.js "$@"
