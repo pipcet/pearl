@@ -19,7 +19,7 @@ $(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy
 	@touch $@
 
 $(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
-	cp -a linux/linux/* $(BUILD)/linux/$*/build/
+	cp -as $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
 $(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)/pearl/done/install/mkdir
@@ -27,7 +27,7 @@ $(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)
 	@touch $@
 
 $(BUILD)/linux/done/headers/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/headers/ $(BUILD)/linux/headers/source/
-	$(CP) -a linux/linux/* $(BUILD)/linux/headers/source/
+	$(CP) -as $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
 	@touch $@
 
 $(BUILD)/linux/done/checkout: linux/linux{checkout} | $(BUILD)/linux/done/
