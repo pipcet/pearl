@@ -1,7 +1,7 @@
 # GitHub integration
 
 .github-init:
-	bash github/artifact-init
+	bash g/github/artifact-init
 	@touch $@
 
 build/artifact-timestamp:
