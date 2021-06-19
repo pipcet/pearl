@@ -17,7 +17,6 @@ WITH_CROSS_CC= CC="$(CROSS_CC)"
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
 WITH_QEMU = $(NATIVE_CODE_ENV)
 define pearl-static-file
-$(warning pearl-static-file $(1) $(2) $(patsubst $(2)/%,%,$(1)))
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1))
 $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1)): $(1) ; $$(COPY)
 endef
