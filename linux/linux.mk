@@ -31,3 +31,5 @@ $(BUILD)/linux/done/headers/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/
 
 $(BUILD)/linux/done/checkout: linux/linux{checkout} | $(BUILD)/linux/done/
 	@touch $@
+
+$(call pearl-static,$(wildcard $(PWD)/local/linux/pearl/bin/*),$(PWD)/local/linux/pearl)
