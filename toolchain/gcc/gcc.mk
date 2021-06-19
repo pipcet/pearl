@@ -11,7 +11,7 @@ $(BUILD)/gcc/done/gcc/configure: $(BUILD)/gcc/done/gcc/copy $(BUILD)/linux/done/
 	@touch $@
 
 $(BUILD)/gcc/done/gcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/gcc/ $(BUILD)/gcc/gcc/source/
-	$(CP) -a toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
+	$(CP) -as $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
 	@touch $@
 
 $(BUILD)/gcc/done/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/gcc/done/gcc/
