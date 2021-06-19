@@ -1,1 +1,1 @@
-$(call pearl-static,$(wildcard local/hardware/pearl/bin/*))
+$(call pearl-static,$(wildcard $(PWD)/local/hardware/pearl/bin/*),$(PWD)/local/hardware/pearl)

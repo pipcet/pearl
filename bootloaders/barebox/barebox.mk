@@ -14,3 +14,5 @@ build/barebox/images/barebox-dt-2nd.img: barebox/barebox.config stamp/barebox | 
 
 build/barebox.image.gz: build/barebox/barebox.bin
 	gzip < $< > $@
+
+$(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
