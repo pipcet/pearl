@@ -20,7 +20,7 @@ $(BUILD)/emacs/done/native/build: $(BUILD)/emacs/done/native/configure
 
 $(BUILD)/emacs/done/native/configure: $(BUILD)/emacs/done/native/copy
 	(cd $(BUILD)/emacs/native; sh autogen.sh)
-	(cd $(BUILD)/emacs/native; ./configure)
+	(cd $(BUILD)/emacs/native; ./configure --without-all --without-x)
 	@touch $@
 
 $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/native/ $(BUILD)/emacs/native/
