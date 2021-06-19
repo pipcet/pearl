@@ -26,6 +26,7 @@ make -j13 build/lvm2/done/install
 make -j13 build/openssl/done/install
 make -j13 build/cryptsetup/done/install
 make -j13 build/nvme-cli/done/install
+make -j13 build/dtc/done/install
 make -j13 build/linux/linux.image
 make -j13 build/linux/stage2.image
 make -j13 build/linux/pearl.image

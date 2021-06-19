@@ -42,6 +42,7 @@ jobs:
     - run: make -j13 build/openssl/done/install
     - run: make -j13 build/cryptsetup/done/install
     - run: make -j13 build/nvme-cli/done/install
+    - run: make -j13 build/dtc/done/install
     - run: make -j13 build/userspace/done/install
     - run: make -j13 build/userspace.tar{artifact}
     - run: make -j13 build/linux/done/linux/image
