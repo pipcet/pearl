@@ -17,3 +17,6 @@ include userspace/perl/perl.mk
 include userspace/popt/popt.mk
 include userspace/slurp/slurp.mk
 include userspace/util-linux/util-linux.mk
+
+$(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(module)/done/%) | $(BUILD)/userspace/done/
+	@touch $@

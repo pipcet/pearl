@@ -30,4 +30,7 @@ $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/d
 $(BUILD)/emacs/done/checkout: userspace/emacs/emacs{checkout} | $(BUILD)/emacs/done/
 	@touch $@
 
+$(BUILD)/emacs/done/install: $(BUILD)/emacs/done/cross/install
+	@touch $@
+
 userspace-modules += emacs
