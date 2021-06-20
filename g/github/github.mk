@@ -19,10 +19,18 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/ar
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/%
 	tar xf $<
+	@touch $@
+
+$(BUILD)/daily/extract/%: $(BUILD)/daily/down/%
+	tar xf $<
+	@touch $@
 
 $(BUILD)/artifacts/up/pearl.macho: $(BUILD)/pearl.macho $(BUILD)/artifact-timestamp | $(BUILD)/artifacts/up/
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
+
+$(BUILD)/daily/down/%: | $(BUILD)/daily/down/
+	bash g/github/dl-daily $*
 
 build/artifacts{push}: .github-init
 	(cd build/artifacts/up; for file in *; do name=$$(basename "$$file"); (cd $(PWD); bash g/github/ul-artifact "$$name" "build/artifacts/up/$$name"); done)
