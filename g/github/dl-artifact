@@ -1,0 +1,2 @@
+#!/usr/bin/bash
+node g/github/dl-artifact.js "$@"
