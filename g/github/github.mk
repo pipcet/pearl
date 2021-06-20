@@ -14,6 +14,9 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/
 	rm -rf $@.new
 	ls -l $@
 
+$(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/%
+	tar xf $<
+
 $(BUILD)/artifacts/up/pearl.macho: $(BUILD)/pearl.macho $(BUILD)/artifact-timestamp | $(BUILD)/artifacts/up/
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@

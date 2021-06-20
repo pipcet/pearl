@@ -21,7 +21,7 @@ jobs:
     - run: sudo apt-get install libipc-run-perl
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support
     - run: sudo apt-get install gettext
-    - run: make -j13 build/artifacts/down/userspace.tar
+    - run: make -j13 build/artifacts/extract/userspace.tar
   all:
     name: all
     runs-on: ubuntu-latest
