@@ -18,11 +18,11 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/ar
 	ls -l $@
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
-	tar xf $<
+	tar -xf $<
 	@touch $@
 
 $(BUILD)/daily/extract/%: $(BUILD)/daily/down/% | $(BUILD)/daily/extract/
-	tar xf $<
+	tar --keep-newer-files -xf $<
 	@touch $@
 
 $(BUILD)/artifacts/up/pearl.macho: $(BUILD)/pearl.macho $(BUILD)/artifact-timestamp | $(BUILD)/artifacts/up/
