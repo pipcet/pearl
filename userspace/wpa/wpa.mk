@@ -17,4 +17,4 @@ $(BUILD)/wpa_supplicant/done/copy: $(BUILD)/wpa_supplicant/done/checkout | $(BUI
 $(BUILD)/wpa_supplicant/done/checkout: userspace/wpa/wpa{checkout} | $(BUILD)/wpa_supplicant/done/
 	@touch $@
 
-userspace-modules += wpa-supplicant
+userspace-modules += wpa_supplicant
