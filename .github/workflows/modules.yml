@@ -184,6 +184,7 @@ jobs:
     - run: sudo apt-get install gettext
     - run: make -j13 build/daily/down/toolchain.tar
     - run: make -j13 build/daily/extract/toolchain.tar
-    - run: rm -f build/glibc/done/checkout
+    - run: make -j13 build/daily/down/userspace.tar
+    - run: make -j13 build/daily/extract/userspace.tar
     - run: make -j3 build/linux/linux.image
     - run: make -j3 build/linux/linux.image{artifact}
