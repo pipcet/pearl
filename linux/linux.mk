@@ -3,7 +3,7 @@ kernels = linux stage2 pearl
 $(BUILD)/linux/%.image: linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
-$(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d
+$(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d/
 	echo "#!/bin/sh" > $@
 	echo "kexec --mem-max=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
