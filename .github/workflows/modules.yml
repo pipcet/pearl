@@ -46,6 +46,8 @@ jobs:
     - run: make -j13 build/gcc/done/gcc/install
     - run: make -j13 build/toolchain.tar
     - run: make -j13 build/toolchain.tar{daily}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: make -j13 build/toolchain.tar{artifact}
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/busybox/done/install
@@ -70,6 +72,8 @@ jobs:
     - run: make -j13 build/userspace.tar
     - run: make -j13 build/userspace.tar{artifact}
     - run: make -j13 build/userspace.tar{daily}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: make -j13 build/linux/done/linux/image
     - run: make -j13 build/linux/done/linux/modules
     - run: make -j13 build/linux/done/stage2/image
@@ -93,6 +97,8 @@ jobs:
     - run: make -j13 build/debian/deb.tar
     - run: make -j13 build/debian/deb.tar{artifact}
     - run: make -j13 build/debian/deb.tar{daily}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   linux:
     name: linux
     runs-on: ubuntu-latest
