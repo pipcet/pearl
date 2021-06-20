@@ -42,9 +42,6 @@ jobs:
     - run: sudo apt-get install gettext
     - run: make -j13 build/daily/down/userspace.tar
     - run: make -j13 build/daily/extract/userspace.tar
-    - run: make -j13 build/linux/done/headers/install
-    - run: make -j13 build/gcc/done/gcc/install
-    - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/initramfs/pearl.cpio
     - run: make -j13 build/initramfs/pearl.cpio{artifact}
   userspace:
