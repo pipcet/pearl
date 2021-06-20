@@ -14,7 +14,7 @@ jobs:
       with:
         submodules: false
     - name: Set env variables
-      uses: ./github/env/
+      uses: ./g/github/env/
     - run: sudo apt-get install gcc-aarch64-linux-gnu
     - run: sudo apt-get install binutils-aarch64-linux-gnu
     - run: sudo apt-get install g++-aarch64-linux-gnu
