@@ -92,6 +92,7 @@ jobs:
     - run: sudo apt-get install gettext
     - run: make -j13 build/debian/deb.tar
     - run: make -j13 build/debian/deb.tar{artifact}
+    - run: make -j13 build/debian/deb.tar{daily}
   linux:
     name: linux
     runs-on: ubuntu-latest
