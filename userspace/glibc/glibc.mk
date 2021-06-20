@@ -12,7 +12,7 @@ $(BUILD)/glibc/done/glibc/configure: $(BUILD)/glibc/done/glibc/copy $(BUILD)/lin
 	(cd $(BUILD)/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
-$(BUILD)/glibc/done/glibc/copy: | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
+$(BUILD)/glibc/done/glibc/copy: $(BUILD)/glibc/done/glibc/checkout | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
 	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/glibc/source/
 	@touch $@
 
