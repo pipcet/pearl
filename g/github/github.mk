@@ -8,7 +8,10 @@ build/artifact-timestamp:
 	touch $@
 	sleep 1
 
-$(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/
+$(BUILD)/artifacts/done/artifact-init:
+	bash g/github/artifact-init
+
+$(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/artifact-init
 	bash g/github/dl-artifact $*
 	mv $@.new/$* $@
 	rm -rf $@.new
