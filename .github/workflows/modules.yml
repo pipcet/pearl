@@ -43,7 +43,7 @@ jobs:
     - run: make -j13 build/daily/down/toolchain.tar
     - run: make -j13 build/daily/extract/toolchain.tar
     - run: rm -rf build/glibc/done
-    - run: make -j13 build/glibc/done/glibc/install
+    - run: make --trace -j13 build/glibc/done/glibc/install
     - run: make -j13 build/busybox/done/install
     - run: make -j13 build/kexec-tools/done/install
     - run: make -j13 build/ncurses/done/install
