@@ -5,7 +5,7 @@ $(BUILD)/wpa_supplicant/done/build: $(BUILD)/wpa_supplicant/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/wpa_supplicant/build/wpa_supplicant $(WITH_CROSS_CC)
 	@touch $@
 
-$(BUILD)/wpa_supplicant/done/configure: userspace/wpa/wpa_supplicant.config $(BUILD)/wpa_supplicant/done/copy
+$(BUILD)/wpa_supplicant/done/configure: userspace/wpa/wpa_supplicant.config $(BUILD)/wpa_supplicant/done/copy $(BUILD)/libnl/done/install
 	cp $< $(BUILD)/wpa_supplicant/build/wpa_supplicant/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/wpa_supplicant/build/wpa_supplicant defconfig $(WITH_CROSS_CC)
 	@touch $@
