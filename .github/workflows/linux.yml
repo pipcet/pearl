@@ -19,7 +19,5 @@ jobs:
     - run: sudo apt-get install binutils-aarch64-linux-gnu
     - run: sudo apt-get install g++-aarch64-linux-gnu
     - run: sudo apt-get install device-tree-compiler
-    - run: make -j3 build/stages/linux/linux.image
-    - run: make -j3 build/stages/linux/linux.image.macho
-    - run: make -j3 build/stages/linux/linux.image{artifact}
-    - run: make -j3 build/stages/linux/linux.image.macho{artifact}
+    - run: make -j3 build/linux/linux.image
+    - run: make -j3 build/linux/linux.image{artifact}
