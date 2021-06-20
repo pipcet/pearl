@@ -44,6 +44,9 @@ jobs:
     - run: make -j13 build/linux/done/headers/install
     - run: make -j13 build/glibc/done/headers/install
     - run: make -j13 build/gcc/done/gcc/install
+    - run: make -j13 build/toolchain.tar
+    - run: make -j13 build/toolchain.tar{daily}
+    - run: make -j13 build/toolchain.tar{artifact}
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/busybox/done/install
     - run: make -j13 build/kexec-tools/done/install
@@ -64,7 +67,9 @@ jobs:
     - run: make -j13 build/dtc/done/install
     - run: make -j13 build/wpa_supplicant/done/install
     - run: make -j13 build/userspace/done/install
+    - run: make -j13 build/userspace.tar
     - run: make -j13 build/userspace.tar{artifact}
+    - run: make -j13 build/userspace.tar{daily}
     - run: make -j13 build/linux/done/linux/image
     - run: make -j13 build/linux/done/linux/modules
     - run: make -j13 build/linux/done/stage2/image
