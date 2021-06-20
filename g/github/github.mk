@@ -8,7 +8,13 @@ build/artifact-timestamp:
 	touch $@
 	sleep 1
 
-build/artifacts/up/pearl.macho: build/pearl.macho build/artifact-timestamp | build/artifacts/up/
+$(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/
+	bash g/github/dl-artifact $*
+	mv $@.new/$* $@
+	rm -rf $@.new
+	ls -l $@
+
+$(BUILD)/artifacts/up/pearl.macho: $(BUILD)/pearl.macho $(BUILD)/artifact-timestamp | $(BUILD)/artifacts/up/
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
 
