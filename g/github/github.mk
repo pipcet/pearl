@@ -17,11 +17,11 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/ar
 	rm -rf $@.new
 	ls -l $@
 
-$(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/%
+$(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar xf $<
 	@touch $@
 
-$(BUILD)/daily/extract/%: $(BUILD)/daily/down/%
+$(BUILD)/daily/extract/%: $(BUILD)/daily/down/% | $(BUILD)/daily/extract/
 	tar xf $<
 	@touch $@
 
