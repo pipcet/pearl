@@ -18,7 +18,7 @@ $(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image dtbs
 	@touch $@
 
-$(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy
+$(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
 	cp $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
