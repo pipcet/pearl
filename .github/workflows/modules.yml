@@ -186,5 +186,5 @@ jobs:
     - run: make -j13 build/daily/extract/toolchain.tar
     - run: make -j13 build/daily/down/userspace.tar
     - run: make -j13 build/daily/extract/userspace.tar
-    - run: make -j3 build/linux/linux.image
-    - run: make -j3 build/linux/linux.image{artifact}
+    - run: make --trace -j13 build/linux/linux.image
+    - run: make -j13 build/linux/linux.image{artifact}
