@@ -2,9 +2,9 @@
 
 $(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(COPY)
 $(BUILD)/initramfs/%: local/initramfs/% ; $(COPY)
-$(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec
+$(BUILD)/initramfs/pearl.cpiospec: build/userspace/done/install local/initramfs/pearl.cpiospec
 	$(MKDIR) $(dir $@)
-	@(cat $<; $(foreach file,$(patsubst $(BUILD)/initramfs/pearl/%,/%,$(wordlist 2,$(words $^),$^)),echo dir $(dir $(patsubst %/,%,$(file))) 755 0 0; echo file $(patsubst ./%,%,$(file)) $(BUILD)/initramfs/pearl/$(file) 755 0 0;) (cd $(BUILD)/pearl/install/; find -type f | while read file; do echo "dir "$$(dirname $$(dirname $$(dirname "$$file")))" 755 0 0";  echo "dir "$$(dirname $$(dirname "$$file"))" 755 0 0"; echo "dir "$$(dirname "$$file")" 755 0 0"; echo "file $$file $(BUILD)/pearl/install/$$file 755 0 0"; done); (cd $(BUILD)/pearl/install/; find -type l | while read file; do echo "dir "$$(dirname $$(dirname $$(dirname "$$file")))" 755 0 0";  echo "dir "$$(dirname $$(dirname "$$file"))" 755 0 0"; echo "dir "$$(dirname "$$file")" 755 0 0"; echo "slink $$file "$$(readlink "$(BUILD)/pearl/install/$$file")" 755 0 0"; done)) | LC_ALL=C sort | uniq > $@
+	@(cat $<; $(foreach file,$(patsubst $(BUILD)/initramfs/pearl/%,/%,$(wordlist 3,$(words $^),$^)),echo dir $(dir $(patsubst %/,%,$(file))) 755 0 0; echo file $(patsubst ./%,%,$(file)) $(BUILD)/initramfs/pearl/$(file) 755 0 0;) (cd $(BUILD)/pearl/install/; find -type f | while read file; do echo "dir "$$(dirname $$(dirname $$(dirname "$$file")))" 755 0 0";  echo "dir "$$(dirname $$(dirname "$$file"))" 755 0 0"; echo "dir "$$(dirname "$$file")" 755 0 0"; echo "file $$file $(BUILD)/pearl/install/$$file 755 0 0"; done); (cd $(BUILD)/pearl/install/; find -type l | while read file; do echo "dir "$$(dirname $$(dirname $$(dirname "$$file")))" 755 0 0";  echo "dir "$$(dirname $$(dirname "$$file"))" 755 0 0"; echo "dir "$$(dirname "$$file")" 755 0 0"; echo "slink $$file "$$(readlink "$(BUILD)/pearl/install/$$file")" 755 0 0"; done)) | LC_ALL=C sort | uniq > $@
 
 $(BUILD)/initramfs/pearl.cpio: $(BUILD)/initramfs/pearl.cpiospec $(BUILD)/linux/done/checkout | $(BUILD)/initramfs/
 	(cd $(BUILD)/linux/linux/build/; ./usr/gen_initramfs.sh -o $@ $<)
