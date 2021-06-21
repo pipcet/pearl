@@ -1,0 +1,8 @@
+#!/bin/sh
+mkdir -p /persist
+cat /proc/iomem > /persist/stage1-iomem.txt
+uname -a > /persist/stage1-uname.txt
+tar xvf blobs.tar
+tar xvf busybocs.tar
+prepare-stage2
+stage2

@@ -13,4 +13,4 @@ build/pearl/bin/receive-sendfile: sendfile/receive-sendfile.c
 	tar -C $@.d -c . | gzip -1 > $@
 
 %.sendfile{send}: %.sendfile
-	$(SUDO) sendfile/send-sendfile $<
+	$(SUDO) local/sendfile/send-sendfile $<
