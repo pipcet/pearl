@@ -23,4 +23,4 @@ $(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(modu
 	@touch $@
 
 $(BUILD)/userspace.tar: $(BUILD)/userspace/done/install
-	tar -C . -cf $@ pearl/install pearl/toolchain $(patsubst $(BUILD)/%,$(BUILD)/%,$(wildcard $(BUILD)/*/done))
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/toolchain $(wildcard $(BUILD)/*/done))
