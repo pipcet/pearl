@@ -22,6 +22,13 @@ $(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
+$(BUILD)/linux/%.modules: $(BUILD)/linux/done/%/configure
+	rm -rf $@.d
+	$(MKDIR) $@.d
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
+	$(TAR) -C $@.d -c . -f $@
+
 $(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image dtbs
 	@touch $@
