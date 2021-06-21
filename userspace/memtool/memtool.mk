@@ -15,7 +15,8 @@ $(BUILD)/memtool/done/copy: $(BUILD)/memtool/done/checkout | $(BUILD)/memtool/do
 	$(CP) -aus userspace/memtool/memtool/* $(BUILD)/memtool/build/
 	@touch $@
 
-$(BUILD)/memtool/done/checkout: userspace/memtool/memtool{checkout} | $(BUILD)/memtool/done/
+$(BUILD)/memtool/done/checkout: | $(BUILD)/memtool/done/
+	$(MAKE) userspace/memtool/memtool{checkout}
 	@touch $@
 
 userspace-modules += memtool

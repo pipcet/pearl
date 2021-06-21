@@ -14,7 +14,8 @@ $(BUILD)/openssl/done/copy: $(BUILD)/openssl/done/checkout | $(BUILD)/openssl/do
 	$(CP) -aus userspace/openssl/openssl/* $(BUILD)/openssl/build/
 	@touch $@
 
-$(BUILD)/openssl/done/checkout: userspace/openssl/openssl{checkout} | $(BUILD)/openssl/done/
+$(BUILD)/openssl/done/checkout: | $(BUILD)/openssl/done/
+	$(MAKE) userspace/openssl/openssl{checkout}
 	@touch $@
 
 userspace-modules += openssl

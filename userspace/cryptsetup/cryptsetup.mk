@@ -15,7 +15,8 @@ $(BUILD)/cryptsetup/done/copy: $(BUILD)/cryptsetup/done/checkout | $(BUILD)/cryp
 	$(CP) -aus userspace/cryptsetup/cryptsetup/* $(BUILD)/cryptsetup/build/
 	@touch $@
 
-$(BUILD)/cryptsetup/done/checkout: userspace/cryptsetup/cryptsetup{checkout} | $(BUILD)/cryptsetup/done/
+$(BUILD)/cryptsetup/done/checkout: | $(BUILD)/cryptsetup/done/
+	$(MAKE) userspace/cryptsetup/cryptsetup{checkout}
 	@touch $@
 
 userspace-modules += cryptsetup

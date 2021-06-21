@@ -17,7 +17,8 @@ $(BUILD)/slurp/done/copy: $(BUILD)/slurp/done/checkout | $(BUILD)/slurp/done/ $(
 	$(CP) -aus $(PWD)/userspace/slurp/slurp/* $(BUILD)/slurp/build/
 	@touch $@
 
-$(BUILD)/slurp/done/checkout: userspace/slurp/slurp{checkout} | $(BUILD)/slurp/done/
+$(BUILD)/slurp/done/checkout: | $(BUILD)/slurp/done/
+	$(MAKE) userspace/slurp/slurp{checkout}
 	@touch $@
 
 userspace-modules += slurp

@@ -27,7 +27,8 @@ $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/d
 	$(CP) -aus userspace/emacs/emacs/* $(BUILD)/emacs/native/
 	@touch $@
 
-$(BUILD)/emacs/done/checkout: userspace/emacs/emacs{checkout} | $(BUILD)/emacs/done/
+$(BUILD)/emacs/done/checkout: | $(BUILD)/emacs/done/
+	$(MAKE) userspace/emacs/emacs{checkout}
 	@touch $@
 
 $(BUILD)/emacs/done/install: $(BUILD)/emacs/done/cross/install

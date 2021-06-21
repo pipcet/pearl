@@ -19,7 +19,8 @@ $(BUILD)/busybox/done/copy: $(BUILD)/busybox/done/checkout | $(BUILD)/busybox/do
 	$(CP) -aus userspace/busybox/busybox/* $(BUILD)/busybox/build/
 	@touch $@
 
-$(BUILD)/busybox/done/checkout: userspace/busybox/busybox{checkout} | $(BUILD)/busybox/done/
+$(BUILD)/busybox/done/checkout: | $(BUILD)/busybox/done/
+	$(MAKE) userspace/busybox/busybox{checkout}
 	@touch $@
 
 userspace-modules += busybox

@@ -14,7 +14,8 @@ $(BUILD)/ncurses/done/copy: $(BUILD)/ncurses/done/checkout | $(BUILD)/ncurses/do
 	$(CP) -aus userspace/ncurses/ncurses/* $(BUILD)/ncurses/build/
 	@touch $@
 
-$(BUILD)/ncurses/done/checkout: userspace/ncurses/ncurses{checkout} | $(BUILD)/ncurses/done/
+$(BUILD)/ncurses/done/checkout: | $(BUILD)/ncurses/done/
+	$(MAKE) userspace/ncurses/ncurses{checkout}
 	@touch $@
 
 userspace-modules += ncurses

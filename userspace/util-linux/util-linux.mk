@@ -36,6 +36,7 @@ $(BUILD)/libblkid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libblk
 
 userspace-modules += libblkid
 
-$(BUILD)/util-linux/done/checkout: userspace/util-linux/util-linux{checkout} | $(BUILD)/util-linux/done/
+$(BUILD)/util-linux/done/checkout: | $(BUILD)/util-linux/done/
+	$(MAKE) userspace/util-linux/util-linux{checkout}
 	@touch $@
 

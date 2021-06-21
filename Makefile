@@ -68,3 +68,8 @@ build/%: $(PWD)/build/%
 	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
 
 .PHONY: %}
+
+random-targets:
+	(echo build/linux/pearl.image.sendfile; \
+	 echo build/linux/pearl.image.macho; \
+	 echo build/linux/done/stage2/make) | shuf | while read target; do $(MAKE) $$target; done

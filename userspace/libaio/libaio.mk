@@ -13,7 +13,8 @@ $(BUILD)/libaio/done/copy: $(BUILD)/libaio/done/checkout | $(BUILD)/libaio/build
 	$(CP) -aus userspace/libaio/libaio/* $(BUILD)/libaio/build
 	@touch $@
 
-$(BUILD)/libaio/done/checkout: userspace/libaio/libaio{checkout} | $(BUILD)/libaio/done/
+$(BUILD)/libaio/done/checkout: | $(BUILD)/libaio/done/
+	$(MAKE) userspace/libaio/libaio{checkout}
 	@touch $@
 
 userspace-modules += libaio

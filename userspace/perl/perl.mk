@@ -14,7 +14,8 @@ $(BUILD)/perl/done/copy: $(BUILD)/perl/done/checkout | $(BUILD)/perl/build/ $(BU
 	$(CP) -aus userspace/perl/perl/* $(addprefix userspace/perl/perl/.,dir-locals.el editorconfig lgtm.yml metaconf-exclusions.txt travis.yml) $(BUILD)/perl/build/
 	@touch $@
 
-$(BUILD)/perl/done/checkout: userspace/perl/perl{checkout} | $(BUILD)/perl/done/
+$(BUILD)/perl/done/checkout: | $(BUILD)/perl/done/
+	$(MAKE) userspace/perl/perl{checkout}
 	@touch $@
 
 userspace-modules += perl

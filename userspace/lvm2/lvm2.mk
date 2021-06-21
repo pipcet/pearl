@@ -14,7 +14,8 @@ $(BUILD)/lvm2/done/copy: $(BUILD)/lvm2/done/checkout | $(BUILD)/lvm2/build/ $(BU
 	$(CP) -aus userspace/lvm2/lvm2/* $(BUILD)/lvm2/build
 	@touch $@
 
-$(BUILD)/lvm2/done/checkout: userspace/lvm2/lvm2{checkout} | $(BUILD)/lvm2/done/
+$(BUILD)/lvm2/done/checkout: | $(BUILD)/lvm2/done/
+	$(MAKE) userspace/lvm2/lvm2{checkout}
 	@touch $@
 
 userspace-modules += lvm2

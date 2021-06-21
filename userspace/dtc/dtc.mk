@@ -13,7 +13,8 @@ $(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)
 	$(CP) -aus userspace/dtc/dtc/* $(BUILD)/dtc/build/
 	@touch $@
 
-$(BUILD)/dtc/done/checkout: userspace/dtc/dtc{checkout} | $(BUILD)/dtc/done/
+$(BUILD)/dtc/done/checkout: | $(BUILD)/dtc/done/
+	$(MAKE) userspace/dtc/dtc{checkout}
 	@touch $@
 
 userspace-modules += dtc

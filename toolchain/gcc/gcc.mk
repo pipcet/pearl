@@ -38,5 +38,6 @@ $(BUILD)/gcc/done/libgcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/li
 	$(CP) -aus $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/libgcc/source/
 	@touch $@
 
-$(BUILD)/gcc/done/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/gcc/done/gcc/
+$(BUILD)/gcc/done/checkout: | $(BUILD)/gcc/done/gcc/
+	$(MAKE) toolchain/gcc/gcc{checkout}
 	@touch $@

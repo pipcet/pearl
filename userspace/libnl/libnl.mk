@@ -15,7 +15,8 @@ $(BUILD)/libnl/done/copy: $(BUILD)/libnl/done/checkout | $(BUILD)/libnl/done/ $(
 	$(CP) -aus userspace/libnl/libnl/* $(BUILD)/libnl/build/
 	@touch $@
 
-$(BUILD)/libnl/done/checkout: userspace/libnl/libnl{checkout} | $(BUILD)/libnl/done/
+$(BUILD)/libnl/done/checkout: | $(BUILD)/libnl/done/
+	$(MAKE) userspace/libnl/libnl{checkout}
 	@touch $@
 
 userspace-modules += libnl

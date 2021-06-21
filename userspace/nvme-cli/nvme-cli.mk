@@ -10,7 +10,8 @@ $(BUILD)/nvme-cli/done/copy: $(BUILD)/nvme-cli/done/checkout | $(BUILD)/nvme-cli
 	$(CP) -aus userspace/nvme-cli/nvme-cli/* $(BUILD)/nvme-cli/build/
 	@touch $@
 
-$(BUILD)/nvme-cli/done/checkout: userspace/nvme-cli/nvme-cli{checkout} | $(BUILD)/nvme-cli/done/
+$(BUILD)/nvme-cli/done/checkout: | $(BUILD)/nvme-cli/done/
+	$(MAKE) userspace/nvme-cli/nvme-cli{checkout}
 	@touch $@
 
 userspace-modules += nvme-cli
