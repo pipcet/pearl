@@ -9,7 +9,7 @@ $(BUILD)/gcc/done/gcc/build: $(BUILD)/gcc/done/gcc/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/gcc/gcc/build
 	@touch $@
 
-$(BUILD)/gcc/done/gcc/configure: $(BUILD)/gcc/done/gcc/copy $(BUILD)/linux/done/headers/install $(BUILD)/glibc/done/headers/install | $(BUILD)/gcc/gcc/build/
+$(BUILD)/gcc/done/gcc/configure: $(BUILD)/gcc/done/gcc/copy $(BUILD)/linux/done/headers/install $(BUILD)/glibc/done/headers/install $(BUILD)/binutils-gdb/done/install | $(BUILD)/gcc/gcc/build/
 	(cd $(BUILD)/gcc/gcc/build; $(WITH_CROSS_PATH) ../source/configure --target=aarch64-linux-gnu --enable-languages=c,lto --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/pearl/install" --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --disable-shared --with-static-standard-libraries --with-build-sysroot="$(BUILD)/pearl/install" --disable-c++tools)
 	@touch $@
 

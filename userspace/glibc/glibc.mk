@@ -41,7 +41,7 @@ $(BUILD)/glibc/done/headers/install: $(BUILD)/glibc/done/headers/build
 $(BUILD)/glibc/done/headers/build: $(BUILD)/glibc/done/headers/configure
 	@touch $@
 
-$(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy | $(BUILD)/glibc/headers/build/
+$(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy $(BUILD)/gcc/done/gcc/install | $(BUILD)/glibc/headers/build/
 	(cd $(BUILD)/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
