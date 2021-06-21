@@ -17,7 +17,7 @@ $(BUILD)/gcc/done/gcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/gcc/ 
 	$(CP) -as $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
 	@touch $@
 
-$(BUILD)/gcc/done/g++/install: $(BUILD)/gcc/done/libgcc/install
+$(BUILD)/gcc/done/g++/install: $(BUILD)/gcc/done/libgcc/install | $(BUILD)/gcc/done/g++/
 	@touch $@
 
 $(BUILD)/gcc/done/libgcc/install: $(BUILD)/gcc/done/libgcc/build
