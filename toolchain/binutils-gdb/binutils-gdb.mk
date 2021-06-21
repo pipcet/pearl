@@ -14,7 +14,7 @@ $(BUILD)/binutils-gdb/done/configure: $(BUILD)/binutils-gdb/done/copy
 	@touch $@
 
 $(BUILD)/binutils-gdb/done/copy: $(BUILD)/binutils-gdb/done/checkout | $(BUILD)/binutils-gdb/source/ $(BUILD)/binutils-gdb/done/
-	$(CP) -as $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/binutils-gdb/source/
+	$(CP) -aus $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/binutils-gdb/source/
 	@touch $@
 
 $(BUILD)/binutils-gdb/done/checkout: toolchain/binutils-gdb/binutils-gdb{checkout} | $(BUILD)/binutils-gdb/done/

@@ -14,7 +14,7 @@ $(BUILD)/slurp/done/configure: $(BUILD)/slurp/done/copy $(BUILD)/perl/done/insta
 	@touch $@
 
 $(BUILD)/slurp/done/copy: $(BUILD)/slurp/done/checkout | $(BUILD)/slurp/done/ $(BUILD)/slurp/build/
-	cp -as $(PWD)/userspace/slurp/slurp/* $(BUILD)/slurp/build/
+	$(CP) -aus $(PWD)/userspace/slurp/slurp/* $(BUILD)/slurp/build/
 	@touch $@
 
 $(BUILD)/slurp/done/checkout: userspace/slurp/slurp{checkout} | $(BUILD)/slurp/done/

@@ -14,7 +14,7 @@ $(BUILD)/gcc/done/gcc/configure: $(BUILD)/gcc/done/gcc/copy $(BUILD)/linux/done/
 	@touch $@
 
 $(BUILD)/gcc/done/gcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/gcc/ $(BUILD)/gcc/gcc/source/
-	$(CP) -as $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
+	$(CP) -aus $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
 	@touch $@
 
 $(BUILD)/gcc/done/g++/install: $(BUILD)/gcc/done/libgcc/install | $(BUILD)/gcc/done/g++/
@@ -35,7 +35,7 @@ $(BUILD)/gcc/done/libgcc/configure: $(BUILD)/gcc/done/libgcc/copy $(BUILD)/linux
 	@touch $@
 
 $(BUILD)/gcc/done/libgcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/libgcc/ $(BUILD)/gcc/libgcc/source/
-	$(CP) -as $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/libgcc/source/
+	$(CP) -aus $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/libgcc/source/
 	@touch $@
 
 $(BUILD)/gcc/done/checkout: toolchain/gcc/gcc{checkout} | $(BUILD)/gcc/done/gcc/

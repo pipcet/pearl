@@ -11,7 +11,7 @@ $(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(BUILD)/glibc/done/gl
 	@touch $@
 
 $(BUILD)/json-c/done/copy: $(BUILD)/json-c/done/checkout | $(BUILD)/json-c/done/ $(BUILD)/json-c/build/
-	cp -a userspace/json-c/json-c/* $(BUILD)/json-c/build/
+	$(CP) -aus userspace/json-c/json-c/* $(BUILD)/json-c/build/
 	@touch $@
 
 $(BUILD)/json-c/done/checkout: userspace/json-c/json-c{checkout} | $(BUILD)/json-c/done/

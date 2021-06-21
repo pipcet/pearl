@@ -11,7 +11,7 @@ $(BUILD)/wpa_supplicant/done/configure: userspace/wpa/wpa_supplicant.config $(BU
 	@touch $@
 
 $(BUILD)/wpa_supplicant/done/copy: $(BUILD)/wpa_supplicant/done/checkout | $(BUILD)/wpa_supplicant/build/
-	cp -as $(PWD)/userspace/wpa/wpa/* $(BUILD)/wpa_supplicant/build/
+	$(CP) -aus $(PWD)/userspace/wpa/wpa/* $(BUILD)/wpa_supplicant/build/
 	@touch $@
 
 $(BUILD)/wpa_supplicant/done/checkout: userspace/wpa/wpa{checkout} | $(BUILD)/wpa_supplicant/done/

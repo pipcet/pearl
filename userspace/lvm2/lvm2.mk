@@ -11,7 +11,7 @@ $(BUILD)/lvm2/done/configure: $(BUILD)/lvm2/done/copy $(BUILD)/libaio/done/insta
 	@touch $@
 
 $(BUILD)/lvm2/done/copy: $(BUILD)/lvm2/done/checkout | $(BUILD)/lvm2/build/ $(BUILD)/lvm2/done/
-	cp -a userspace/lvm2/lvm2/* $(BUILD)/lvm2/build
+	$(CP) -aus userspace/lvm2/lvm2/* $(BUILD)/lvm2/build
 	@touch $@
 
 $(BUILD)/lvm2/done/checkout: userspace/lvm2/lvm2{checkout} | $(BUILD)/lvm2/done/

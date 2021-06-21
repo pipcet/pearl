@@ -11,7 +11,7 @@ $(BUILD)/emacs/done/cross/configure: $(BUILD)/emacs/done/cross/copy $(BUILD)/gcc
 	@touch $@
 
 $(BUILD)/emacs/done/cross/copy: $(BUILD)/emacs/done/native/build $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/cross/ $(BUILD)/emacs/cross/
-	$(CP) -a $(BUILD)/emacs/native/* $(BUILD)/emacs/cross/
+	$(CP) -aus $(BUILD)/emacs/native/* $(BUILD)/emacs/cross/
 	@touch $@
 
 $(BUILD)/emacs/done/native/build: $(BUILD)/emacs/done/native/configure
@@ -24,7 +24,7 @@ $(BUILD)/emacs/done/native/configure: $(BUILD)/emacs/done/native/copy
 	@touch $@
 
 $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/native/ $(BUILD)/emacs/native/
-	$(CP) -a userspace/emacs/emacs/* $(BUILD)/emacs/native/
+	$(CP) -aus userspace/emacs/emacs/* $(BUILD)/emacs/native/
 	@touch $@
 
 $(BUILD)/emacs/done/checkout: userspace/emacs/emacs{checkout} | $(BUILD)/emacs/done/

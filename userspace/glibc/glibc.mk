@@ -13,7 +13,7 @@ $(BUILD)/glibc/done/glibc/configure: $(BUILD)/glibc/done/glibc/copy $(BUILD)/lin
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
-	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/glibc/source/
+	$(CP) -aus userspace/glibc/glibc/* $(BUILD)/glibc/glibc/source/
 	@touch $@
 
 
@@ -29,7 +29,7 @@ $(BUILD)/glibc/done/stage1/configure: $(BUILD)/glibc/done/stage1/copy | $(BUILD)
 	@touch $@
 
 $(BUILD)/glibc/done/stage1/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/stage1/source/ $(BUILD)/glibc/done/stage1/
-	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/stage1/source/
+	$(CP) -aus userspace/glibc/glibc/* $(BUILD)/glibc/stage1/source/
 	@touch $@
 
 $(BUILD)/glibc/done/headers/install: $(BUILD)/glibc/done/headers/build
@@ -46,7 +46,7 @@ $(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy | $(BUIL
 	@touch $@
 
 $(BUILD)/glibc/done/headers/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/headers/source/ $(BUILD)/glibc/done/headers/
-	$(CP) -a userspace/glibc/glibc/* $(BUILD)/glibc/headers/source/
+	$(CP) -aus userspace/glibc/glibc/* $(BUILD)/glibc/headers/source/
 	@touch $@
 
 $(BUILD)/glibc/done/checkout: userspace/glibc/glibc{checkout} | $(BUILD)/glibc/done/

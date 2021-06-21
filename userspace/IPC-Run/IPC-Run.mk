@@ -14,7 +14,7 @@ $(BUILD)/IPC-Run/done/configure: $(BUILD)/IPC-Run/done/copy $(BUILD)/perl/done/i
 	@touch $@
 
 $(BUILD)/IPC-Run/done/copy: $(BUILD)/IPC-Run/done/checkout | $(BUILD)/IPC-Run/done/ $(BUILD)/IPC-Run/build/
-	cp -as $(PWD)/userspace/IPC-Run/IPC-Run/* $(BUILD)/IPC-Run/build/
+	$(CP) -aus $(PWD)/userspace/IPC-Run/IPC-Run/* $(BUILD)/IPC-Run/build/
 	@touch $@
 
 $(BUILD)/IPC-Run/done/checkout: userspace/IPC-Run/IPC-Run{checkout} | $(BUILD)/IPC-Run/done/

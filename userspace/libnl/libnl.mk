@@ -12,7 +12,7 @@ $(BUILD)/libnl/done/configure: $(BUILD)/libnl/done/copy $(BUILD)/glibc/done/glib
 	@touch $@
 
 $(BUILD)/libnl/done/copy: $(BUILD)/libnl/done/checkout | $(BUILD)/libnl/done/ $(BUILD)/libnl/build/
-	$(CP) -a userspace/libnl/libnl/* $(BUILD)/libnl/build/
+	$(CP) -aus userspace/libnl/libnl/* $(BUILD)/libnl/build/
 	@touch $@
 
 $(BUILD)/libnl/done/checkout: userspace/libnl/libnl{checkout} | $(BUILD)/libnl/done/

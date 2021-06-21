@@ -15,7 +15,7 @@ $(BUILD)/popt/done/configure: $(BUILD)/popt/done/copy
 	@touch $@
 
 $(BUILD)/popt/done/copy: $(BUILD)/popt/done/checkout | $(BUILD)/popt/done/ $(BUILD)/popt/build/
-	cp -as $(PWD)/userspace/popt/popt/* $(BUILD)/popt/build/
+	$(CP) -aus $(PWD)/userspace/popt/popt/* $(BUILD)/popt/build/
 	@touch $@
 
 $(BUILD)/popt/done/checkout: userspace/popt/popt{checkout} | $(BUILD)/popt/done/

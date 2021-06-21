@@ -16,7 +16,7 @@ $(BUILD)/busybox/done/configure: userspace/busybox/busybox.config $(BUILD)/busyb
 	@touch $@
 
 $(BUILD)/busybox/done/copy: $(BUILD)/busybox/done/checkout | $(BUILD)/busybox/done/ $(BUILD)/busybox/build/
-	$(CP) -a userspace/busybox/busybox/* $(BUILD)/busybox/build/
+	$(CP) -aus userspace/busybox/busybox/* $(BUILD)/busybox/build/
 	@touch $@
 
 $(BUILD)/busybox/done/checkout: userspace/busybox/busybox{checkout} | $(BUILD)/busybox/done/

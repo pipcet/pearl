@@ -34,18 +34,18 @@ $(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
 	@touch $@
 
 $(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
-	cp $< $(BUILD)/linux/$*/build/.config
+	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
 
 linux/%{menuconfig}: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
-	cp $< $(BUILD)/linux/$*/build/.config
+	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
-	cp $(BUILD)/linux/$*/build/config $<
+	$(CP) $(BUILD)/linux/$*/build/config $<
 	@touch $@
 
 $(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
-	cp -as $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
+	$(CP) -aus $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
 $(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)/pearl/done/install/mkdir
@@ -53,10 +53,12 @@ $(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)
 	@touch $@
 
 $(BUILD)/linux/done/headers/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/headers/ $(BUILD)/linux/headers/source/
-	$(CP) -as $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
+	$(CP) -aus $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
 	@touch $@
 
 $(BUILD)/linux/done/checkout: linux/linux{checkout} | $(BUILD)/linux/done/
 	@touch $@
 
 $(call pearl-static,$(wildcard $(PWD)/linux/pearl/bin/*),$(PWD)/linux/pearl)
+
+{non-intermediate}: $(BUILD)/linux/done/headers/copy $(BUILD)/linux/done/headers/configure
