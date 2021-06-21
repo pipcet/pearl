@@ -28,6 +28,12 @@ $(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy $(BUI
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
 
+linux/%{menuconfig}: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
+	cp $< $(BUILD)/linux/$*/build/.config
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
+	cp $(BUILD)/linux/$*/build/config $<
+	@touch $@
+
 $(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
 	cp -as $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
