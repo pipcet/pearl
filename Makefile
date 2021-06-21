@@ -68,5 +68,3 @@ build/%: $(PWD)/build/%
 	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
 
 .PHONY: %}
-
-.SECONDARY:
