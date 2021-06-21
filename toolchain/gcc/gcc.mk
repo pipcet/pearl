@@ -17,6 +17,9 @@ $(BUILD)/gcc/done/gcc/copy: $(BUILD)/gcc/done/checkout | $(BUILD)/gcc/done/gcc/ 
 	$(CP) -as $(PWD)/toolchain/gcc/gcc/* $(BUILD)/gcc/gcc/source/
 	@touch $@
 
+$(BUILD)/gcc/done/g++/install: $(BUILD)/gcc/done/libgcc/install
+	@touch $@
+
 $(BUILD)/gcc/done/libgcc/install: $(BUILD)/gcc/done/libgcc/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/gcc/libgcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	$(CP) -a $(BUILD)/pearl/toolchain/aarch64-linux-gnu/lib64/libgcc_s.o $(BUILD)/pearl/install/lib

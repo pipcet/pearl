@@ -7,7 +7,7 @@ $(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c $(BUILD)/glibc/done/glibc/inst
 $(BUILD)/dt/build/bin/macho-version: local/dt/macho-version.c $(BUILD)/glibc/done/glibc/install | $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
-$(BUILD)/dt/build/bin/adtp: local/dt/adtp.cc $(BUILD)/glibc/done/glibc/install | $(BUILD)/dt/build/bin/
+$(BUILD)/dt/build/bin/adtp: local/dt/adtp.cc $(BUILD)/glibc/done/glibc/install  $(BUILD)/gcc/done/g++/install | $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)g++ -Os -static -o $@ $<
 
 $(BUILD)/dt.tar: $(BUILD)/dt/bin/dt $(BUILD)/dt/bin/adtdump
