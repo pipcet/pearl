@@ -10,7 +10,7 @@ $(BUILD)/libaio/done/configure: $(BUILD)/libaio/done/copy $(BUILD)/libblkid/done
 	@touch $@
 
 $(BUILD)/libaio/done/copy: $(BUILD)/libaio/done/checkout | $(BUILD)/libaio/build/ $(BUILD)/libaio/done/
-	$(CP) -aus userspace/libaio/libaio/* $(BUILD)/libaio/build
+	$(CP) -aus $(PWD)/userspace/libaio/libaio/* $(BUILD)/libaio/build
 	@touch $@
 
 $(BUILD)/libaio/done/checkout: | $(BUILD)/libaio/done/

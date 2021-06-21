@@ -11,7 +11,7 @@ $(BUILD)/ncurses/done/configure: $(BUILD)/ncurses/done/copy $(BUILD)/glibc/done/
 	@touch $@
 
 $(BUILD)/ncurses/done/copy: $(BUILD)/ncurses/done/checkout | $(BUILD)/ncurses/done/ $(BUILD)/ncurses/build/
-	$(CP) -aus userspace/ncurses/ncurses/* $(BUILD)/ncurses/build/
+	$(CP) -aus $(PWD)/userspace/ncurses/ncurses/* $(BUILD)/ncurses/build/
 	@touch $@
 
 $(BUILD)/ncurses/done/checkout: | $(BUILD)/ncurses/done/

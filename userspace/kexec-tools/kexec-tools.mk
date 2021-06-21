@@ -12,7 +12,7 @@ $(BUILD)/kexec-tools/done/configure: $(BUILD)/kexec-tools/done/copy $(BUILD)/gli
 	@touch $@
 
 $(BUILD)/kexec-tools/done/copy: $(BUILD)/kexec-tools/done/checkout | $(BUILD)/kexec-tools/source/ $(BUILD)/kexec-tools/done/
-	$(CP) -aus userspace/kexec-tools/kexec-tools/* $(BUILD)/kexec-tools/source/
+	$(CP) -aus $(PWD)/userspace/kexec-tools/kexec-tools/* $(BUILD)/kexec-tools/source/
 	@touch $@
 
 $(BUILD)/kexec-tools/done/checkout: userspace/kexec-tools/kexec-tools{checkout} | $(BUILD)/kexec-tools/done/

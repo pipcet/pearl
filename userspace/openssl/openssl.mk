@@ -11,7 +11,7 @@ $(BUILD)/openssl/done/configure: $(BUILD)/openssl/done/copy $(BUILD)/glibc/done/
 	@touch $@
 
 $(BUILD)/openssl/done/copy: $(BUILD)/openssl/done/checkout | $(BUILD)/openssl/done/ $(BUILD)/openssl/build/
-	$(CP) -aus userspace/openssl/openssl/* $(BUILD)/openssl/build/
+	$(CP) -aus $(PWD)/userspace/openssl/openssl/* $(BUILD)/openssl/build/
 	@touch $@
 
 $(BUILD)/openssl/done/checkout: | $(BUILD)/openssl/done/

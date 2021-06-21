@@ -12,7 +12,7 @@ $(BUILD)/cryptsetup/done/configure: $(BUILD)/cryptsetup/done/copy $(BUILD)/libuu
 	@touch $@
 
 $(BUILD)/cryptsetup/done/copy: $(BUILD)/cryptsetup/done/checkout | $(BUILD)/cryptsetup/done/ $(BUILD)/cryptsetup/build/
-	$(CP) -aus userspace/cryptsetup/cryptsetup/* $(BUILD)/cryptsetup/build/
+	$(CP) -aus $(PWD)/userspace/cryptsetup/cryptsetup/* $(BUILD)/cryptsetup/build/
 	@touch $@
 
 $(BUILD)/cryptsetup/done/checkout: | $(BUILD)/cryptsetup/done/

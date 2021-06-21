@@ -10,7 +10,7 @@ $(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy $(BUILD)/glibc/done/glibc/in
 	@touch $@
 
 $(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)/dtc/build/
-	$(CP) -aus userspace/dtc/dtc/* $(BUILD)/dtc/build/
+	$(CP) -aus $(PWD)/userspace/dtc/dtc/* $(BUILD)/dtc/build/
 	@touch $@
 
 $(BUILD)/dtc/done/checkout: | $(BUILD)/dtc/done/

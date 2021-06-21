@@ -11,7 +11,7 @@ $(BUILD)/perl/done/configure: $(BUILD)/perl/done/copy $(BUILD)/glibc/done/glibc/
 	@touch $@
 
 $(BUILD)/perl/done/copy: $(BUILD)/perl/done/checkout | $(BUILD)/perl/build/ $(BUILD)/perl/done/
-	$(CP) -aus userspace/perl/perl/* $(addprefix userspace/perl/perl/.,dir-locals.el editorconfig lgtm.yml metaconf-exclusions.txt travis.yml) $(BUILD)/perl/build/
+	$(CP) -aus $(PWD)/userspace/perl/perl/* $(addprefix $(PWD)/userspace/perl/perl/.,dir-locals.el editorconfig lgtm.yml metaconf-exclusions.txt travis.yml) $(BUILD)/perl/build/
 	@touch $@
 
 $(BUILD)/perl/done/checkout: | $(BUILD)/perl/done/

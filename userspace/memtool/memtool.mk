@@ -12,7 +12,7 @@ $(BUILD)/memtool/done/configure: $(BUILD)/memtool/done/copy
 	@touch $@
 
 $(BUILD)/memtool/done/copy: $(BUILD)/memtool/done/checkout | $(BUILD)/memtool/done/ $(BUILD)/memtool/build/
-	$(CP) -aus userspace/memtool/memtool/* $(BUILD)/memtool/build/
+	$(CP) -aus $(PWD)/userspace/memtool/memtool/* $(BUILD)/memtool/build/
 	@touch $@
 
 $(BUILD)/memtool/done/checkout: | $(BUILD)/memtool/done/

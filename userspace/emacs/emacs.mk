@@ -24,7 +24,7 @@ $(BUILD)/emacs/done/native/configure: $(BUILD)/emacs/done/native/copy
 	@touch $@
 
 $(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/native/ $(BUILD)/emacs/native/
-	$(CP) -aus userspace/emacs/emacs/* $(BUILD)/emacs/native/
+	$(CP) -aus $(PWD)/userspace/emacs/emacs/* $(BUILD)/emacs/native/
 	@touch $@
 
 $(BUILD)/emacs/done/checkout: | $(BUILD)/emacs/done/

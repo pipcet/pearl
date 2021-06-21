@@ -12,7 +12,7 @@ $(BUILD)/libuuid/done/configure: $(BUILD)/libuuid/done/copy $(BUILD)/glibc/done/
 	@touch $@
 
 $(BUILD)/libuuid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libuuid/done/ $(BUILD)/libuuid/build/
-	$(CP) -aus userspace/util-linux/util-linux/* $(BUILD)/libuuid/build/
+	$(CP) -aus $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/libuuid/build/
 	@touch $@
 
 userspace-modules += libuuid
@@ -31,7 +31,7 @@ $(BUILD)/libblkid/done/configure: $(BUILD)/libblkid/done/copy $(BUILD)/glibc/don
 	@touch $@
 
 $(BUILD)/libblkid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libblkid/done/ $(BUILD)/libblkid/build/
-	$(CP) -aus userspace/util-linux/util-linux/* $(BUILD)/libblkid/build/
+	$(CP) -aus $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/libblkid/build/
 	@touch $@
 
 userspace-modules += libblkid
