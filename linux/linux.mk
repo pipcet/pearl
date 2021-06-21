@@ -17,6 +17,9 @@ $(BUILD)/linux/%.dtb: linux/%.config $(BUILD)/linux/done/%/build
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 
+$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.dts.h
+$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.cpio
+
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
 $(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
