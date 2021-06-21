@@ -10,7 +10,7 @@ $(BUILD)/slurp/done/build: $(BUILD)/slurp/done/configure
 	@touch $@
 
 $(BUILD)/slurp/done/configure: $(BUILD)/slurp/done/copy $(BUILD)/perl/done/install
-	(cd $(BUILD)/slurp/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL)
+	(cd $(BUILD)/slurp/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL INSTALLSITELIB=/lib/perl5/site_perl)
 	@touch $@
 
 $(BUILD)/slurp/done/copy: $(BUILD)/slurp/done/checkout | $(BUILD)/slurp/done/ $(BUILD)/slurp/build/

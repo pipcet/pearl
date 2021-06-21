@@ -10,7 +10,7 @@ $(BUILD)/IPC-Run/done/build: $(BUILD)/IPC-Run/done/configure
 	@touch $@
 
 $(BUILD)/IPC-Run/done/configure: $(BUILD)/IPC-Run/done/copy $(BUILD)/perl/done/install
-	(cd $(BUILD)/IPC-Run/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL)
+	(cd $(BUILD)/IPC-Run/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL INSTALLSITELIB=/lib/perl5/site_perl INSTALLSITEARCH=/lib/perl5/site_perl)
 	@touch $@
 
 $(BUILD)/IPC-Run/done/copy: $(BUILD)/IPC-Run/done/checkout | $(BUILD)/IPC-Run/done/ $(BUILD)/IPC-Run/build/
