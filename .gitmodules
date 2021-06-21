@@ -127,3 +127,6 @@
 	path = bootloaders/grub/grub
 	url = https://github.com/pipcet/grub
 	branch = pearl
+[submodule "userspace/screen/screen"]
+	path = userspace/screen/screen
+	url = https://git.savannah.gnu.org/git/screen.git
