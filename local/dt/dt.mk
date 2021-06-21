@@ -16,4 +16,4 @@ $(BUILD)/dt.tar: $(BUILD)/dt/bin/dt $(BUILD)/dt/bin/adtdump
 $(BUILD)/%.dts.dtp: $(BUILD)/%.dts $(BUILD)/dt/bin/dt
 	$(BUILD)/dt/bin/dt dts-to-dtp $< $@
 
-$(call pearl-static,$(BUILD)/dt/build/bin/dt $(BUILD)/dt/build/bin/adtdump $(BUILD)/dt/build/bin/macho-version,$(BUILD)/dt/build)
+$(call pearl-static,$(BUILD)/dt/build/bin/dt $(BUILD)/dt/build/bin/adtdump $(BUILD)/dt/build/bin/macho-version $(BUILD)/dt/build/bin/adtp,$(BUILD)/dt/build)
