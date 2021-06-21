@@ -46,7 +46,7 @@ $(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy | $(BUIL
 	@touch $@
 
 $(BUILD)/glibc/done/headers/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/headers/source/ $(BUILD)/glibc/done/headers/
-	$(CP) -aus userspace/glibc/glibc/* $(BUILD)/glibc/headers/source/
+	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/glibc/headers/source/
 	@touch $@
 
 $(BUILD)/glibc/done/checkout: | $(BUILD)/glibc/done/
