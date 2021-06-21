@@ -120,11 +120,12 @@ jobs:
     - run: make -j13 build/userspace.tar{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: make -j13 build/linux/done/linux/image
     - run: make -j13 build/linux/done/linux/modules
-    - run: make -j13 build/linux/done/stage2/image
-    - run: make -j13 build/linux/done/stage2/modules
-    - run: make -j13 build/linux/done/stage1/image
+    - run: make -j13 build/linux/pearl.image
+    - run: make -j13 build/linux/pearl.image{artifact}
+    - run: make -j13 build/linux/pearl.image{daily}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   toolchain:
     name: toolchain
     runs-on: ubuntu-latest
