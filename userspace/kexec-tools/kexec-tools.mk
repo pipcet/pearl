@@ -15,7 +15,8 @@ $(BUILD)/kexec-tools/done/copy: $(BUILD)/kexec-tools/done/checkout | $(BUILD)/ke
 	$(CP) -aus $(PWD)/userspace/kexec-tools/kexec-tools/* $(BUILD)/kexec-tools/source/
 	@touch $@
 
-$(BUILD)/kexec-tools/done/checkout: userspace/kexec-tools/kexec-tools{checkout} | $(BUILD)/kexec-tools/done/
+$(BUILD)/kexec-tools/done/checkout: | $(BUILD)/kexec-tools/done/
+	$(MAKE) userspace/kexec-tools/kexec-tools{checkout}
 	@touch $@
 
 userspace-modules += kexec-tools

@@ -9,7 +9,7 @@ $(BUILD)/popt/done/build: $(BUILD)/popt/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/popt/build
 	@touch $@
 
-$(BUILD)/popt/done/configure: $(BUILD)/popt/done/copy
+$(BUILD)/popt/done/configure: $(BUILD)/popt/done/copy $(BUILD)/glibc/done/glibc/install
 	(cd $(BUILD)/popt/build; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/popt/build; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
