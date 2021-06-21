@@ -6,7 +6,7 @@ $(BUILD)/kexec-tools/done/build: $(BUILD)/kexec-tools/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/kexec-tools/source
 	@touch $@
 
-$(BUILD)/kexec-tools/done/configure: $(BUILD)/kexec-tools/done/copy
+$(BUILD)/kexec-tools/done/configure: $(BUILD)/kexec-tools/done/copy $(BUILD)/glibc/done/glibc/install
 	(cd $(BUILD)/kexec-tools/source; ./bootstrap)
 	(cd $(BUILD)/kexec-tools/source; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@

@@ -2,7 +2,7 @@ $(BUILD)/nvme-cli/done/install: $(BUILD)/nvme-cli/done/build
 	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/nvme-cli/build install-bin
 	@touch $@
 
-$(BUILD)/nvme-cli/done/build: $(BUILD)/nvme-cli/done/copy
+$(BUILD)/nvme-cli/done/build: $(BUILD)/nvme-cli/done/copy $(BUILD)/glibc/done/glibc/install
 	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/nvme-cli/build
 	@touch $@
 

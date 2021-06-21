@@ -6,7 +6,7 @@ $(BUILD)/dtc/done/build: $(BUILD)/dtc/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/dtc/build
 	@touch $@
 
-$(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy
+$(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy $(BUILD)/glibc/done/glibc/install
 	@touch $@
 
 $(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)/dtc/build/
