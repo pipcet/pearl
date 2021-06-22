@@ -1,0 +1,32 @@
+#!/bin/bash
+set -o errexit
+git submodule update --init --recursive
+while ! ./g/bin/install-remotes < g/remotes.txt; do sleep 1; done
+git submodule foreach --recursive git fetch --all
+make -j13 build/binutils-gdb/done/install build/binutils-gdb.tar
+make -j13 build/linux/done/headers/install
+make -j13 build/glibc/done/headers/install
+make -j13 build/gcc/done/gcc/install
+make -j13 build/glibc/done/glibc/install
+make -j13 build/busybox/done/install
+make -j13 build/kexec-tools/done/install
+make -j13 build/ncurses/done/install
+make -j13 build/emacs/done/cross/install
+make -j13 build/perl/done/install
+make -j13 build/IPC-Run/done/install
+make -j13 build/slurp/done/install
+make -j13 build/libnl/done/install
+make -j13 build/memtool/done/install
+make -j13 build/libuuid/done/install
+make -j13 build/json-c/done/install
+make -j13 build/popt/done/install
+make -j13 build/libblkid/done/install
+make -j13 build/libaio/done/install
+make -j13 build/lvm2/done/install
+make -j13 build/openssl/done/install
+make -j13 build/cryptsetup/done/install
+make -j13 build/nvme-cli/done/install
+make -j13 build/dtc/done/install
+make -j13 build/linux/linux.image
+make -j13 build/linux/stage2.image
+make -j13 build/linux/pearl.image
