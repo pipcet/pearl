@@ -73,3 +73,5 @@ random-targets:
 	(echo build/linux/pearl.image.sendfile; \
 	 echo build/linux/pearl.image.macho; \
 	 echo build/linux/done/stage2/make) | shuf | while read target; do $(MAKE) $$target; done
+
+.SECONDARY: %/
