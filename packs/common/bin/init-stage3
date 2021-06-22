@@ -1,4 +1,0 @@
-#!/bin/sh
-prepare-linux
-interactor
-linux

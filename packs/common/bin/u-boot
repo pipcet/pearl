@@ -1,2 +1,0 @@
-#!/bin/sh
-kexec -fix /boot/u-boot.image --dtb=/boot/u-boot.dtb

@@ -1,2 +1,0 @@
-#!/bin/sh
-memtool mw 0x23d2b0010 0 720000000 0 4
