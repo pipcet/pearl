@@ -121,3 +121,5 @@ $(BUILD)/debian/deb.tar: \
 	$(MKDIR) $(BUILD)/deb-tmp $(BUILD)/deb-tmp-ar
 	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file $(BUILD)/deb-tmp; else ar -x $$file --output $(BUILD)/deb-tmp-ar && tar -C $(BUILD)/deb-tmp -axf $(BUILD)/deb-tmp-ar/data.tar.*; rm -rf $(BUILD)/deb-tmp-ar; fi; done
 	(tar -C $(BUILD)/deb-tmp -cf $@ .)
+
+$(call pearl-static,$(BUILD)/debian/deb.tar,$(BUILD))
