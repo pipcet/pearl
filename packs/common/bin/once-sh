@@ -1,6 +1,0 @@
-#!/bin/sh
-while true;
-do
-    /bin/sh
-    screen -X 'focus' 'top'
-done

@@ -1,5 +1,0 @@
-* stage1
-
-The first stage of the boot process, whose sole job it is to run some
-userspace code to transform device trees; after that, it boots the
-stage2 kernel.
