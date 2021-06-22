@@ -70,7 +70,7 @@ build/%: $(PWD)/build/%
 	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
 
 %.xz: %
-	xzcat -e -9 < $< > $@
+	xzcat -z -e -9 < $< > $@
 
 .PHONY: %}
 
