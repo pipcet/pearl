@@ -1,6 +1,5 @@
 #!/usr/bin/perl
 my %paths;
-my $prefix = $ARGV[0];
 while (<STDIN>) {
     chomp;
     my $key = $_;
@@ -15,17 +14,19 @@ while (<STDIN>) {
 my $didsomething = 1;
 while ($didsomething) {
     $didsomething = 0;
-    for my $path (keys %paths) {
+    for my $path (sort keys %paths) {
 	my $dir = $path;
-	$dir =~ s/\/.*?.$//;
+	$dir =~ s/\/[^\/]*$//;
 	next if exists $paths{$dir};
 	$paths{$dir} = "/";
 	$didsomething = 1;
     }
 }
 
+print "dir / 755 0 0\n";
+
 for my $key (sort { $a cmp $b } keys %paths) {
-    next unless $key;
+    next if $key eq "";
     if ($paths{$key} eq "/" or -d $paths{$key}) {
 	print "dir $key 755 0 0\n";
     } elsif (-l $paths{$key}) {
