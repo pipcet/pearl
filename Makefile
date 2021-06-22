@@ -6,13 +6,31 @@ TAR ?= tar
 PWD = $(shell pwd)
 SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
+BUILD ?= $(PWD)/build
+CROSS_CFLAGS = -Os --sysroot=$(BUILD)/pearl/install -B$(BUILD)/pearl/install -L$(BUILD)/pearl/install/lib -I$(BUILD)/pearl/install/include
+CROSS_CC = $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gcc
+CROSS_PATH = $(BUILD)/pearl/toolchain/bin
+WITH_CROSS_PATH = PATH="$(CROSS_PATH):$$PATH"
+WITH_CROSS_CFLAGS = CFLAGS="$(CROSS_CFLAGS)"
+WITH_CROSS_COMPILE = CROSS_COMPILE=aarch64-linux-gnu-
+WITH_CROSS_CC= CC="$(CROSS_CC)"
+NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
+WITH_QEMU = $(NATIVE_CODE_ENV)
+define pearl-static-file
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1))
+$(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1)): $(1) ; $$(COPY)
+endef
 
-include lib/lib.mk
+define pearl-static
+$(foreach file,$(1),$(eval $(call pearl-static-file,$(file),$(2))))
+endef
 
-# INCLUDE_DEBOOTSTRAP = t
-INCLUDE_MODULES = t
+define COPY
+	$(MKDIR) -p $(dir $@)
+	$(CP) -a $< $@
+endef
 
-all: build/pearl.macho build/debootstrap.macho build/m1n1.macho
+all:
 
 %/:
 	$(MKDIR) $@
@@ -20,58 +38,40 @@ all: build/pearl.macho build/debootstrap.macho build/m1n1.macho
 clean:
 	rm -rf build
 
-# Alias targets
-build/pearl.macho: build/images/pearl/pearl.image.macho | build/
-	$(CP) $< $@
-
-build/debootstrap.macho: build/images/debootstrap/debootstrap.image.macho | build/
-	$(CP) $< $@
-
-include g/stampserver/stampserver.mk
-
-include dtc/dtc.mk
+include toolchain/toolchain.mk
 
 include linux/linux.mk
 
-include deb/deb.mk
+include userspace/userspace.mk
 
-include snippet/snippet.mk
+include local/local.mk
 
-include macho-tools/macho-tools.mk
+include bootloaders/bootloaders.mk
 
-include memdump/memdump.mk
+include debian/debian.mk
 
-include busybox/busybox.mk
+include g/github/github.mk
 
-include kexec/kexec.mk
+$(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
+	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
-include dt/dt.mk
+$(BUILD)/pearl/done/install/mkdir: | $(BUILD)/pearl/done/install/ $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
+	ln -sf . $(BUILD)/pearl/install/usr
+	ln -sf . $(BUILD)/pearl/install/local
+	ln -sf bin $(BUILD)/pearl/install/sbin
+	@touch $@
 
-include blobs/blobs.mk
+build/%: $(PWD)/build/%
+	@true
 
-# Utilities not required for ordinary booting
-include commfile/commfile.mk
-
-include m1n1/m1n1.mk
-
-include u-boot/u-boot.mk
-
-include barebox/barebox.mk
-
-include grub/grub.mk
-
-include debootstrap/debootstrap.mk
-
-include memtool/memtool.mk
-
-# Stages, packs, images
-include stages/stages.mk
-
-include packs/packs.mk
-
-include images/images.mk
-
-# GitHub integration
-include github/github.mk
+%.dts.h: %.dts dtc/dtc-relocs
+	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
 
 .PHONY: %}
+
+random-targets:
+	(echo build/linux/pearl.image.sendfile; \
+	 echo build/linux/pearl.image.macho; \
+	 echo build/linux/done/stage2/make) | shuf | while read target; do $(MAKE) $$target; done
+
+.SECONDARY: %/
