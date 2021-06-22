@@ -1,96 +1,65 @@
-define linux-perstage
-build/stages/$(stage)/linux.config: stages/$(stage)/linux.config ; $$(COPY)
+kernels = linux stage2 pearl
 
-linux/$(stage){olddefconfig}: build/stages/$(stage)/linux.config
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) olddefconfig
-	diff -u $$< build/linux/$(stage)/.config || true
-	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
+$(BUILD)/linux/%.image: linux/%.config $(BUILD)/linux/done/%/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
-linux/$(stage){oldconfig}: build/stages/$(stage)/linux.config
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) oldconfig
-	diff -u $$< build/linux/$(stage)/.config || true
-	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
+$(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d/
+	echo "#!/bin/sh" > $@
+	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
+	chmod u+x $@
 
-linux/$(stage){menuconfig}:
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) stages/$(stage)/linux.config build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) menuconfig
-	diff -u stages/$(stage)/linux.config build/linux/$(stage)/.config || true
-	$$(CP) build/linux/$(stage)/.config stages/$(stage)/linux.config
+$(BUILD)/linux/pearl.dtb: linux/pearl.config $(BUILD)/linux/done/pearl/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/apple-m1-minimal.dtb $@
 
+$(BUILD)/linux/%.dtb: linux/%.config $(BUILD)/linux/done/%/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $@
 
-build/stages/$(stage)/$(stage).image: build/stages/$(stage)/linux.config
-	$$(MKDIR) build/linux/$(stage)
-	$$(CP) $$< build/linux/$(stage)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) olddefconfig
-	diff -u $$< build/linux/$(stage)/.config || true
-	$$(MAKE) -C build/linux/$(stage) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
-	$$(CP) build/linux/$(stage)/arch/arm64/boot/Image $$@
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 
-build/stages/$(stage)/$(stage)-modules.tar: build/stages/$(stage)/$(stage).image
-	rm -rf $$@.d
-	$$(MKDIR) $$@.d
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) modules
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(stage) INSTALL_MOD_PATH=$(PWD)/$$@.d modules_install
-	$$(TAR) -C $$@.d -c . > $$@
+$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.dts.h
+$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.cpio
 
-build/stages/$(stage)/$(stage).dtb: build/stages/$(stage)/$(stage).image
-	$$(CP) build/linux/$(stage)/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $$@
+$(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-build/stages/$(stage)/$(stage).image: stamp/linux
+$(BUILD)/linux/%.modules: $(BUILD)/linux/done/%/configure
+	rm -rf $@.d
+	$(MKDIR) $@.d
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
+	$(TAR) -C $@.d -c . -f $@
 
-build/initfs/common/boot/$(stage).image: build/stages/$(stage)/$(stage).image ; $$(COPY)
-endef
+$(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image dtbs
+	@touch $@
 
-define linux-perimage
-build/images/$(image)/linux.config: images/$(image)/linux.config
-	$$(MKDIR) $$(dir $$@)
-	$$(CP) $$< $$@
+$(BUILD)/linux/done/%/configure: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
+	$(CP) $< $(BUILD)/linux/$*/build/.config
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
+	@touch $@
 
-linux/$(image){olddefconfig}: build/images/$(image)/linux.config
-	$$(MKDIR) build/linux/$(image)
-	$$(CP) $$< build/linux/$(image)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) olddefconfig
-	diff -u $$< build/linux/$(image)/.config || true
-	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
+linux/%{menuconfig}: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
+	$(CP) $< $(BUILD)/linux/$*/build/.config
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
+	$(CP) $(BUILD)/linux/$*/build/.config $<
+	@touch $@
 
-linux/$(image){oldconfig}: build/images/$(image)/linux.config
-	$$(MKDIR) build/linux/$(image)
-	$$(CP) $$< build/linux/$(image)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) oldconfig
-	diff -u $$< build/linux/$(image)/.config || true
-	$$(CP) $$< $$<.old
-	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
+$(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
+	$(CP) -aus $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
+	@touch $@
 
-linux/$(image){menuconfig}:
-	$$(MKDIR) build/linux/$(image)
-	$$(CP) images/$(image)/linux.config build/linux/$(image)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) menuconfig
-	diff -u images/$(image)/linux.config build/linux/$(image)/.config || true
-	$$(CP) build/linux/$(image)/.config images/$(image)/linux.config
+$(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)/pearl/done/install/mkdir
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/pearl/install headers_install
+	@touch $@
 
-build/images/$(image)/$(image).image: build/images/$(image)/linux.config
-	$$(MKDIR) build/linux/$(image)
-	$$(CP) $$< build/linux/$(image)/.config
-	$$(MAKE) -C submodule/linux ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) O=$(PWD)/build/linux/$(image) olddefconfig
-	diff -u $$< build/linux/$(image)/.config || true
-	$$(MAKE) -C build/linux/$(image) ARCH=arm64 CROSS_COMPILE=$$(CROSS_COMPILE) Image dtbs
-	$$(CP) build/linux/$(image)/arch/arm64/boot/Image $$@
+$(BUILD)/linux/done/headers/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/headers/ $(BUILD)/linux/headers/source/
+	$(CP) -aus $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
+	@touch $@
 
-build/images/$(image)/$(image).dtb: build/images/$(image)/$(image).image
-	$$(CP) build/linux/$(image)/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $$@
+$(BUILD)/linux/done/checkout: | $(BUILD)/linux/done/
+	$(MAKE) linux/linux{checkout}
+	@touch $@
 
-build/images/$(image)/$(image).image: stamp/linux
+$(call pearl-static,$(wildcard $(PWD)/linux/pearl/bin/*),$(PWD)/linux/pearl)
 
-build/initfs/common/boot/$(image).image: build/images/$(image)/$(image).image ; $$(COPY)
-endef
-
-build/initfs/common/dt.tar: build/dt.tar ; $(COPY)
-build/initfs/common/deb.tar: build/deb.tar ; $(COPY)
+{non-intermediate}: $(BUILD)/linux/done/headers/copy $(BUILD)/linux/done/headers/configure
