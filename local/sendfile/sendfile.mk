@@ -15,4 +15,4 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c
 %.sendfile{send}: %.sendfile
 	$(SUDO) local/sendfile/send-sendfile $<
 
-$(call pearl-static,$(BUILD)/pearl/bin/receive-sendfile,$(BUILD)/pearl/bin)
+$(call pearl-static,$(BUILD)/pearl/bin/receive-sendfile,$(BUILD)/pearl)
