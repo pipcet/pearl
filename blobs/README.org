@@ -1,0 +1,7 @@
+* Blobs
+
+Unfortunately, the M1 hardware requires firmware which is not freely
+redistributable; in particular, this affects the WiFi module.
+
+To make things slightly easier, tar files placed in the blobs/
+directory will show up in the initrd.
