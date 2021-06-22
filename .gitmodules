@@ -1,34 +1,98 @@
-[submodule "submodule/linux"]
-	path = submodule/linux
+[submodule "toolchain/gcc/gcc"]
+	path = toolchain/gcc/gcc
+	url = https://github.com/pipcet/gcc
+	branch = pearl
+[submodule "userspace/glibc/glibc"]
+	path = userspace/glibc/glibc
+	url = https://github.com/pipcet/glibc
+	branch = pearl
+[submodule "linux/linux"]
+	path = linux/linux
 	url = https://github.com/pipcet/linux
 	branch = pearl
-[submodule "submodule/m1n1"]
-	path = submodule/m1n1
-	url = https://github.com/pipcet/m1n1
+[submodule "userspace/kexec-tools/kexec-tools"]
+	path = userspace/kexec-tools/kexec-tools
+	url = https://github.com/horms/kexec-tools
+[submodule "toolchain/binutils-gdb/binutils-gdb"]
+	path = toolchain/binutils-gdb/binutils-gdb
+	url = https://github.com/pipcet/binutils-gdb
 	branch = pearl
-[submodule "submodule/busybox"]
-	path = submodule/busybox
+[submodule "userspace/busybox/busybox"]
+	path = userspace/busybox/busybox
 	url = https://github.com/pipcet/busybox
 	branch = pearl
-[submodule "submodule/kexec-tools"]
-	path = submodule/kexec-tools
-	url = https://github.com/pipcet/kexec-tools
+[submodule "userspace/emacs/emacs"]
+	path = userspace/emacs/emacs
+	url = https://github.com/pipcet/emacs
 	branch = pearl
-[submodule "submodule/debootstrap"]
-	path = submodule/debootstrap
-	url = https://github.com/pipcet/debootstrap
-[submodule "submodule/memtool"]
-	path = submodule/memtool
+[submodule "userspace/ncurses/ncurses"]
+	path = userspace/ncurses/ncurses
+	url = https://github.com/pipcet/ncurses
+	branch = pearl
+[submodule "userspace/cryptsetup/cryptsetup"]
+	path = userspace/cryptsetup/cryptsetup
+	url = https://gitlab.com/cryptsetup/cryptsetup.git/
+[submodule "userspace/lvm2/lvm2"]
+	path = userspace/lvm2/lvm2
+	url = https://github.com/pipcet/lvm2
+	branch = pearl
+[submodule "userspace/memtool/memtool"]
+	path = userspace/memtool/memtool
 	url = https://github.com/pipcet/memtool
-[submodule "submodule/u-boot"]
-	path = submodule/u-boot
-	url = https://github.com/pipcet/uboot/
 	branch = pearl
-[submodule "submodule/grub"]
-	path = submodule/grub
-	url = https://github.com/pipcet/grub
+[submodule "userspace/nvme-cli/nvme-cli"]
+	path = userspace/nvme-cli/nvme-cli
+	url = https://github.com/linux-nvme/nvme-cli
+[submodule "userspace/libaio/libaio"]
+	path = userspace/libaio/libaio
+	url = https://pagure.io/libaio.git
+[submodule "userspace/util-linux/util-linux"]
+	path = userspace/util-linux/util-linux
+	url = https://github.com/pipcet/util-linux
+[submodule "userspace/openssl/openssl"]
+	path = userspace/openssl/openssl
+	url = https://github.com/openssl/openssl
+[submodule "userspace/libnl/libnl"]
+	path = userspace/libnl/libnl
+	url = https://github.com/tgraf/libnl.git
+[submodule "userspace/popt/popt"]
+	path = userspace/popt/popt
+	url = https://github.com/rpm-software-management/popt
+[submodule "userspace/json-c/json-c"]
+	path = userspace/json-c/json-c
+	url = https://github.com/json-c/json-c
+[submodule "userspace/dtc/dtc"]
+	path = userspace/dtc/dtc
+	url = https://github.com/pipcet/dtc
+[submodule "userspace/IPC-Run/IPC-Run"]
+	path = userspace/IPC-Run/IPC-Run
+	url = https://github.com/toddr/IPC-Run
+[submodule "userspace/slurp/slurp"]
+	path = userspace/slurp/slurp
+	url = https://github.com/perhunter/slurp
+[submodule "userspace/perl/perl"]
+	path = userspace/perl/perl
+	url = https://github.com/pipcet/perl
 	branch = pearl
-[submodule "submodule/barebox"]
-	path = submodule/barebox
+[submodule "userspace/wpa/wpa"]
+	path = userspace/wpa/wpa
+	url = https://github.com/pipcet/wpa
+[submodule "bootloaders/m1n1/m1n1"]
+	path = bootloaders/m1n1/m1n1
+	url = https://github.com/pipcet/m1n1
+	branch = pearl
+[submodule "bootloaders/barebox/barebox"]
+	path = bootloaders/barebox/barebox
 	url = https://github.com/pipcet/barebox
 	branch = pearl
+[submodule "bootloaders/u-boot/u-boot"]
+	path = bootloaders/u-boot/u-boot
+	url = https://github.com/pipcet/uboot
+	branch = pearl
+[submodule "bootloaders/grub/grub"]
+	path = bootloaders/grub/grub
+	url = https://github.com/pipcet/grub
+	branch = pearl
+[submodule "userspace/screen/screen"]
+	path = userspace/screen/screen
+	url = https://git.savannah.gnu.org/git/screen.git
