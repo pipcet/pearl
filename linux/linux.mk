@@ -5,7 +5,7 @@ $(BUILD)/linux/%.image: linux/%.config $(BUILD)/linux/done/%/build
 
 $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d/
 	echo "#!/bin/sh" > $@
-	echo "kexec --mem-max=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
+	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
 
 $(BUILD)/linux/pearl.dtb: linux/pearl.config $(BUILD)/linux/done/pearl/build
