@@ -2,7 +2,7 @@
 
 $(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(COPY)
 $(BUILD)/initramfs/%: local/initramfs/% ; $(COPY)
-$(BUILD)/initramfs/pearl.cpiospec: build/userspace/done/install local/initramfs/pearl.cpiospec
+$(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec build/userspace/done/install
 	$(MKDIR) $(dir $@)
 	@(cat $<; (ls $(wordlist 3,$(words $^),$^); find $(BUILD)/pearl/install/ -type f -o -type l) | LC_ALL=C perl local/initramfs/build-cpiospec.pl $(BUILD)/pearl/install $(BUILD)/initramfs/pearl) > $@
 
