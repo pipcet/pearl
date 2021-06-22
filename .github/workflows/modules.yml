@@ -27,7 +27,7 @@ jobs:
     - run: make -j13 build/glibc/done/headers/install
     - run: make -j13 build/gcc/done/gcc/install
     - run: make -j13 build/toolchain.tar
-    - run: make -j13 build/toolchain.tar{daily}
+    - run: make -j13 build/toolchain.tar.xz{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: make -j13 build/toolchain.tar{artifact}
@@ -54,12 +54,12 @@ jobs:
     - run: make -j13 build/userspace/done/install
     - run: make -j13 build/userspace.tar
     - run: make -j13 build/userspace.tar{artifact}
-    - run: make -j13 build/userspace.tar{daily}
+    - run: make -j13 build/userspace.tar.xz{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: make -j13 build/linux/done/linux/modules
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image{artifact}
-    - run: make -j13 build/linux/pearl.image{daily}
+    - run: make -j13 build/linux/pearl.image.xz{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
