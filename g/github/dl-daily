@@ -1,0 +1,2 @@
+#!/bin/bash
+wget --quiet -O build/daily/down/"$1" https://github.com/pipcet/pearl/releases/download/latest/"$1"
