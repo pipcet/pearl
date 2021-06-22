@@ -1,3 +1,13 @@
+busybox/busybox{oldconfig}: userspace/busybox/busybox.config $(BUILD)/busybox/done/copy
+	$(CP) $< $(BUILD)/busybox/build/.config
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/busybox/build oldconfig
+	$(CP) $(BUILD)/busybox/build/.config $<
+
+busybox/busybox{menuconfig}: userspace/busybox/busybox.config $(BUILD)/busybox/done/copy
+	$(CP) $< $(BUILD)/busybox/build/.config
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/busybox/build menuconfig
+	$(CP) $(BUILD)/busybox/build/.config $<
+
 $(BUILD)/busybox/done/menuconfig: $(BUILD)/busybox/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/busybox/build menuconfig
 	$(CP) $(BUILD)/busybox/build/.config userspace/busybox/busybox.config
