@@ -1,7 +1,3 @@
-define deps
-	$(foreach dep,$(1),$(DEP_$(dep)))
-endef
-
 include userspace/IPC-Run/IPC-Run.mk
 include userspace/busybox/busybox.mk
 include userspace/cryptsetup/cryptsetup.mk

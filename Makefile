@@ -25,6 +25,10 @@ define pearl-static
 $(foreach file,$(1),$(eval $(call pearl-static-file,$(file),$(2))))
 endef
 
+define deps
+	$(foreach dep,$(1),$(DEP_$(dep)))
+endef
+
 define COPY
 	$(MKDIR) -p $(dir $@)
 	$(CP) -a $< $@
