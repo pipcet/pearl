@@ -23,4 +23,4 @@ jobs:
     - run: sudo apt-get install gettext
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
-    - run: make -j13 random-targets
+    - run: make -j13 random-target
