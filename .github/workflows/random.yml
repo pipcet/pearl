@@ -1,4 +1,4 @@
-name: modules
+name: random
 on:
   workflow_dispatch:
   push:
