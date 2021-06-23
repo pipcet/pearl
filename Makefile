@@ -77,6 +77,30 @@ build/%: $(PWD)/build/%
 random-targets:
 	(echo build/linux/pearl.image.sendfile; \
 	 echo build/linux/pearl.image.macho; \
+	 echo build/busybox/done/install; \
+	 echo build/cryptsetup/done/install; \
+	 echo build/dialog/done/install; \
+	 echo build/dtc/done/install; \
+	 echo build/emacs/done/install; \
+	 echo build/glibc/done/install; \
+	 echo build/IPC-Run/done/install; \
+	 echo build/json-c/done/install; \
+	 echo build/kexec-tools/done/install; \
+	 echo build/libaio/done/install; \
+	 echo build/libnl/done/install; \
+	 echo build/lvm2/done/install; \
+	 echo build/memtool/done/install; \
+	 echo build/ncurses/done/install; \
+	 echo build/nvme-cli/done/install; \
+	 echo build/openssl/done/install; \
+	 echo build/perl/done/install; \
+	 echo build/popt/done/install; \
+	 echo build/procps/done/install; \
+	 echo build/screen/done/install; \
+	 echo build/slurp/done/install; \
+	 echo build/util-linux/done/install; \
+	 echo build/libuuid/done/install; \
+	 echo build/libblkid/done/install; \
 	 echo build/linux/done/stage2/make) | shuf | while read target; do $(MAKE) $$target; done
 
 .SECONDARY: %/
