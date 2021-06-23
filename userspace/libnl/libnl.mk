@@ -6,7 +6,7 @@ $(BUILD)/libnl/done/build: $(BUILD)/libnl/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libnl/build
 	@touch $@
 
-$(BUILD)/libnl/done/configure: $(BUILD)/libnl/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
+$(BUILD)/libnl/done/configure: $(BUILD)/libnl/done/copy $(call deps,glibc gcc)
 	(cd $(BUILD)/libnl/build; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/libnl/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	@touch $@

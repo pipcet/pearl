@@ -6,7 +6,7 @@ $(BUILD)/json-c/done/build: $(BUILD)/json-c/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/json-c/build
 	@touch $@
 
-$(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install
+$(BUILD)/json-c/done/configure: $(BUILD)/json-c/done/copy $(call deps,glibc gcc)
 	(cd $(BUILD)/json-c/build; cmake -DCMAKE_LINKER=$(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-ld -DCMAKE_SHARED_LINKER=$(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-ld -DCMAKE_C_COMPILER=$(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gcc -DCMAKE_C_FLAGS="-I$(BUILD)/pearl/install/include -L$(BUILD)/pearl/install/lib --sysroot=$(BUILD)/pearl/install" .)
 	@touch $@
 

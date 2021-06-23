@@ -6,7 +6,7 @@ $(BUILD)/memtool/done/build: $(BUILD)/memtool/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/memtool/build
 	@touch $@
 
-$(BUILD)/memtool/done/configure: $(BUILD)/memtool/done/copy $(BUILD)/gcc/done/gcc/install
+$(BUILD)/memtool/done/configure: $(BUILD)/memtool/done/copy $(call deps,glibc gcc)
 	(cd $(BUILD)/memtool/build; $(WITH_CROSS_PATH) autoreconf -ivf)
 	(cd $(BUILD)/memtool/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@

@@ -6,7 +6,7 @@ $(BUILD)/openssl/done/build: $(BUILD)/openssl/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/openssl/build CFLAGS="$(CROSS_CFLAGS)"
 	@touch $@
 
-$(BUILD)/openssl/done/configure: $(BUILD)/openssl/done/copy $(BUILD)/glibc/done/glibc/install
+$(BUILD)/openssl/done/configure: $(BUILD)/openssl/done/copy $(call deps,glibc gcc)
 	(cd $(BUILD)/openssl/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(BUILD)/pearl/install)
 	@touch $@
 
