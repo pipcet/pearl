@@ -100,7 +100,6 @@ random-target:
 	 echo build/slurp/done/install; \
 	 echo build/util-linux/done/install; \
 	 echo build/libuuid/done/install; \
-	 echo build/libblkid/done/install; \
-	 echo build/linux/done/stage2/make) | shuf | head -1)
+	 echo build/libblkid/done/install) | shuf | head -1)
 
 .SECONDARY: %/
