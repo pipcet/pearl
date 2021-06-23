@@ -74,8 +74,8 @@ build/%: $(PWD)/build/%
 
 .PHONY: %}
 
-random-targets:
-	(echo build/linux/pearl.image.sendfile; \
+random-target:
+	$(MAKE) $$( (echo build/linux/pearl.image.sendfile; \
 	 echo build/linux/pearl.image.macho; \
 	 echo build/busybox/done/install; \
 	 echo build/cryptsetup/done/install; \
@@ -101,6 +101,6 @@ random-targets:
 	 echo build/util-linux/done/install; \
 	 echo build/libuuid/done/install; \
 	 echo build/libblkid/done/install; \
-	 echo build/linux/done/stage2/make) | shuf | while read target; do $(MAKE) $$target; done
+	 echo build/linux/done/stage2/make) | shuf | head -1)
 
 .SECONDARY: %/
