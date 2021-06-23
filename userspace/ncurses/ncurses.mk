@@ -1,3 +1,4 @@
+DEP_ncurses += $(BUILD)/ncurses/done/install
 $(BUILD)/ncurses/done/install: $(BUILD)/ncurses/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/ncurses/build install
 	$(MKDIR) $(BUILD)/pearl/install/lib/pkgconfig/

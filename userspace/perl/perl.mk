@@ -1,3 +1,4 @@
+DEP_perl += $(BUILD)/perl/done/install
 $(BUILD)/perl/done/install: $(BUILD)/perl/done/build
 	$(NATIVE_CODE_ENV) $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/perl/build install
 	@touch $@
