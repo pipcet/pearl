@@ -8,7 +8,7 @@ $(BUILD)/procps/done/build: $(BUILD)/procps/done/configure
 
 $(BUILD)/procps/done/configure: $(BUILD)/procps/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/ncurses/done/install
 	(cd $(BUILD)/procps/build; $(WITH_CROSS_PATH) sh autogen.sh)
-	(cd $(BUILD)/procps/build; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")
+	(cd $(BUILD)/procps/build; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" PKG_CONFIG_PATH="$(BUILD)/pearl/install/lib/pkgconfig")
 	@touch $@
 
 $(BUILD)/procps/done/copy: $(BUILD)/procps/done/checkout | $(BUILD)/procps/done/ $(BUILD)/procps/build/
