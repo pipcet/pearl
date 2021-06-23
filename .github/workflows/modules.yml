@@ -57,7 +57,6 @@ jobs:
     - run: make -j13 build/userspace.tar.xz{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - run: make -j13 build/linux/done/linux/modules
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image{artifact}
     - run: make -j13 build/linux/pearl.image.xz{daily}
