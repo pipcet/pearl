@@ -98,3 +98,6 @@
 	path = userspace/wpa/wpa
 	url = https://github.com/pipcet/wpa
 	branch = pearl
+[submodule "userspace/dialog/dialog"]
+	path = userspace/dialog/dialog
+	url = https://github.com/ThomasDickey/dialog-snapshots

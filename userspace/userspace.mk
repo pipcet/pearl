@@ -1,6 +1,7 @@
 include userspace/IPC-Run/IPC-Run.mk
 include userspace/busybox/busybox.mk
 include userspace/cryptsetup/cryptsetup.mk
+include userspace/dialog/dialog.mk
 include userspace/dtc/dtc.mk
 include userspace/emacs/emacs.mk
 include userspace/glibc/glibc.mk
