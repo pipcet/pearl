@@ -101,3 +101,6 @@
 [submodule "userspace/dialog/dialog"]
 	path = userspace/dialog/dialog
 	url = https://github.com/ThomasDickey/dialog-snapshots
+[submodule "userspace/procps/procps"]
+	path = userspace/procps/procps
+	url = https://github.com/pipcet/procps
