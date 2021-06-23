@@ -1,5 +1,4 @@
-# stage1 is built with the pre-installed cross compiler
-
+DEP_glibc += $(BUILD)/glibc/done/glibc/install
 $(BUILD)/glibc/done/glibc/install: $(BUILD)/glibc/done/glibc/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/glibc/glibc/build DESTDIR=$(BUILD)/pearl/install CXX="" install
 	@touch $@
