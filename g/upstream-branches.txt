@@ -21,4 +21,4 @@ userspace/perl/perl upstream/blead
 userspace/popt/popt upstream/master
 userspace/slurp/slurp upstream/master
 userspace/util-linux/util-linux upstream/master
-userspace/wpa/wpa upstream/debian/unstable
+userspace/wpa/wpa upstream/debian/buster
