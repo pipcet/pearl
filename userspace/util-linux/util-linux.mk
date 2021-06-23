@@ -1,3 +1,4 @@
+DEP_libuuid += $(BUILD)/libuuid/done/install
 $(BUILD)/libuuid/done/install: $(BUILD)/libuuid/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libuuid/build DESTDIR=$(BUILD)/pearl/install install
 	@touch $@
@@ -17,6 +18,7 @@ $(BUILD)/libuuid/done/copy: $(BUILD)/util-linux/done/checkout | $(BUILD)/libuuid
 
 userspace-modules += libuuid
 
+DEP_libblkid += $(BUILD)/libblkid/done/install
 $(BUILD)/libblkid/done/install: $(BUILD)/libblkid/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libblkid/build DESTDIR=$(BUILD)/pearl/install install
 	@touch $@
