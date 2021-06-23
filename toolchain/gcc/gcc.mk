@@ -1,3 +1,4 @@
+DEP_gcc += $(BUILD)/gcc/done/gcc/install
 $(BUILD)/gcc/done/gcc/install: $(BUILD)/gcc/done/gcc/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/gcc/gcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	@touch $@
