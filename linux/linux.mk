@@ -42,7 +42,6 @@ linux/%{menuconfig}: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done
 	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/linux/$*/build/.config $<
-	@touch $@
 
 $(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
 	$(CP) -aus $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
