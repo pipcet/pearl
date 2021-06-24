@@ -45,6 +45,8 @@ all:
 clean:
 	rm -rf build
 
+include host/host.mk
+
 include toolchain/toolchain.mk
 
 include linux/linux.mk
