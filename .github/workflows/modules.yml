@@ -35,10 +35,10 @@ jobs:
     - run: make -j13 build/toolchain.tar{artifact}
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/gcc/done/libgcc/install
+    - run: make -j13 build/ncurses/done/install
     - run: make -j13 build/procps/done/install
     - run: make -j13 build/busybox/done/install
     - run: make -j13 build/kexec-tools/done/install
-    - run: make -j13 build/ncurses/done/install
     - run: make -j13 build/emacs/done/cross/install
     - run: make -j13 build/perl/done/install
     - run: make -j13 build/libnl/done/install
