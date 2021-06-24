@@ -3,8 +3,6 @@
 %..bin: %.c.S.elf.bin ; $(COPY)
 %..bin: %.S.elf.bin ; $(COPY)
 $(BUILD)/include/snippet.h: snippet/snippet.h | $(BUILD)/include/ ; $(COPY)
-%.S: %.S ; $(COPY)
-%.c: %.c ; $(COPY)
 
 %.c.S: %.c $(BUILD)/include/snippet.h
 	$(CROSS_COMPILE)gcc -I$(dir $<) -I$(BUILD)/include -fno-builtin -ffunction-sections -march=armv8.5-a -Os -S -o $@ $<
