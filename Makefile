@@ -105,7 +105,6 @@ random-target:
 	 echo build/procps/done/install; \
 	 echo build/screen/done/install; \
 	 echo build/slurp/done/install; \
-	 echo build/util-linux/done/install; \
 	 echo build/libuuid/done/install; \
 	 echo build/libblkid/done/install) | shuf | head -1)
 
