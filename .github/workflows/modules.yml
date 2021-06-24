@@ -23,6 +23,7 @@ jobs:
     - run: sudo apt-get install gettext
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
+    - run: sudo apt-get install libtool-bin
     - run: make -j13 build/binutils-gdb/done/install
     - run: make -j13 build/linux/done/headers/install
     - run: make -j13 build/glibc/done/headers/install
@@ -34,6 +35,7 @@ jobs:
     - run: make -j13 build/toolchain.tar{artifact}
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/gcc/done/libgcc/install
+    - run: make -j13 build/procps/done/install
     - run: make -j13 build/busybox/done/install
     - run: make -j13 build/kexec-tools/done/install
     - run: make -j13 build/ncurses/done/install
