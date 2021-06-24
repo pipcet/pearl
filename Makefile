@@ -16,6 +16,9 @@ WITH_CROSS_COMPILE = CROSS_COMPILE=aarch64-linux-gnu-
 WITH_CROSS_CC= CC="$(CROSS_CC)"
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
 WITH_QEMU = $(NATIVE_CODE_ENV)
+
+.SECONDEXPANSION:
+
 define pearl-static-file
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1))
 $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1)): $(1) ; $$(COPY)
@@ -26,7 +29,7 @@ $(foreach file,$(1),$(eval $(call pearl-static-file,$(file),$(2))))
 endef
 
 define deps
-	$(foreach dep,$(1),$(DEP_$(dep)))
+$$(foreach dep,$(1),$$(DEP_$$(dep)))
 endef
 
 define COPY
