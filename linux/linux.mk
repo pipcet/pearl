@@ -22,7 +22,7 @@ $(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-$(BUILD)/linux/%.modules: $(BUILD)/linux/done/%/configure
+$(BUILD)/linux/%.modules: $(BUILD)/linux/done/%/build
 	rm -rf $@.d
 	$(MKDIR) $@.d
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
