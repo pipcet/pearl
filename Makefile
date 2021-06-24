@@ -81,6 +81,9 @@ build/%: $(PWD)/build/%
 %.xz: %
 	xzcat -z --verbose < $< > $@
 
+%.zst: %
+	zstd -cv < $< > $@
+
 .PHONY: %}
 
 random-target:
