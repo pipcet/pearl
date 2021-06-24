@@ -20,7 +20,7 @@ $(BUILD)/busybox/done/build: $(BUILD)/busybox/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)"
 	@touch $@
 
-$(BUILD)/busybox/done/configure: userspace/busybox/busybox.config $(BUILD)/busybox/done/copy $(call deps,glibc gcc)
+$(BUILD)/busybox/done/configure: userspace/busybox/busybox.config $(BUILD)/busybox/done/copy $(call deps,glibc gcc libgcc)
 	$(CP) $< $(BUILD)/busybox/build/.config
 	yes "" | $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" oldconfig
 	@touch $@
