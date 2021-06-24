@@ -36,6 +36,8 @@ jobs:
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/gcc/done/libgcc/install
     - run: make -j13 build/ncurses/done/install
+    - run: make -j13 build/dialog/done/install
+    - run: make -j13 build/screen/done/install
     - run: make -j13 build/procps/done/install
     - run: make -j13 build/busybox/done/install
     - run: make -j13 build/kexec-tools/done/install
