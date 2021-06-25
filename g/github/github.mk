@@ -37,7 +37,7 @@ $(BUILD)/daily/down/%: | $(BUILD)/daily/down/
 	curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)"; curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)" --upload-file $*; curl -sSL -XPATCH -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)" --upload-file $*
 
 build/artifacts{push}: .github-init
-	(cd build/artifacts/up; for file in *; do name=$$(basename "$$file"); (cd $(PWD); bash g/github/ul-artifact "$$name" "build/artifacts/up/$$name") && rm "build/artifacts/up/$$name"; done)
+	(cd build/artifacts/up; for file in *; do name=$$(basename "$$file"); (cd $(PWD); bash g/github/ul-artifact "$$name" "build/artifacts/up/$$name") && rm -f "build/artifacts/up/$$name"; done)
 
 build/%{artifact}: build/% .github-init
 	$(MKDIR) build/artifacts/up
