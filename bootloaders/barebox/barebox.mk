@@ -9,7 +9,10 @@ barebox/barebox{oldconfig}: barebox/barebox.config stamp/barebox | build/barebox
 	$(CP) build/barebox/.config $<
 
 $(BUILD)/barebox.image.gz: $(BUILD)/barebox/done/build
-	gzip < $< > $@
+	gzip < $(BUILD)/barebox/build/barebox.bin > $@
+
+$(BUILD)/barebox/done/install: $(BUILD)/barebox/done/build
+	@touch $@
 
 $(BUILD)/barebox/done/build: $(BUILD)/barebox/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
@@ -28,5 +31,8 @@ $(BUILD)/barebox/done/copy: $(BUILD)/barebox/done/checkout | $(BUILD)/barebox/do
 $(BUILD)/barebox/done/checkout: | $(BUILD)/barebox/done/
 	$(MAKE) bootloaders/barebox/barebox{checkout}
 	@touch $@
+
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image.gz
+$(BUILD)/initramfs/pearl/boot/barebox.image.gz: $(BUILD)/barebox.image.gz ; $(COPY)
 
 $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
