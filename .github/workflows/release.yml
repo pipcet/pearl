@@ -57,5 +57,5 @@ jobs:
     - run: cp build/linux/pearl.image.macho build/pearl.macho
     - run: make -j3 build/pearl.macho{release}
     - run: make -j3 {release}
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
