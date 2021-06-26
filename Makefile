@@ -111,6 +111,6 @@ random-target:
 	 echo build/screen/done/install; \
 	 echo build/slurp/done/install; \
 	 echo build/libuuid/done/install; \
-	 echo build/libblkid/done/install) | shuf | head -1) (echo $$target; $(MAKE) $$target)
+	 echo build/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
 
 .SECONDARY: %/
