@@ -57,6 +57,7 @@ jobs:
     - run: make -j13 build/userspace/done/install
     - run: make -j13 build/userspace.tar
     - run: make -j13 build/linux/pearl.image
+    - run: make -j13 build/linux/pearl.image.macho
     - run: make -j13 build/userspace.tar{artifact}
     - run: make -j13 build/userspace.tar.zst{daily}
       env:
@@ -67,5 +68,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - run: make -j13 build/linux/pearl.image{artifact}
     - run: make -j13 build/linux/pearl.image.zst{daily}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: make -j13 build/linux/pearl.image.macho.zst{daily}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
