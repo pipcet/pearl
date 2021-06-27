@@ -2,6 +2,7 @@ bootloaders/barebox/barebox pipcet pearl
 bootloaders/grub/grub pipcet pearl
 bootloaders/m1n1/m1n1 pipcet pearl
 bootloaders/u-boot/u-boot pipcet pearl
+debootstrap/debootstrap pipcet pearl
 linux/linux pipcet pearl
 toolchain/binutils-gdb/binutils-gdb pipcet pearl
 toolchain/gcc/gcc pipcet pearl
