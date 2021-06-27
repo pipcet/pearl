@@ -72,8 +72,8 @@ $(BUILD)/pearl/done/install/mkdir: | $(BUILD)/pearl/done/install/ $(BUILD)/pearl
 	ln -sf bin $(BUILD)/pearl/install/sbin
 	@touch $@
 
-build/%: $(PWD)/build/%
-	@true
+build/%:
+	$(MAKE) $(PWD)/build/%
 
 %.dts.h: %.dts dtc/dtc-relocs
 	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
