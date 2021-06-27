@@ -18,7 +18,7 @@ $(BUILD)/barebox/done/build: $(BUILD)/barebox/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	@touch $@
 
-$(BUILD)/barebox/done/configure: bootloaders/barebox/barebox.config $(BUILD)/barebox/done/copy
+$(BUILD)/barebox/done/configure: bootloaders/barebox/barebox.config $(BUILD)/barebox/done/copy $(BUILD)/gcc/done/gcc/install $(BUILD)/glibc/done/glibc/install
 	$(CP) $< $(BUILD)/barebox/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig

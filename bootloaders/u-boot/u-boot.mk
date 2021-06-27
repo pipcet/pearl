@@ -14,7 +14,7 @@ $(BUILD)/u-boot/done/build: $(BUILD)/u-boot/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE)
 	@touch $@
 
-$(BUILD)/u-boot/done/configure: $(BUILD)/u-boot/done/copy
+$(BUILD)/u-boot/done/configure: $(BUILD)/u-boot/done/copy $(BUILD)/gcc/done/gcc/install
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) apple_m1_defconfig
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	@touch $@

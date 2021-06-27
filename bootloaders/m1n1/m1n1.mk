@@ -6,7 +6,7 @@ $(BUILD)/m1n1.macho: $(BUILD)/m1n1/done/build
 $(BUILD)/m1n1/done/install: $(BUILD)/m1n1/done/build
 	@touch $@
 
-$(BUILD)/m1n1/done/build: $(BUILD)/m1n1/done/copy
+$(BUILD)/m1n1/done/build: $(BUILD)/m1n1/done/copy $(BUILD)/gcc/done/gcc/install
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/m1n1/build build/m1n1.macho
 	@touch $@
 

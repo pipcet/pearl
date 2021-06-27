@@ -9,7 +9,7 @@ $(BUILD)/grub/done/build: $(BUILD)/grub/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/grub/build
 	@touch $@
 
-$(BUILD)/grub/done/configure: $(BUILD)/grub/done/copy | $(BUILD)/grub/build/
+$(BUILD)/grub/done/configure: $(BUILD)/grub/done/copy $(BUILD)/glibc/done/glibc/install | $(BUILD)/grub/build/
 	(cd $(BUILD)/grub/build; sh bootstrap)
 	(cd $(BUILD)/grub/build; $(WITH_CROSS_PATH) ./configure --host=$(NATIVE_TRIPLE) --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=efi --prefix=$(BUILD)/toolchain)
 	@touch $@
