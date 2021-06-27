@@ -4,4 +4,5 @@ cat g/upstream-branches.txt | while read SUBDIR BRANCH; do
     echo $SUBDIR
     (cd $SUBDIR; git diff $(git merge-base $BRANCH HEAD)..$BRANCH | head -1000);
     (cd $SUBDIR; git merge $BRANCH)
+    (cd $SUBDIR; git push pipcet pearl)
 done
