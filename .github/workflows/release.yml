@@ -51,6 +51,10 @@ jobs:
     - run: make -j13 build/dtc/done/install
     - run: make -j13 build/wpa_supplicant/done/install
     - run: make -j13 build/userspace/done/install
+    - run: make -j13 build/barebox/done/install
+    - run: make -j13 build/m1n1/done/install
+    - run: make -j13 build/grub/done/install
+    - run: make -j13 build/u-boot/done/install
     - run: make -j13 build/userspace.tar
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image.macho
