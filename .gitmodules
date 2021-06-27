@@ -104,3 +104,7 @@
 [submodule "userspace/procps/procps"]
 	path = userspace/procps/procps
 	url = https://github.com/pipcet/procps
+[submodule "debian/debootstrap/debootstrap"]
+	path = debian/debootstrap/debootstrap
+	url = https://github.com/pipcet/debootstrap
+	branch = pearl
