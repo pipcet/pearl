@@ -58,9 +58,9 @@ build/github-releases{list}: .github-init | build/github-releases/
 	for name in $$(cd build/release; ls *); do for id in $$(jq ".[] | if .name == \"$$name\" then .id else 0 end" < github/assets/$*.json); do [ $$id != "0" ] && curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/assets/$$id"; echo; done; done
 	(for name in build/release/*; do bname=$$(basename "$$name"); curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/$$(cat build/github-releases/\"$*\")/assets?name=$$bname" --upload-file $$name; echo; done)
 
-{release}: .github-init | github/
+{release}: .github-init | github/ g/github/
 	this_release_date="$$(date --iso)"; \
-	node ./github/release.js $$this_release_date $$this_release_date > github/release.json; \
+	node ./g/github/release.js $$this_release_date $$this_release_date > github/release.json; \
 	curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases" --data '@github/release.json'; \
 	$(MAKE) $$this_release_date{release}
 
