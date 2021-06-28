@@ -1,0 +1,23 @@
+#!/bin/bash
+if [ "$1" != "--lockfile" ]; then
+    exit 1
+fi
+shift
+FIFO=$1
+shift
+while true; do
+    if [ -e $FIFO ]; then
+	timeout 3 cat $FIFO
+	continue
+    fi
+    if mkfifo $FIFO; then
+	break
+    fi
+done
+
+$@
+RETVAL=$?
+
+rm $FIFO
+
+exit $RETVAL

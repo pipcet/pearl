@@ -65,4 +65,4 @@ build/github-releases{list}: .github-init | build/github-releases/
 	$(MAKE) $$this_release_date{release}
 
 %{checkout}:
-	git submodule update --depth=1 --single-branch --init --recursive $*
+	g/bin/locked --lockfile git.lock git submodule update --depth=1 --single-branch --init --recursive $*
