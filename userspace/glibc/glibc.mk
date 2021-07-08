@@ -8,7 +8,7 @@ $(BUILD)/glibc/done/glibc/build: $(BUILD)/glibc/done/glibc/configure
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/configure: $(BUILD)/glibc/done/glibc/copy $(BUILD)/linux/done/headers/install $(BUILD)/gcc/done/gcc/install | $(BUILD)/glibc/glibc/build/
-	(cd $(BUILD)/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
+	(cd $(BUILD)/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="")
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
