@@ -1,4 +1,5 @@
 *~
+.vscode/
 /build/
 /stamp/
 /blobs/macos.tar
