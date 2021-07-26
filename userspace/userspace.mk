@@ -19,6 +19,7 @@ include userspace/popt/popt.mk
 include userspace/procps/procps.mk
 include userspace/screen/screen.mk
 include userspace/slurp/slurp.mk
+include userspace/sys-mmap/sys-mmap.mk
 include userspace/util-linux/util-linux.mk
 include userspace/wpa/wpa.mk
 
