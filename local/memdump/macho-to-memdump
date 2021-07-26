@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# This script runs on the M1 and uses its /dev/mem.
 use strict;
 use bytes;
 
