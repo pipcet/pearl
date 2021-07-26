@@ -24,7 +24,7 @@ $(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/m1n1.macho ; $(COPY)
 $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 
 %.macho{m1n1}: %.macho
-	M1N1DEVICE=$(M1N1DEVICE) python3 ./submodule/m1n1/proxyclient/chainload.py $<
+	M1N1DEVICE=$(M1N1DEVICE) python3 ./bootloaders/m1n1/m1n1/proxyclient/tools/chainload.py $<
 
 {m1n1}:
-	M1N1DEVICE=$(M1N1DEVICE) python3 ./submodule/m1n1/proxyclient/shell.py
+	(cd bootloaders/m1n1/m1n1/proxyclient; M1N1DEVICE=$(M1N1DEVICE) python3 -m m1n1.shell)
