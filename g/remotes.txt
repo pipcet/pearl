@@ -34,6 +34,8 @@ pipcet userspace/util-linux/util-linux https://github.com/pipcet/util-linux (fet
 pipcet userspace/util-linux/util-linux git@github.com:pipcet/util-linux (push)
 pipcet userspace/wpa/wpa https://github.com/pipcet/wpa (fetch)
 pipcet userspace/wpa/wpa git@github.com:pipcet/wpa (push)
+twd2 linux/linux https://github.com/twd2/pearl-linux (fetch)
+twd2 linux/linux https://github.com/twd2/pearl-linux (push)
 upstream bootloaders/barebox/barebox https://git.pengutronix.de/git/barebox (fetch)
 upstream bootloaders/barebox/barebox https://git.pengutronix.de/git/barebox (push)
 upstream bootloaders/m1n1/m1n1 https://github.com/AsahiLinux/m1n1 (fetch)
