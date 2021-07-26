@@ -113,4 +113,4 @@ random-target:
 	 echo build/libuuid/done/install; \
 	 echo build/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
 
-.SECONDARY: %/
+.SECONDARY: %/ %
