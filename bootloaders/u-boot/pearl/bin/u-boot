@@ -1,2 +1,4 @@
 #!/bin/sh
+gunzip < /boot/u-boot.image.gz > /boot/u-boot.image
+x2r10g10b10
 kexec -fix /boot/u-boot.image --dtb=/boot/u-boot.dtb
