@@ -1,0 +1,909 @@
+#!/usr/bin/perl
+use strict;
+use bytes;
+
+package DevMem;
+
+use Sys::Mmap;
+use File::Slurp qw(read_file);
+
+my $mem;
+
+sub new {
+    my ($class, $dev, $off, $len) = @_;
+    $dev //= "/dev/mem";
+    $off //= 0x800000000;
+    $len //= 0x400000000;
+    my $self = bless {}, $class;
+    $self->{off} = $off;
+    my $fh;
+    open $fh, "+<$dev" or die;
+    Sys::Mmap::mmap($mem, $len, PROT_READ|PROT_WRITE, MAP_SHARED, $fh, $off);
+    return $self;
+}
+
+sub range {
+    my ($self, $beg, $len) = @_;
+
+    return substr($mem, $beg - $self->{off}, $len);
+}
+
+sub fdtbeglen {
+    my ($self, $path) = @_;
+    my $fh;
+    open $fh, $path or die;
+    my ($beg, $len) = unpack("Q>Q>", scalar read_file($path));
+    return ($beg, $len);
+}
+
+sub fdtrange {
+    my ($self, $path) = @_;
+    my $fh;
+    open $fh, $path or die;
+    my ($beg, $len) = unpack("Q>Q>", scalar read_file($path));
+    return $self->range($beg, $len);
+}
+
+package Stream;
+
+sub new {
+    my ($class, $data) = @_;
+    return bless { data => $data, off => 0, stack => [] }, $class;
+}
+
+sub raw {
+    my ($self, $n, @path) = @_;
+    my $ret = substr($self->{data}, $self->{off}, $n);
+    $self->{off} += $n;
+    for my $value (@path) {
+	$value->{off} = $self->{off} unless defined $value->{off};
+    }
+    die "short read" if $self->{off} > length($self->{data});
+    return $ret;
+}
+
+sub write {
+    my ($self, $str, @path) = @_;
+    while (length($self->{data}) < $self->{off} + length($str)) {
+	$self->{data} .= "\0";
+    }
+    substr($self->{data}, $self->{off}, length($str), $str);
+    $self->{off} += length($str);
+}
+
+sub off {
+    my ($self) = @_;
+    return $self->{off};
+}
+
+sub begin {
+    my ($self) = @_;
+    push @{$self->{stack}}, { off => $self->{off} };
+}
+
+sub commit {
+    my ($self) = @_;
+    pop @{$self->{stack}};
+}
+
+sub abort {
+    my ($self) = @_;
+    $self->{off} = pop(@{$self->{stack}})->{off};
+}
+
+sub align {
+    my ($self, $n) = @_;
+    while ($self->{off} & ($n-1)) {
+	$self->{off}++;
+    }
+}
+
+package Object;
+
+sub new {
+    my ($class, $name) = @_;
+
+    return bless { debug_name => $name }, $class;
+}
+
+sub constraint {
+    my ($self, $constraint) = @_;
+    push @{$self->{constraints}}, $constraint;
+}
+
+sub reader {
+    my ($self, $reader) = @_;
+    return $self->{reader} unless defined $reader;
+    $self->{reader} = $reader;
+}
+
+sub writer {
+    my ($self, $writer) = @_;
+    return $self->{writer} unless defined $writer;
+    $self->{writer} = $writer;
+}
+
+sub fixup {
+    my ($self, $fixup) = @_;
+    return $self->{fixup} unless defined $fixup;
+    $self->{fixup} = $fixup;
+}
+
+sub read {
+    my ($self, $data) = @_;
+    my $value = Value->new($self);
+    $self->reader->(Stream->new($data), $value);
+    return $value;
+}
+
+
+package Value;
+
+sub size_read {
+    my ($self, $stream) = @_;
+    $self->{off} = $stream->{off} unless defined $self->{off};
+    return $stream->{off} - $self->{off};
+}
+
+sub lookup {
+    my ($self, @path) = @_;
+
+    if (@path == 1) {
+	return $self->lookup_prop($path[0]);
+    } else {
+	my $first = shift @path;
+	my $node = $self->lookup_node($first);
+	return unless $node;
+	return $node->lookup(@path);
+    }
+}
+
+sub lookup_prop {
+    my ($self, $name) = @_;
+    my $props = $self->field_by_name("props");
+    for my $element ($props->elements) {
+	my $elname = $element->field_by_name("name")->value;
+	return $element if $elname eq $name;
+    }
+}
+
+sub lookup_node {
+    my ($self, $name) = @_;
+    my $nodes = $self->field_by_name("nodes");
+    for my $element ($nodes->elements) {
+	my $elname = $element->lookup_prop("name")->field_by_name("data")->data;
+	return $element if $elname eq $name;
+    }
+}
+
+sub fixup {
+    my ($self, $fixup) = @_;
+    return $self->{fixup} unless defined $fixup;
+    $self->{fixup} = $fixup;
+}
+
+sub elements {
+    my ($self) = @_;
+    my @elements;
+    for (my $i = 0; $self->element($i); $i++) {
+	push @elements, $self->element($i);
+    }
+    return @elements;
+}
+
+sub delete_element {
+    my ($self, $i) = @_;
+    my @elements = $self->elements;
+    splice @elements, $i, 1;
+    $self->{elements} = {};
+    for my $i (0 .. $#elements) {
+	$self->{elements}{$i} = $elements[$i];
+    }
+}
+
+sub fetch_props {
+    my ($self, $name) = @_;
+
+    my $props = $self->field_by_name(props =>);
+    my %props;
+    my $i = 0;
+    while (1) {
+	my $element = $props->element($i++);
+	last unless $element;
+	my $name = $element->field_by_name(name =>)->value;
+	$props{$name} = $element;
+    }
+
+    return \%props;
+}
+
+sub fetch_prop_by_name {
+    my ($self, $name) = @_;
+
+    return $self->fetch_props->{$name};
+}
+
+sub delete_prop {
+    my ($self, $prop) = @_;
+    my $props = $self->field_by_name(props =>);
+}
+
+sub object {
+    my ($self) = @_;
+
+    return $self->{object};
+}
+
+sub writer {
+    my ($self) = @_;
+
+    return $self->object->writer;
+}
+
+sub write {
+    my ($self) = @_;
+    my $stream = Stream->new;
+    $self->{object}->writer->($stream, $self);
+    return $stream->{data};
+}
+
+sub new {
+    my ($class, $object) = @_;
+
+    my $ret = bless { object => $object }, $class;
+
+    for my $constraint (@{$object->{constraints}}) {
+	push @{$ret->{constraints}}, $constraint;
+    }
+
+    return $ret;
+}
+
+sub consistent {
+    my ($self, @path) = @_;
+    for my $constraint (@{$self->{constraints}}) {
+	my $consistent = $constraint->(undef, $self, @path);
+	return $consistent if $consistent;
+    }
+    return;
+}
+
+sub value {
+    my ($self, $name, $value) = @_;
+    $name = "value" unless defined $name;
+    if (defined $value) {
+	$self->{values}{$name} = $value;
+    } else {
+	return $self->{values}{$name};
+    }
+}
+
+sub v {
+    my ($self, @path) = @_;
+    for my $element (@path) {
+	if ($self->field_by_name($element)) {
+	    $self = $self->field_by_name($element);
+	} elsif ($self->element($element)) {
+	    $self = $self->element($element);
+	} else {
+	    die;
+	}
+    }
+
+    return $self->value;
+}
+
+sub field_by_name {
+    my ($self, $name, $field) = @_;
+    return $self->{fields_by_name}{$name} unless defined $field;
+    $self->{fields}{$field->object} = $field;
+    $self->{fields_by_name}{$name} = $field;
+}
+
+sub field {
+    my ($self, $object, $field) = @_;
+    return $self->{fields}{$object} unless defined $field;
+    $self->{fields}{$object} = $field;
+    $self->{fields_by_name}{$object->{name}} = $field if defined $object->{name};
+}
+
+sub element {
+    my ($self, $index, $field) = @_;
+    return $self->{elements}{$index} unless defined $field;
+    $self->{count}++;
+    $self->{elements}{$index} = $field;
+}
+
+sub data {
+    my ($self, $data) = @_;
+    if (defined $data) {
+	$self->{data} = $data;
+    }
+    return $self->{data};
+}
+
+sub size {
+    my ($self, $size) = @_;
+    $self->{size} = $size if defined $size;
+    return $self->{size};
+}
+
+sub count {
+    my ($self, $count) = @_;
+    $self->{count} = $count if defined $count;
+    return $self->{count};
+}
+
+package main;
+
+sub parse {
+    my @spec = @_;
+    for my $spec (@spec) {
+	if (!ref $spec) {
+	    if ($spec eq 0+$spec) {
+		return constant($spec);
+	    } else {
+		die;
+	    }
+	} else {
+	    return $spec;
+	}
+    }
+    die;
+}
+
+sub data {
+    my $ret = Object->new("data");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$self->{off} = $stream->{off} unless defined $self->{off};
+	unless (defined $self->size) {
+	    $self->size($path[0]->size - $path[0]->size_read($stream));
+	}
+	$self->data($stream->raw($self->size, $self, @path),
+		    $stream->off);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	$stream->write($self->data, $self, @path);
+		 });
+    return $ret;
+}
+
+sub align {
+    my ($n) = @_;
+    my $ret = Object->new("align");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$stream->align($n);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	while ($stream->{off} & ($n-1)) {
+	    $stream->write("\0", $self, @path);
+	}
+		 });
+
+    return $ret;
+}
+
+sub string($) {
+    my ($n) = @_;
+    my $ret = Object->new("data");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$self->size($n);
+	$self->data($stream->raw($self->size, $self, @path),
+		    $stream->off);
+	my $value = $self->data;
+	$value =~ s/\0+$//;
+	$self->value(value => $value);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	$stream->write($self->data, $self, @path);
+		 });
+    return $ret;
+}
+
+sub alternative {
+    my ($alts) = @_;
+    my $ret = Object->new("alternative");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$self->{off} = $stream->{off};
+	my @alts = @$alts;
+	my $name;
+	while (@alts) {
+	    my $alt = shift @alts;
+	    if (!ref $alt) {
+		$name = $alt;
+		next;
+	    }
+	    my $success;
+	    eval {
+		my $child = Value->new($alt);
+		$stream->begin;
+		$alt->reader->($stream, $child, $self, @path);
+		$stream->commit;
+		$self->field_by_name($name // "value", $child);
+		$success = 1;
+		undef $name;
+	    };
+	    if ($success) {
+		return $ret;
+	    }
+	    $stream->abort;
+	}
+	die "no alternative matched " . $stream->raw(8);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	for my $name (sort keys %{$self->{fields_by_name}}) {
+	    $self->field_by_name($name)->writer->($stream, $self->value, $self, @path);
+	}
+		 });
+
+    return $ret;
+}
+
+sub count(@) {
+    my @spec = @_;
+    my $ret = Object->new("count");
+    my $last = $spec[$#spec];
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$last->reader->($stream, $self, @path);
+	my @sizepath = (@path);
+	for my $spec (@spec) {
+	    if ($spec eq 0+$spec) {
+		for (0..$spec-1) {
+		    shift @sizepath;
+		}
+	    } elsif (!ref $spec) {
+		my $child = $sizepath[0]->field_by_name($spec);
+		unshift @sizepath, $child;
+	    }
+	}
+	if (@sizepath) {
+	    $sizepath[0]->count($self->value);
+	    $sizepath[0]->fixup(sub {
+		$self->value(value => $sizepath[0]->count);
+				});
+	}
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	die unless defined $self->value;
+	$last->writer->($stream, $self, @path);
+		 });
+
+    $ret->constraint(sub {
+	my ($self, @path) = @_;
+	my @sizepath = @path;
+	for my $spec (@spec) {
+	    if ($spec eq +$spec) {
+		for (0..$spec-1) {
+		    shift @sizepath;
+		}
+	    } elsif (!ref $spec) {
+		unshift @sizepath, $sizepath[0]->value($spec);
+	    }
+	}
+	return if $self->value == $sizepath[0]->count;
+
+	return sub { $self->value(value => $sizepath[0]->count) };
+		     });
+
+    return $ret;
+}
+
+sub repeat {
+    my ($spec) = @_;
+    my $ret = Object->new("repeat");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	my $count = $self->count;
+	my $size = $self->size;
+	my $i = 0;
+	while (1) {
+	    last if defined $count and $count == 0;
+	    last if defined $size and $size == 0;
+	    while (ref($spec) eq "CODE") {
+		$spec = $spec->();
+	    }
+	    my $element = Value->new($spec);
+	    $spec->reader->($stream, $element, $self, @path);
+	    $count-- if defined $count;
+	    $size -= $element->size_read($stream) if defined $size;
+	    $self->element($i => $element);
+	    $i++;
+	}
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	my $count = $self->count;
+	my $size = $self->size;
+	for my $i (0 .. $count-1) {
+	    my $element = $self->element($i);
+	    last unless $element;
+	    $element->writer->($stream, $element, $self, @path);
+	}
+		 });
+
+    return $ret;
+}
+
+sub parse_size_spec(@) {
+    my @spec = @_;
+    my $last = pop @spec;
+    if ($last eq 0+$last) {
+	$last = constant($last);
+    }
+    push @spec, $last;
+    return @spec;
+}
+
+sub size(@) {
+    my @spec = parse_size_spec(@_);
+    my $ret = Object->new("size");
+    my $last = pop @spec;
+    if ($last eq 0+$last) {
+	$last = constant($last);
+    }
+    push @spec, $last;
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$last->reader->($stream, $self, @path);
+	my @sizepath = @path;
+	for my $spec (@spec) {
+	    if ($spec eq (0+$spec)) {
+		for (0..$spec-1) {
+		    shift @sizepath;
+		}
+	    } elsif (!ref $spec) {
+		unshift @sizepath, $sizepath[0]->field_by_name($spec);
+	    }
+	}
+	$sizepath[0]->size($self->value);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	$spec[$#spec]->writer->($stream, $self, @path);
+		 });
+    $ret->constraint(sub {
+	my ($ccontext, $self, @path) = @_;
+	my @sizepath = @path;
+	for my $spec (@spec) {
+	    if ($spec eq (0+$spec)) {
+		for (0..$spec-1) {
+		    shift @sizepath;
+		}
+	    } elsif (!ref $spec) {
+		unshift @sizepath, $sizepath[0]->field_by_name($spec);
+	    }
+	}
+	return if $self->value == $sizepath[0]->size;
+
+	return sub { $self->value(value => $sizepath[0]->size) };
+		     });
+
+    return $ret;
+}
+
+
+sub constant {
+    my ($value, @spec) = @_;
+    my $ret = Object->new("constant");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+
+	$self->value(value => $value);
+	for my $spec (@spec) {
+	    parse($spec)->reader->($stream, $self, @path);
+	}
+
+	die("constant mismatch: $value != " . $self->value) if defined $self->value and $value != $self->value;
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+
+	for my $spec (@spec) {
+	    parse($spec)->writer->($stream, $self, @path);
+	}
+		 });
+
+    return $ret;
+}
+
+sub struct($) {
+    my ($fields) = @_;
+    my $ret = Object->new("struct");
+    my %fields;
+    my %fields_by_name;
+    my @fields;
+    my $name;
+    for my $field (@$fields) {
+	if (ref $field) {
+	    $fields{$field} = $field;
+	    $fields_by_name{$name} = $field if defined $name;
+	    $field->{name} = $name if defined $name;
+	    push @fields, $field;
+	    undef $name;
+	} else {
+	    $name = $field;
+	}
+    }
+    die if defined $name;
+
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$self->{off} = $stream->{off};
+	for my $field (@fields) {
+	    $self->field($field, Value->new($field));
+	}
+	for my $field (@fields) {
+	    my $value = $self->field($field);
+	    $field->reader->($stream, $value, $self, @path);
+	    $self->field($field, $value);
+	}
+	if ($self->size_read($stream) < $self->size) {
+	    my $rest = data;
+	    my $value = Value->new($rest);
+	    $value->size($self->size - $self->size_read($stream));
+	    $self->field($rest, $value);
+	    $rest->reader->($stream, $value, $self, @path);
+	}
+		 });
+
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	for my $field (@fields) {
+	    $field->writer->($stream, $self->{fields}{$field}, $self, @path);
+	}
+		 });
+
+    $ret->constraint(sub {
+	my ($ccontext, $self, @path) = @_;
+	my @fixups;
+	for my $field (@fields) {
+	    my $fixup = $self->field($field)->consistent($self, @path);
+	    push @fixups, $fixup if $fixup;
+	}
+
+	return sub { for (@fixups) { $_->() } } if @fixups;
+	return;
+		     });
+
+    return $ret;
+}
+
+sub u($) {
+    my ($bits) = @_;
+    my $ret = Object->new("u$bits");
+    $ret->reader(sub {
+	my ($stream, $self, @path) = @_;
+	$self->{off} = $stream->{off};
+	$self->size($bits / 8);
+	$self->data($stream->raw($bits / 8, $self, @path),
+		    $stream->off);
+	my $numval = 0;
+	my $shift = 0;
+	for my $byte (split "", $self->data) {
+	    $numval += unpack("C", $byte) << $shift;
+	    $shift += 8;
+	}
+	$self->value(value => $numval);
+		 });
+    $ret->writer(sub {
+	my ($stream, $self, @path) = @_;
+	my $numval = $self->value;
+	die unless defined $numval;
+	my $shift = 0;
+	while ($shift < $bits) {
+	    $stream->write(pack("C", $numval & 0xff), $self, @path);
+	    $numval >>= 8;
+	    $shift += 8;
+	}
+		 });
+
+    return $ret;
+}
+
+sub u64 { u 64 }
+sub u32 { u 32 }
+sub u24 { u 24 }
+sub u16 { u 16 }
+sub u8 { u 8 }
+
+sub framebuffer {
+    struct [
+	base => u64,
+	display => u64,
+	stride => u64,
+	width => u64,
+	height => u64,
+	depth => u64,
+	]
+}
+
+sub adtnode();
+sub adtprop();
+
+sub adtnode() {
+    struct [
+	count(props => u32),
+	count(nodes => u32),
+	props => repeat(\&adtprop),
+	nodes => repeat(\&adtnode),
+	]
+}
+
+sub adtprop() {
+    struct [
+	name => string 32,
+	size => size(data => u32),
+	data => data,
+	align(4)
+	]
+}
+
+sub beglen {
+    my ($beg, $len) = @_;
+    struct [
+	beg => $beg,
+	len => $len,
+	];
+}
+
+sub bootargs {
+    struct [
+	revision => u16,
+	version => u16,
+	u32,
+	virt_base => u64,
+	phys_base => u64,
+	mem_size => u64,
+	top_of_kernel => u64,
+	framebuffer => framebuffer,
+	machine_type => u32,
+	u32,
+	adt => beglen(u64, u32),
+	cmdline => string 608,
+	u32,
+	boot_flags => u64,
+	mem_size_actual => u64,
+	align(16384),
+	]
+}
+
+sub macho_header {
+    struct [
+	size(32),
+	struct [ size 20 ],
+	cmdsize => size(1 => commands => u32),
+	]
+}
+
+sub macho_command {
+    alternative [
+	segment => struct [
+	    constant(0x19, u32),
+	    size(u32),
+	    name => string 16,
+	    vmrange => beglen(u64, u64),
+	    filerange => beglen(u64, u64),
+	],
+	regs => struct [
+	    constant(0x05, u32),
+	    size(u32),
+	    struct [ size(33 * 8) ],
+	    pc => u64,
+	],
+	unknown => struct [
+	    u32,
+	    size(u32),
+	],
+	]
+}
+
+sub macho {
+    struct [
+	header => macho_header,
+	commands => repeat(macho_command),
+	]
+}
+
+use File::Slurp qw(read_file);
+
+# my $object = adtnode;
+# my $value = $object->read(join("", read_file("adt")));
+# $value->fetch_prop_by_name("name");
+# print $value->write;
+
+my $devmem = DevMem->new;
+my $bootargs = $devmem->fdtrange("/sys/firmware/devicetree/base/reserved-memory/bootargs\@800000000/reg");
+# my $adt = $devmem->fdtrange("/sys/firmware/devicetree/base/reserved-memory/adt\@800000000/reg");
+# $adt = scalar read_file("adt");
+# my $adtv = adtnode()->read($adt);
+my $bootargsv = bootargs()->read($bootargs);
+# my $bl64 = beglen(u64, u64);
+# warn $adtv->lookup("chosen\0", "memory-map\0", "SEPFW")->field_by_name("data")->data;
+# $ranges{SEPFW} = $bl64->read($adtv->lookup("chosen\0", "memory-map\0", "SEPFW")->field_by_name("data")->data);
+
+my $macho = scalar read_file($ARGV[0]);
+my $machov = macho()->read($macho);
+my ($base) = $devmem->fdtbeglen("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg");
+
+my $image = "";
+
+sub macho_image {
+    my ($macho, $machotext) = @_;
+    my $pc;
+    my ($vmin, $vmax, $fmin, $fmax);
+    for my $command ($macho->field_by_name(commands=>)->elements) {
+	if ($command->field_by_name(regs=>)) {
+	    $pc = $command->field_by_name(regs=>)->field_by_name(pc=>);
+	} elsif ($command->field_by_name(segment=>)) {
+	    my $segment = $command->field_by_name(segment=>);
+	    my $vmrange = $segment->field_by_name(vmrange=>);
+	    my $filerange = $segment->field_by_name(filerange=>);
+
+	    $vmin = $vmrange->field_by_name(beg=>)->value
+		unless defined $vmin and $vmin < $vmrange->field_by_name(beg=>)->value;
+	    $vmax = $vmrange->field_by_name(beg=>)->value + $vmrange->field_by_name(len=>)->value
+		unless defined $vmax and $vmax > $vmrange->field_by_name(beg=>)->value + $vmrange->field_by_name(len=>)->value;
+	    $fmin = $filerange->field_by_name(beg=>)->value
+		unless defined $fmin and $fmin < $filerange->field_by_name(beg=>)->value;
+	    $fmax = $filerange->field_by_name(beg=>)->value + $vmrange->field_by_name(len=>)->value
+		unless defined $fmax and $fmax > $filerange->field_by_name(beg=>)->value + $filerange->field_by_name(len=>)->value;
+	}
+    }
+    my $ret = {};
+    $ret->{vrange} = [$vmin, $vmax];
+    $ret->{frange} = [$fmin, $fmax];
+
+    $ret->{image} = "\0" x ($vmax - $vmin);
+
+    warn $pc->value, ($pc->value - $vmin);
+    $ret->{pc} = $pc->value;
+
+    for my $command ($macho->field_by_name(commands=>)->elements) {
+	if ($command->field_by_name(segment=>)) {
+	    my $segment = $command->field_by_name(segment=>);
+	    my $vmrange = $segment->field_by_name(vmrange=>);
+	    my $filerange = $segment->field_by_name(filerange=>);
+
+	    substr($ret->{image}, $vmrange->field_by_name(beg=>)->value - $vmin,
+		   $filerange->field_by_name(len=>)->value,
+		   substr($machotext, $filerange->field_by_name(beg=>)->value, $filerange->field_by_name(len=>)->value));
+	}
+    }
+
+    return $ret;
+}
+
+my $macho_image = macho_image($machov, $macho);
+my $image_macho = $macho_image->{image};
+my $image_sepfw = "";
+my $off_adt = length($image_macho) + length($image_sepfw);
+my $image_adt = "";
+my $off_bootargs = $off_adt + length($image_adt);
+
+my $phys_base = $bootargsv->field_by_name(phys_base=>)->value;
+my $virt_base = $bootargsv->field_by_name(virt_base=>)->value;
+my $virt_adt = $off_adt + $base - $phys_base + $virt_base;
+$bootargsv->field_by_name(adt=>)->value(beg=>$virt_adt);
+$bootargsv->field_by_name(adt=>)->value(len=>$off_bootargs - $off_adt);
+my $image_bootargs = $bootargsv->write;
+
+my $image = $image_macho . $image_sepfw . $image_adt . $image_bootargs;
+
+my $phys_pc = $macho_image->{pc} - $macho_image->{vrange}[0] + $base;
+my $phys_bootargs = $base + $off_bootargs;
+my $fh;
+open $fh, ">memdump";
+print $fh $image;
+close $fh;
+
+system("memdump-to-image memdump image $phys_bootargs $base $phys_pc")
