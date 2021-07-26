@@ -108,3 +108,6 @@
 	path = debian/debootstrap/debootstrap
 	url = https://github.com/pipcet/debootstrap
 	branch = pearl
+[submodule "userspace/sys-mmap/sys-mmap"]
+	path = userspace/sys-mmap/sys-mmap
+	url = https://github.com/toddr/Sys-Mmap.git
