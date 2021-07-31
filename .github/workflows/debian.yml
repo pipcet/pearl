@@ -25,5 +25,6 @@ jobs:
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install libtool-bin
+    - run: git submodule update --init debian/debootstrap
     - run: make -j13 build/debian.cpio.zst
     - run: make -j13 build/debian.cpio.zst{artifact}
