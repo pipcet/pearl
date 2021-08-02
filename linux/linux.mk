@@ -8,6 +8,14 @@ $(BUILD)/linux/debian.config: linux/pearl.config
 $(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
+$(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/%.image.d/
+	echo "#!/bin/sh" > $@
+	echo "echo shell > persist/stage" >> $@
+	echo "find persist >> /file.list" >> $@
+	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $@
+	echo "/bin/kexec -fix linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
+	chmod u+x $@
+
 $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d/
 	echo "#!/bin/sh" > $@
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
