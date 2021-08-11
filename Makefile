@@ -103,7 +103,6 @@ random-target:
 	 echo build/lvm2/done/install; \
 	 echo build/memtool/done/install; \
 	 echo build/ncurses/done/install; \
-	 echo build/nvme-cli/done/install; \
 	 echo build/openssl/done/install; \
 	 echo build/perl/done/install; \
 	 echo build/popt/done/install; \
