@@ -15,5 +15,8 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar
 	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
 	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
 
+$(BUILD)/debian.cpio.gz: $(BUILD)/debian.cpio
+	gzip < $< > $@
+
 $(BUILD)/debian.cpio.zst: $(BUILD)/debian.cpio
 	zstd -22 --ultra --long --verbose < $< > $@
