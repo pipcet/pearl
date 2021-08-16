@@ -27,6 +27,12 @@ $(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(BUILD)/linux/done/pearl/
 $(BUILD)/linux/%.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $@
 
+$(BUILD)/linux/%-j293.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/apple-m1-j293.dtb $@
+
+$(BUILD)/linux/%-j274.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/apple-m1-j274.dtb $@
+
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 

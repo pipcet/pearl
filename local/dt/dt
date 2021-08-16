@@ -915,6 +915,28 @@ if ($ARGV[0] eq "--help") {
     my $adt = "";
     run(["adtdump"], \$stdin, \$adt) or die;
     write_file($ARGV[1], $adt) or die;
+} elsif ($ARGV[0] eq "adt-model") {
+    my $adt = read_file($ARGV[1]);
+    my $adtp = adt_to_dtp($adt);
+    for my $line (split "\n", $adtp) {
+	if ($line =~ /^adt\.device-tree\.compatible = \[(.*?)\]$/) {
+	    my @bytes = split / /, $1;
+	    @bytes = map { chr hex $_ } @bytes;
+	    my $strs = join("", @bytes);
+	    my @strs = split("\0", $strs);
+	    for my $str (@strs) {
+		print "$str\n";
+	    }
+	} elsif ($line =~ /^adt\.device-tree\.target-type = \[(.*?)\]$/) {
+	    my @bytes = split / /, $1;
+	    @bytes = map { chr hex $_ } @bytes;
+	    my $strs = join("", @bytes);
+	    my @strs = split("\0", $strs);
+	    for my $str (@strs) {
+		print "$str\n";
+	    }
+	}
+    }
 } elsif ($ARGV[0] eq "extract-bootargs") {
     my $bootargs;
     run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
