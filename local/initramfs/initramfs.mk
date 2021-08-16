@@ -12,6 +12,8 @@ $(BUILD)/initramfs/%.cpio: $(BUILD)/initramfs/%.cpiospec $(BUILD)/linux/done/che
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2.image
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2.dtb
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2-J293.dtb
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2-J274.dtb
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/linux.image
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/linux.dtb
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/linux.modules
@@ -20,6 +22,8 @@ $(BUILD)/initramfs/pearl/boot/stage2.image: $(BUILD)/linux/stage2.image ; $(COPY
 $(BUILD)/initramfs/pearl/boot/linux.image: $(BUILD)/linux/linux.image ; $(COPY)
 
 $(BUILD)/initramfs/pearl/boot/stage2.dtb: $(BUILD)/linux/stage2.dtb ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/stage2-J293.dtb: $(BUILD)/linux/stage2-j293.dtb ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/stage2-J274.dtb: $(BUILD)/linux/stage2-j274.dtb ; $(COPY)
 $(BUILD)/initramfs/pearl/boot/linux.dtb: $(BUILD)/linux/linux.dtb ; $(COPY)
 $(BUILD)/initramfs/pearl/boot/linux.modules: $(BUILD)/linux/linux.modules ; $(COPY)
 
