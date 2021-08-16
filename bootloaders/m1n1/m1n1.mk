@@ -28,3 +28,6 @@ $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 
 {m1n1}:
 	(cd bootloaders/m1n1/m1n1/proxyclient; M1N1DEVICE=$(M1N1DEVICE) python3 -m m1n1.shell)
+
+$(BUILD)/m1n1-chickens.S: $(BUILD)/m1n1/done/install
+	$(CROSS_COMPILE)gcc -finline-functions -O3 -S -o $@ bootloaders/m1n1/m1n1/src/chickens.c
