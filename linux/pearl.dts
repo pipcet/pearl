@@ -1,3 +1,6 @@
+#define SZ_1G (1LL << 30)
+#define MEMTOP (0x800000000 + (bootargs->mem_size & -SZ_1G))
+
 #define REG(x,y) <${cpu_to_be32((x)>>32)} \
 	          ${cpu_to_be32((x)&U32_MAX)} \
 		  ${cpu_to_be32((y)>>32)} \
@@ -44,16 +47,27 @@
 		#size-cells = <0x02>;
 		ranges;
 
-		/* The area at the end of memory. Not actually at 9e0000000
-		 * on most machines. */
+		/* The area at the end of memory. Not actually at 9e0000000. */
 		fw_area@9e0000000 {
-		        reg = REG(bootargs->phys_base
-			          + bootargs->mem_size,
-				  bootargs->mem_size_actual
-				  - bootargs->mem_size
-				  - bootargs->phys_base
-				  + 0x800000000);
+		        reg = REG(MEMTOP,
+				  bootargs->framebuffer.phys_base - MEMTOP);
+		};
+
+		fw_area@9e8000000 {
+		        reg = REG(bootargs->framebuffer.phys_base,
+			          bootargs->framebuffer.stride *
+				  bootargs->framebuffer.height);
 			no-map;
+		};
+
+		fw_area@9f0000000 {
+			reg = REG(bootargs->framebuffer.phys_base +
+			          (bootargs->framebuffer.stride *
+				   bootargs->framebuffer.height),
+				  bootargs->mem_size_actual + 0x800000000
+				  - (bootargs->framebuffer.phys_base +
+				     (bootargs->framebuffer.stride *
+				      bootargs->framebuffer.height)));
 		};
 
 		/* The Apple Device tree. */
