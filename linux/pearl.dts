@@ -1,6 +1,17 @@
 #define SZ_1G (1LL << 30)
 #define MEMTOP (0x800000000 + (bootargs->mem_size & -SZ_1G))
 
+#define AIC_FIQ 1
+#define AIC_TMR_HV_PHYS		0
+#define AIC_TMR_HV_VIRT		1
+#define AIC_TMR_GUEST_PHYS	2
+#define AIC_TMR_GUEST_VIRT	3
+#define IRQ_TYPE_NONE		0
+#define IRQ_TYPE_EDGE_RISING	1
+#define IRQ_TYPE_EDGE_FALLING	2
+#define IRQ_TYPE_EDGE_BOTH	(IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_EDGE_RISING)
+#define IRQ_TYPE_LEVEL_HIGH	4
+#define SZ_1G (1LL << 30)
 #define REG(x,y) <${cpu_to_be32((x)>>32)} \
 	          ${cpu_to_be32((x)&U32_MAX)} \
 		  ${cpu_to_be32((y)>>32)} \
@@ -12,14 +23,66 @@
 
 / {
 	model = "Minimal M1 device tree";
-	compatible = "apple,m1";
+	compatible = "apple,t8103", "apple,arm-platform";
 	hardware-model = "unknown";
-	interrupt-parent = <0x01>;
-	#address-cells = <0x02>;
-	#size-cells = <0x02>;
+	interrupt-parent = <&aic>;
+	#address-cells = <2>;
+	#size-cells = <2>;
 
-	chosen {
-		bootargs = "";
+
+	cpus {
+		#address-cells = <2>;
+		#size-cells = <0>;
+
+		cpu0: cpu@0 {
+			compatible = "apple,icestorm";
+			device_type = "cpu";
+			reg = <0x0 0x0>;
+			enable-method = "spin-table";
+			cpu-release-addr = <0 0>; /* To be filled by loader */
+			apple,cluster = <0>;
+		};
+	};
+
+	fiq: interrupt-controller {
+	        compatible = "apple,fiq";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+		use-for-ipi;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupt-parent = <&fiq>;
+		interrupt-names = "phys", "virt", "hyp-phys", "hyp-virt";
+		interrupts = <AIC_FIQ AIC_TMR_GUEST_PHYS IRQ_TYPE_LEVEL_HIGH>,
+			     <AIC_FIQ AIC_TMR_GUEST_VIRT IRQ_TYPE_LEVEL_HIGH>,
+			     <AIC_FIQ AIC_TMR_HV_PHYS IRQ_TYPE_LEVEL_HIGH>,
+			     <AIC_FIQ AIC_TMR_HV_VIRT IRQ_TYPE_LEVEL_HIGH>;
+	};
+
+	soc {
+		compatible = "simple-bus";
+		#address-cells = <2>;
+		#size-cells = <2>;
+
+		ranges;
+		dma-ranges;
+		nonposted-mmio;
+
+		/* You might think the minimal kernel does not require
+		 * an interrupt controller, and you'd be right: in ARM
+		 * terminology, the minimal kernel uses only FIQs, no *
+		 * IRQs. However, FIQ handling is currently done in the
+		 * AIC driver; it shouldn't be, and this shouldn't be
+		 * here. */
+
+		aic: interrupt-controller@23b100000 {
+			compatible = "apple,t8103-aic", "apple,aic";
+			#interrupt-cells = <3>;
+			interrupt-controller;
+			reg = <0x2 0x3b100000 0x0 0x8000>;
+		};
 	};
 
 	memory@800000000 {
@@ -91,76 +154,6 @@
 			reg = REG(0x800000000,
 			          bootargs->start_of_usable_memory
 				  - 0x800000000);
-		};
-
-		/* The start of the macho header of the original kernel
-		 * .macho */
-		base@800000000 {
-			reg = REG(base, 0x4000LL);
-		};
-	};
-
-	io-ranges {
-		#address-cells = <0x02>;
-		#size-cells = <0x02>;
-		ranges;
-
-		on_chip_io@200000000 {
-			reg = <0x02 0x00 0x02 0x00>;
-			type = <0x01>;
-		};
-
-		on_chip_io@500000000 {
-			reg = <0x05 0x00 0x00 0x80000000>;
-			type = <0x01>;
-		};
-
-		on_chip_io@680000000 {
-			reg = <0x06 0x80000000 0x00 0x20000000>;
-			type = <0x01>;
-		};
-	};
-
-	cpus {
-		#address-cells = <0x01>;
-		#size-cells = <0x00>;
-
-		cpu@0 {
-			device_type = "cpu";
-			compatible = "apple,v1";
-			reg = <0x00>;
-			enable-method = "apple,startcpu";
-			apple,cluster = <0x00>;
-		};
-	};
-
-	timer {
-		compatible = "arm,armv8-timer";
-		interrupts = <1 1 4 1 0 4>;
-		clock-frequency = <0x16e3600>;
-	};
-
-	soc {
-		compatible = "simple-bus";
-		#address-cells = <0x02>;
-		#size-cells = <0x02>;
-		ranges;
-		dma-coherent;
-
-		/* You might think the minimal kernel does not require
-		 * an interrupt controller, and you'd be right: in ARM
-		 * terminology, the minimal kernel uses only FIQs, no *
-		 * IRQs. However, FIQ handling is currently done in the
-		 * AIC driver; it shouldn't be, and this shouldn't be
-		 * here. */
-
-		interrupt-controller@23b100000 {
-			compatible = "apple,aic";
-			#interrupt-cells = <0x03>;
-			interrupt-controller;
-			reg = <0x02 0x3b100000 0x00 0x8000>;
-			fast-ipi;
-			phandle = <0x01>;
 		};
 	};
 };
