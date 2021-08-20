@@ -172,5 +172,6 @@
 		base@800000000 {
 			reg = REG(bootargs->phys_base, 0x4000LL);
 		};
-};
+
+	};
 };
