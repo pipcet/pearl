@@ -24,8 +24,12 @@ static inline void memmove(void *p, void *q, size_t len)
 
   len += 15;
   len /= 16;
-  while (len--)
-    *p128++ = *q128++;
+  if (p128 < q128)
+    while (len--)
+      *p128++ = *q128++;
+  else
+    while (len--)
+      p128[len] = q128[len];
 }
 
 static inline void memset(void *p, unsigned long pattern64, size_t len)
