@@ -18,6 +18,8 @@ dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
 grep 'memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
 dt dtp-to-dtb /boot/stage2.dtp /boot/stage2.dtb
+dt dtb-to-dtp /boot/stage2.dtb /boot/stage2.dtb.dtp
 
 cp boot/tunables.dtp boot/resmem.dtp boot/bootargs.dtp boot/adt persist
-cat /boot/resmem.dtp
+# cat /boot/resmem.dtp
+# cat /boot/stage2.dtb.dtp | while read REPLY; do echo $REPLY; sleep .1; done
