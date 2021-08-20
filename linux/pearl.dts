@@ -152,8 +152,25 @@
 		 * including the original kernel .macho. */
 		kmem@800000000 {
 			reg = REG(0x800000000,
-			          bootargs->start_of_usable_memory
+			          bootargs->adt_virt_base
+				  - bootargs->virt_base
+				  + bootargs->phys_base
 				  - 0x800000000);
 		};
-	};
+		kmem@810000000 {
+			reg = REG(bootargs->adt_virt_base
+				  - bootargs->virt_base
+				  + bootargs->phys_base
+				  + (u64)bootargs->adt_size,
+			          bootargs_phys
+				  - (bootargs->adt_virt_base
+				     - bootargs->virt_base
+				     + bootargs->phys_base
+				     + (u64)bootargs->adt_size));
+		};
+
+		base@800000000 {
+			reg = REG(bootargs->phys_base, 0x4000LL);
+		};
+};
 };
