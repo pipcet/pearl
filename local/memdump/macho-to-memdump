@@ -273,6 +273,8 @@ sub value {
     my ($self, $name, $value) = @_;
     $name = "value" unless defined $name;
     if (defined $value) {
+	$self->field_by_name($name)->{values}{value} = $value
+	    if $self->field_by_name($name);
 	$self->{values}{$name} = $value;
     } else {
 	return $self->{values}{$name};
@@ -676,6 +678,7 @@ sub struct($) {
 	return;
 		     });
 
+    $ret->{fields_by_name} = \%fields_by_name;
     return $ret;
 }
 
@@ -888,7 +891,7 @@ my $macho_image = macho_image($machov, $macho);
 my $image_macho = $macho_image->{image};
 my $image_sepfw = "";
 my $off_adt = length($image_macho) + length($image_sepfw);
-my $image_adt = "";
+my $image_adt = $devmem->fdtrange("/sys/firmware/devicetree/base/reserved-memory/adt\@800000000/reg");
 my $off_bootargs = $off_adt + length($image_adt);
 
 my $phys_base = $bootargsv->field_by_name(phys_base=>)->value;
