@@ -8,15 +8,19 @@ sub read32 {
     warn "memtool md $addr+4";
     my $val = `memtool md $addr+4`;
     chomp $val;
-    /^[0-9a-f]*: ([0-9a-f]*) / && return hex $1;
+    my $ret;
+    if ($val =~ /^[0-9a-f]*: ([0-9a-f]*) /) {
+	$ret = hex $1;
+    }
+    warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
+    return $ret;
 }
 
 sub write32 {
     my ($addr, $value) = @_;
 
-    warn("memtool mw $addr $value");
+    warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
     system("memtool mw $addr $value");
-    # sleep 1;
 }
 
 package DTNode;
