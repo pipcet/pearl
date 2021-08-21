@@ -2,6 +2,7 @@
 # This script runs on the M1.
 
 package MMIO;
+use Time::HiRes;
 
 sub read32 {
     my $addr = shift;
@@ -140,7 +141,9 @@ package TunableItem;
 sub new {
     my $class = shift;
     my %h = @_;
-    return bless \%h, $class;
+    my $ret = bless \%h, $class;
+    push @{$TunableItem::items{$ret->{adtnode}}}, $ret;
+    return $ret;
 }
 
 sub encode {
@@ -168,18 +171,19 @@ sub encode {
 }
 
 sub apply {
-    my ($self) = @_;
+    my ($self, $off) = @_;
+    $off //= 0;
     eval {
 	if ($self->{size} == 4 || $self->{size} == 32) {
-	    my $oldval = MMIO::read32($self->{addr});
+	    my $oldval = MMIO::read32($self->{addr} + $off);
 	    $oldval &= ~$self->{mask};
 	    $oldval |= $self->{value};
-	    MMIO::write32($self->{addr}, $oldval);
+	    MMIO::write32($self->{addr} + $off, $oldval);
 	} else {
 	    warn "unhandled size " . $self->{size};
 	}
     };
-    # sleep 1;
+    # sleep .5;
     return $self;
 }
 
@@ -223,6 +227,7 @@ sub new_from_fancy {
 		    mask => $mask,
 		    value => $value,
 		    size => $size,
+		    adtnode => $h{adtnode},
 		    );
 		$ai += 2;
 	    }
@@ -256,6 +261,7 @@ sub new_from_legacy {
 		mask => $mask,
 		value => $value,
 		size => 32,
+		adtnode => $h{adtnode},
 		);
 	};
     }
@@ -303,6 +309,7 @@ sub new_from_fusemap {
 	    addr => $base + $dst_offs,
 	    mask => $mask,
 	    value => $value,
+	    adtnode => $h{adtnode},
 	    );
     }
 
@@ -331,6 +338,7 @@ sub new_from_pcie {
 		mask => $mask,
 		value => $value,
 		size => $size,
+		adtnode => $h{adtnode},
 		);
 	};
     }
@@ -394,6 +402,8 @@ sub tunable {
     $adtparent =~ s/\.[^.]*$//;
     my $adtparentreg = $adtparent . ".reg";
 
+    $props{adtnode} = $adtnode;
+
     for my $lnode (sort keys %dt) {
 	my $rawnode = $lnode;
 	$rawnode =~ s/\@[0-9a-f]*//;
@@ -427,9 +437,12 @@ sub tunable {
 	return;
     }
     my $new = "new_from_$kind";
-    $tunables{$adtnode} = Tunable->$new(%props);
+    warn "new tunable $new from $adtnode";
+    $tunables{$adtnode} = Tunable->$new(%props, adtnode => $adtnode);
     if (ref $tunables{$adtnode} eq "Tunable") {
-	$tunables{$adtnode} = $tunables{$adtnode}->encode_to_fancy($props{lreg});
+	eval {
+	    $tunables{$adtnode} = $tunables{$adtnode}->encode_to_fancy($props{lreg});
+	};
     } else {
 	$tunables{$adtnode} = DTNode->new("u8", @{$tunables{$adtnode}})->string;
     }
@@ -442,6 +455,7 @@ sub tunable {
 }
 
 sub setup_tunables {
+    system("memtool mw 0x23d2b001c 0");
     my $pcie_fuse_map = [
 	# /* src_addr, dst_offs, src_[lsb,width], dst_[lsb,width] */
 	# XXX Why is this still here?
@@ -620,9 +634,11 @@ sub setup_tunables {
 	tunable("arm-io.apciec${i}.pcic${i}-bridge.apcie-config-tunables",
 		"soc.pciec${i}.tunable-port0-config",
 		pcie => range => 3, parent => 1);
-	tunable("arm-io.apcie.apcie-axi2af-tunables",
-		"soc.pcie.tunable-axi2af",
-		pcie => range => 4);
+	eval {
+	    tunable("arm-io.apcie.apcie-axi2af-tunables",
+		    "soc.pcie.tunable-axi2af",
+		    pcie => range => 4);
+	};
 	tunable("arm-io.apcie.apcie-common-tunables",
 		"soc.pcie.tunable-common",
 		pcie => range => 1);
@@ -708,6 +724,145 @@ sub setup_tunables {
     }
 }
 
+sub apply_tunable {
+    my ($str, $off) = @_;
+    $off //= 0;
+    my @tunables;
+    for my $key (sort keys %TunableItem::items) {
+	if (substr($key, length($key) - length($str)) eq $str) {
+	    push @tunables, @{${TunableItem::items{$key}}};
+	}
+    }
+
+    unless(@tunables) {
+	warn "couldn't find $str\n";
+	for my $key (sort keys %TunableItem::items) {
+	    warn "nomatch: $key";
+	}
+	return;
+    }
+
+    for my $tunable (@tunables) {
+	$tunable->apply($off);
+	warn MMIO::read32(0x690000000);
+	warn MMIO::read32(0x690010000);
+    }
+}
+
+sub BIT {
+    return 1 << ($_[0]);
+}
+
+my $APCIE_PHY_CTRL         = 0x000;
+my $APCIE_PHY_CTRL_CLK0REQ = BIT(0);
+my $APCIE_PHY_CTRL_CLK1REQ = BIT(1);
+my $APCIE_PHY_CTRL_CLK0ACK = BIT(2);
+my $APCIE_PHY_CTRL_CLK1ACK = BIT(3);
+my $APCIE_PHY_CTRL_RESET   = BIT(7);
+
+my $DWC_DBI_RO_WR    = 0x8bc;
+my $DWC_DBI_RO_WR_EN = BIT(0);
+
+sub enable_phy_clks {
+    my ($phy_base) = @_;
+    MMIO::write32($phy_base + $APCIE_PHY_CTRL,
+		  MMIO::read32($phy_base + $APCIE_PHY_CTRL) | $APCIE_PHY_CTRL_CLK0REQ);
+    while (!(MMIO::read32($phy_base + $APCIE_PHY_CTRL) & $APCIE_PHY_CTRL_CLK0ACK)) {
+	warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
+    }
+
+    warn "enabled PHY clk 0";
+
+    MMIO::write32($phy_base + $APCIE_PHY_CTRL,
+		  MMIO::read32($phy_base + $APCIE_PHY_CTRL) | $APCIE_PHY_CTRL_CLK1REQ);
+    while (!(MMIO::read32($phy_base + $APCIE_PHY_CTRL) & $APCIE_PHY_CTRL_CLK1ACK)) {
+	warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
+    }
+
+    warn "enabled PHY clk 1";
+}
+
+sub mystery_rc {
+    my ($rc_base) = @_;
+    MMIO::write32($rc_base + 0x24, MMIO::read32($rc_base + 0x24) | 1);
+}
+
+sub make_regs_writable {
+    my ($config_base) = @_;
+    MMIO::write32($config_base + $DWC_DBI_RO_WR,
+		  MMIO::read32($config_base + $DWC_DBI_RO_WR) | 1);
+}
+
+sub make_regs_readonly {
+    my ($config_base) = @_;
+    MMIO::write32($config_base + $DWC_DBI_RO_WR,
+		  MMIO::read32($config_base + $DWC_DBI_RO_WR) & ~1);
+}
+
+my $APCIE_PORT_APPCLK    = 0x800;
+my $APCIE_PORT_APPCLK_EN = BIT(0);
+my $APCIE_PORT_STATUS    =  0x804;
+my $APCIE_PORT_STATUS_RUN=  BIT(0);
+my $APCIE_PORT_RESET     = 0x814;
+my $APCIE_PORT_RESET_DIS = BIT(0);
+
+sub enable_appclk {
+    my ($port_base) = @_;
+    MMIO::write32($port_base + $APCIE_PORT_APPCLK,
+		  MMIO::read32($port_base + $APCIE_PORT_APPCLK) | $APCIE_PORT_APPCLK_EN);
+    MMIO::write32($port_base + $APCIE_PORT_RESET,
+		  MMIO::read32($port_base + $APCIE_PORT_RESET) | $APCIE_PORT_RESET_DIS);
+    until (MMIO::read32($port_base + $APCIE_PORT_STATUS) & $APCIE_PORT_STATUS_RUN) {
+	warn "not yet ready\n";
+    }
+    warn "ready!";
+}
+
+sub apply_tunables {
+    apply_tunable("apcie-axi2af-tunables");
+    apply_tunable("apcie-common-tunables");
+    apply_tunable("apcie-phy-tunables");
+
+    enable_phy_clks(0x680080000);
+    mystery_rc(0x680000000);
+
+    apply_tunable("apcie.reg");
+    apply_tunable("apcie-phy-ip-pll-tunables");
+    apply_tunable("apcie-phy-ip-auspma-tunables");
+    apply_tunable("apcie-config-tunables");
+
+    enable_appclk(0x681000000);
+    enable_appclk(0x682000000);
+
+    make_regs_writable(0x690000000);
+
+    apply_tunable("pcie-rc-tunables");
+    apply_tunable("pcie-rc-gen3-shadow-tunables");
+    apply_tunable("pcie-rc-gen4-shadow-tunables");
+
+    make_regs_readonly(0x690000000);
+
+    apply_tunable("apcie-config-tunables", 0x8000);
+    make_regs_writable(0x690008000);
+
+    apply_tunable("pcie-rc-tunables", 0x8000);
+    apply_tunable("pcie-rc-gen3-shadow-tunables", 0x8000);
+    apply_tunable("pcie-rc-gen4-shadow-tunables", 0x8000);
+
+    make_regs_readonly(0x690008000);
+
+    apply_tunable("apcie-config-tunables", 0x10000);
+    make_regs_writable(0x690010000);
+
+    apply_tunable("pcie-rc-tunables", 0x10000);
+    apply_tunable("pcie-rc-gen3-shadow-tunables", 0x10000);
+    apply_tunable("pcie-rc-gen4-shadow-tunables", 0x10000);
+
+    make_regs_readonly(0x690010000);
+
+    warn "initialized";
+}
+
 sub tunables {
     my ($adtp, $ldtp) = @_;
     my $out = "";
@@ -749,7 +904,7 @@ sub tunables {
 	}
     };
 
-    return $ret;
+    return ""; # $ret;
 }
 
 sub usage {
@@ -946,6 +1101,7 @@ if ($ARGV[0] eq "--help") {
     my $ldtp = dtb_to_dtp($ldt);
     my $odtp = tunables($adtp, $ldtp);
     write_file($ARGV[3], $odtp) or die;
+    apply_tunables();
 } elsif ($ARGV[0] eq "extract-adt") {
     my $adt = "";
     run(["adtdump"], \$stdin, \$adt) or die;
