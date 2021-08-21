@@ -634,11 +634,13 @@ sub setup_tunables {
 	tunable("arm-io.apciec${i}.pcic${i}-bridge.apcie-config-tunables",
 		"soc.pciec${i}.tunable-port0-config",
 		pcie => range => 3, parent => 1);
-	eval {
-	    tunable("arm-io.apcie.apcie-axi2af-tunables",
-		    "soc.pcie.tunable-axi2af",
-		    pcie => range => 4);
-	};
+	if (0) {
+	    eval {
+		tunable("arm-io.apcie.apcie-axi2af-tunables",
+			"soc.pcie.tunable-axi2af",
+			pcie => range => 4);
+	    };
+	}
 	tunable("arm-io.apcie.apcie-common-tunables",
 		"soc.pcie.tunable-common",
 		pcie => range => 1);
@@ -688,9 +690,9 @@ sub setup_tunables {
 	tunable("arm-io.apcie.pci-bridge2.pcie-rc-tunables",
 		"soc.pcie.tunable-port2",
 		pcie => parent => 1, range => 0, base => 0x10000);
-	tunable("chosen.mac-address-ethernet0",
-		"chosen.hwaddr-eth0",
-		plain =>);
+	#tunable("chosen.mac-address-ethernet0",
+	#	"chosen.hwaddr-eth0",
+	#	plain =>);
 	}
 	tunable("arm-io.pmgr.voltage-states1",
 		"soc.cpufreq.tunable-ecpu-states",
@@ -704,15 +706,15 @@ sub setup_tunables {
 	tunable("arm-io.mcc.dramcfg-data",
 		"soc.cpufreq.tunable-pcpu-fast-dcfg",
 		plain => xor => 0);
-	tunable("chosen.mac-address-wifi0",
-		"chosen.hwaddr-wlan0",
-		plain =>);
-	tunable("chosen.mac-address-bluetooth0",
-		"chosen.hwaddr-bt0",
-		plain =>);
-	tunable("arm-io.wlan.module-instance",
-		"chosen.module-wlan0",
-		plain =>);
+	#tunable("chosen.mac-address-wifi0",
+	#	"chosen.hwaddr-wlan0",
+	#	plain =>);
+	#tunable("chosen.mac-address-bluetooth0",
+	#	"chosen.hwaddr-bt0",
+	#	plain =>);
+	#tunable("arm-io.wlan.module-instance",
+	#	"chosen.module-wlan0",
+	#	plain =>);
 
 	# tunable("arm-io.atc-phy${i}.reg",
 	# 	"soc.atcphy${i}.tunable-fuse",
@@ -898,13 +900,13 @@ sub tunables {
 
 	for my $key (sort keys %ltunables) {
 	    eval {
-		#next if $ltunables{$key} eq "<>";
+		next if $ltunables{$key} eq "<>";
 		$ret .= ("$key = " . $ltunables{$key} . "\n");
 	    };
 	}
     };
 
-    return ""; # $ret;
+    return $ret;
 }
 
 sub usage {
