@@ -163,6 +163,22 @@ sub encode {
     return @ret;
 }
 
+sub apply {
+    my ($self) = @_;
+    eval {
+	if ($self->{size} == 4 || $self->{size} == 32) {
+	    my $oldval = MMIO::read32($self->{addr});
+	    $oldval &= ~$self->{mask};
+	    $oldval |= $self->{value};
+	    MMIO::write32($self->{addr}, $oldval);
+	} else {
+	    warn "unhandled size " . $self->{size};
+	}
+    };
+    # sleep 1;
+    return $self;
+}
+
 package Tunable;
 
 sub new {
