@@ -273,13 +273,6 @@ sub new_from_plain {
     return \@bytes2;
 }
 
-sub do_read32 {
-    my $addr = shift;
-    my $val = `memtool md $addr+4`;
-    chomp $val;
-    /^[0-9a-f]*: ([0-9a-f]*) / && return hex $1;
-}
-
 sub new_from_fusemap {
     my ($class, %h) = @_;
     my $map = $h{map};
@@ -290,7 +283,7 @@ sub new_from_fusemap {
 	my $mask;
 	my ($src_addr, $dst_offs, $src_lsb, $src_width, $dst_lsb, $dst_width) = @$row;
 	if ($h{doread}) {
-	    $value = do_read32($src_addr);
+	    $value = MMIO::read32($src_addr);
 	} else {
 	    die;
 	}
@@ -480,6 +473,11 @@ sub setup_tunables {
 	my $i = $v->[0];
 	my $base = $v->[1];
 
+	eval {
+	    MMIO::write32($base + 0x8bc, 1);
+	    MMIO::write32($base + (1 << 15) + 0x8bc, 1);
+	    # MMIO::write32($base + (2 << 15) + 0x8bc, 1);
+	};
 	tunable("arm-io.atc-phy${i}.tunable_ATC0AXI2AF",
 		"soc.usb_drd${i}.tunable-ATC0AXI2AF",
 		fancy => base => $base);
@@ -567,42 +565,42 @@ sub setup_tunables {
 	tunable("arm-io.atc-phy${i}.tunable_USB_ACIOPHY_TOP",
 		"soc.atcphy${i}.tunable-USB_ACIOPHY_TOP",
 		fancy => base => $base + 0x3000000);
-	tunable("arm-io.acio${i}.fw_int_ctl_management_tunables",
-		"soc.acio${i}.tunable-fw_int_ctl_management",
-		pcie => range => 0, base => 0x04000);
-	tunable("arm-io.acio${i}.hbw_fabric_tunables",
-		"soc.acio${i}.tunable-hbw_fabric",
-		pcie => range => 3);
-	tunable("arm-io.acio${i}.hi_dn_merge_fabric_tunables",
-		"soc.acio${i}.tunable-hi_dn_merge_fabric",
-		pcie => range => 0, base => 0xfc000);
-	tunable("arm-io.acio${i}.hi_up_merge_fabric_tunables",
-		"soc.acio${i}.tunable-hi_up_merge_fabric",
-		pcie => range => 0, base => 0xf8000);
-	tunable("arm-io.acio${i}.hi_up_tx_desc_fabric_tunables",
-		"soc.acio${i}.tunable-hi_up_tx_desc_fabric",
-		pcie => range => 0, base => 0xf0000);
-	tunable("arm-io.acio${i}.hi_up_tx_data_fabric_tunables",
-		"soc.acio${i}.tunable-hi_up_tx_data_fabric",
-		pcie => range => 0, base => 0xec000);
-	tunable("arm-io.acio${i}.hi_up_rx_desc_fabric_tunables",
-		"soc.acio${i}.tunable-hi_up_rx_desc_fabric",
-		pcie => range => 0, base => 0xe8000);
-	tunable("arm-io.acio${i}.hi_up_wr_fabric_tunables",
-		"soc.acio${i}.tunable-hi_up_wr_fabric",
-		pcie => range => 0, base => 0xf4000);
-	tunable("arm-io.acio${i}.lbw_fabric_tunables",
-		"soc.acio${i}.tunable-lbw_fabric",
-		pcie => range => 4);
-	tunable("arm-io.acio${i}.pcie_adapter_regs_tunables",
-		"soc.acio${i}.tunable-pcie_adapter_regs",
-		pcie => range => 5);
-	tunable("arm-io.acio${i}.top_tunables",
-		"soc.acio${i}.tunable-top",
-		pcie => range => 2);
-	tunable("arm-io.acio${i}.thunderbolt-drom",
-		"soc.acio${i}.thunderbolt-drom",
-		plain => size => 4);
+	# tunable("arm-io.acio${i}.fw_int_ctl_management_tunables",
+	# 	"soc.acio${i}.tunable-fw_int_ctl_management",
+	# 	pcie => range => 0, base => 0x04000);
+	# tunable("arm-io.acio${i}.hbw_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hbw_fabric",
+	# 	pcie => range => 3);
+	# tunable("arm-io.acio${i}.hi_dn_merge_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_dn_merge_fabric",
+	# 	pcie => range => 0, base => 0xfc000);
+	# tunable("arm-io.acio${i}.hi_up_merge_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_up_merge_fabric",
+	# 	pcie => range => 0, base => 0xf8000);
+	# tunable("arm-io.acio${i}.hi_up_tx_desc_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_up_tx_desc_fabric",
+	# 	pcie => range => 0, base => 0xf0000);
+	# tunable("arm-io.acio${i}.hi_up_tx_data_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_up_tx_data_fabric",
+	# 	pcie => range => 0, base => 0xec000);
+	# tunable("arm-io.acio${i}.hi_up_rx_desc_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_up_rx_desc_fabric",
+	# 	pcie => range => 0, base => 0xe8000);
+	# tunable("arm-io.acio${i}.hi_up_wr_fabric_tunables",
+	# 	"soc.acio${i}.tunable-hi_up_wr_fabric",
+	# 	pcie => range => 0, base => 0xf4000);
+	# tunable("arm-io.acio${i}.lbw_fabric_tunables",
+	# 	"soc.acio${i}.tunable-lbw_fabric",
+	# 	pcie => range => 4);
+	# tunable("arm-io.acio${i}.pcie_adapter_regs_tunables",
+	# 	"soc.acio${i}.tunable-pcie_adapter_regs",
+	# 	pcie => range => 5);
+	# tunable("arm-io.acio${i}.top_tunables",
+	# 	"soc.acio${i}.tunable-top",
+	# 	pcie => range => 2);
+	# tunable("arm-io.acio${i}.thunderbolt-drom",
+	# 	"soc.acio${i}.thunderbolt-drom",
+	# 	plain => size => 4);
 	tunable("arm-io.apciec${i}.atc-apcie-debug-tunables",
 		"soc.pciec${i}.tunable-debug",
 		pcie => range => 6);
@@ -645,7 +643,7 @@ sub setup_tunables {
 	tunable("arm-io.apcie.pci-bridge0.pcie-rc-tunables",
 		"soc.pcie.tunable-port0",
 		pcie => parent => 1, range => 0);
-	if (0) {
+	if (1) {
 	tunable("arm-io.apcie.pci-bridge1.apcie-config-tunables",
 		"soc.pcie.tunable-port1-config",
 		pcie => parent => 1, range => 10);
@@ -696,9 +694,9 @@ sub setup_tunables {
 		"chosen.module-wlan0",
 		plain =>);
 
-	tunable("arm-io.atc-phy${i}.reg",
-		"soc.atcphy${i}.tunable-fuse",
-		fusemap => map => $acio_fuse_map, base => $base + 0x3000000, doread => 1);
+	# tunable("arm-io.atc-phy${i}.reg",
+	# 	"soc.atcphy${i}.tunable-fuse",
+	# 	fusemap => map => $acio_fuse_map, base => $base + 0x3000000, doread => 1);
 
 	tunable("arm-io.apcie.reg",
 		"soc.pcie.tunable-fuse",
@@ -735,13 +733,17 @@ sub tunables {
 	}
     }
 
-    setup_tunables();
-
     my $ret = "";
-    for my $key (sort keys %ltunables) {
-	#next if $ltunables{$key} eq "<>";
-	$ret .= ("$key = " . $ltunables{$key} . "\n");
-    }
+    eval {
+	setup_tunables();
+
+	for my $key (sort keys %ltunables) {
+	    eval {
+		#next if $ltunables{$key} eq "<>";
+		$ret .= ("$key = " . $ltunables{$key} . "\n");
+	    };
+	}
+    };
 
     return $ret;
 }
