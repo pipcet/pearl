@@ -419,6 +419,7 @@ sub tunable {
 sub setup_tunables {
     my $pcie_fuse_map = [
 	# /* src_addr, dst_offs, src_[lsb,width], dst_[lsb,width] */
+	# XXX Why is this still here?
 	[ 0x23d2bc084, 0x6238,  4, 6,  0, 7 ],
 	[ 0x23d2bc084, 0x6220, 10, 3, 14, 3 ],
 	[ 0x23d2bc084, 0x62a4, 13, 2, 17, 2 ],
