@@ -382,11 +382,6 @@ sub tunable {
 	$ldev =~ s/\.[^.]*$//;
 	$props{lnode} = $ldev if $rawdev eq $dtdev;
     }
-    unless ($props{lnode}) {
-	warn "no lnode for $adtnode";
-	return;
-    }
-
     for my $anode (sort keys %adt) {
 	if ($adtreg eq $anode) {
 	    $props{areg} = $adt{$anode};
@@ -413,6 +408,11 @@ sub tunable {
     } else {
 	$tunables{$adtnode} = DTNode->new("u8", @{$tunables{$adtnode}})->string;
     }
+    unless ($props{lnode}) {
+	warn "no lnode for $adtnode";
+	return;
+    }
+
     $ltunables{$props{lnode} . "." . $dtprop} = $tunables{$adtnode} if $props{lnode};
 }
 
