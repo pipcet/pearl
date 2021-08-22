@@ -26,7 +26,11 @@ sub new {
 sub range {
     my ($self, $beg, $len) = @_;
 
-    return substr($mem, $beg - $self->{off}, $len);
+    warn "reading $beg $len\n";
+    my $ret = substr($mem, $beg - $self->{off}, $len);
+    warn "read\n";
+
+    return $ret;
 }
 
 sub fdtbeglen {
