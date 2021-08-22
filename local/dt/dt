@@ -6,21 +6,21 @@ use Time::HiRes;
 
 sub read32 {
     my $addr = shift;
-    warn "memtool md $addr+4";
+    # warn "memtool md $addr+4";
     my $val = `memtool md $addr+4`;
     chomp $val;
     my $ret;
     if ($val =~ /^[0-9a-f]*: ([0-9a-f]*) /) {
 	$ret = hex $1;
     }
-    warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
+    # warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
     return $ret;
 }
 
 sub write32 {
     my ($addr, $value) = @_;
 
-    warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
+    # warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
     system("memtool mw $addr $value");
 }
 
@@ -497,10 +497,10 @@ sub setup_tunables {
 	    # MMIO::write32($base + (2 << 15) + 0x8bc, 1);
 	};
 	tunable("arm-io.atc-phy${i}.tunable_ATC0AXI2AF",
-		"soc.usb_drd${i}.tunable-ATC0AXI2AF",
+		"soc.usb${i}.tunable-ATC0AXI2AF",
 		fancy => base => $base);
 	tunable("arm-io.usb-drd${i}.tunable",
-		"soc.usb_drd${i}.tunable",
+		"soc.usb${i}.tunable",
 		legacy =>);
 	tunable("arm-io.atc-phy${i}.tunable_ATC0AXI2AF",
 		"soc.atcphy${i}.tunable-ATC0AXI2AF",
@@ -716,9 +716,9 @@ sub setup_tunables {
 	#	"chosen.module-wlan0",
 	#	plain =>);
 
-	# tunable("arm-io.atc-phy${i}.reg",
-	# 	"soc.atcphy${i}.tunable-fuse",
-	# 	fusemap => map => $acio_fuse_map, base => $base + 0x3000000, doread => 1);
+	tunable("arm-io.atc-phy${i}.reg",
+		"soc.atcphy${i}.tunable-fuse",
+		fusemap => map => $acio_fuse_map, base => $base + 0x3000000, doread => 1);
 
 	tunable("arm-io.apcie.reg",
 		"soc.pcie.tunable-fuse",
@@ -746,8 +746,6 @@ sub apply_tunable {
 
     for my $tunable (@tunables) {
 	$tunable->apply($off);
-	warn MMIO::read32(0x690000000);
-	warn MMIO::read32(0x690010000);
     }
 }
 
@@ -820,7 +818,62 @@ sub enable_appclk {
     warn "ready!";
 }
 
+my $DWC3_DCTL = 0xc704;
+my $DWC3_GCTL = 0xc110;
+
+my $DWC3_DCTL_CSFTRST = (1 << 30);
+my $DWC3_GCTL_CORESOFTRESET = (1 << 11);
+
+my $DWC3_GUSB2PHYCFG = 0xc200;
+my $DWC3_GUSB3PIPECTL = 0xc2c0;
+
+my $DWC3_GUSB2PHYCFG_PHYSOFTRST = (1 << 31);
+my $DWC3_GUSB3PIPECTL_PHYSOFTRST = (1 << 31);
+
+my $DWC3_GCTL_SCALEDOWN_MASK = 0x30;
+my $DWC3_GCTL_DISSCRAMBLE = 8;
+
+sub bring_up_phy {
+    my ($base) = @_;
+
+    MMIO::write32($base + 0x810008, 0x1c1000f);
+    MMIO::write32($base + 0x810004, 3);
+    MMIO::write32($base + 0x810004, 0);
+    MMIO::write32($base + 0x81001c, 0x8c0813);
+    MMIO::write32($base + 0x810000, 2);
+
+    MMIO::write32($base + 0x80400c, 2);
+    MMIO::write32($base + 0x80400c, 0x22);
+    MMIO::write32($base + 0x80401c, 0x21);
+    MMIO::write32($base + 0x804020, 0x9332);
+
+    MMIO::write32($base + $DWC3_DCTL,
+		  MMIO::read32($base + $DWC3_DCTL) | $DWC3_DCTL_CSFTRST);
+    MMIO::write32($base + $DWC3_GCTL,
+		  MMIO::read32($base + $DWC3_GCTL) | $DWC3_GCTL_CORESOFTRESET);
+
+    MMIO::write32($base + $DWC3_GUSB3PIPECTL,
+		  MMIO::read32($base + $DWC3_GUSB3PIPECTL) | $DWC3_GUSB3PIPECTL_PHYSOFTRST);
+    MMIO::write32($base + $DWC3_GUSB2PHYCFG,
+		  MMIO::read32($base + $DWC3_GUSB2PHYCFG) | $DWC3_GUSB2PHYCFG_PHYSOFTRST);
+
+    MMIO::write32($base + $DWC3_GUSB3PIPECTL,
+		  MMIO::read32($base + $DWC3_GUSB3PIPECTL) & ~$DWC3_GUSB3PIPECTL_PHYSOFTRST);
+    MMIO::write32($base + $DWC3_GUSB2PHYCFG,
+		  MMIO::read32($base + $DWC3_GUSB2PHYCFG) & ~$DWC3_GUSB2PHYCFG_PHYSOFTRST);
+
+    MMIO::write32($base + $DWC3_GCTL,
+		  MMIO::read32($base + $DWC3_GCTL) & ~$DWC3_GCTL_CORESOFTRESET);
+    MMIO::write32($base + $DWC3_GCTL,
+		  MMIO::read32($base + $DWC3_GCTL) & ~($DWC3_GCTL_SCALEDOWN_MASK | $DWC3_GCTL_DISSCRAMBLE));
+}
+
+sub bring_up_phys {
+    bring_up_phy(0x382280000);
+}
+
 sub apply_tunables {
+    bring_up_phys();
     apply_tunable("apcie-axi2af-tunables");
     apply_tunable("apcie-common-tunables");
     apply_tunable("apcie-phy-tunables");
@@ -900,7 +953,6 @@ sub tunables {
 
 	for my $key (sort keys %ltunables) {
 	    eval {
-		next if $ltunables{$key} eq "<>";
 		$ret .= ("$key = " . $ltunables{$key} . "\n");
 	    };
 	}
