@@ -86,7 +86,7 @@
 	url = https://github.com/rpm-software-management/popt
 [submodule "userspace/screen/screen"]
 	path = userspace/screen/screen
-	url = https://git.savannah.gnu.org/git/screen.git
+	url = https://github.com/pipcet/screen
 [submodule "userspace/slurp/slurp"]
 	path = userspace/slurp/slurp
 	url = https://github.com/perhunter/slurp
