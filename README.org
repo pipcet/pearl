@@ -4,15 +4,21 @@ GNU/Linux on Apple M1-based hardware, including, in particular, a MacBook Pro ca
 
 Ideally, this repository will contain everything you need to build and run Debian GNU/Linux on any M1 machine.
 
+* Obligatory warning
+
+Please consider that this is experimental software and I'm unable to give warranties of any kind, as clearly stated in the respective licenses. Since this is experimental software running on undocumented hardware, there is some extra probability that it may destroy data or, hypothetically so far, render your device unusable.
+
 * What?
 
-We distribute two Mach-O files, which can be installed using =kmutil= on an M1-based MacOS machine and will start a usable Linux kernel, in addition to being able to do other things. The small distribution assumes that a Linux root file system has already been set up, the large distribution doesn't and includes a minimal [[https://debian.org][Debian]] root file system.
+We intend to distribute two Mach-O files, which can be installed using =kmutil= on an M1-based MacOS machine and will start a usable Linux kernel, in addition to being able to do other things. The small distribution assumes that a Linux root file system has already been set up, the large distribution doesn't and includes a minimal [[https://debian.org][Debian]] root file system.
 
-The kernel is based on the work done by [[https://corellium.com][Corellium]], but will be updated to include any drivers upstreamed by the [[https://github.com/AsahiLinux][Asahi Linux]] project, and hopefully to include further drivers and features absent from the other two projects.
+Unfortunately, the Debian file system distribution is currently unavailable, so you have to use an older one.
+
+The kernel is based on the work done by [[https://corellium.com][Corellium]], but based on and including drivers upstreamed by the [[https://github.com/AsahiLinux][Asahi Linux]] project. Hopefully, it will also include further drivers and features absent from the other two projects.
 
 ** Differences
 
-It would be much nicer to have one project rather than three of them, but there appears to have been a falling out between contributors to the other two projects, and the last I've heard is that the Asahi Linux project's main contributor (or benevolent dictator) has decided not to include any code from (or credit for) Corellium in the drivers to be submitted to upstream Linux. In addition, it has been said that even simply looking at those drivers and using them as a source of documentation is frowned upon.
+It would be much nicer to have one project rather than three of them, but there appears to have been a falling out between contributors to the other two projects. The last I've heard is that the Asahi Linux project's main contributor (or benevolent dictator) has decided not to include any code from (or credit for) Corellium in the drivers to be submitted to upstream Linux. In addition, it has been said that even simply looking at those drivers and using them as a source of documentation is frowned upon.
 
 In addition, the FDT device trees used by the Asahi Linux project are going to be very different from the one used by Corellium.
 
@@ -39,7 +45,7 @@ The current status is that Pearl is a usable everyday desktop system, including 
 
 | Feature              | Upstream   | Asahi   | Corellium     | Pearl      |
 |----------------------+------------+---------+---------------+------------|
-| kernel version       | 5.14.0-rc3 | ?       | February 2021 | 5.14.0-rc3 |
+| kernel version       | 5.14.0-rc6 | ?       | February 2021 | 5.14.0-rc6 |
 | audio                | no         | no      | no            | no         |
 | bluetooth            | no         | no      | no            | no         |
 | resume/suspend       | no         | no      | no            | no         |
@@ -48,11 +54,11 @@ The current status is that Pearl is a usable everyday desktop system, including 
 | backlight blanking   | no         | no      | no            | yes        |
 | keyboard backlight   | no         | no      | no            | yes        |
 | kexecs other kernels | yes        | yes     | no            | yes        |
-| KVM support          | no         | no      | no            | yes        |
+| KVM support          | yes        | yes     | no            | yes        |
 | WiFi                 | no         | no      | yes           | yes        |
 | USB host support     | no         | yes     | yes           | yes        |
-| USB gadget support   | no         | no      | no            | yes        |
-| NVMe support         | no         | no      | yes           | yes        |
+| USB gadget support   | no         | yes     | no            | yes        |
+| NVMe support         | no         | yes     | yes           | yes        |
 
 ** Testing
 
@@ -163,7 +169,7 @@ Works, but appears to have been abandoned for now.
 
 *** [[https://github.com/AsahiLinux/linux][Asahi Linux]] at [[https://github.com/AsahiLinux]]
 
-Still in the very early stages.
+Still in the early stages.
 
 *** The [[https://github.com/kettenis/u-boot][U-Boot]] port at https://github.com/kettenis/u-boot
 
@@ -269,6 +275,10 @@ Is a direct boot supported from <row> to <column>?
 
 ** Problems
 
+*** macho size
+
+Yes, I'm aware that the macho files are currently significantly larger than the final estimate given above. I need to find time to investigate this; for the time being, people might have to simply accept the larger files.
+
 *** USB ports
 
 The main problem, right now, is that USB ports cannot be switched freely between host, gadget, and power modes. Right now, it is fixed that the first port is always in power mode, the second port is in gadget mode during the second stage and in host mode otherwise.
@@ -277,7 +287,7 @@ This will need to be changed to support Macs with USB keyboards, though those te
 
 *** Backlight brightness level
 
-MacOS appears to have a bug which makes it reset the backlight level to "very dim" when it is booted. However, it's possible to use =nvram= to set the right level in Recovery Mode.
+MacOS appears to have a bug which makes it reset the backlight level to "very dim" when it is booted. However, it's possible to use =nvram= to set the right level in Recovery Mode. There is also an experimental driver in the tree to set backlight brightness in the usual way.
 
 *** That boot chime
 
@@ -291,11 +301,7 @@ This breaks Debian's Emacs package, but the bug has been reported and will be fi
 
 *** x8r8g8b8
 
-When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works fine for the boot loaders and Linux but isn't supported by X.org. Putting the framebuffer into x8r8g8b8 mode works, but it means colors will be off either before or after the switch. In keeping with our "stall when possible" strategy, we use userspace code to switch the framebuffer just before X starts, and accept that the white-on-black text appears as green-on-black before then.
-
-*** Color problems
-
-There appears to be a bug somewhere that affects, in particular, videos shown in browser windows, where black sometimes shows up as a solid blue color.
+When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works fine for the boot loaders and Linux but isn't supported by X.org. Putting the framebuffer into x8r8g8b8 mode works, but it means colors will be off either before or after the switch. We currently have code to switch the framebuffer to x8r8g8b8 mode early in the boot process.
 
 ** Contact
 
