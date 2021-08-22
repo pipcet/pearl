@@ -6,6 +6,9 @@ use Time::HiRes;
 
 sub read32 {
     my $addr = shift;
+    if ($addr >= 0x682000000 && $addr < 0x684000000) {
+	return 0;
+    }
     # warn "memtool md $addr+4";
     my $val = `memtool md $addr+4`;
     chomp $val;
@@ -13,14 +16,17 @@ sub read32 {
     if ($val =~ /^[0-9a-f]*: ([0-9a-f]*) /) {
 	$ret = hex $1;
     }
-    # warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
+    warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
     return $ret;
 }
 
 sub write32 {
     my ($addr, $value) = @_;
 
-    # warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
+    if ($addr >= 0x682000000 && $addr < 0x684000000) {
+	return;
+    }
+    warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
     system("memtool mw $addr $value");
 }
 
@@ -665,7 +671,7 @@ sub setup_tunables {
 	tunable("arm-io.apcie.pci-bridge0.pcie-rc-tunables",
 		"soc.pcie.tunable-port0",
 		pcie => parent => 1, range => 0);
-	if (1) {
+	if (0) {
 	tunable("arm-io.apcie.pci-bridge1.apcie-config-tunables",
 		"soc.pcie.tunable-port1-config",
 		pcie => parent => 1, range => 10);
@@ -887,7 +893,7 @@ sub apply_tunables {
     apply_tunable("apcie-config-tunables");
 
     enable_appclk(0x681000000);
-    enable_appclk(0x682000000);
+    # enable_appclk(0x682000000);
 
     make_regs_writable(0x690000000);
 
