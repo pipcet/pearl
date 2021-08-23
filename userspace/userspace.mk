@@ -12,7 +12,7 @@ include userspace/libnl/libnl.mk
 include userspace/lvm2/lvm2.mk
 include userspace/memtool/memtool.mk
 include userspace/ncurses/ncurses.mk
-# include userspace/nvme-cli/nvme-cli.mk
+include userspace/nvme-cli/nvme-cli.mk
 include userspace/openssl/openssl.mk
 include userspace/perl/perl.mk
 include userspace/popt/popt.mk
