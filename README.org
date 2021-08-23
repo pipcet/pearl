@@ -303,6 +303,14 @@ This breaks Debian's Emacs package, but the bug has been reported and will be fi
 
 When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works fine for the boot loaders and Linux but isn't supported by X.org. Putting the framebuffer into x8r8g8b8 mode works, but it means colors will be off either before or after the switch. We currently have code to switch the framebuffer to x8r8g8b8 mode early in the boot process.
 
+*** Chromium
+
+Chromium currently does not appear to work.
+
+*** sys_shutdown
+
+There appears to be a bug in the current linux-next kernel that prevents sys_shutdown from working properly. I hope this bug affects other machines, so that it will be fixed soon.
+
 ** Contact
 
 Feel free to contact me at =pipcet@gmail.com=, on GitHub, or in any of the other usual ways. So far, there has been too little communication rather than too much of it.
