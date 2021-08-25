@@ -1,5 +1,5 @@
 bootloaders/m1n1 upstream/main
-linux/linux upstream/master
+linux/linux linux-next/master
 toolchain/binutils-gdb/binutils-gdb upstream/master
 toolchain/gcc/gcc upstream/trunk
 userspace/IPC-Run/IPC-Run upstream/master
