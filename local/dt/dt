@@ -814,12 +814,16 @@ my $APCIE_PORT_RESET_DIS = BIT(0);
 
 sub enable_appclk {
     my ($port_base) = @_;
+    my $count = 0;
     MMIO::write32($port_base + $APCIE_PORT_APPCLK,
 		  MMIO::read32($port_base + $APCIE_PORT_APPCLK) | $APCIE_PORT_APPCLK_EN);
     MMIO::write32($port_base + $APCIE_PORT_RESET,
 		  MMIO::read32($port_base + $APCIE_PORT_RESET) | $APCIE_PORT_RESET_DIS);
     until (MMIO::read32($port_base + $APCIE_PORT_STATUS) & $APCIE_PORT_STATUS_RUN) {
 	warn "not yet ready\n";
+	if ($count++ > 1000) {
+	    last;
+	}
     }
     warn "ready!";
 }
@@ -893,7 +897,8 @@ sub apply_tunables {
     apply_tunable("apcie-config-tunables");
 
     enable_appclk(0x681000000);
-    # enable_appclk(0x682000000);
+    enable_appclk(0x682000000);
+    enable_appclk(0x683000000);
 
     make_regs_writable(0x690000000);
 
