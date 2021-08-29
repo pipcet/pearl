@@ -1,0 +1,6 @@
+#!/bin/sh
+cd /
+echo rootshell > persist/stage
+find persist >> /file.list
+cat /file.list | cpio -H newc -o > /boot/stage3.cpio
+/bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/stage3.cpio --command-line="clk_ignore_unused"
