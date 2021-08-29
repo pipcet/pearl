@@ -52,7 +52,6 @@ jobs:
     - run: make -j13 build/lvm2/done/install
     - run: make -j13 build/openssl/done/install
     - run: make -j13 build/cryptsetup/done/install
-    - run: make -j13 build/nvme-cli/done/install
     - run: make -j13 build/dtc/done/install
     - run: make -j13 build/wpa_supplicant/done/install
     - run: make -j13 build/m1n1/done/install
