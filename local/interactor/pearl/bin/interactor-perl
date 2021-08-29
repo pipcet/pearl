@@ -43,6 +43,7 @@ sub dialog_booting {
 	 grub => "launch GRUB",
 	 macos => "boot macOS",
 	 linux => "boot Linux",
+	 rootshell => "enter stage3 with an init root shell",
 	 );
 
     my $response = dialog($title, \@entries);
