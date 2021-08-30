@@ -1,5 +1,5 @@
 #define SZ_1G (1LL << 30)
-#define MEMTOP (0x800000000 + (bootargs->mem_size & -SZ_1G))
+#define MEMTOP (0x800000000 + (bootargs->mem_size))
 
 #define AIC_FIQ 1
 #define AIC_TMR_HV_PHYS		0
@@ -131,7 +131,15 @@
 				  bootargs->mem_size_actual + 0x800000000
 				  - (bootargs->framebuffer.phys_base +
 				     (bootargs->framebuffer.stride *
-				      bootargs->framebuffer.height)));
+				      bootargs->framebuffer.height))
+				      -	0x100000);
+			no-map;
+		};
+
+		fw_area@9f8000000 {
+			reg = REG(bootargs->mem_size_actual + 0x800000000
+				      -	0x100000,
+				      0x100000);
 		};
 
 		/* The Apple Device tree. */
