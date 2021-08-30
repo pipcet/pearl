@@ -114,6 +114,7 @@
 		fw_area@9e0000000 {
 		        reg = REG(MEMTOP,
 				  bootargs->framebuffer.phys_base - MEMTOP);
+			no-map;
 		};
 
 		fw_area@9e8000000 {
