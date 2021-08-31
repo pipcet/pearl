@@ -14,7 +14,7 @@ sub new {
     my ($class, $dev, $off, $len) = @_;
     $dev //= "/dev/mem";
     if (!defined($off)) {
-	($off, $len) = unpack("Q>Q>", scalar read_file("/sys/firmware/devicetree/base/memory\@800000000"));
+	($off, $len) = unpack("Q>Q>", scalar read_file("/sys/firmware/devicetree/base/memory\@800000000/reg"));
     }
     my $self = bless {}, $class;
     $self->{off} = $off;
