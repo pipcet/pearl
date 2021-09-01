@@ -21,6 +21,7 @@ include userspace/slurp/slurp.mk
 include userspace/sys-mmap/sys-mmap.mk
 include userspace/util-linux/util-linux.mk
 include userspace/wpa/wpa.mk
+include userspace/zsh/zsh.mk
 
 $(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(module)/done/%) | $(BUILD)/userspace/done/
 	@touch $@
