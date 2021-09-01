@@ -22,4 +22,7 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 %.sendfile{send}: %.sendfile
 	$(SUDO) local/sendfile/send-sendfile $<
 
+%.zsh{send}: %.zsh
+	$(SUDO) local/sendfile/send-sendfile $<
+
 $(call pearl-static,$(BUILD)/pearl/bin/receive-sendfile,$(BUILD)/pearl)
