@@ -19,7 +19,7 @@ $PEARL
 	break
     fi
 done
-sleep 5
+sleep 1
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
 dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
 $PEARL
