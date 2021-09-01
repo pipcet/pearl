@@ -137,6 +137,19 @@ int main(int argc, char **argv)
       uint32_t cpsr;
       uint32_t _pad; /* or flags? */
     } thread;
+    struct {
+      uint32_t cmd;
+      uint32_t cmdsize;
+      char segname[16];
+      uint64_t vmaddr;
+      uint64_t vmsize;
+      uint64_t fileoff;
+      uint64_t filesize;
+      uint32_t maxprot;
+      uint32_t initprot;
+      uint32_t nsects;
+      uint32_t flags;
+    } payload_segment;
   } *hdr = buf;
   memset(hdr, 0, sizeof *hdr);
   hdr->header.magic = 0xfeedfacf;
@@ -146,8 +159,8 @@ int main(int argc, char **argv)
   hdr->header.cpusubtype = CPU_SUBTYPE_ARM64;
 #define MH_KERNEL       12
   hdr->header.filetype = MH_KERNEL;
-  hdr->header.ncmds = 3;
-  hdr->header.sizeofcmds = sizeof(hdr->header_segment) + sizeof(hdr->segment) + sizeof(hdr->thread);
+  hdr->header.ncmds = 4;
+  hdr->header.sizeofcmds = sizeof(hdr->header_segment) + sizeof(hdr->segment) + sizeof(hdr->payload_segment) + sizeof(hdr->thread);
 #define MH_DYLDLINK     0x00000004
   hdr->header.flags = MH_DYLDLINK;
 
@@ -188,6 +201,17 @@ int main(int argc, char **argv)
 #define S_ATTR_SOME_INSTRUCTIONS 0x400
   hdr->segment.section.flags = S_ATTR_SOME_INSTRUCTIONS;
   hdr->segment.section.alignment_hint = 22; /* not obeyed */
+  sprintf(hdr->payload_segment.segname, "__PAYLOAD");
+  hdr->payload_segment.cmd = LC_SEGMENT_64;
+  hdr->payload_segment.cmdsize = sizeof(hdr->payload_segment);
+  hdr->payload_segment.maxprot = 3;
+  hdr->payload_segment.initprot = 3;
+  hdr->payload_segment.vmaddr = VIRT_BASE + image_size;
+  hdr->payload_segment.vmsize = 0x10000000;
+  hdr->payload_segment.fileoff = image_size + prelude_size;
+  hdr->payload_segment.filesize = 0x10000000;
+  hdr->payload_segment.nsects = 0;
+
 #define LC_UNIXTHREAD   0x5
   hdr->thread.cmd = LC_UNIXTHREAD;
   hdr->thread.cmdsize = sizeof(hdr->thread);
