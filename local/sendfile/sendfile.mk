@@ -12,6 +12,12 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 	$(CP) -a $*.image.d/sendfile $@.d/script
 	tar -C $@.d -c . | gzip -1 > $@
 
+%.macho.sendfile: %.macho %.macho.d/sendfile
+	$(MKDIR) $@.d
+	$(CP) $< $@.d
+	$(CP) -a $*.macho.d/sendfile $@.d/script
+	tar -C $@.d -c . | gzip -1 > $@
+
 %.sendfile{send}: %.sendfile
 	$(SUDO) local/sendfile/send-sendfile $<
 
