@@ -22,4 +22,4 @@ $(BUILD)/debian.cpio.zst: $(BUILD)/debian.cpio
 	zstd -22 --ultra --long --verbose < $< > $@
 
 $(BUILD)/debian.cpio.xz: $(BUILD)/debian.cpio
-	xz -c < $< > $@
+	xz --compress < $< > $@
