@@ -1,14 +1,33 @@
 #!/usr/bin/perl
 use strict;
 use File::Slurp qw(read_file);
-print "#!/bin/sh\n";
+print "#!/bin/zsh\n";
 for my $arg (@ARGV) {
     my $basename = `basename $arg`;
     chomp $basename;
     my $data = read_file($arg);
     my $nonce = "";
-    while (index($data, $nonce) != -1) {
-	$nonce .= chr(int(rand(26)) + ord("a"));
+    my $nonce2 = "";
+    for my $i (0 .. 8) {
+	$nonce .= sprintf("%04x", int(rand(0x10000)));
+	$nonce2 .= sprintf("%04x", int(rand(0x10000)));
     }
-    print "head -n -1 > /persist/$basename <<\"$nonce\"\n$data\n$nonce\n";
+    my $len = length($data);
+    my $chunklen = 32768;
+    my $chunkcount = int($len / $chunklen);
+    my $restlen = $len % $chunklen;
+    if (0) {
+	print "dd if=/persist/payload bs=1 | (while read; do if [ \"x\$REPLY\" = \"x$nonce\" ]; then break; fi; done; (dd iflag=fullblock bs=$chunklen count=$chunkcount; dd bs=$restlen count=1) > /persist/$basename)\ncat > /dev/null <<\"$nonce2\"\n$nonce\n$data\n$nonce2\n";
+    } elsif (0) {
+	my $nonce = "";
+	while (index($data, $nonce) != -1) {
+	    $nonce .= chr(int(rand(26)) + ord("a"));
+	}
+	# sigh. busybox head eats NUL bytes when in "-n -1" mode.
+	print "head -n -1 > /persist/$basename <<\"$nonce\"\n$data\n$nonce\n";
+    } elsif (0) {
+	print "head -c " . length($data) . " > /persist/$basename\n$data\n";
+    } elsif (1) {
+	print "head -c " . length($data) . " > /persist/$basename <<'$nonce'\n$data\n$nonce\n";
+    }
 }
