@@ -4,7 +4,14 @@ dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt dtb-to-dtp /sys/firmware/fdt /persist/stage1.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
-dt adt-model /boot/adt | while read REPLY; do
+ls -l /boot/adt
+PEARL="$(dt adt-pearl /boot/adt)"
+echo "pearl command $PEARL"
+$PEARL
+[ -e /persist/payload ] || dt extract-payload /persist/payload
+ls -l /persist/payload
+$PEARL
+(echo $MODEL; dt adt-model /boot/adt) | while read REPLY; do
     echo "testing model $REPLY"
     if [ -e /boot/stage2-$REPLY.dtb ]; then
 	echo "found model $REPLY"
@@ -12,13 +19,15 @@ dt adt-model /boot/adt | while read REPLY; do
 	break
     fi
 done
-sleep 1 # XXX
+sleep 5
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
 dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
+$PEARL
 grep 'memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
 dt dtp-to-dtb /boot/stage2.dtp /boot/stage2.dtb
 dt dtb-to-dtp /boot/stage2.dtb /boot/stage2.dtb.dtp
+cp /boot/stage2.dtb /boot/stage3.dtb
 
 cp boot/tunables.dtp boot/resmem.dtp boot/bootargs.dtp boot/adt persist
 # cat /boot/resmem.dtp
