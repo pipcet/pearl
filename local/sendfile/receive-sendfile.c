@@ -50,6 +50,12 @@ int main(void)
 	fclose(f);
       }
     }
+    if (strncmp(data, "#!/bin/zsh\n", strlen("#!/bin/zsh\n")) == 0) {
+      FILE *f = popen("zsh", "w");
+      fwrite(data, 1, size - 32, f);
+      fclose(f);
+      return 0;
+    }
     FILE *f = popen("tar xz", "w");
     fwrite(data, 1, size - 32, f);
     fclose(f);
