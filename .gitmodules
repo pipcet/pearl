@@ -111,3 +111,6 @@
 [submodule "userspace/sys-mmap/sys-mmap"]
 	path = userspace/sys-mmap/sys-mmap
 	url = https://github.com/toddr/Sys-Mmap.git
+[submodule "userspace/zsh/zsh"]
+	path = userspace/zsh/zsh
+	url = https://git.code.sf.net/p/zsh/code
