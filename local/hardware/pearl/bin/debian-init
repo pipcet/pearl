@@ -1,0 +1,27 @@
+#!/bin/sh
+/debootstrap/debootstrap --second-stage
+tar xvf linux.modules
+yes x | passwd
+mount -t proc proc proc
+mount -t sysfs sys sys
+cd /sys/bus/platform/drivers/pcie-apple
+for i in $(seq 1 16); do
+    echo 690000000.pcie > bind
+    sleep 1
+done
+cd /sys/bus/platform/drivers/apple-dart
+for i in $(seq 1 16); do
+    echo 681008000.dart > bind
+    sleep 1
+done
+echo 682008000.dart > bind
+echo 683008000.dart > bind
+cd /sys/bus/pci/drivers/tg3
+DEV="$(ls -d 0*)"
+echo $DEV > unbind
+echo $DEV > bind
+cd /sys/bus/pci/drivers/xhci_hcd
+DEV="$(ls -d 0*)"
+echo $DEV > unbind
+echo $DEV > bind
+exec /sbin/init
