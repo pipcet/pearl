@@ -882,10 +882,14 @@ sub macho_image {
 	    my $segment = $command->field_by_name(segment=>);
 	    my $vmrange = $segment->field_by_name(vmrange=>);
 	    my $filerange = $segment->field_by_name(filerange=>);
+	    my $beg = $filerange->field_by_name(beg=>)->value;
+	    my $len = $filerange->field_by_name(len=>)->value;
+	    my $text = substr($machotext, $beg, $len);
+	    $text .= "\0" x ($len - length($text));
 
 	    substr($ret->{image}, $vmrange->field_by_name(beg=>)->value - $vmin,
 		   $filerange->field_by_name(len=>)->value,
-		   substr($machotext, $filerange->field_by_name(beg=>)->value, $filerange->field_by_name(len=>)->value));
+		   $text);
 	}
     }
 
