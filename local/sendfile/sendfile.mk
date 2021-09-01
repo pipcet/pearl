@@ -19,6 +19,10 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 	chmod u+x $@.d/script
 	tar -C $@.d -c . | gzip -1 > $@
 
+%.macho.zsh: %.macho.pack
+	cat $< > $@
+	(echo "#!/bin/zsh"; echo "macho-to-memdump /persist/$$(basename $*.macho)"; echo "kexec --mem-min=0x900000000 -fix image") >> $@
+
 %.sendfile{send}: %.sendfile
 	$(SUDO) local/sendfile/send-sendfile $<
 
