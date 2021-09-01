@@ -2,6 +2,7 @@
 /debootstrap/debootstrap --second-stage
 tar xvf linux.modules
 yes x | passwd
+yes | adduser y
 mount -t proc proc proc
 mount -t sysfs sys sys
 cd /sys/bus/platform/drivers/pcie-apple
