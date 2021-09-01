@@ -16,6 +16,18 @@ $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/lin
 	echo "/bin/kexec -fix linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
 	chmod u+x $@
 
+$(BUILD)/linux/%.macho.d/sendfile: $(BUILD)/linux/%.macho | $(BUILD)/linux/%.macho.d/
+	echo "#!/bin/sh" > $@
+	echo "macho-to-memdump $*.macho" >> $@
+	echo "kexec --mem-min=0x900000000 -fix image" >> $@
+	chmod u+x $@
+
+$(BUILD)/pearl-debian.macho.d/sendfile: $(BUILD)/pearl-debian.macho | $(BUILD)/pearl-debian.macho.d/
+	echo "#!/bin/sh" > $@
+	echo "macho-to-memdump pearl-debian.macho" >> $@
+	echo "kexec --mem-min=0x900000000 -fix image" >> $@
+	chmod u+x $@
+
 $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.image.d/
 	echo "#!/bin/sh" > $@
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
