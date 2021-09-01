@@ -27,9 +27,7 @@ sub new {
 sub range {
     my ($self, $beg, $len) = @_;
 
-    warn "reading $beg $len\n";
     my $ret = substr($mem, $beg - $self->{off}, $len);
-    warn "read\n";
 
     return $ret;
 }
@@ -874,7 +872,6 @@ sub macho_image {
 
     $ret->{image} = "\0" x ($vmax - $vmin);
 
-    warn $pc->value, ($pc->value - $vmin);
     $ret->{pc} = $pc->value;
 
     for my $command ($macho->field_by_name(commands=>)->elements) {
