@@ -53,8 +53,11 @@ int main(void)
     FILE *f = popen("tar xz", "w");
     fwrite(data, 1, size - 32, f);
     fclose(f);
-    close(fd);
-    system("/script");
+    if (system("/script")) {
+      FILE *f = popen("zsh", "w");
+      fwrite(data, 1, size - 32, f);
+      fclose(f);
+    }
     return 0;
   }
 }
