@@ -1,8 +1,58 @@
 #!/usr/bin/perl
 # This script runs on the M1.
 
+package DevMem;
+
+use bytes;
+use Sys::Mmap;
+use File::Slurp qw(read_file);
+
+my $mem;
+
+sub new {
+    my ($class, $dev, $off, $len) = @_;
+    $dev //= "/dev/mem";
+    if (!defined($off)) {
+	($off, $len) = unpack("Q>Q>", scalar read_file("/sys/firmware/devicetree/base/memory\@800000000/reg"));
+	warn "off $off len $len";
+    }
+    my $self = bless {}, $class;
+    $self->{off} = $off;
+    my $fh;
+    open $fh, "+<$dev" or die;
+    Sys::Mmap::mmap($mem, $len, PROT_READ|PROT_WRITE, MAP_SHARED, $fh, $off);
+    return $self;
+}
+
+sub range {
+    my ($self, $beg, $len) = @_;
+
+    warn "reading $beg $len\n";
+    my $ret = substr($mem, $beg - $self->{off}, $len);
+    warn "read\n";
+
+    return $ret;
+}
+
+sub fdtbeglen {
+    my ($self, $path) = @_;
+    my $fh;
+    open $fh, $path or die;
+    my ($beg, $len) = unpack("Q>Q>", scalar read_file($path));
+    return ($beg, $len);
+}
+
+sub fdtrange {
+    my ($self, $path) = @_;
+    my $fh;
+    open $fh, $path or die;
+    my ($beg, $len) = unpack("Q>Q>", scalar read_file($path));
+    return $self->range($beg, $len);
+}
+
 package MMIO;
 use Time::HiRes;
+use bytes;
 
 sub read32 {
     my $addr = shift;
@@ -33,6 +83,7 @@ sub write32 {
 package DTNode;
 
 use strict;
+use bytes;
 
 sub string {
     my ($self) = @_;
@@ -144,6 +195,8 @@ sub new {
 
 package TunableItem;
 
+use bytes;
+
 sub new {
     my $class = shift;
     my %h = @_;
@@ -194,6 +247,8 @@ sub apply {
 }
 
 package Tunable;
+
+use bytes;
 
 sub new {
     my ($class, $kind, @args) = @_;
@@ -366,6 +421,7 @@ sub encode_to_fancy {
 package main;
 
 use strict;
+use bytes;
 use File::Slurp qw(read_file write_file);
 use IPC::Run qw(run);
 
@@ -1193,6 +1249,42 @@ if ($ARGV[0] eq "--help") {
 	    }
 	}
     }
+} elsif ($ARGV[0] eq "adt-pearl") {
+    my $adt = read_file($ARGV[1]);
+    my $adtp = adt_to_dtp($adt);
+    for my $line (split "\n", $adtp) {
+	if ($line =~ /^adt\.device-tree\.chosen\.nvram-proxy-data = <(.*?)>$/) {
+	    my @words = map { hex } split " ", $1;
+	    my $data = pack("L<*", @words);
+	    my @vars = split("\0", $data);
+	    for my $var (@vars) {
+		print "$2\n" if $var =~ /^(pearl)=(.*)$/;
+	    }
+	}
+    }
+} elsif ($ARGV[0] eq "extract-payload") {
+    my $devmem = DevMem->new;
+    my $bootargs;
+    run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
+    my $macho_header;
+    run(["adtdump", "--macho-header"], \$stdin, \$macho_header) or die;
+    my $off = 0;
+    while (substr($macho_header, $off, 9) ne "__PAYLOAD") {
+	die if $off++ > 16384;
+    }
+    $off += 0x18;
+    my $len = unpack("Q<", substr($macho_header, $off, 8));
+    warn "len $len";
+    $off += 8;
+    my $file_off = unpack("Q<", substr($macho_header, $off, 8));
+    warn "file_off $file_off";
+    my $base = unpack("Q>", substr(read_file("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg"), 0, 8));
+    my $end = unpack("Q<", substr($bootargs, 0x20, 8));
+    warn "end $end";
+    my $start = $end - $len;
+    my $range = $devmem->range($base + $file_off, $len);
+    write_file($ARGV[1], $range);
+    warn "wrote " . length($range) .  " bytes";
 } elsif ($ARGV[0] eq "extract-bootargs") {
     my $bootargs;
     run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
