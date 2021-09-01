@@ -28,3 +28,7 @@ jobs:
     - run: git submodule update --init debian/debootstrap
     - run: make -j13 build/debian.cpio.zst
     - run: make -j13 build/debian.cpio.zst{artifact}
+    - run: make -j13 build/debian.cpio.xz
+    - run: make -j13 build/debian.cpio.xz{artifact}
+    - run: make -j13 build/debian.cpio.xz.pack
+    - run: make -j13 build/debian.cpio.xz.pack{artifact}
