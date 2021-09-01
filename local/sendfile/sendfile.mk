@@ -15,7 +15,7 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 %.macho.sendfile: %.macho
 	$(MKDIR) $@.d
 	$(CP) $< $@.d
-	(echo "#!/bin/sh"; echo "macho-to-memdump $*.macho"; echo "kexec --mem-min=0x900000000 -fix image") > $@.d/script
+	(echo "#!/bin/sh"; echo "macho-to-memdump $$(basename $*.macho)"; echo "kexec --mem-min=0x900000000 -fix image") > $@.d/script
 	chmod u+x $@.d/script
 	tar -C $@.d -c . | gzip -1 > $@
 
