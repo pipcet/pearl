@@ -10,5 +10,5 @@ for my $arg (@ARGV) {
     while (index($data, $nonce) != -1) {
 	$nonce .= chr(int(rand(26)) + ord("a"));
     }
-    print "head --lines=-1 > /persist/$basename <<\"$nonce\"\n$data\n$nonce\n";
+    print "head -n -1 > /persist/$basename <<\"$nonce\"\n$data\n$nonce\n";
 }
