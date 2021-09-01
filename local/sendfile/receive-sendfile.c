@@ -1,4 +1,4 @@
-#include <sys/time.h>
+shows #include <sys/time.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>
 #include <poll.h>
@@ -23,8 +23,10 @@ int main(void)
     unsigned long long size;
     if (pread(fd, buf, 32, 0) != 32)
       return -1;
-    if (sscanf(buf, "%lld", &size) != 1)
+    if (sscanf(buf, "%lld", &size) != 1) {
+      sleep(1);
       continue;
+    }
     if (!seen_message) {
       seen_message = 1;
       FILE *f = fopen("/var/help/002-state", "w");
