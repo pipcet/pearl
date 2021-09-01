@@ -8,7 +8,7 @@ package DevMem;
 use Sys::Mmap;
 use File::Slurp qw(read_file);
 
-my $mem;
+my $fh;
 
 sub new {
     my ($class, $dev, $off, $len) = @_;
@@ -18,16 +18,17 @@ sub new {
     }
     my $self = bless {}, $class;
     $self->{off} = $off;
-    my $fh;
     open $fh, "+<$dev" or die;
-    Sys::Mmap::mmap($mem, $len, PROT_READ|PROT_WRITE, MAP_SHARED, $fh, $off);
     return $self;
 }
 
 sub range {
     my ($self, $beg, $len) = @_;
 
-    my $ret = substr($mem, $beg - $self->{off}, $len);
+    my $mem;
+    Sys::Mmap::mmap($mem, $len, PROT_READ|PROT_WRITE, MAP_SHARED, $fh, $beg);
+    my $ret = substr($mem, 0, $len);
+    munmap($mem);
 
     return $ret;
 }
