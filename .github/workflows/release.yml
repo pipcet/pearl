@@ -15,7 +15,7 @@ jobs:
     - run: sudo apt-get install autopoint
     - run: sudo apt-get install lzop
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
-    - run: sudo apt-get install libipc-run-perl
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support
     - run: sudo apt-get install gettext
     - run: sudo apt-get install xz-utils
@@ -60,6 +60,7 @@ jobs:
     - run: make -j13 build/linux/pearl.image.macho
     - run: cp build/linux/pearl.image.macho build/pearl.macho
     - run: make -j3 build/pearl.macho{release}
+    - run: make -j3 build/debian.cpio.xz.pack{release}
     - run: make -j3 {release}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
