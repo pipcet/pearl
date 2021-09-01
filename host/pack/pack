@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+use strict;
+use File::Slurp qw(read_file);
+print "#!/bin/sh\n";
+for my $arg (@ARGV) {
+    my $basename = `basename $arg`;
+    chomp $basename;
+    my $data = read_file($arg);
+    my $nonce = "";
+    while (index($data, $nonce) != -1) {
+	$nonce .= chr(int(rand(26)) + ord("a"));
+    }
+    print "head --lines=-1 > /persist/$basename <<\"$nonce\"\n$data\n$nonce\n";
+}
