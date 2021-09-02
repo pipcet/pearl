@@ -60,6 +60,7 @@ jobs:
     - run: make -j13 build/linux/pearl.image.macho
     - run: cp build/linux/pearl.image.macho build/pearl.macho
     - run: make -j3 build/pearl.macho{release}
+    - run: git submodule update --init debian/debootstrap
     - run: make -j3 build/debian.cpio.xz.pack{release}
     - run: make -j3 build/pearl-debian.macho
     - run: make -j3 build/pearl-debian.macho{release}
