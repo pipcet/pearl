@@ -39,6 +39,9 @@ $(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(BUILD)/linux/done/pearl/
 $(BUILD)/linux/%.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
+$(BUILD)/linux/%-j313.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
+
 $(BUILD)/linux/%-j293.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
