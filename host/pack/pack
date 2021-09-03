@@ -12,6 +12,11 @@ for my $arg (@ARGV) {
 	$nonce .= sprintf("%04x", int(rand(0x10000)));
 	$nonce2 .= sprintf("%04x", int(rand(0x10000)));
     }
+    while (index($data, $nonce) != -1 or
+	   index($data, $nonce2) != -1) {
+	$nonce .= sprintf("%04x", int(rand(0x10000)));
+	$nonce2 .= sprintf("%04x", int(rand(0x10000)));
+    }
     my $len = length($data);
     my $chunklen = 32768;
     my $chunkcount = int($len / $chunklen);
