@@ -1,0 +1,18 @@
+#!/bin/sh
+echo "starting boot" > /var/help/011-boot-action
+mkdir -p /tmp/debian
+cd /tmp/debian
+echo "uncompressing image" > /var/help/011-boot-action
+xzcat < /persist/debian.cpio.xz | cpio -id
+rm -f init
+cp /bin/debian-init init
+chmod a+x init
+rm /persist/debian.cpio.xz
+rm -f /persist/payload
+cp -a /persist persist
+echo "copying modules" > /var/help/011-boot-action
+cp -a /boot/linux.modules .
+echo "building initrd" > /var/help/011-boot-action
+find . | cpio -H newc -o > /boot/linux.cpio
+echo "running kexec" > /var/help/011-boot-action
+/bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
