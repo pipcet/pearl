@@ -116,4 +116,14 @@ $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cp
 	(cat $^; \
 	 echo "cd /; sleep 1m && (mkdir -p tmp/debian; cd tmp/debian; xzcat < /persist/debian.cpio.xz | cpio -id; rm -f init; cp /bin/debian-init init; chmod a+x init; rm /persist/debian.cpio.xz; rm /persist/payload; cp -a /persist persist; cp -a /boot/linux.modules .; find . | cpio -H newc -o > /boot/linux.cpio; /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\") &") > $@
 
+$(BUILD)/kmutil-script:
+	(echo "tar cf wifi.tar /usr/share/firmware/wifi"; \
+	 echo "bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho"; \
+	 echo "echo exit >> pearl-debian.macho"; \
+	 echo "kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout && reboot"; \
+	 echo echo "\"Since we got here, something went wrong. Did you use bputil and csrutil?\"") > $@
+
+$(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl
+	perl host/pack/pack.pl $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
+
 .SECONDARY: %/ %
