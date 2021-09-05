@@ -51,6 +51,9 @@ done
 ifconfig eth0 hw ether $MAC_ADDR
 sed -i -e 's/ExecStart.*/ExecStart=-\/sbin\/agetty -n -a root %I \$TERM/' /lib/systemd/system/getty\@.service
 sed -i -e 's/ExecStart.*/ExecStart=\1 getty@ttyGS0.service/' /lib/systemd/system/getty-static
+cp /root/.profile /root/.profile.old
+echo "nmtui" >> /root/.profile
+echo "mv /root/.profile.old /root/.profile" >> /root/.profile
 echo N > /sys/module/g_serial/parameters/enable
 echo Y > /sys/module/g_serial/parameters/enable
 systemctl enable serial-getty@ttyGS0.service
