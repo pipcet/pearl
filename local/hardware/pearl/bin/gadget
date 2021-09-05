@@ -71,5 +71,6 @@ cat > /var/help/051-usb <<EOF
 USB gadget live. Interfaces (* means broken):
  acm          - root shell (/dev/ttyACM*)
  mass-storage - commfile interface (/dev/sd[a-z])
-*eem          - IP gadget (network interface usb*)
 EOF
+(while true; do sleep 1; echo "Port 1 (Left/Top) in $(cat /sys/kernel/debug/usb/382280000.dwc3/mode 2> /dev/null || echo unknown) mode, link state $(cat /sys/kernel/debug/usb/382280000.dwc3/link_state 2> /dev/null || echo unknown)" > /var/help/052-usb-port0; done) &
+(while true; do sleep 1; echo "Port 2 (Right/Bottom) in $(cat /sys/kernel/debug/usb/502280000.dwc3/mode 2> /dev/null || echo unknown) mode, link state $(cat /sys/kernel/debug/usb/502280000.dwc3/link_state 2> /dev/null || echo unknown)" > /var/help/053-usb-port1; done) &
