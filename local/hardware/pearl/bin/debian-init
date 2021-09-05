@@ -28,4 +28,19 @@ cd /sys/bus/pci/drivers/xhci_hcd
 DEV="$(ls -d 0*)"
 echo $DEV > unbind
 echo $DEV > bind
+mkdir -p /tmp/firmware
+tar -C /tmp/firmware -xf /persist/wifi.tar
+mkdir -p /lib/firmware/brcm
+for MODEL in j274 j293 j313; do
+    cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/P-honshu_M-RASP_V-m__m-6.11.txt /lib/firmware/brcm/brcmfmac4378-pcie.apple,$MODEL.txt
+    cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/honshu.txcb /lib/firmware/brcm/brcmfmac4378-pcie.txcb
+    cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/honshu.clmb /lib/firmware/brcm/brcmfmac4378-pcie.clm_blob
+    cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/honshu.trx /lib/firmware/brcm/brcmfmac4378-pcie.apple,$MODEL.bin
+done
+MAC_ADDR=3B
+for i in $(seq 1 5); do
+    BYTE=$(($RANDOM%256));
+    MAC_ADDR=$MAC_ADDR$(printf "%02X" $BYTE);
+done
+modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
 exec /sbin/init
