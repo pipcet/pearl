@@ -49,4 +49,5 @@ for i in $(seq 1 5); do
     MAC_ADDR=$MAC_ADDR:$(printf "%02X" $BYTE)
 done
 ifconfig eth0 hw ether $MAC_ADDR
+sed -i -e 's/ExecStart.*/ExecStart=-\/sbin\/agetty -n -a root %I \$TERM/' /lib/systemd/system/getty\@.service
 exec /sbin/init
