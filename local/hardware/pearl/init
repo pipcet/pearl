@@ -6,6 +6,7 @@ ln -sf /proc/self/fd/0 /dev/stdin
 mkdir -p boot proc sys tmp persist
 mount -t proc proc proc
 mount -t sysfs sys sys
+mount -t debugfs debug sys/kernel/debug
 if [ -e persist/stage ]; then
     stage=$(cat persist/stage)
 else
