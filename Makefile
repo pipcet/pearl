@@ -114,6 +114,6 @@ random-target:
 
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.xz.pack
 	(cat $^; \
-	 echo "cd /; sleep 1m || exit 1; mkdir -p tmp/debian; cd tmp/debian; xzcat < /persist/debian.cpio.xz | cpio -id; rm -f init; cp /bin/debian-init init; chmod a+x init; rm /persist/debian.cpio.xz; rm /persist/payload; cp -a /persist persist; cp -a /boot/linux.modules .; find . | cpio -H newc -o > /boot/linux.cpio; /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"") > $@
+	 echo "cd /; sleep 1m && (mkdir -p tmp/debian; cd tmp/debian; xzcat < /persist/debian.cpio.xz | cpio -id; rm -f init; cp /bin/debian-init init; chmod a+x init; rm /persist/debian.cpio.xz; rm /persist/payload; cp -a /persist persist; cp -a /boot/linux.modules .; find . | cpio -H newc -o > /boot/linux.cpio; /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\") &") > $@
 
 .SECONDARY: %/ %
