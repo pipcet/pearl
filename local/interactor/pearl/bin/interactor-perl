@@ -102,8 +102,12 @@ sub dialog_main {
 	 booting => "Booting",
 	 hardware => "Hardware",
 	 info => "Information");
+    if (system("head -c 512 /persist/payload | grep -qv '[^\\0]'") == 0) {
+	unshift @entries, (debian => "Continue to Debian");
+    }
     my %next =
-	(shell => \&switch_to_shell,
+	(debian => sub { run(["boot-debian"]) },
+	 shell => \&switch_to_shell,
 	 linux => sub { run(["linux"]) },
 	 booting => \&dialog_booting,
 	 hardware => \&dialog_hardware,
