@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+-e "/boot/fixed.dtp" || exit 0;
+my $fh;
+my $ofh;
+open $fh, "</boot/fixed.dtp";
+open $ofh, ">/boot/fixed.dtp.new";
+while (<$fh>) {
+    chomp;
+    next if /^[^=]*\.switch-to-4k($| )/;
+    print $ofh "$_\n";
+}
+system("mv /boot/fixed.dtp.new /boot/fixed.dtp");
