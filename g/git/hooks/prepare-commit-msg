@@ -50,9 +50,9 @@ my $oldmsg = read_file($commit_msg_file);
 if (substr($oldmsg, 0, length $msg) eq $msg) {
     $msg = "";
 }
-while ($msg ne "" && $oldmsg ne "" && substr ($oldmsg, 0, 1) ne "#") {
-    $oldmsg = substr ($oldmsg, 1);
-}
+# while ($msg ne "" && $oldmsg ne "" && substr ($oldmsg, 0, 1) ne "#") {
+#     $oldmsg = substr ($oldmsg, 1);
+# }
 
 if ($oldmsg =~ /^#/) {
     $oldmsg = "\n\n$oldmsg";
