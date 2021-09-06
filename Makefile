@@ -122,6 +122,9 @@ $(BUILD)/kmutil-script:
 	 echo "kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout && reboot"; \
 	 echo echo "\"Since we got here, something went wrong. Did you use bputil and csrutil?\"") > $@
 
+build/pearl.pl:
+	$(MAKE) $(PWD)/build/pearl.pl
+
 $(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl
 	perl host/pack/pack.pl $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
