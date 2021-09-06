@@ -1,0 +1,12 @@
+#!/bin/sh
+counter=60
+while [ $counter -gt 0 ]; do
+    sleep 1 || break
+    counter=$(($counter - 1))
+    echo "will boot Debian in $counter seconds" > /var/help/010-auto-action
+done
+if [ $counter -gt 0 ]; then
+    exit 1
+fi
+echo "booting Debian" > /var/help/010-auto-action
+/bin/boot-debian
