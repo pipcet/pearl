@@ -29,6 +29,8 @@ sub dialog {
     run(["dialog", "--output-fd", "3", "--menu", $title, 0, 0, 0,
 	 @args], '3>', \$response);
 
+    system("touch /interactive") if $response;
+
     return $response = substr($response, 1);
 }
 
