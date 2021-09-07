@@ -29,6 +29,7 @@ int main(void)
     }
     if (!seen_message) {
       seen_message = 1;
+      system("touch /interactive");
       FILE *f = fopen("/var/help/002-state", "w");
       if (f) {
 	fprintf(f, "%ld-byte commfile being loaded\n", size - 32);
