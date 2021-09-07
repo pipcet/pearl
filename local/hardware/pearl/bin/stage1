@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ x"$(cat /persist/stage)" = xstage1 ]; then
+    echo "$@" >> /persist/stage1.zsh
+else
+    echo "too late!"
+fi
