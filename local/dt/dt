@@ -1283,6 +1283,14 @@ if ($ARGV[0] eq "--help") {
     warn "end $end";
     my $start = $end - $len;
     my $range = $devmem->range($base + $file_off, $len);
+    my $taillen = 1;
+    $taillen *= 2 while ($taillen < $len);
+    while ($taillen) {
+	if (substr($range, length($range) - $taillen) eq "\0" x (length($range) - $taillen)) {
+	    $range = substr($range, 0, length($range) - $taillen);
+	}
+	$taillen = int($taillen / 2);
+    }
     write_file($ARGV[1], $range);
     warn "wrote " . length($range) .  " bytes";
 } elsif ($ARGV[0] eq "extract-bootargs") {
