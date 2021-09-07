@@ -115,12 +115,8 @@ random-target:
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.xz.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@
 
-$(BUILD)/kmutil-script:
-	(echo "tar cf wifi.tar /usr/share/firmware/wifi"; \
-	 echo "bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho"; \
-	 echo "echo exit >> pearl-debian.macho"; \
-	 echo "kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout && reboot"; \
-	 echo echo "\"Since we got here, something went wrong. Did you use bputil and csrutil?\"") > $@
+$(BUILD)/kmutil-script: recovery/bin/kmutil-script
+	$(CP) $< $@
 
 build/pearl.pl:
 	$(MAKE) $(PWD)/build/pearl.pl
