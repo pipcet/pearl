@@ -5,13 +5,14 @@ mount -t sysfs sys /sys
 mount -t devtmpfs dev /dev
 mount -t configfs config /sys/kernel/config
 mount -t debugfs debug /sys/kernel/debug
+linux-init
 cp modules.tar /persist
 cd /
-tar xvf /boot/linux.modules
+tar xf /boot/linux.modules
 cp /boot/linux.modules /persist
-modprobe pcie-apple-m1-nvme
+count=1;
 while true; do
-    ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
+    ROOT=$(cat /persist/root 2>/dev/null || /dev/debian)
     ([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
     mount $ROOT /mnt && continue
     vgchange -ay
@@ -20,5 +21,8 @@ while true; do
 	 ln -sf $DM /dev/$NAME
 	 [ -e /dev/$NAME-decrypted ] || cryptsetup open /dev/$NAME $NAME-decrypted;
      done)
-    /bin/sh
+    if [ $count -gt 10 ]; then
+	/bin/sh
+    fi
+    count=$(($count + 1))
 done
