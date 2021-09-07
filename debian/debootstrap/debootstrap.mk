@@ -56,7 +56,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
 
 $(BUILD)/netboot.tar.gz.uuencoded: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
-	qemu-system-aarch64 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic > $@
+	qemu-system-aarch64 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic | (while read A B; do echo $$A $$B >/dev/stderr; if [ x"$$A" = x"begin" ]; then break; fi; done; echo "$$A $$B"; cat) > $@
 
 $(BUILD)/netboot.tar.gz: $(BUILD)/netboot.tar.gz.uuencoded
 	uudecode -o $@ < $<
