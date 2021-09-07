@@ -1,0 +1,15 @@
+#!/bin/bash
+tar cf wifi.tar /usr/share/firmware/wifi
+bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho
+while true; do
+    echo "Available boot parameters (separate with ';'):"
+    echo "  no4k            disable automatic switch to 4k resolution"
+    echo "  root DEV        automatically boot from device"
+    echo "  gadget-mode 0   put USB port 0 (top/left) in gadget mode"
+    echo "  gadget-mode 1   put USB port 1 (bottom/right) in gadget mode"
+    echo "  delay SECS      delay n seconds before booting automatically"
+    read -p "Enter boot parameters: " PARAMS
+    break;
+done
+kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout && nvram 'pearl='"$PARAMS" && reboot
+echo "\"Since we got here, something went wrong. Did you use bputil and csrutil?\""
