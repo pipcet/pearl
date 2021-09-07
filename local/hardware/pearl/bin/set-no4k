@@ -9,4 +9,5 @@ while (<$fh>) {
     next if /^[^=]*\.switch-to-4k($| )/;
     print $ofh "$_\n";
 }
+close $ofh;
 system("mv /boot/fixed.dtp.new /boot/fixed.dtp");
