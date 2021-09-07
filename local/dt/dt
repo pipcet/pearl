@@ -1286,7 +1286,7 @@ if ($ARGV[0] eq "--help") {
     my $taillen = 1;
     $taillen *= 2 while ($taillen < $len);
     while ($taillen) {
-	if (substr($range, length($range) - $taillen) eq "\0" x (length($range) - $taillen)) {
+	if (substr($range, length($range) - $taillen) eq "\0" x $taillen) {
 	    $range = substr($range, 0, length($range) - $taillen);
 	}
 	$taillen = int($taillen / 2);
