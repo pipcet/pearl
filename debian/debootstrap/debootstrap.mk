@@ -51,7 +51,8 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "cp /root/debian-installer/packages/anna_*_arm64.udeb /root/debian-installer/installer/build/localudebs/"; \
 	echo "rm -rf /root/debian-installer/packages"; \
 	echo "(cd /root/debian-installer/installer/build; make build_netboot-gtk)"; \
-	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz") | sudo tee $(BUILD)/debian/di-debootstrap/init
+	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz"; \
+	echo "while true; do echo foo; done") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
 	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
 
