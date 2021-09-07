@@ -1,5 +1,6 @@
 #!/bin/sh
 counter=60
+[ -e /persist/timeout ] && counter="$(cat /persist/timeout)"
 while [ $counter -gt 0 ]; do
     sleep 1 || break
     test -e /interactive && break
@@ -11,4 +12,8 @@ if [ $counter -gt 0 ]; then
     exit 1
 fi
 echo "booting Debian" > /var/help/010-auto-action
-/bin/boot-debian
+if [ -e /persist/root ]; then
+    linux
+else
+    /bin/boot-debian
+fi
