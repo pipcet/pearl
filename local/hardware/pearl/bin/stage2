@@ -1,0 +1,6 @@
+#!/bin/bash
+if [ x"$(cat /persist/stage)" = xstage2 ]; then
+    $@
+else
+    echo "$@" >> /persist/stage2.zsh
+fi
