@@ -49,13 +49,14 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "(cd /root/debian-installer/packages/anna; ./debian/rules build)"; \
 	echo "(cd /root/debian-installer/packages/anna; ./debian/rules binary)"; \
 	echo "cp /root/debian-installer/packages/anna_*_arm64.udeb /root/debian-installer/installer/build/localudebs/"; \
+	echo "rm -rf /root/debian-installer/packages"; \
 	echo "(cd /root/debian-installer/installer/build; make build_netboot-gtk)"; \
 	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
 	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
 
 $(BUILD)/netboot.tar.gz.uuencoded: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
-	qemu-system-aarch64 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 16g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic > $@
+	qemu-system-aarch64 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic > $@
 
 $(BUILD)/netboot.tar.gz: $(BUILD)/netboot.tar.gz.uuencoded
 	uudecode -o $@ < $<

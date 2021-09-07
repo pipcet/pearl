@@ -26,5 +26,6 @@ jobs:
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install libtool-bin myrepos
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 build/netboot-initrd.cpio.gz
     - run: make -j13 build/netboot-initrd.cpio.gz{artifact}
