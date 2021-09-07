@@ -43,7 +43,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "dhclient -v eth0 &"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
 	echo "apt-get -y update"; \
-	echo "apt-get -y dist-ugprade"; \
+	echo "apt-get -y dist-upgrade"; \
 	echo "apt-get -y build-dep debian-installer anna"; \
 	echo "apt-get -y clean"; \
 	echo "(cd /root/debian-installer/packages/anna; ./debian/rules build)"; \
