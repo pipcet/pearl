@@ -1,4 +1,4 @@
-name: modules
+name: debian-installer
 on:
   workflow_dispatch:
   push:
