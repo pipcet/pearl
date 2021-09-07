@@ -11,12 +11,12 @@ echo -ne '\x01\x00\x00\x00' > value
 cd /sys/bus/platform/drivers/pcie-apple
 for i in $(seq 1 16); do
     echo 690000000.pcie > bind
-    sleep 1
+    sleep .1
 done
 cd /sys/bus/platform/drivers/apple-dart
 for i in $(seq 1 16); do
     echo 681008000.dart > bind
-    sleep 1
+    sleep .1
 done
 echo 682008000.dart > bind
 echo 683008000.dart > bind
