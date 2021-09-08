@@ -29,7 +29,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=build-essential,git,linux-image-cloud-arm64,bash,kmod,dash,wget,busybox,busybox-static,net-tools,libpam-systemd,file,xsltproc,mtools,openssl,mokutil,libx11-data,libx11-6,sharutils,dpkg-dev sid $(BUILD)/debian/di-debootstrap http://deb.debian.org/debian
 	sudo chmod a+r -R $(BUILD)/debian/di-debootstrap/root
 	sudo chmod a+x $(BUILD)/debian/di-debootstrap/root
-	(cd $(BUILD)/debian/di-debootstrap/root; sudo git clone https://github.com/pipcet/debian-installer)
+	(cd $(BUILD)/debian/di-debootstrap/root; sudo git clone $(or $(DIREPO),https://github.com/pipcet/debian-installer))
 	(cd $(BUILD)/debian/di-debootstrap/root/debian-installer; sudo mr checkout)
 	sudo rm -f $(BUILD)/debian/di-debootstrap/init
 	(echo '#!/bin/bash'; \
