@@ -42,6 +42,8 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "modprobe virtio_net"; \
 	echo "modprobe virtio_block"; \
 	echo "modprobe virtio_scsi"; \
+	echo "modprobe sd_mod"; \
+	echo "mknod /dev/vda b 254 0"; \
 	echo "dhclient -v eth0 &"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
 	echo "apt-get -y update"; \
@@ -53,7 +55,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "cp /root/debian-installer/packages/anna_*_arm64.udeb /root/debian-installer/installer/build/localudebs/"; \
 	echo "rm -rf /root/debian-installer/packages"; \
 	echo "(cd /root/debian-installer/installer/build; make build_netboot-gtk)"; \
-	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz > /dev/sda"; \
+	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz > /dev/vda"; \
 	echo "sync"; \
 	echo "poweroff -f") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
