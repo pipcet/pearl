@@ -40,6 +40,8 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "modprobe virtio"; \
 	echo "modprobe virtio_pci"; \
 	echo "modprobe virtio_net"; \
+	echo "modprobe virtio_block"; \
+	echo "modprobe virtio_scsi"; \
 	echo "dhclient -v eth0 &"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
 	echo "apt-get -y update"; \
@@ -51,16 +53,17 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "cp /root/debian-installer/packages/anna_*_arm64.udeb /root/debian-installer/installer/build/localudebs/"; \
 	echo "rm -rf /root/debian-installer/packages"; \
 	echo "(cd /root/debian-installer/installer/build; make build_netboot-gtk)"; \
-	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz"; \
+	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz > /dev/sda"; \
+	echo "sync"; \
 	echo "poweroff -f") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
 	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
 
-$(BUILD)/netboot.tar.gz.uuencoded: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
-	qemu-system-aarch64 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic | (while read A B; do echo "$$A $$B" >/dev/stderr; if [ x"$$A" = x"begin" ]; then break; fi; done; cat) > $@
-
-$(BUILD)/netboot.tar.gz: $(BUILD)/netboot.tar.gz.uuencoded
-	uudecode -o $@ < $<
+$(BUILD)/netboot.tar.gz: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
+	dd if=/dev/zero of=tmp bs=128M count=1
+	qemu-system-aarch64 -drive index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd ./build/debian/di-debootstrap.cpio -nic user,model=virtio -monitor none -smp 8 -nographic
+	uudecode -o $@ < tmp
+	rm -f tmp
 
 $(BUILD)/netboot-initrd.cpio.gz: $(BUILD)/netboot.tar.gz
 	rm -rf $(BUILD)/netboot-tmp
