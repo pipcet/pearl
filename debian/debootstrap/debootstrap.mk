@@ -52,7 +52,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "rm -rf /root/debian-installer/packages"; \
 	echo "(cd /root/debian-installer/installer/build; make build_netboot-gtk)"; \
 	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz"; \
-	echo "while true; do echo foo; done") | sudo tee $(BUILD)/debian/di-debootstrap/init
+	echo "poweroff -f") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
 	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
 
