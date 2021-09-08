@@ -40,7 +40,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "modprobe virtio"; \
 	echo "modprobe virtio_pci"; \
 	echo "modprobe virtio_net"; \
-	echo "modprobe virtio_block"; \
+	echo "modprobe virtio_blk"; \
 	echo "modprobe virtio_scsi"; \
 	echo "modprobe sd_mod"; \
 	echo "mknod /dev/vda b 254 0"; \
