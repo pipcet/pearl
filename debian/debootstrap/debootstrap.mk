@@ -57,7 +57,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "sync"; \
 	echo "poweroff -f") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
-	(cd $(BUILD)/debian/di-debootstrap; sudo find . | sudo cpio -H newc -o) > $@
+	(cd $(BUILD)/debian/di-debootstrap; sudo chown root.root .; sudo find . | sudo cpio -H newc -o) > $@
 
 $(BUILD)/netboot.tar.gz: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
 	dd if=/dev/zero of=tmp bs=128M count=1
