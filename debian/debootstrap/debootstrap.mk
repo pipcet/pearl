@@ -73,3 +73,10 @@ $(BUILD)/netboot-initrd.cpio.gz: $(BUILD)/netboot.tar.gz
 	sudo tar -C $(BUILD)/netboot-tmp -xzvf $<
 	cp $(BUILD)/netboot-tmp/debian-installer/arm64/initrd.gz $@
 	sudo rm -rf $(BUILD)/netboot-tmp
+
+$(BUILD)/netboot-initrd-stripped.cpio.gz: $(BUILD)/netboot.tar.gz
+	sudo rm -rf $(BUILD)/netboot-tmp
+	sudo $(MKDIR) $(BUILD)/netboot-tmp
+	sudo tar -C $(BUILD)/netboot-tmp -xzvf $<
+	cp $(BUILD)/netboot-tmp/debian-installer/arm64/initrd.gz $@
+	sudo rm -rf $(BUILD)/netboot-tmp
