@@ -70,6 +70,6 @@ $(BUILD)/netboot.tar.gz: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpi
 $(BUILD)/netboot-initrd.cpio.gz: $(BUILD)/netboot.tar.gz
 	sudo rm -rf $(BUILD)/netboot-tmp
 	sudo $(MKDIR) $(BUILD)/netboot-tmp
-	tar -C $(BUILD)/netboot-tmp -xzvf $<
+	sudo tar -C $(BUILD)/netboot-tmp -xzvf $<
 	cp $(BUILD)/netboot-tmp/debian-installer/arm64/initrd.gz $@
 	sudo rm -rf $(BUILD)/netboot-tmp
