@@ -11,11 +11,7 @@ echo "stage1 " "$(cat /persist/stage1-uname.txt)" >> /var/help/001-title
 echo "running" "$(uname -a)" >> /var/help/001-title
 
 cat > /bin/help <<EOF
-if [ -z "\$(cat /var/help/008-heartbeat)" ]; then
-    echo "<BLINK>" > /var/help/008-heartbeat;
-else
-    echo > /var/help/008-heartbeat;
-fi
+echo "Uptime: $(cat /proc/uptime)" > /var/help/008-heartbeat;
 for a in /var/help/*; do
     cat \$a
     echo
