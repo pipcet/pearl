@@ -11,9 +11,5 @@ if [ $counter -gt 0 ]; then
     rm /var/help/010-auto-action
     exit 1
 fi
-echo "booting Debian" > /var/help/010-auto-action
-if [ -e /persist/root ]; then
-    linux
-else
-    debian
-fi
+echo "booting" > /var/help/010-auto-action
+final
