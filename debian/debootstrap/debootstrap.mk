@@ -9,13 +9,29 @@ $(BUILD)/debian/debootstrap/stage15.tar: $(BUILD)/debian/debootstrap/stage1.tar
 	for a in $(BUILD)/debian/debootstrap/stage15/var/cache/apt/archives/*.deb; do sudo dpkg -x $$a $(BUILD)/debian/debootstrap/stage15; done
 	(cd $(BUILD)/debian/debootstrap/stage15; sudo tar c .) > $@
 
-$(BUILD)/debian/installer.cpio.gz: $(BUILD)/debian/
+$(BUILD)/debian/full-installer.cpio.gz: | $(BUILD)/debian/
 	wget -O $@ https://github.com/pipcet/debian-installer/releases/latest/download/netboot-initrd.cpio.gz
 
-$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/installer.cpio.gz
+$(BUILD)/debian/full-installer.cpio: $(BUILD)/debian/full-installer.cpio.gz
+	gunzip < $< > $@
+
+$(BUILD)/debian/installer.cpio: $(BUILD)/debian/full-installer.cpio
+	sudo rm -rf $(BUILD)/debian/full-installer.d
+	sudo $(MKDIR) $(BUILD)/debian/full-installer.d
+	(cd $(BUILD)/debian/full-installer.d; sudo cpio -id) < $<
+	sudo rm -rf $(BUILD)/debian/full-installer.d/boot
+	sudo rm -rf $(BUILD)/debian/full-installer.d/lib/modules
+	(cd $(BUILD)/debian/full-installer.d; sudo find | sudo cpio -o) > $@
+
+$(BUILD)/debian/installer: debian/injected/bin/installer
+	$(CP) $< $@
+	chmod u+x $@
+
+$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
 	$(MKDIR) $(BUILD)/debian/cpio.d
 	(cd $(BUILD)/debian/cpio.d; sudo tar x) < $<
-	cp $(BUILD)/debian/installer.cpio.gz $(BUILD)/debian/cpio.d
+	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/cpio.d
+	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/cpio.d/bin
 	sudo chown root.root $(BUILD)/debian/cpio.d
 	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
 	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
