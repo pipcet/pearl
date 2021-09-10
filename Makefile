@@ -121,7 +121,7 @@ $(BUILD)/kmutil-script: recovery/bin/kmutil-script
 build/pearl.pl:
 	$(MAKE) $(PWD)/build/pearl.pl
 
-$(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl
-	perl host/pack/pack.pl $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
+$(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
+	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
 .SECONDARY: %/ %
