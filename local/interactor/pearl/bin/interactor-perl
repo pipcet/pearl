@@ -99,16 +99,20 @@ sub dialog_info {
 sub dialog_main {
     my $title = "User-Friendly Menu (* marks broken options)";
     my @entries =
-	(shell => "Shell prompt - Ctrl-D to return",
-	 linux => "Boot Linux",
+	(final => "Boot final stage of Linux",
+	 shell => "Shell prompt - Ctrl-D to return",
 	 booting => "Booting",
 	 hardware => "Hardware",
 	 info => "Information");
-    if (system("head -c 512 /persist/payload | grep -qv '[^\\0]'") == 0) {
+    if (system("head -c 512 /persist/payload | grep -qv '[^\\0]'") == 0 or
+	system("test -e /persist/debian.cpio.xz") == 0) {
 	unshift @entries, (debian => "Continue to Debian");
+	unshift @entries, (installer => "Install Debian");
     }
     my %next =
-	(debian => sub { run(["boot-debian"]) },
+	(installer => sub { run(["installer"]) },
+	 debian => sub { run(["debian"]) },
+	 final => sub { run(["final"]) },
 	 shell => \&switch_to_shell,
 	 linux => sub { run(["linux"]) },
 	 booting => \&dialog_booting,
