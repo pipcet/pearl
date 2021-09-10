@@ -12,10 +12,10 @@
 #define IRQ_TYPE_EDGE_BOTH	(IRQ_TYPE_EDGE_FALLING | IRQ_TYPE_EDGE_RISING)
 #define IRQ_TYPE_LEVEL_HIGH	4
 #define SZ_1G (1LL << 30)
-#define REG(x,y) <${cpu_to_be32((x)>>32)} \
-	          ${cpu_to_be32((x)&U32_MAX)} \
-		  ${cpu_to_be32((y)>>32)} \
-		  ${cpu_to_be32((y)&U32_MAX)}>
+#define REG(x,y) <${cpu_to_be32(((u64)(x))>>32)} \
+	          ${cpu_to_be32(((u64)(x))&U32_MAX)} \
+		  ${cpu_to_be32(((u64)(y))>>32)} \
+		  ${cpu_to_be32(((u64)(y))&U32_MAX)}>
 
 #define INT(x) <${cpu_to_be32(x)}>
 
@@ -139,7 +139,7 @@
 		fw_area@9f8000000 {
 			reg = REG(bootargs->mem_size_actual + 0x800000000
 				      -	0x100000,
-				      0x100000);
+				      0x100000LL);
 		};
 
 		/* The Apple Device tree. */
