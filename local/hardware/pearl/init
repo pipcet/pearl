@@ -12,4 +12,4 @@ if [ -e persist/stage ]; then
 else
     stage=stage1
 fi
-exec bin/init-$stage
+exec /bin/init-$stage
