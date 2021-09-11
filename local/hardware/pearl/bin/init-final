@@ -1,0 +1,56 @@
+#!/bin/sh
+FINALCHOICES="$(cat /persist/finalchoices)"
+if [ x"$FINALCHOICES" = x"" ]; then
+    FINALCHOICES="root debian";
+fi
+while true; do
+    for CHOICE in $FINALCHOICES; do
+	if [ "$CHOICE" = "root" ]; then
+	    mkdir mnt
+	    mount -t proc proc /proc
+	    mount -t sysfs sys /sys
+	    mount -t devtmpfs dev /dev
+	    mount -t configfs config /sys/kernel/config
+	    mount -t debugfs debug /sys/kernel/debug
+	    linux-init
+	    cp modules.tar /persist
+	    cd /
+	    tar xf /boot/linux.modules
+	    cp /boot/linux.modules /persist
+	    count=1
+	    while true; do
+		ROOT=$(cat /persist/root 2>/dev/null || /dev/debian)
+		([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
+		mount $ROOT /mnt && continue
+		PRECOUNT=$(ls /dev|wc -l)
+		vgchange -ay
+		POSTCOUNT=$(ls /dev|wc -l);
+		if [ "$PRECOUNT" != "$POSTCOUNT" ]; then
+		    continue
+		fi
+		(cd /sys/class/block; for DM in $(ls -d dm-*); do
+					  NAME=$(cat $DM/dm/name)
+					  ln -sf $DM /dev/$NAME
+					  if ! [ -e /dev/$NAME-decrypted ] && cryptsetup isLuks /dev/$NAME; then
+					      cryptsetup open /dev/$NAME $NAME-decrypted && continue
+					  fi
+				      done)
+		if [ $count -gt 10 ]; then
+		    break
+		fi
+		count=$(($count + 1))
+	    done
+	elif [ "$CHOICE" = "debian" ]; then
+	    mkdir /debian
+	    mount --bind /debian /debian
+	    cat /persist/debian.cpio | (cd /debian; cpio -id) && exec switch_root /debian /init
+	elif [ "$CHOICE" = "installer" ]; then
+	    mkdir /debian
+	    mount --bind /debian /debian
+	    cat /persist/debian.cpio | (cd /debian; cpio -id) && echo "installer" >> /debian/root/.profile && exec switch_root /debian /init
+	elif [ "$CHOICE" = "shell" ]; then
+	    /bin/sh
+	fi
+    done
+    /bin/sh
+done
