@@ -42,12 +42,12 @@ while true; do
 	    done
 	elif [ "$CHOICE" = "debian" ]; then
 	    mkdir /debian
-	    mount --bind /debian /debian
-	    cat /persist/debian.cpio | (cd /debian; cpio -id) && exec switch_root /debian /init
+	    mount -t ramfs debian /debian
+	    cat /persist/debian.cpio | (cd /debian; cpio -id) && test -e /debian/init && exec switch_root /debian /init
 	elif [ "$CHOICE" = "installer" ]; then
 	    mkdir /debian
-	    mount --bind /debian /debian
-	    cat /persist/debian.cpio | (cd /debian; cpio -id) && echo "installer" >> /debian/root/.profile && exec switch_root /debian /init
+	    mount -t ramfs debian /debian
+	    cat /persist/debian.cpio | (cd /debian; cpio -id) && echo "installer" >> /debian/root/.profile && test -e /debian/init && exec switch_root /debian /init
 	elif [ "$CHOICE" = "shell" ]; then
 	    /bin/sh
 	fi
