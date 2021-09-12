@@ -14,9 +14,6 @@ while true; do
     echo "Old boot parameters: $EXISTING"
     (perl ./readline.pm "New boot parameters: " "$EXISTING" || read -e -p "New boot parameters: " PARAMS; echo "$PARAMS") > params < /dev/tty
     PARAMS="$(cat params)"
-    if [ -z "$PARAMS" ]; then
-	PARAMS="$EXISTING"
-    fi
     echo "New boot parameters: $PARAMS"
     echo
     echo "Please abort with Ctrl-C if this is incorrect."
