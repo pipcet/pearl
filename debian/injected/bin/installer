@@ -1,6 +1,6 @@
 #!/bin/bash
 mkdir /installer
-mount --bind /installer /installer
+mount -t ramfs installer /installer
 gunzip < /installer.cpio.gz | (cd /installer; cpio -id)
 (echo "#!/bin/sh -x"; cat /installer/init) > /installer/new-init
 mv /installer/new-init /installer/init
