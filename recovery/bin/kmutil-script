@@ -23,5 +23,12 @@ while true; do
     echo
     break;
 done
-kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout && nvram 'pearl='"$PARAMS" && reboot
+if kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout; then
+    if [ -z "$PARAMS" ]; then
+	nvram -d pearl
+    else
+	nvram 'pearl='"$PARAMS"
+    fi
+    reboot
+done
 echo "Since we got here, something went wrong. Did you use bputil and csrutil?"
