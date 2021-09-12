@@ -3,6 +3,7 @@ FINALCHOICES="$(cat /persist/finalchoices)"
 if [ x"$FINALCHOICES" = x"" ]; then
     FINALCHOICES="root debian";
 fi
+linux-init
 while true; do
     for CHOICE in $FINALCHOICES; do
 	if [ "$CHOICE" = "root" ]; then
@@ -12,7 +13,6 @@ while true; do
 	    mount -t devtmpfs dev /dev
 	    mount -t configfs config /sys/kernel/config
 	    mount -t debugfs debug /sys/kernel/debug
-	    linux-init
 	    cp modules.tar /persist
 	    cd /
 	    tar xf /boot/linux.modules
