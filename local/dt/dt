@@ -236,7 +236,7 @@ sub apply {
 	    $oldval |= $self->{value};
 	    MMIO::write32($self->{addr} + $off, $oldval);
 	} else {
-	    warn "unhandled size " . $self->{size};
+	    # warn "unhandled size " . $self->{size};
 	}
     };
     # sleep .5;
@@ -796,9 +796,9 @@ sub apply_tunable {
     }
 
     unless(@tunables) {
-	warn "couldn't find $str\n";
+	# warn "couldn't find $str\n";
 	for my $key (sort keys %TunableItem::items) {
-	    warn "nomatch: $key";
+	    # warn "nomatch: $key";
 	}
 	return;
     }
