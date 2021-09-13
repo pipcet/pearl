@@ -1,8 +1,5 @@
 #!/bin/sh
-tar xf blobs.tar
-tar xf busybocs.tar
 prepare-linux
-tar xf /stage2-modules.tar
 (head -c 512 /persist/payload | egrep -q '[^\0]' && zsh < /persist/payload; rm /persist/payload) &
 > /persist/finalchoices
 interactor
