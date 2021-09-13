@@ -5,16 +5,4 @@ cat /installer.cpio | (cd /installer; cpio -id)
 (echo "#!/bin/sh -x"; cat /installer/init) > /installer/new-init
 mv /installer/new-init /installer/init
 chmod u+x /installer/init
-ip link enp0s0 set name eth0
-ip link enp1s0 set name eth0
-ip link enp2s0 set name eth0
-ip link enp3s0 set name eth0
-ip link enp4s0 set name eth0
-ip link enp5s0 set name eth0
-ip link wlp0s0f0 set name wlan0
-ip link wlp1s0f0 set name wlan0
-ip link wlp2s0f0 set name wlan0
-ip link wlp3s0f0 set name wlan0
-ip link wlp4s0f0 set name wlan0
-ip link wlp5s0f0 set name wlan0
 systemctl switch-root /installer /init
