@@ -14,7 +14,6 @@ sub new {
     $dev //= "/dev/mem";
     if (!defined($off)) {
 	($off, $len) = unpack("Q>Q>", scalar read_file("/sys/firmware/devicetree/base/memory\@800000000/reg"));
-	warn "off $off len $len";
     }
     my $self = bless {}, $class;
     $self->{off} = $off;
@@ -27,9 +26,7 @@ sub new {
 sub range {
     my ($self, $beg, $len) = @_;
 
-    warn "reading $beg $len\n";
     my $ret = substr($mem, $beg - $self->{off}, $len);
-    warn "read\n";
 
     return $ret;
 }
@@ -66,7 +63,7 @@ sub read32 {
     if ($val =~ /^[0-9a-f]*: ([0-9a-f]*) /) {
 	$ret = hex $1;
     }
-    warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
+    # warn sprintf("memtool md 0x%lx+4 0x%lx", $addr, $ret);
     return $ret;
 }
 
@@ -76,7 +73,7 @@ sub write32 {
     if ($addr >= 0x682000000 && $addr < 0x684000000) {
 	return;
     }
-    warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
+    # warn sprintf("memtool mw 0x%lx+4 0x%lx", $addr, $value);
     system("memtool mw $addr $value");
 }
 
@@ -499,7 +496,7 @@ sub tunable {
 	return;
     }
     my $new = "new_from_$kind";
-    warn "new tunable $new from $adtnode";
+    # warn "new tunable $new from $adtnode";
     $tunables{$adtnode} = Tunable->$new(%props, adtnode => $adtnode);
     if (ref $tunables{$adtnode} eq "Tunable") {
 	eval {
@@ -830,18 +827,18 @@ sub enable_phy_clks {
     MMIO::write32($phy_base + $APCIE_PHY_CTRL,
 		  MMIO::read32($phy_base + $APCIE_PHY_CTRL) | $APCIE_PHY_CTRL_CLK0REQ);
     while (!(MMIO::read32($phy_base + $APCIE_PHY_CTRL) & $APCIE_PHY_CTRL_CLK0ACK)) {
-	warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
+	# warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
     }
 
-    warn "enabled PHY clk 0";
+    # warn "enabled PHY clk 0";
 
     MMIO::write32($phy_base + $APCIE_PHY_CTRL,
 		  MMIO::read32($phy_base + $APCIE_PHY_CTRL) | $APCIE_PHY_CTRL_CLK1REQ);
     while (!(MMIO::read32($phy_base + $APCIE_PHY_CTRL) & $APCIE_PHY_CTRL_CLK1ACK)) {
-	warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
+	# warn MMIO::read32($phy_base + $APCIE_PHY_CTRL) . " not set";
     }
 
-    warn "enabled PHY clk 1";
+    # warn "enabled PHY clk 1";
 }
 
 sub mystery_rc {
@@ -876,12 +873,12 @@ sub enable_appclk {
     MMIO::write32($port_base + $APCIE_PORT_RESET,
 		  MMIO::read32($port_base + $APCIE_PORT_RESET) | $APCIE_PORT_RESET_DIS);
     until (MMIO::read32($port_base + $APCIE_PORT_STATUS) & $APCIE_PORT_STATUS_RUN) {
-	warn "not yet ready\n";
+	# warn "not yet ready\n";
 	if ($count++ > 1000) {
 	    last;
 	}
     }
-    warn "ready!";
+    # warn "ready!";
 }
 
 my $DWC3_DCTL = 0xc704;
@@ -982,7 +979,7 @@ sub apply_tunables {
 
     make_regs_readonly(0x690010000);
 
-    warn "initialized";
+    # warn "initialized";
 }
 
 sub tunables {
@@ -1274,13 +1271,10 @@ if ($ARGV[0] eq "--help") {
     }
     $off += 0x18;
     my $len = unpack("Q<", substr($macho_header, $off, 8));
-    warn "len $len";
     $off += 8;
     my $file_off = unpack("Q<", substr($macho_header, $off, 8));
-    warn "file_off $file_off";
     my $base = unpack("Q>", substr(read_file("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg"), 0, 8));
     my $end = unpack("Q<", substr($bootargs, 0x20, 8));
-    warn "end $end";
     my $start = $end - $len;
     my $range = $devmem->range($base + $file_off, $len);
     my $taillen = 1;
@@ -1292,7 +1286,6 @@ if ($ARGV[0] eq "--help") {
 	$taillen = int($taillen / 2);
     }
     write_file($ARGV[1], $range);
-    warn "wrote " . length($range) .  " bytes";
 } elsif ($ARGV[0] eq "extract-bootargs") {
     my $bootargs;
     run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
