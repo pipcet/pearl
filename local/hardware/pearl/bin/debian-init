@@ -37,6 +37,7 @@ for MODEL in j274 j293 j313; do
     cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/honshu.clmb /lib/firmware/brcm/brcmfmac4378-pcie.clm_blob
     cp /tmp/firmware/usr/share/firmware/wifi/C-4378__s-B1/honshu.trx /lib/firmware/brcm/brcmfmac4378-pcie.apple,$MODEL.bin
 done
+(cd /; tar c lib/firmware/brcm/brcmfmac-4378*) > /persist/brcmfmac.tar
 MAC_ADDR=16
 for i in $(seq 1 5); do
     BYTE=$(($RANDOM%256))
