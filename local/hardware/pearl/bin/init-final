@@ -20,7 +20,7 @@ while true; do
 	    count=1
 	    while true; do
 		ROOT=$(cat /persist/root 2>/dev/null || /dev/debian)
-		([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && sync && exec switch_root /mnt /sbin/init
+		([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && (cd /mnt; tar x) < /persist/brcmfmac.tar && (cd /mnt; cd usr; tar x) < /persist/linux.modules && sync && exec switch_root /mnt /sbin/init
 		mount $ROOT /mnt && continue
 		PRECOUNT=$(ls /dev|wc -l)
 		vgchange -ay
