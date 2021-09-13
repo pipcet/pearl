@@ -15,5 +15,5 @@ cp -a /boot/linux.modules .
 echo "building initrd" > /var/help/011-boot-action
 find . | cpio -H newc -o > /persist/debian.cpio
 rm -f /persist/debian.cpio.xz
-echo debian > /persist/final-choices
+echo debian > /persist/finalchoices
 final
