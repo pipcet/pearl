@@ -40,6 +40,7 @@ for MODEL in j274 j293 j313; do
 done
 (cd /; tar c lib/firmware/brcm/brcmfmac4378*) > /persist/brcmfmac.tar
 modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
+echo 'options brcmfmac nvram_mac_addr='"$MAC_ADDR" > /persist/brcmfmac.conf
 MAC_ADDR=16
 for i in $(seq 1 5); do
     BYTE=$(($RANDOM%256))
