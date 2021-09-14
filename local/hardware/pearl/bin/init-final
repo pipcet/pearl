@@ -1,7 +1,7 @@
 #!/bin/sh
 FINALCHOICES="$(cat /persist/finalchoices)"
 if [ x"$FINALCHOICES" = x"" ]; then
-    if [ test -e /persist/root ]; then
+    if [ -e /persist/root ]; then
 	FINALCHOICES="root installer"
     else
 	FINALCHOICES="root debian"
@@ -10,8 +10,9 @@ fi
 linux-init
 while true; do
     for CHOICE in $FINALCHOICES; do
+	echo "$CHOICE" > /persist/finalchoice
 	if [ "$CHOICE" = "root" ]; then
-	    mkdir mnt
+	    mkdir /mnt
 	    mount -t proc proc /proc
 	    mount -t sysfs sys /sys
 	    mount -t devtmpfs dev /dev
@@ -44,19 +45,19 @@ while true; do
 		fi
 		count=$(($count + 1))
 	    done
-	elif [ "$CHOICE" = "debian" ]; then
+	elif [ "$CHOICE" = "installer" ] || [ "$CHOICE" = "debian" ]; then
 	    mkdir /debian
 	    mount -t ramfs debian /debian
-	    test -e /persist/debian.cpio || xzcat /persist/debian.cpio.xz > /persist/debian.cpio
-	    cat /persist/debian.cpio | (cd /debian; cpio -id) && (test -e /debian/init || test -l /debian/init) && exec switch_root /debian /init
-	elif [ "$CHOICE" = "installer" ]; then
-	    mkdir /debian
-	    mount -t ramfs debian /debian
-	    test -e /persist/debian.cpio || xzcat /persist/debian.cpio.xz > /persist/debian.cpio
-	    cat /persist/debian.cpio | (cd /debian; cpio -id) && echo "installer" >> /debian/root/.profile && (test -e /debian/init || test -l /debian/init) && exec switch_root /debian /init
+	    xzcat /persist/debian.cpio.xz | (cd /debian; cpio -id)
+	    cp -a /persist /debian/persist/
+	    cp /bin/debian-init /debian/init
+	    chmod a+x /debian/init
+	    (test -e /debian/init || test -l /debian/init) &&
+		exec switch_root /debian /init
 	elif [ "$CHOICE" = "shell" ]; then
 	    /bin/sh
 	fi
     done
+    rm /persist/finalchoice
     /bin/sh
 done
