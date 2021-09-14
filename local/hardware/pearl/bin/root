@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "$@" >> /persist/root
+echo "$@" > /persist/root
