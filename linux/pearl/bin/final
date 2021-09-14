@@ -3,31 +3,12 @@ rm /commfile
 cp /boot/linux.modules /persist
 cd /
 echo "booting Debian" > /var/help/011-boot-action
-mkdir -p /tmp/debian
-cd /tmp/debian
-echo "uncompressing image" > /var/help/011-boot-action
-xzcat < /persist/debian.cpio.xz | cpio -id
-rm -f init
-cp /bin/debian-init init
 chmod a+x init
-rm -f /persist/debian.cpio.xz
 rm -f /persist/payload
-cp -a /persist persist
-echo "copying modules" > /var/help/011-boot-action
-cp -a /boot/linux.modules .
-echo "building initrd" > /var/help/011-boot-action
-find . | cpio -H newc -o > /persist/debian.cpio
 echo final > /persist/stage
 cd /
-rm -rf /tmp/debian
 egrep -v 'persist' /file.list > /file.list.new
 mv /file.list.new /file.list
 find /persist >> /file.list
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
-if cat /proc/meminfo | egrep '^MemAvailable' | (read DUMMY AMOUNT DUMMY2; [ "$AMOUNT" -lt 4000000 ]); then
-    echo "recompressing initrd (takes a while)" > /var/help/011-boot-action
-    gzip /boot/linux.cpio
-    /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio.gz --command-line="clk_ignore_unused"
-else
-    /bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
-fi
+/bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
