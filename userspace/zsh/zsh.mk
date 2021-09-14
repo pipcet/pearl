@@ -6,7 +6,7 @@ $(BUILD)/zsh/done/build: $(BUILD)/zsh/done/configure
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/zsh/build
 	@touch $@
 
-$(BUILD)/zsh/done/configure: $(BUILD)/zsh/done/copy $(call deps,glibc gcc libgcc)
+$(BUILD)/zsh/done/configure: $(BUILD)/zsh/done/copy $(call deps,glibc gcc libgcc ncurses)
 	(cd $(BUILD)/zsh/build; autoreconf -vif)
 	(cd $(BUILD)/zsh/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
