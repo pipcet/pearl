@@ -30,7 +30,6 @@ $(BUILD)/debian/installer: debian/injected/bin/installer
 $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
 	$(MKDIR) $(BUILD)/debian/cpio.d
 	(cd $(BUILD)/debian/cpio.d; sudo tar x) < $<
-	sudo rm -rf $(BUILD)/debian/cpio.d/var/lib/apt/lists/*
 	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/cpio.d
 	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/cpio.d/bin
 	sudo chown root.root $(BUILD)/debian/cpio.d
