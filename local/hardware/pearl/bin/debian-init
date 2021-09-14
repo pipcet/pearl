@@ -1,6 +1,6 @@
 #!/bin/bash
 /debootstrap/debootstrap --second-stage
-(cd /usr; tar xvf /linux.modules)
+(cd /usr; tar xvf /persist/linux.modules)
 yes x | passwd
 yes | adduser y
 mount -t proc proc proc
@@ -53,7 +53,11 @@ ifconfig eth0 hw ether $MAC_ADDR
 sed -i -e 's/ExecStart.*/ExecStart=-\/sbin\/agetty -n -a root %I \$TERM/' /lib/systemd/system/getty\@.service
 sed -i -e 's/ExecStart.*/ExecStart=\1 getty@ttyGS0.service/' /lib/systemd/system/getty-static
 cp /root/.profile /root/.profile.old
-echo "nmtui" >> /root/.profile
+if [ x"$(cat /persist/finalchoice)" = x"installer" ]; then
+    echo "installer" >> /root/.profile
+else
+    echo "nmtui" >> /root/.profile
+fi
 echo "mv /root/.profile.old /root/.profile" >> /root/.profile
 cat /root/.profile.old >> /root/.profile
 echo N > /sys/module/g_serial/parameters/enable
