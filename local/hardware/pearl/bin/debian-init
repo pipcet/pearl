@@ -1,6 +1,6 @@
 #!/bin/bash
 /debootstrap/debootstrap --second-stage
-(cd /; tar xvf /linux.modules)
+(cd /usr; tar xvf /linux.modules)
 yes x | passwd
 yes | adduser y
 mount -t proc proc proc
