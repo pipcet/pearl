@@ -1,8 +1,8 @@
-build/memdump/bin/macho-to-memdump: local/memdump/macho-to-memdump | build/memdump/bin/ ; $(COPY)
-build/memdump/bin/memdump-to-image: local/memdump/memdump-to-image.c | build/memdump/bin/
-	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) -static -Os -Ibuild/local/memdump -o $@ $<
+$(BUILD)/memdump/bin/macho-to-memdump: local/memdump/macho-to-memdump | $(BUILD)/memdump/bin/ ; $(COPY)
+$(BUILD)/memdump/bin/memdump-to-image: local/memdump/memdump-to-image.c | $(BUILD)/memdump/bin/
+	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) -static -Os -I$(BUILD)/local/memdump -o $@ $<
 
-build/memdump/bin/memdump-to-image: build/local/memdump/boot..h
-build/memdump/bin/memdump-to-image: build/local/memdump/image..h
+$(BUILD)/memdump/bin/memdump-to-image: $(BUILD)/local/memdump/boot..h
+$(BUILD)/memdump/bin/memdump-to-image: $(BUILD)/local/memdump/image..h
 
-$(call pearl-static,build/memdump/bin/memdump-to-image build/memdump/bin/macho-to-memdump,build/memdump)
+$(call pearl-static,$(BUILD)/memdump/bin/memdump-to-image $(BUILD)/memdump/bin/macho-to-memdump,$(BUILD)/memdump)

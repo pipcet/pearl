@@ -21,11 +21,11 @@ userspace-modules += dtc
 
 DTC ?= dtc
 
-build/%.dtb.h: build/%.dtb
+$(BUILD)/%.dtb.h: $(BUILD)/%.dtb
 	(echo "{";  cat $< | od -tx4 --width=4 -Anone -v | sed -e 's/ \(.*\)/\t0x\1,/'; echo "};") > $@
 
-build/%.dts.dtb: build/%.dts
+$(BUILD)/%.dts.dtb: $(BUILD)/%.dts
 	$(DTC) -Idts -Odtb $< > $@.tmp && mv $@.tmp $@
 
-build/%.dtb.dts: build/%.dtb
+$(BUILD)/%.dtb.dts: $(BUILD)/%.dtb
 	$(DTC) -Idtb -Odts $< > $@.tmp && mv $@.tmp $@
