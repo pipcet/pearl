@@ -5,4 +5,6 @@ cat /installer.cpio | (cd /installer; cpio -id)
 (echo "#!/bin/sh -x"; cat /installer/init) > /installer/new-init
 mv /installer/new-init /installer/init
 chmod u+x /installer/init
+mkdir -p /installer/var/log
+touch /installer/var/log/syslog
 systemctl switch-root /installer /init
