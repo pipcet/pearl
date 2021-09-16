@@ -105,7 +105,7 @@ sub dialog_main {
 	 hardware => "Hardware",
 	 info => "Information");
     if (system("head -c 512 /persist/payload | grep -qv '[^\\0]'") == 0 or
-	system("test -e /persist/debian.cpio.xz") == 0) {
+	system("test -e /persist/debian.cpio.zstd") == 0) {
 	unshift @entries, (debian => "Continue to Debian");
 	unshift @entries, (installer => "Install Debian");
     }
