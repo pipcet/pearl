@@ -112,7 +112,7 @@ random-target:
 	 echo build/libuuid/done/install; \
 	 echo build/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
 
-$(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.xz.pack
+$(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.zstd.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@
 
 $(BUILD)/kmutil-script: recovery/bin/kmutil-script
