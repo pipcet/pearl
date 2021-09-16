@@ -2,7 +2,7 @@ DEP_ncurses += $(BUILD)/ncurses/done/install
 $(BUILD)/ncurses/done/install: $(BUILD)/ncurses/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/ncurses/build install
 	$(MKDIR) $(BUILD)/pearl/install/lib/pkgconfig/
-	$(CP) $(BUILD)/pearl/install/lib/aarch64-linux-gnu/pkgconfig/ncurses.pc $(BUILD)/pearl/install/lib/pkgconfig/
+	$(CP) $(BUILD)/pearl/install/lib/aarch64-linux-gnu/pkgconfig/ncurses.pc $(BUILD)/pearl/install/lib/pkgconfig/ || $(CP) $(BUILD)/pearl/install/lib/x86_64-*-linux-gnu/pkgconfig/ncurses.pc $(BUILD)/pearl/install/lib/pkgconfig/ || true
 	@touch $@
 
 $(BUILD)/ncurses/done/build: $(BUILD)/ncurses/done/configure
