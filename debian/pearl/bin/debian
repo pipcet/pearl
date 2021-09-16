@@ -3,11 +3,11 @@ echo "booting Debian" > /var/help/011-boot-action
 mkdir -p /tmp/debian
 cd /tmp/debian
 echo "uncompressing image" > /var/help/011-boot-action
-xzcat < /persist/debian.cpio.xz | cpio -id
+zstd --verbose -d < /persist/debian.cpio.zstd | cpio -id
 rm -f init
 cp /bin/debian-init init
 chmod a+x init
-rm -f /persist/debian.cpio.xz
+rm -f /persist/debian.cpio.zstd
 rm -f /persist/payload
 cp -a /persist persist
 echo "copying modules" > /var/help/011-boot-action
