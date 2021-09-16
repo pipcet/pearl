@@ -3,18 +3,18 @@ echo "booting Debian installer" > /var/help/011-boot-action
 mkdir -p /tmp/debian
 cd /tmp/debian
 echo "uncompressing image" > /var/help/011-boot-action
-xzcat < /persist/debian.cpio.xz | cpio -id
+zstd -d < /persist/debian.cpio.zstd | cpio -id
 rm -f init
 cp /bin/debian-init init
 chmod a+x init
-rm /persist/debian.cpio.xz
+rm /persist/debian.cpio.zstd
 rm -f /persist/payload
 cp -a /persist persist
 echo "copying modules" > /var/help/011-boot-action
 cp -a /boot/linux.modules .
 echo "building initrd" > /var/help/011-boot-action
 find . | cpio -H newc -o > /persist/debian.cpio
-rm -f /persist/debian.cpio.xz
+rm -f /persist/debian.cpio.zstd
 echo installer > /persist/finalchoices
 cd /
 final
