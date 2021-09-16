@@ -53,7 +53,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	(cd $(BUILD)/debian/di-debootstrap/root; sudo git clone $(or $(DIREPO),https://github.com/pipcet/debian-installer))
 	(cd $(BUILD)/debian/di-debootstrap/root/debian-installer; sudo mr checkout)
 	sudo rm -f $(BUILD)/debian/di-debootstrap/init
-	(echo '#!/bin/bash'; \
+	(echo '#!/bin/bash -x'; \
 	echo "export PATH"; \
 	echo "/debootstrap/debootstrap --second-stage"; \
 	echo "/bin/busybox mount -t proc proc proc"; \
