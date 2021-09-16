@@ -81,7 +81,7 @@ build/%: $(PWD)/build/%
 %.xz: %
 	xzcat -z --verbose < $< > $@
 
-%.zst: %
+%.zstd: %
 	zstd -cv < $< > $@
 
 .PHONY: %}
