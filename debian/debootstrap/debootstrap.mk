@@ -39,7 +39,7 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/in
 $(BUILD)/debian.cpio.gz: $(BUILD)/debian.cpio
 	gzip < $< > $@
 
-$(BUILD)/debian.cpio.zst: $(BUILD)/debian.cpio
+$(BUILD)/debian.cpio.zstd: $(BUILD)/debian.cpio
 	zstd -22 --ultra --long --verbose < $< > $@
 
 $(BUILD)/debian.cpio.xz: $(BUILD)/debian.cpio
