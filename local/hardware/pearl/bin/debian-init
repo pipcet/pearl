@@ -1,6 +1,10 @@
 #!/bin/bash
 /debootstrap/debootstrap --second-stage
 (cd /usr; tar xvf /persist/linux.modules)
+depmod -a
+modprobe apple
+echo "switched video modes, delaying for 15 s"
+sleep 15
 yes x | passwd
 yes | adduser y
 mount -t proc proc proc
