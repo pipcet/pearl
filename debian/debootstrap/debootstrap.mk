@@ -65,7 +65,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "modprobe virtio_scsi"; \
 	echo "modprobe sd_mod"; \
 	echo "mknod /dev/vda b 254 0"; \
-	echo "dhclient -v eth0 &"; \
+	echo "dhclient -v eth0"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
 	echo "apt-get -y update"; \
 	echo "apt-get -y dist-upgrade"; \
