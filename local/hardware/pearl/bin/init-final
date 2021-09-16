@@ -49,7 +49,7 @@ while true; do
 	    mkdir /debian
 	    mount -t ramfs debian /debian
 	    echo "uncompressing Debian filesystem"
-	    xzcat /persist/debian.cpio.xz | (cd /debian; cpio -id)
+	    zstd --verbose -d < /persist/debian.cpio.zstd | (cd /debian; cpio -id)
 	    cp -a /persist /debian/persist/
 	    cp /bin/debian-init /debian/init
 	    chmod a+x /debian/init
