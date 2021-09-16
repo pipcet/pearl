@@ -7,6 +7,7 @@ $(BUILD)/screen/done/build: $(BUILD)/screen/done/configure
 	@touch $@
 
 $(BUILD)/screen/done/configure: $(BUILD)/screen/done/copy $(call deps,glibc ncurses)
+	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) autoreconf --install)
 	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
