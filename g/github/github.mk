@@ -53,7 +53,7 @@ $(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
 	curl -sSL https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/tags/latest | jq '.[.tag_name,.id] | .[]' | while read tag; do read id; echo $$id > $(BUILD)/github-releases/$$tag; done
 	ls -l $(BUILD)/github-releases/
 
-%{release}: .github-init | g/github/release/
+%{upload-release}: .github-init | g/github/release/
 	while ! test -e $(BUILD)/github-releases/'"'"$*"'"'; do sleep 10; $(MAKE) $(BUILD)/github-releases{list}; done
 	for name in $$(cd $(BUILD)/release; ls *); do for id in $$(jq ".[] | if .name == \"$$name\" then .id else 0 end" < github/assets/$*.json); do [ $$id != "0" ] && curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/assets/$$id"; echo; done; done
 	(for name in $(BUILD)/release/*; do bname=$$(basename "$$name"); curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/$$(cat $(BUILD)/github-releases/\"$*\")/assets?name=$$bname" --upload-file $$name; echo; done)
@@ -62,7 +62,7 @@ $(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
 	this_release_date="$$(date --iso)"; \
 	node ./g/github/release.js $$this_release_date $$this_release_date > github/release.json; \
 	curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases" --data '@github/release.json'; \
-	$(MAKE) $$this_release_date{release}
+	$(MAKE) $$this_release_date{upload-release}
 
 %{checkout}:
 	g/bin/locked --lockfile git.lock git submodule update --depth=1 --single-branch --init --recursive $*
