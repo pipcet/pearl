@@ -56,6 +56,8 @@ jobs:
     - run: make -j13 build/grub/done/install
     - run: make -j13 build/u-boot/done/install
     - run: make -j13 build/userspace.tar
+    - run: make -j13 build/linux/linux.image
+    - run: make -j13 build/linux/stage2.image
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image.macho
     - run: cp build/linux/pearl.image.macho build/pearl.macho
