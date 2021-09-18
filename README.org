@@ -10,11 +10,9 @@ Please consider that this is experimental software and I'm unable to give warran
 
 * What?
 
-We intend to distribute two Mach-O files, which can be installed using =kmutil= on an M1-based MacOS machine and will start a usable Linux kernel, in addition to being able to do other things. The small distribution assumes that a Linux root file system has already been set up, the large distribution doesn't and includes a minimal [[https://debian.org][Debian]] root file system.
+We distribute a (rather large) Perl script, which can be installed on an M1-based macOS machine in Recovery Mode and which starts a usable Linux kernel, in addition to being able to do other things. The distribution includes a minimal [[https://debian.org][Debian]] root file system and a copy of the Debian installer.
 
-Unfortunately, the Debian file system distribution is currently unavailable, so you have to use an older one.
-
-The kernel is based on the work done by [[https://corellium.com][Corellium]], but based on and including drivers upstreamed by the [[https://github.com/AsahiLinux][Asahi Linux]] project. Hopefully, it will also include further drivers and features absent from the other two projects.
+The kernel uses the work done by [[https://corellium.com][Corellium]], but based on and including drivers upstreamed by the [[https://github.com/AsahiLinux][Asahi Linux]] project. Hopefully, it will also include further drivers and features absent from the other two projects.
 
 ** Differences
 
@@ -62,7 +60,7 @@ The current status is that Pearl is a usable everyday desktop system, including 
 
 ** Testing
 
-Testers are desperately wanted! Please contact me at =pipcet@gmail.com= if you have M1 hardware and want to try Pearl.
+Testers wanted! Please contact me at =pipcet@gmail.com= if you have M1 hardware and want to try Pearl.
 
 * How?
 
