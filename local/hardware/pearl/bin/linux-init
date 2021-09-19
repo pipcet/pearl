@@ -2,6 +2,7 @@
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t debugfs debug sys/kernel/debug
+sleep 3
 cd /sys/kernel/debug/kvbox/23e400000.smc_asc:smc_asc_smc@20/gP0d-ffffffff
 echo -ne '\x01\x00\x00\x00' > value
 cd /sys/bus/platform/drivers/pcie-apple
