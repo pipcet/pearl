@@ -1290,6 +1290,45 @@ if ($ARGV[0] eq "--help") {
     my $bootargs;
     run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
     write_file($ARGV[1], propertize_bootargs($bootargs)) or die;
+} elsif ($ARGV[0] eq "permallocs") {
+    my $fh;
+    open $fh, "/sys/kernel/debug/permallocs/permallocs";
+    my %reserved;
+    while (<$fh>) {
+	chomp;
+	if (/^reserved: <([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*)>;?$/) {
+	    my ($addr_lo, $addr_hi, $len_lo, $len_hi) =
+		(hex $1, hex $2, hex $3, hex $4);
+	    my $addr = ($addr_hi << 32) + $addr_lo;
+	    my $len = ($len_hi << 32) + $len_lo;
+	    $reserved{$addr} = $addr + $len;
+	} elsif (/^([0-9a-f]*)\.(.*?): (.*?);?$/) {
+	    print "soc.$2\@$1.$3\n";
+	}
+    }
+
+    my $didsomething = 1;
+    while ($didsomething) {
+	$didsomething = 0;
+	for my $addr (keys %reserved) {
+	    my $eaddr = $reserved{$addr};
+	    if ($reserved{$eaddr}) {
+		$reserved{$addr} = $reserved{$eaddr};
+		delete $reserved{$eaddr};
+		$didsomething = 1;
+	    }
+	}
+    }
+    for my $addr (sort { $a <=> $b } keys %reserved) {
+	my $haddr = sprintf("%016x", $addr);
+	my $haddr_hi = substr($haddr, 0, 8);
+	my $haddr_lo = substr($haddr, 8);
+	my $shaddr = sprintf("%x", $addr);
+	my $hlen = sprintf("%016x", $reserved{$addr} - $addr);
+	my $hlen_hi = substr($hlen, 0, 8);
+	my $hlen_lo = substr($hlen, 8);
+	print "reserved-memory.fw_area\@$shaddr.reg = <0x$haddr_hi 0x$haddr_lo 0x$hlen_hi 0x$hlen_lo>\n";
+    }
 } else {
     usage();
     exit(1);
