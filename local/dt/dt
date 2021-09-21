@@ -1302,6 +1302,12 @@ if ($ARGV[0] eq "--help") {
 	    my $addr = ($addr_hi << 32) + $addr_lo;
 	    my $len = ($len_hi << 32) + $len_lo;
 	    $reserved{$addr} = $addr + $len;
+	} elsif (/^spin-table: <([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*)>;?$/) {
+	    print "spin-table.compatible = \"spin-table\"\n";
+	    print "spin-table.reg = <0x$2 0x$1 0x$4 0x$3>\n";
+	} elsif (/^spin-table: (.*?);?$/) {
+	    print "spin-table.compatible = \"spin-table\"\n";
+	    print "spin-table.reg = $1\n";
 	} elsif (/^([0-9a-f]*)\.(.*?): (.*?);?$/) {
 	    print "soc.$2\@$1.$3\n";
 	}
