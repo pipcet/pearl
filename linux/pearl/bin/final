@@ -11,4 +11,4 @@ egrep -v 'persist' /file.list > /file.list.new
 mv /file.list.new /file.list
 find /persist >> /file.list
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
-/bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused maxcpus=1"
+/bin/kexec -fix /boot/linux.image --dtb=/sys/firmware/fdt --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
