@@ -55,41 +55,15 @@ jobs:
     - run: make -j13 build/m1n1/done/install
     - run: make -j13 build/grub/done/install
     - run: make -j13 build/u-boot/done/install
-    - run: rm -rf build/binutils-gdb
-    - run: rm -rf build/toolchain.tar
-    - run: rm -rf build/glibc
-    - run: rm -rf build/gcc
-    - run: rm -rf build/ncurses
-    - run: rm -rf build/dialog
-    - run: rm -rf build/screen
-    - run: rm -rf build/procps
-    - run: rm -rf build/busybox
-    - run: rm -rf build/kexec-tools
-    - run: rm -rf build/emacs
-    - run: rm -rf build/perl
-    - run: rm -rf build/IPC-Run
-    - run: rm -rf build/slurp
-    - run: rm -rf build/libnl
-    - run: rm -rf build/memtool
-    - run: rm -rf build/libuuid
-    - run: rm -rf build/json-c
-    - run: rm -rf build/popt
-    - run: rm -rf build/libblkid
-    - run: rm -rf build/libaio
-    - run: rm -rf build/lvm2
-    - run: rm -rf build/openssl
-    - run: rm -rf build/cryptsetup
-    - run: rm -rf build/dtc
-    - run: rm -rf build/wpa_supplicant
-    - run: rm -rf build/userspace
-    - run: rm -rf build/barebox
-    - run: rm -rf build/m1n1
-    - run: rm -rf build/grub
-    - run: rm -rf build/u-boot
+    - run: rm -rf build/gcc/libgcc
+    - run: rm -rf build/gcc/gcc
     - run: make -j13 build/linux/linux.image
     - run: make -j13 build/linux/stage2.image
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image.macho
+    - run: rm -rf build/linux/linux
+    - run: rm -rf build/linux/pearl
+    - run: rm -rf build/linux/stage2
     - run: cp build/linux/pearl.image.macho build/pearl.macho
     - run: make -j3 build/pearl.macho{release}
     - run: git submodule update --init debian/debootstrap
