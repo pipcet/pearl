@@ -73,7 +73,7 @@ $(BUILD)/pearl/done/install/mkdir: | $(BUILD)/pearl/done/install/ $(BUILD)/pearl
 	@touch $@
 
 build/%: $(PWD)/build/%
-	@echo "redirecting $*"
+	@true
 
 %.dts.h: %.dts dtc/dtc-relocs
 	$(CC) -E -x assembler-with-cpp -nostdinc $< | dtc/dtc-relocs > $@
