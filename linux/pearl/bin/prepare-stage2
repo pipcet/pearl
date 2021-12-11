@@ -15,13 +15,16 @@ echo "$PEARL" >> /persist/stage1.zsh
 done
 dt tunables /boot/adt /boot/stage2.dtb /boot/tunables.dtp
 dt dtb-to-dtp /boot/stage2.dtb /boot/fixed.dtp
+cp /boot/fixed.dtp /boot/fixed-stage2.dtp
 grep 'memory' /boot/fdt.dtb.dtp > /boot/resmem.dtp
 [ -e /persist/stage1.zsh ] && zsh /persist/stage1.zsh
-cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
+cat /boot/fixed-stage2.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage2.dtp
 dt dtp-to-dtb /boot/stage2.dtp /boot/stage2.dtb
 dt dtb-to-dtp /boot/stage2.dtb /boot/stage2.dtb.dtp
-cp /boot/stage2.dtb /boot/stage3.dtb
+cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage3.dtp
+dt dtp-to-dtb /boot/stage3.dtp /boot/stage3.dtb
+dt dtb-to-dtp /boot/stage3.dtb /boot/stage3.dtb.dtp
 
-cp boot/tunables.dtp boot/resmem.dtp boot/bootargs.dtp boot/adt persist
+cp boot/tunables.dtp boot/resmem.dtp boot/bootargs.dtp boot/adt boot/stage2.dtp boot/stage2.dtb boot/stage2.dtb.dtp boot/stage3.dtp boot/stage3.dtb boot/stage3.dtb.dtp persist
 # cat /boot/resmem.dtp
 # cat /boot/stage2.dtb.dtp | while read REPLY; do echo $REPLY; sleep .1; done
