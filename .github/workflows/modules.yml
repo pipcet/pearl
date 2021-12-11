@@ -29,9 +29,11 @@ jobs:
     - run: make -j13 build/linux/done/headers/install
     - run: make -j13 build/glibc/done/headers/install
     - run: make -j13 build/gcc/done/gcc/install
+    - run: rm -rf build/gcc/gcc
     - run: make -j13 build/toolchain.tar
     - run: make -j13 build/glibc/done/glibc/install
     - run: make -j13 build/gcc/done/libgcc/install
+    - run: rm -rf build/gcc/libgcc
     - run: make -j13 build/ncurses/done/install
     - run: make -j13 build/dialog/done/install
     - run: make -j13 build/screen/done/install
@@ -62,6 +64,9 @@ jobs:
     - run: make -j13 build/userspace.tar
     - run: make -j13 build/linux/pearl.image
     - run: make -j13 build/linux/pearl.image.macho
+    - run: rm -rf build/linux/linux
+    - run: rm -rf build/linux/pearl
+    - run: rm -rf build/linux/stage2
     - run: make -j13 build/userspace.tar{artifact}
     - run: make -j13 build/userspace.tar.zstd{daily}
       env:
