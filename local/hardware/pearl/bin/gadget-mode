@@ -3,13 +3,13 @@
 for my $arg (@ARGV) {
     my $fh;
     my $ofh;
-    open $fh, "</boot/fixed.dtp";
-    open $ofh, ">/boot/fixed.dtp.new";
+    open $fh, "</boot/fixed-stage2.dtp";
+    open $ofh, ">/boot/fixed-stage2.dtp.new";
     while (<$fh>) {
 	chomp;
 	s/^(soc\.usb${arg}\@(.*?)) = \"(dual-role|host)\"$/$1 = "gadget"/;
 	s/^(soc(.*?)hpm${arg}\@(.*?)) = \"(dual-role|host)\"$/$1 = "gadget"/;
 	print $ofh "$_\n";
     }
-    system("mv /boot/fixed.dtp.new /boot/fixed.dtp");
+    system("mv /boot/fixed-stage2.dtp.new /boot/fixed-stage2.dtp");
 }
