@@ -2,6 +2,7 @@
 tar cf wifi.tar /usr/share/firmware/wifi
 bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho
 dd if=/dev/zero bs=1024 count=4 >> pearl-debian.macho
+EXISTING_VOLUME="Macintosh HD"
 while true; do
     echo "Available boot parameters (separate with ';', RET to keep):"
     echo "  no4k               disable automatic switch to 4k resolution"
@@ -15,14 +16,22 @@ while true; do
     echo "Old boot parameters: $EXISTING"
     (perl ./readline.pm "New boot parameters: " "$EXISTING" || read -e -p "New boot parameters: " PARAMS; echo "$PARAMS") > params < /dev/tty
     PARAMS="$(cat params)"
+    echo "Old volume to install: $EXISTING_VOLUME"
+    echo "Available volumes:"
+    (cd /Volumes; ls -l [A-Za-z]*)
+    echo
+    (perl ./readline.pm "New volume to install: " "$EXISTING_VOLUME" || read -e -p "New Volume to install: " VOLUME; echo "$VOLUME") > volume < /dev/tty
+    VOLUME="$(cat volume|sed -e 's/^\/Volumes\///g')"
+    echo
     echo
     echo "New boot parameters: $PARAMS"
+    echo "New volume to install: $VOLUME"
     echo
     echo "Please abort with Ctrl-C if this is incorrect."
     echo
     break;
 done
-if kmutil configure-boot -c pearl-debian.macho -v /Volumes/Macintosh\ HD < /dev/stdout; then
+if kmutil configure-boot -c pearl-debian.macho -v /Volumes/"$VOLUME" < /dev/stdout; then
     if [ -z "$PARAMS" ]; then
 	nvram -d pearl
     else
