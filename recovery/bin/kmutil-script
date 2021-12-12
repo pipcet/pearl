@@ -18,7 +18,7 @@ while true; do
     nvram pearl-volume > pearl-volume
     read DUMMY EXISTING_VOLUME < pearl-volume
     echo "Old volume to install: $EXISTING_VOLUME"
-    if [ -z "$EXISTING_VOLUME "]; then
+    if [ -z "$EXISTING_VOLUME" ]; then
 	EXISTING_VOLUME="Macintosh HD"
     fi
     echo "Available volumes:"
