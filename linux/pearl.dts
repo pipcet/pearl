@@ -72,7 +72,7 @@
 
 		/* You might think the minimal kernel does not require
 		 * an interrupt controller, and you'd be right: in ARM
-		 * terminology, the minimal kernel uses only FIQs, no *
+		 * terminology, the minimal kernel uses only FIQs, no
 		 * IRQs. However, FIQ handling is currently done in the
 		 * AIC driver; it shouldn't be, and this shouldn't be
 		 * here. */
@@ -97,7 +97,7 @@
 		reg = REG(bootargs->framebuffer.phys_base,
 		          bootargs->framebuffer.stride *
 			  bootargs->framebuffer.height);
-		format = "x8r8g8b8";
+		format = "a8r8g8b8";
 		height = INT(bootargs->framebuffer.height);
 		stride = INT(bootargs->framebuffer.stride);
 		width = INT(bootargs->framebuffer.width);
@@ -113,26 +113,8 @@
 		/* The area at the end of memory. Not actually at 9e0000000. */
 		fw_area@9e0000000 {
 		        reg = REG(MEMTOP,
-				  bootargs->framebuffer.phys_base - MEMTOP);
-			no-map;
-		};
-
-		fw_area@9e8000000 {
-		        reg = REG(bootargs->framebuffer.phys_base,
-			          bootargs->framebuffer.stride *
-				  bootargs->framebuffer.height);
-			no-map;
-		};
-
-		fw_area@9f0000000 {
-			reg = REG(bootargs->framebuffer.phys_base +
-			          (bootargs->framebuffer.stride *
-				   bootargs->framebuffer.height),
-				  bootargs->mem_size_actual + 0x800000000
-				  - (bootargs->framebuffer.phys_base +
-				     (bootargs->framebuffer.stride *
-				      bootargs->framebuffer.height))
-				      -	0x100000);
+			          bootargs->mem_size_actual + 0x800000000
+				   - 0x100000 - MEMTOP);
 			no-map;
 		};
 
