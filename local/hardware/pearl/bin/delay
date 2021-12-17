@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "$@" > /persist/timeout
+# echo "$@" > /persist/timeout

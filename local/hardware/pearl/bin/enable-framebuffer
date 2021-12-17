@@ -1,0 +1,19 @@
+#!/bin/bash
+if test -e /nofb; then
+    rm /nofb
+    exit
+fi
+grep framebuffer /boot/linux.dtp
+touch /interactive # XXX, for testing
+tar xvf /boot/stage2.modules
+depmod -a
+modprobe apple_mailbox ; sleep 1
+modprobe apple_asc_mgmt ; sleep 1
+modprobe apple_asc_panic ; sleep 1
+modprobe apple_asc_syslog ; sleep 1
+modprobe apple_asc_iorpt ; sleep 1
+modprobe apple_asc_oslog; sleep 1
+modprobe apple_asc_dcp ; sleep 1
+modprobe apple-dcp-display & sleep 1
+modprobe apple-dcp-fb & sleep 1
+egrep -v '\.dcp'< /boot/linux.dtp > /boot/linux.dtp.new
