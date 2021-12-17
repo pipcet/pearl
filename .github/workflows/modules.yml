@@ -2,9 +2,9 @@ name: modules
 on:
   workflow_dispatch:
   push:
-    branches: [ main, restructure ]
+    branches: [ main, dcp ]
   pull_request:
-    branches: [ main, restructure ]
+    branches: [ main, dcp ]
 jobs:
   all:
     name: all
