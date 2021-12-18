@@ -1335,6 +1335,21 @@ if ($ARGV[0] eq "--help") {
 	my $hlen_lo = substr($hlen, 8);
 	print "reserved-memory.fw_area\@$shaddr.reg = <0x$haddr_hi 0x$haddr_lo 0x$hlen_hi 0x$hlen_lo>\n";
     }
+} elsif ($ARGV[0] eq "mem-min") {
+    my $fh;
+    open $fh, "/sys/kernel/debug/permallocs/permallocs";
+    my $mem_min = 0x800000000;
+    while (<$fh>) {
+	chomp;
+	if (/^reserved: <([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*)>;?$/) {
+	    my ($addr_lo, $addr_hi, $len_lo, $len_hi) =
+		(hex $1, hex $2, hex $3, hex $4);
+	    my $addr = ($addr_hi << 32) + $addr_lo;
+	    my $len = ($len_hi << 32) + $len_lo;
+	    $mem_min = $addr + $len if $mem_min < $addr + $len;
+	}
+    }
+    print "$mem_min\n";
 } else {
     usage();
     exit(1);
