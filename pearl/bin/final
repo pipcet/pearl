@@ -18,4 +18,4 @@ mv /boot/linux.dtp.new /boot/linux.dtp
 # mv /boot/linux.dtp.new /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
-/bin/kexec -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
+/bin/kexec --mem-min=`dt mem-min` -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
