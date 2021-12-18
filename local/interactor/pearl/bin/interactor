@@ -50,8 +50,6 @@ EOF
 
 echo 4 5 4 4 > /proc/sys/kernel/printk
 
-rm /dev/tty
-ln -sf tty1 /dev/tty
 screen -c .screenrc
 sh
 
