@@ -1,0 +1,34 @@
+#!/bin/bash
+if ! grep -q 'dance' /persist/dcp.dtp; then
+    exit
+fi
+if test -e /nofb; then
+    rm /nofb
+    exit
+fi
+grep framebuffer /boot/linux.dtp
+touch /interactive # XXX, for testing
+tar xvf /boot/stage2.modules
+depmod -a
+echo 0 > /sys/bus/platform/drivers_autoprobe
+modprobe apple_mailbox ; sleep 1
+echo 231c08000.dcp_mbox > /sys/bus/platform/drivers/apple-mailbox/bind
+modprobe apple_asc_mgmt ; sleep 1
+echo 231c00000.remoteproc > /sys/bus/platform/drivers/apple-asc/bind
+echo 231c00000.remoteproc:dcp_asc_mgmt@0 > /sys/bus/platform/drivers/apple-asc-mgmt/bind
+modprobe apple_asc_panic ; sleep 1
+echo 231c00000.remoteproc:dcp_asc_panic@1 > /sys/bus/platform/drivers/apple-asc-panic/bind
+modprobe apple_asc_syslog ; sleep 1
+echo 231c00000.remoteproc:dcp_asc_syslog@2 > /sys/bus/platform/drivers/apple-asc-syslog/bind
+modprobe apple_asc_iorpt ; sleep 1
+echo 231c00000.remoteproc:dcp_asc_ioreport@4 > /sys/bus/platform/drivers/apple-asc-ioreport/bind
+modprobe apple_asc_oslog; sleep 1
+echo 231c00000.remoteproc:dcp_asc_oslog@8 > /sys/bus/platform/drivers/apple-asc-oslog/bind
+modprobe apple_asc_dcp ; sleep 1
+echo 231c00000.remoteproc:dcp_asc_dcp@37 > /sys/bus/platform/drivers/apple-asc-dcp/bind
+modprobe apple-dcp-display & sleep 1
+echo 231c00000.remoteproc:dcp_asc_dcp@37:apple_dcp > /sys/bus/platform/drivers/apple-dcp/bind
+modprobe apple-dcp-fb & sleep 1
+echo 231c00000.remoteproc:dcp_asc_dcp@37:apple_dcp:apple_dcp_fb > /sys/bus/platform/drivers/apple-dcp-fb/bind
+echo 231c00000.remoteproc:dcp_asc_dcp@37:apple_dcp:apple_dcp_display > /sys/bus/platform/drivers/apple-dcp-display/bind
+egrep -v '\.dcp'< /boot/linux.dtp > /boot/linux.dtp.new
