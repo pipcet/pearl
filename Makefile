@@ -124,4 +124,6 @@ build/pearl.pl:
 $(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
+$(call pearl-static,$(wildcard $(PWD)/pearl/bin/* $(PWD)/pearl/init),$(PWD)/pearl)
+
 .SECONDARY: %/ %
