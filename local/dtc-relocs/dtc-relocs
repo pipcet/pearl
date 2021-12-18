@@ -29,9 +29,13 @@ my $fdt2;
 run(["dtc", "-Idts", "-Odtb"], \$data1, \$fdt1) or die;
 run(["dtc", "-Idts", "-Odtb"], \$data2, \$fdt2) or die;
 
+# print "/* " . $fdt1 . " */\n";
 die unless length($fdt1) == length($fdt2);
 
 my %relocs;
+
+$fdt1 .= "\0" while (length($fdt1) % 4);
+$fdt2 .= "\0" while (length($fdt2) % 4);
 
 $count = 0;
 for my $i (0 .. length($fdt1) - 1) {
