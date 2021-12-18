@@ -102,6 +102,7 @@
 		stride = INT(bootargs->framebuffer.stride);
 		width = INT(bootargs->framebuffer.width);
 		status = "okay";
+		dcp-dance = INT(!framebuffer_enabled);
 	};
 
 	/* Technically, these areas shouldn't overlap. */
