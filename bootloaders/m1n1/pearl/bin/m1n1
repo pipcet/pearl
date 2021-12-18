@@ -1,4 +1,3 @@
 #!/bin/sh
 macho-to-memdump /boot/m1n1.macho
-x2r10g10b10
 kexec -fix --dtb=/sys/firmware/fdt image
