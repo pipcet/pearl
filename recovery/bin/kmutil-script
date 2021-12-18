@@ -35,7 +35,11 @@ while true; do
     echo
     break;
 done
-if kmutil configure-boot -c pearl-debian.macho -v /Volumes/"$VOLUME" < /dev/stdout; then
+KMUTIL_OPTS=""
+if kmutil help configure-boot 2>&1 | grep -q -- --raw; then
+    KMUTIL_OPTS="--raw --entry-point 8192 --lowest-virtual-address 0"
+fi
+if kmutil configure-boot -c pearl-debian.macho -v /Volumes/"$VOLUME" $KMUTIL_OPTS < /dev/stdout; then
     if [ -z "$PARAMS" ]; then
 	nvram -d pearl
     else
