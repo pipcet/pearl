@@ -58,11 +58,8 @@ sleep 1
  echo 382280000.dwc3 > unbind;
  sleep 1
  echo 382280000.dwc3 > bind)
-#while true; do
-#    tee /dev/console < /dev/ttyGS0 | sh | tee /dev/console > /dev/ttyGS0
-#done &
-(while true; do getty -n -l bash 0 /dev/ttyGS0; sleep 1; done) &
-(while true; do getty -n -l bash 0 /dev/ttyGS1; sleep 1; done) &
+(while true; do stty -F /dev/ttyGS0 crtscts; getty -w -h -n -l bash 0 /dev/ttyGS0; sleep 1; done) &
+(while true; do stty -F /dev/ttyGS1 crtscts; getty -w -h -n -l bash 0 /dev/ttyGS1; sleep 1; done) &
 dd if=/dev/zero of=/commfile bs=1M count=1024 2>/dev/null
 dd if=/sys/firmware/fdt of=/commfile conv=notrunc 2>/dev/null
 echo /commfile > /sys/kernel/config/usb_gadget/G1/functions/mass_storage.usb0/lun.0/file
