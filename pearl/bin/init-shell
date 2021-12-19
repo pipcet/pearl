@@ -8,31 +8,31 @@ mount -t debugfs debug /sys/kernel/debug
 cp modules.tar /persist
 cd /
 tar xvf /boot/linux.modules
-sleep 1; memtool md 0xbfff80000
-sleep 1; memtool md 0xbfff84000
-sleep 1; memtool md 0xbfff88000
-sleep 10
-sleep 1; memtool mw -q 0x231c08800 0x0060000000000220 0
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw -q 0x231c08800 0x00200001000b000b 0
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw -q 0x231c08800 0x008000000000001f 0
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw -q 0x231c08800 0x0088000100803fff 0
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw -q 0x231c08800 0x0050003700000002 0
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw -q 0x231c08800 0x000f001f00000040 0x37
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool mw $((0xbe6194000+0x1f0000)) 0x41333532 8 4 15 0 0
-sleep 1; memtool md $((0xbe6194000+0x1f0000))
-sleep 1; memtool mw -q 0x231c08800 0x0000001800000202 0x37
-sleep 1; memtool md $((0xbe6194000+0x1de000))
-sleep 1; memtool md -q 0x231c08830+16
-sleep 1; memtool md -q $((0xbe6194000+0x1de000))
+# sleep 1; memtool md 0xbfff80000
+# sleep 1; memtool md 0xbfff84000
+# sleep 1; memtool md 0xbfff88000
+# sleep 10
+# sleep 1; memtool mw -q 0x231c08800 0x0060000000000220 0
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw -q 0x231c08800 0x00200001000b000b 0
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw -q 0x231c08800 0x008000000000001f 0
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw -q 0x231c08800 0x0088000100803fff 0
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw -q 0x231c08800 0x0050003700000002 0
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw -q 0x231c08800 0x000f001f00000040 0x37
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool mw $((0xbe6194000+0x1f0000)) 0x41333532 8 4 15 0 0
+# sleep 1; memtool md $((0xbe6194000+0x1f0000))
+# sleep 1; memtool mw -q 0x231c08800 0x0000001800000202 0x37
+# sleep 1; memtool md $((0xbe6194000+0x1de000))
+# sleep 1; memtool md -q 0x231c08830+16
+# sleep 1; memtool md -q $((0xbe6194000+0x1de000))
 cp /boot/linux.modules /persist
 while true; do
     ROOT=$(cat /proc/cmdline | sed -e 's/^.*\broot=\([^ ]*\).*$/\1/')
