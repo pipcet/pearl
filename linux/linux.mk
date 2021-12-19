@@ -8,7 +8,7 @@ $(BUILD)/linux/debian.config: linux/pearl.config
 $(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
-$(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/%.image.d/
+$(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
 	echo "#!/bin/sh" > $@
 	echo "echo shell > persist/stage" >> $@
 	echo "find persist >> /file.list" >> $@
