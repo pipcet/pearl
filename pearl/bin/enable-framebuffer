@@ -1,5 +1,5 @@
 #!/bin/bash
-if ! grep -q 'dance' /persist/dcp.dtp; then
+if ! grep -q 'dance = <0x01>' /persist/dcp.dtp; then
     exit
 fi
 if test -e /nofb; then
