@@ -1,0 +1,21 @@
+#!/bin/sh
+rm /commfile
+cp /boot/linux.modules /persist
+cd /
+echo "booting sendfile in final stage" > /var/help/011-boot-action
+chmod a+x init
+rm -f /persist/payload
+echo final > /persist/stage
+cd /
+egrep -v 'persist' /file.list > /file.list.new
+mv /file.list.new /file.list
+find /persist >> /file.list
+dt dtb-to-dtp /boot/linux.dtb /boot/linux.dtp
+dt permallocs >> /boot/linux.dtp
+# egrep -v '\.dcp' < /boot/linux.dtp > /boot/linux.dtp.new
+mv /boot/linux.dtp.new /boot/linux.dtp
+# sed -e 's/host\|dual-role/gadget/g' < /boot/linux.dtp > /boot/linux.dtp.new
+# mv /boot/linux.dtp.new /boot/linux.dtp
+dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
+cat /file.list | cpio -H newc -o > /boot/linux.cpio
+/bin/kexec --mem-min=`dt mem-min` -fix "$1" --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
