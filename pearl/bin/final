@@ -13,7 +13,7 @@ find /persist >> /file.list
 dt dtb-to-dtp /boot/linux.dtb /boot/linux.dtp
 dt permallocs >> /boot/linux.dtp
 # egrep -v '\.dcp' < /boot/linux.dtp > /boot/linux.dtp.new
-mv /boot/linux.dtp.new /boot/linux.dtp
+# mv /boot/linux.dtp.new /boot/linux.dtp
 # sed -e 's/host\|dual-role/gadget/g' < /boot/linux.dtp > /boot/linux.dtp.new
 # mv /boot/linux.dtp.new /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
