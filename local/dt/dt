@@ -1338,7 +1338,7 @@ if ($ARGV[0] eq "--help") {
 } elsif ($ARGV[0] eq "mem-min") {
     my $fh;
     open $fh, "/sys/kernel/debug/permallocs/permallocs";
-    my $mem_min = 0x800000000;
+    my $mem_min = 0x8c0000000;
     while (<$fh>) {
 	chomp;
 	if (/^reserved: <([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*) ([0-9a-f]*)>;?$/) {
