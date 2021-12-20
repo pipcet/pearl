@@ -100,6 +100,4 @@ $(BUILD)/linux/done/checkout: | $(BUILD)/linux/done/
 	$(MAKE) linux/linux{checkout}
 	@touch $@
 
-$(call pearl-static,$(wildcard $(PWD)/linux/pearl/bin/*),$(PWD)/linux/pearl)
-
 {non-intermediate}: $(BUILD)/linux/done/headers/copy $(BUILD)/linux/done/headers/configure
