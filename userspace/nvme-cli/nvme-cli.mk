@@ -7,7 +7,7 @@ $(BUILD)/nvme-cli/done/build: $(BUILD)/nvme-cli/done/copy $(call deps,glibc libb
 	@touch $@
 
 $(BUILD)/nvme-cli/done/copy: $(BUILD)/nvme-cli/done/checkout | $(BUILD)/nvme-cli/done/ $(BUILD)/nvme-cli/build/
-	$(CP) -aus $(PWD)/userspace/nvme-cli/nvme-cli/* $(BUILD)/nvme-cli/build/
+	$(CP) -naus $(PWD)/userspace/nvme-cli/nvme-cli/* $(BUILD)/nvme-cli/build/
 	@touch $@
 
 $(BUILD)/nvme-cli/done/checkout: | $(BUILD)/nvme-cli/done/
