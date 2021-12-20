@@ -19,8 +19,14 @@ for i in $(seq 1 16); do
     echo 681008000.dart > bind
     sleep .1
 done
-echo 682008000.dart > bind
-echo 683008000.dart > bind
+for i in $(seq 1 16); do
+    echo 682008000.dart > bind
+    sleep .1
+done
+for i in $(seq 1 16); do
+    echo 683008000.dart > bind
+    sleep .1
+done
 cd /sys/bus/pci/drivers/tg3
 DEV="$(ls -d 0*)"
 echo $DEV > unbind
