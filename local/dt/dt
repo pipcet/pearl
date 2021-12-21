@@ -1167,7 +1167,7 @@ sub propertize_bootargs {
 	$fb_width, $fb_height, $fb_depth, $machine_type, $resvd1,
 	$dtree_virt, $dtree_size, $cmdline) =
 	unpack "LLQQQQQQQQQQLLQLZ", $bootargs;
-    my $div = $opts->{lowres} ? 2 : 1:
+    my $div = $opts->{lowres} ? 2 : 1;
 
     $fb_stride /= $div;
     $fb_width /= $div;
