@@ -8,7 +8,7 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 
 %.image.sendfile: %.image %.image.d/sendfile
 	$(MKDIR) $@.d
-	$(CP) $< $@.d
+	$(CP) $(filter-out $*.image.d/sendfile,$^) $@.d
 	$(CP) -a $*.image.d/sendfile $@.d/script
 	tar -C $@.d -c . | gzip -1 > $@
 
