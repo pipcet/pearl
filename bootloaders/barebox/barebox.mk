@@ -1,6 +1,6 @@
 bootloaders/barebox/barebox{menuconfig}: bootloaders/barebox/barebox.config | $(BUILD)/barebox/
 	$(CP) $< $(BUILD)/barebox/.config
-	$(MAKE) -C submodule/barebox ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
+	$(MAKE) -C bootloaders/barebox/barebox ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/barebox/.config $<
 
 barebox/barebox{oldconfig}: barebox/barebox.config stamp/barebox | $(BUILD)barebox/
@@ -8,8 +8,21 @@ barebox/barebox{oldconfig}: barebox/barebox.config stamp/barebox | $(BUILD)bareb
 	$(MAKE) -C submodule/barebox oldconfig ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	$(CP) $(BUILD)/barebox/.config $<
 
-$(BUILD)/barebox.image.gz: $(BUILD)/barebox/done/build
-	gzip < $(BUILD)/barebox/build/barebox.bin > $@
+$(BUILD)/barebox.image: $(BUILD)/barebox/done/build
+	$(CP) $(BUILD)/barebox/build/images/barebox-dt-2nd.img $@
+
+$(BUILD)/barebox.dtb: $(BUILD)/barebox/done/build
+	$(CP) $(BUILD)/barebox/build/arch/arm/dts/apple-m1-j274.dtb $@
+
+$(BUILD)/barebox.image.sendfile: $(BUILD)/barebox.dtb
+
+$(BUILD)/barebox.image.d/sendfile: $(BUILD)/barebox/done/build | $(BUILD)/barebox.image.d/
+	echo "#!/bin/sh" > $@
+	echo "echo shell > persist/stage" >> $@
+	echo "find persist >> /file.list" >> $@
+	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $@
+	echo "/bin/kexec -fix barebox.image --dtb=barebox.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
+	chmod u+x $@
 
 $(BUILD)/barebox/done/install: $(BUILD)/barebox/done/build
 	@touch $@
@@ -32,7 +45,7 @@ $(BUILD)/barebox/done/checkout: | $(BUILD)/barebox/done/
 	$(MAKE) bootloaders/barebox/barebox{checkout}
 	@touch $@
 
-$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image.gz
-$(BUILD)/initramfs/pearl/boot/barebox.image.gz: $(BUILD)/barebox.image.gz ; $(COPY)
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image
+$(BUILD)/initramfs/pearl/boot/barebox.image: $(BUILD)/barebox.image ; $(COPY)
 
 $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
