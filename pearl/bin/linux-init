@@ -51,7 +51,14 @@ done
 echo 'options brcmfmac nvram_mac_addr='"$MAC_ADDR" > /persist/brcmfmac.conf
 (cd /; tar xvf /persist/linux.modules)
 depmod -a
-modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
+for i in $(seq 1 10); do
+    modprobe brcmfmac nvram_mac_addr=$MAC_ADDR
+    sleep 3
+    if ifconfig wlan0 | grep -q wlan0; then
+	break;
+    fi
+    rmmod brcmfmac
+done
 MAC_ADDR=16
 for i in $(seq 1 5); do
     BYTE=$(($RANDOM%256))
