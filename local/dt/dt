@@ -1161,13 +1161,17 @@ sub adt_to_dtp {
 }
 
 sub propertize_bootargs {
-    my $bootargs = shift;
+    my ($bootargs,$opts) = @_;
     my ($revver, $resvd0, $virt_base, $phys_base, $mem_size,
 	$top_of_kernel, $fb_phys, $fb_display, $fb_stride,
 	$fb_width, $fb_height, $fb_depth, $machine_type, $resvd1,
 	$dtree_virt, $dtree_size, $cmdline) =
 	unpack "LLQQQQQQQQQQLLQLZ", $bootargs;
+    my $div = $opts->{lowres} ? 2 : 1:
 
+    $fb_stride /= $div;
+    $fb_width /= $div;
+    $fb_height /= $div;
     my $ret = "";
     my $fb_reg0 = sprintf("0x%02x", ($fb_phys>>32));
     my $fb_reg1 = sprintf("0x%02x", ($fb_phys & 0xffffffff));
@@ -1288,8 +1292,13 @@ if ($ARGV[0] eq "--help") {
     write_file($ARGV[1], $range);
 } elsif ($ARGV[0] eq "extract-bootargs") {
     my $bootargs;
+    my $lowres = 0;
+    while ($ARGV[1] eq "--low-resolution") {
+	$lowres = 1;
+	shift @ARGV;
+    }
     run(["adtdump", "--bootargs"], \$stdin, \$bootargs) or die;
-    write_file($ARGV[1], propertize_bootargs($bootargs)) or die;
+    write_file($ARGV[1], propertize_bootargs($bootargs, {lowres=>$lowres})) or die;
 } elsif ($ARGV[0] eq "permallocs") {
     my $fh;
     open $fh, "/sys/kernel/debug/permallocs/permallocs";
