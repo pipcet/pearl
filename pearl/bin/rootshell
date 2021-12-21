@@ -1,9 +1,18 @@
 #!/bin/sh
+rm /commfile
+cp /boot/linux.modules /persist
 cd /
+rm -f /persist/payload
 echo rootshell > persist/stage
-find persist >> /file.list
-cat /file.list | cpio -H newc -o > /boot/stage3.cpio
-dt dtb-to-dtp /sys/firmware/fdt /boot/rootshell.dtp
-dt permallocs >> /boot/rootshell.dtp
-dt dtp-to-dtb /boot/rootshell.dtp /boot/rootshell.dtb
-/bin/kexec -fix /boot/linux.image --dtb=/boot/rootshell.dtb --ramdisk=/boot/stage3.cpio --command-line="clk_ignore_unused maxcpus=1"
+egrep -v 'persist' /file.list > /file.list.new
+mv /file.list.new /file.list
+find /persist >> /file.list
+dt dtb-to-dtp /boot/linux.dtb /boot/linux.dtp
+dt permallocs >> /boot/linux.dtp
+# egrep -v '\.dcp' < /boot/linux.dtp > /boot/linux.dtp.new
+# mv /boot/linux.dtp.new /boot/linux.dtp
+# sed -e 's/host\|dual-role/gadget/g' < /boot/linux.dtp > /boot/linux.dtp.new
+# mv /boot/linux.dtp.new /boot/linux.dtp
+dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
+cat /file.list | cpio -H newc -o > /boot/linux.cpio
+/bin/kexec --mem-min=`dt mem-min` -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
