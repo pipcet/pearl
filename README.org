@@ -9,13 +9,13 @@ Currently, the following models should work:
 - MacBook Pro 13 inch (2020)
 - MacBook Air 13 inch (2020)
 - Mini (2020) if running macOS 11.x firmware
+- Mini (2020) running macOS Monterey firmware
 
 The following are all not expected to work:
 
-- Mini (2020) running macOS Monterey firmware
 - 2021 MacBooks (14 inch, 16 inch, M1 Max/Pro)
 
-The hardware I actually have is a MacBook Pro 13 inch (2020) running macOS 12.0 firmware, and a mini currently running macOS 11.6 firmware. Obviously I'd like to upgrade the latter to use macOS 12.0 firmware as soon as possible.
+The hardware I actually have is a MacBook Pro 13 inch (2020) running macOS 12.0 firmware, and a mini currently running macOS 12.1 firmware.
 
 * Obligatory warning
 
