@@ -1,5 +1,3 @@
 #!/bin/sh
 # enable-wdt
-gunzip < /boot/barebox.image.gz > /boot/barebox.image
-x2r10g10b10
 kexec -fix /boot/barebox.image --dtb=/boot/barebox.dtb
