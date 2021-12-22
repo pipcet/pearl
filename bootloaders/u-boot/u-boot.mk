@@ -27,8 +27,8 @@ $(BUILD)/u-boot/done/checkout: | $(BUILD)/u-boot/done/
 	$(MAKE) bootloaders/u-boot/u-boot{checkout}
 	@touch $@
 
-$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.image.gz
-$(BUILD)/initramfs/pearl/boot/u-boot.image.gz: $(BUILD)/u-boot.image.gz ; $(COPY)
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.image
+$(BUILD)/initramfs/pearl/boot/u-boot.image: $(BUILD)/u-boot.image ; $(COPY)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.dtb
 $(BUILD)/initramfs/pearl/boot/u-boot.dtb: $(BUILD)/u-boot.dtb ; $(COPY)
