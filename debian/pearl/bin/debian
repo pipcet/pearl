@@ -1,4 +1,3 @@
 #!/bin/sh
-echo debian > /persist/finalchoices
-cd /
-final
+echo "booting Debian" > /var/help/011-boot-action
+final debian
