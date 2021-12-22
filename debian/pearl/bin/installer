@@ -1,4 +1,3 @@
 #!/bin/sh
-echo installer > /persist/finalchoices
-cd /
-final
+echo "booting Debian installer" > /var/help/011-boot-action
+final installer
