@@ -20,7 +20,7 @@ $(BUILD)/u-boot/done/configure: bootloaders/u-boot/u-boot.config $(BUILD)/u-boot
 	@touch $@
 
 $(BUILD)/u-boot/done/copy: $(BUILD)/u-boot/done/checkout | $(BUILD)/u-boot/done/ $(BUILD)/u-boot/build/
-	$(CP) -aus $(PWD)/bootloaders/u-boot/u-boot/* $(BUILD)/u-boot/build/
+	$(CP) -n -aus $(PWD)/bootloaders/u-boot/u-boot/* $(BUILD)/u-boot/build/
 	@touch $@
 
 $(BUILD)/u-boot/done/checkout: | $(BUILD)/u-boot/done/
