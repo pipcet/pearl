@@ -1,4 +1,4 @@
-$(BUILD)/u-boot-plus-grub.image: $(BUILD)/u-boot.image.gz $(BUILD)/grub.efi
+$(BUILD)/u-boot-plus-grub.image: $(BUILD)/u-boot.image $(BUILD)/grub.efi
 	(gunzip < $<; cat $(BUILD)/grub.efi) > $@
 
 $(BUILD)/u-boot.dtb: $(BUILD)/u-boot/done/build
