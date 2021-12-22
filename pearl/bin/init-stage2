@@ -2,6 +2,6 @@
 (sleep 25 && enable-framebuffer) &
 prepare-linux
 (head -c 512 /persist/payload | egrep -q '[^\0]' && zsh < /persist/payload; rm /persist/payload) &
-> /persist/finalchoices
+> /persist/substages
 interactor
 linux
