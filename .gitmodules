@@ -73,7 +73,7 @@
 	branch = pearl
 [submodule "userspace/nvme-cli/nvme-cli"]
 	path = userspace/nvme-cli/nvme-cli
-	url = https://github.com/linux-nvme/nvme-cli
+	url = https://github.com/pipcet/nvme-cli
 [submodule "userspace/openssl/openssl"]
 	path = userspace/openssl/openssl
 	url = https://github.com/openssl/openssl
