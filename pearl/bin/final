@@ -2,10 +2,10 @@
 rm /commfile
 cp /boot/linux.modules /persist
 cd /
-echo "booting Debian" > /var/help/011-boot-action
 chmod a+x init
 rm -f /persist/payload
 echo final > /persist/stage
+echo "$@" > /persist/substages
 cd /
 egrep -v 'persist' /file.list > /file.list.new
 mv /file.list.new /file.list
