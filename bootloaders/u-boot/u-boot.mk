@@ -1,3 +1,16 @@
+$(BUILD)/u-boot.image.sendfile: $(BUILD)/u-boot.dtb
+
+$(BUILD)/u-boot-plus-grub.image.sendfile: $(BUILD)/u-boot.dtb
+
+$(BUILD)/u-boot.image.d/sendfile: $(BUILD)/u-boot/done/build | $(BUILD)/u-boot.image.d/
+	echo "#!/bin/sh" > $@
+	echo "enable-framebuffer &" >> $@
+	echo "while ! ls /sys/kernel/debug/dcp/trigger; do sleep 1; done" >> $@
+	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
+	echo "sleep 6" >> $@
+	echo "/bin/kexec -fix u-boot.image --dtb=u-boot.dtb" >> $@
+	chmod u+x $@
+
 $(BUILD)/u-boot-plus-grub.image: $(BUILD)/u-boot.image $(BUILD)/grub.efi
 	(gunzip < $<; cat $(BUILD)/grub.efi) > $@
 
