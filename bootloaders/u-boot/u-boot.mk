@@ -4,8 +4,8 @@ $(BUILD)/u-boot-plus-grub.image: $(BUILD)/u-boot.image.gz $(BUILD)/grub.efi
 $(BUILD)/u-boot.dtb: $(BUILD)/u-boot/done/build
 	$(CP) $(BUILD)/u-boot/build/u-boot.dtb $@
 
-$(BUILD)/u-boot.image.gz: $(BUILD)/u-boot/done/build
-	gzip < $(BUILD)/u-boot/build/u-boot.bin > $@
+$(BUILD)/u-boot.image: $(BUILD)/u-boot/done/build
+	cat < $(BUILD)/u-boot/build/u-boot.bin > $@
 
 $(BUILD)/u-boot/done/install: $(BUILD)/u-boot/done/build
 	@touch $@
