@@ -1,0 +1,9 @@
+#!/bin/sh
+mkdir /debian
+mount -t ramfs debian /debian
+echo "uncompressing Debian filesystem"
+zstd --verbose -d < /persist/debian.cpio.zstd | (cd /debian; cpio -id)
+cp -a /persist /debian/persist/
+cp /bin/debian-init /debian/init
+chmod a+x /debian/init
+(test -e /debian/init || test -l /debian/init) && exec switch_root /debian /init
