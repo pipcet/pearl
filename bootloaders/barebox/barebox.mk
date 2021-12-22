@@ -18,10 +18,12 @@ $(BUILD)/barebox.image.sendfile: $(BUILD)/barebox.dtb
 
 $(BUILD)/barebox.image.d/sendfile: $(BUILD)/barebox/done/build | $(BUILD)/barebox.image.d/
 	echo "#!/bin/sh" > $@
+	echo "enable-framebuffer &" >> $@
+	echo "while ! ls /sys/kernel/debug/dcp/trigger; do sleep 1; done" >> $@
+	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
+	echo "sleep 12" >> $@
 	echo "echo shell > persist/stage" >> $@
-	echo "find persist >> /file.list" >> $@
-	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $@
-	echo "/bin/kexec -fix barebox.image --dtb=barebox.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
+	echo "/bin/kexec -fix barebox.image --dtb=barebox.dtb" >> $@
 	chmod u+x $@
 
 $(BUILD)/barebox/done/install: $(BUILD)/barebox/done/build
