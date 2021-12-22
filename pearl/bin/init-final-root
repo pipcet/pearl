@@ -1,0 +1,35 @@
+#!/bin/sh
+mkdir /mnt
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+mount -t devtmpfs dev /dev
+mount -t configfs config /sys/kernel/config
+mount -t debugfs debug /sys/kernel/debug
+cp modules.tar /persist
+cd /
+tar xf /boot/linux.modules
+cp /boot/linux.modules /persist
+count=1
+while true; do
+	ROOT=$(cat /persist/root 2>/dev/null || /dev/debian)
+	([ -x /mnt/sbin/init ] || [ -L /mnt/sbin/init ]) && mkdir -p /mnt/persist && cp persist/* /mnt/persist && (cd /mnt; tar x) < /persist/brcmfmac.tar && (cd /mnt; cd usr; tar x) < /persist/linux.modules && (cp /persist/brcmfmac.conf /mnt/etc/modprobe.d/) && sync && exec switch_root /mnt /sbin/init
+	mount $ROOT /mnt -o subvol='@rootfs' && continue
+	mount $ROOT /mnt && continue
+	PRECOUNT=$(ls /dev|wc -l)
+	vgchange -ay
+	POSTCOUNT=$(ls /dev|wc -l);
+	if [ "$PRECOUNT" != "$POSTCOUNT" ]; then
+	    continue
+	fi
+	(cd /sys/class/block; for DM in $(ls -d dm-*); do
+				  NAME=$(cat $DM/dm/name)
+				  ln -sf $DM /dev/$NAME
+				  if ! [ -e /dev/$NAME-decrypted ] && cryptsetup isLuks /dev/$NAME; then
+				      cryptsetup open /dev/$NAME $NAME-decrypted && continue
+				  fi
+			      done)
+	if [ $count -gt 10 ]; then
+	    break
+	fi
+	count=$(($count + 1))
+done
