@@ -60,7 +60,7 @@ ifconfig eth0 hw ether $MAC_ADDR
 sed -i -e 's/ExecStart.*/ExecStart=-\/sbin\/agetty -n -a root %I \$TERM/' /lib/systemd/system/getty\@.service
 sed -i -e 's/ExecStart.*/ExecStart=getty@ttyGS0.service/' /lib/systemd/system/getty-static
 cp /root/.profile /root/.profile.old
-if [ x"$(cat /persist/finalchoice)" = x"installer" ]; then
+if [ x"$(cat /persist/substage)" = x"installer" ]; then
     echo 'mkfifo /installer-fifo && echo launching installer in 15 seconds. Control-C to interrupt and get a shell instead. && sleep 15 && installer' >> /root/.profile
 else
     echo "nmtui" >> /root/.profile
