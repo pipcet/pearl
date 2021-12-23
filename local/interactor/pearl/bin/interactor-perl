@@ -59,6 +59,7 @@ sub dialog_hardware {
 	(gadget => "(re)start USB gadget",
 	 wifi => "(re)start WiFi",
 	 "x8r8g8b8" => "fix framebuffer colors",
+	 "undim-framebuffer" => "increase panel backlight to max",
 	 "x2r10g10b10" => "break framebuffer colors",
 	 dwc3 => "re-initialize USB",
 	 nvme => "initialize NVMe",
