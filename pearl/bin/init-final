@@ -12,11 +12,11 @@ while true; do
     for SUBSTAGE in $SUBSTAGES; do
 	echo "$SUBSTAGE" > /persist/substage
 	if [ "$SUBSTAGE" = "root" ]; then
-	    init-final-root
+	    exec init-final-root
 	elif [ "$SUBSTAGE" = "installer" ] || [ "$SUBSTAGE" = "debian" ]; then
 	    exec init-final-"$SUBSTAGE"
 	elif [ "$SUBSTAGE" = "shell" ]; then
-	    init-final-shell
+	    exec init-final-shell
 	fi
     done
 done
