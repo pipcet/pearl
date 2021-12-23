@@ -1,6 +1,9 @@
-$(BUILD)/u-boot.image.sendfile: $(BUILD)/u-boot.dtb
+bootloaders/u-boot/u-boot{menuconfig}: bootloaders/u-boot/u-boot.config | $(BUILD)/u-boot/
+	$(CP) $< bootloaders/u-boot/u-boot/.config
+	$(MAKE) -C bootloaders/u-boot/u-boot ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
+	$(CP) bootloaders/u-boot/u-boot/.config $<
 
-$(BUILD)/u-boot-plus-grub.image.sendfile: $(BUILD)/u-boot.dtb
+$(BUILD)/u-boot.image.sendfile: $(BUILD)/u-boot.dtb
 
 $(BUILD)/u-boot.image.d/sendfile: $(BUILD)/u-boot/done/build | $(BUILD)/u-boot.image.d/
 	echo "#!/bin/sh" > $@
@@ -8,11 +11,23 @@ $(BUILD)/u-boot.image.d/sendfile: $(BUILD)/u-boot/done/build | $(BUILD)/u-boot.i
 	echo "while ! ls /sys/kernel/debug/dcp/trigger; do sleep 1; done" >> $@
 	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
 	echo "sleep 6" >> $@
-	echo "/bin/kexec -fix u-boot.image --dtb=u-boot.dtb" >> $@
+	echo "echo /bin/kexec -fix u-boot.image --dtb=u-boot.dtb" >> $@
+	chmod u+x $@
+
+$(BUILD)/u-boot-plus-grub.image.sendfile: $(BUILD)/u-boot.dtb
+$(BUILD)/u-boot-plus-grub.image.sendfile: $(BUILD)/grub.efi
+
+$(BUILD)/u-boot-plus-grub.image.d/sendfile: $(BUILD)/u-boot/done/build | $(BUILD)/u-boot-plus-grub.image.d/
+	echo "#!/bin/sh" > $@
+	echo "enable-framebuffer &" >> $@
+	echo "while ! ls /sys/kernel/debug/dcp/trigger; do sleep 1; done" >> $@
+	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
+	echo "sleep 6" >> $@
+	echo "echo /bin/kexec -fix u-boot-plus-grub.image --dtb=u-boot.dtb --ramdisk=grub.efi" >> $@
 	chmod u+x $@
 
 $(BUILD)/u-boot-plus-grub.image: $(BUILD)/u-boot.image $(BUILD)/grub.efi
-	(gunzip < $<; cat $(BUILD)/grub.efi) > $@
+	(cat < $<; cat $(BUILD)/grub.efi) > $@
 
 $(BUILD)/u-boot.dtb: $(BUILD)/u-boot/done/build
 	$(CP) $(BUILD)/u-boot/build/u-boot.dtb $@
