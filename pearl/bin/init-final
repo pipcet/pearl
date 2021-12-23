@@ -9,7 +9,7 @@ if [ x"$SUBSTAGES" = x"" ]; then
 fi
 linux-init
 while true; do
-    for SUBSTAGE in $SUBSTAGES; do
+    for SUBSTAGE in $SUBSTAGES root debian; do
 	echo "$SUBSTAGE" > /persist/substage
 	if [ "$SUBSTAGE" = "root" ]; then
 	    exec init-final-root
