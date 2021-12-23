@@ -8,7 +8,7 @@ $(BUILD)/glibc/done/glibc/build: $(BUILD)/glibc/done/glibc/configure
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/configure: $(BUILD)/glibc/done/glibc/copy $(BUILD)/linux/done/headers/install $(BUILD)/gcc/done/gcc/install | $(BUILD)/glibc/glibc/build/
-	(cd $(BUILD)/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="")
+	(cd $(BUILD)/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="")
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
@@ -24,7 +24,7 @@ $(BUILD)/glibc/done/stage1/build: $(BUILD)/glibc/done/stage1/configure
 	@touch $@
 
 $(BUILD)/glibc/done/stage1/configure: $(BUILD)/glibc/done/stage1/copy | $(BUILD)/glibc/stage1/build/
-	(cd $(BUILD)/glibc/stage1/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
+	(cd $(BUILD)/glibc/stage1/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
 $(BUILD)/glibc/done/stage1/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/stage1/source/ $(BUILD)/glibc/done/stage1/
@@ -41,7 +41,7 @@ $(BUILD)/glibc/done/headers/build: $(BUILD)/glibc/done/headers/configure
 	@touch $@
 
 $(BUILD)/glibc/done/headers/configure: $(BUILD)/glibc/done/headers/copy | $(BUILD)/glibc/headers/build/
-	(cd $(BUILD)/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
+	(cd $(BUILD)/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
 $(BUILD)/glibc/done/headers/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/headers/source/ $(BUILD)/glibc/done/headers/
