@@ -12,7 +12,7 @@ $(BUILD)/glibc/done/glibc/configure: $(BUILD)/glibc/done/glibc/copy $(BUILD)/lin
 	@touch $@
 
 $(BUILD)/glibc/done/glibc/copy: $(BUILD)/glibc/done/checkout | $(BUILD)/glibc/glibc/source/ $(BUILD)/glibc/done/glibc/
-	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/glibc/glibc/source/
+	$(CP) -naus $(PWD)/userspace/glibc/glibc/* $(BUILD)/glibc/glibc/source/
 	@touch $@
 
 
