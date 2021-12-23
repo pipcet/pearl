@@ -1,6 +1,7 @@
 #!/bin/bash
 tar cf wifi.tar /usr/share/firmware/wifi
 bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho
+echo "exit" >> pearl-debian.macho
 dd if=/dev/zero bs=1024 count=4 >> pearl-debian.macho
 while true; do
     echo "Available boot parameters (separate with ';', RET to keep):"
