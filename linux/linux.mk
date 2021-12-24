@@ -11,10 +11,29 @@ $(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
 $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
 	echo "#!/bin/sh" > $@
 	echo "echo shell > persist/stage" >> $@
+	echo "egrep -v persist < /file.list > /file.list.new" >> $@
+	echo "mv /file.list.new /file.list" >> $@
 	echo "find persist >> /file.list" >> $@
 	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $@
+	echo "dt dtb-to-dtp /boot/linux.dtb /boot/linux.dtp" >> $@
+	echo "dt permallocs >> /boot/linux.dtp" >> $@
+	echo "dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb" >> $@
 	echo "/bin/kexec -fix linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
 	chmod u+x $@
+
+$(BUILD)/linux/stage2.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
+	echo "#!/bin/sh" > $@
+	echo "cp stage2.modules /boot" >> $@
+	echo "cp stage2.modules /persist" >> $@
+	echo "echo stage2 > persist/stage" >> $@
+	echo "egrep -v persist < /file.list > /file.list.new" >> $@
+	echo "mv /file.list.new /file.list" >> $@
+	echo "find persist >> /file.list" >> $@
+	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $@
+	echo "/bin/kexec -fix stage2.image --dtb=/boot/stage2.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
+	chmod u+x $@
+
+$(BUILD)/linux/stage2.image.sendfile: $(BUILD)/linux/stage2.modules
 
 $(BUILD)/linux/%.macho.d/sendfile: $(BUILD)/linux/%.macho | $(BUILD)/linux/%.macho.d/
 	echo "#!/bin/sh" > $@
