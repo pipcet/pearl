@@ -67,4 +67,3 @@ done
 ifconfig eth0 hw ether $MAC_ADDR
 echo N > /sys/module/g_serial/parameters/enable
 echo Y > /sys/module/g_serial/parameters/enable
-exec /sbin/init
