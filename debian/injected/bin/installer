@@ -3,8 +3,17 @@ mkdir /installer
 mount -t ramfs installer /installer
 mkdir /installer/persist
 mount --bind /persist /installer/persist
+cp /persist/preseed.cfg /installer/preseed.cfg
+cat <<EOF >>/installer/preseed.cfg
+#_preseed_V1
+d-i anna/no_kernel_modules boolean true
+d-i anna/standard_modules boolean false
+d-i partman-auto/init_automatically_partition select custom
+EOF
 cat /installer.cpio | (cd /installer; cpio -id)
-(echo "#!/bin/sh -x"; cat /installer/init) > /installer/new-init
+(cat <<EOF; cat /installer/init) > /installer-new-init
+#!/bin/sh -x
+EOF
 mv /installer/new-init /installer/init
 chmod u+x /installer/init
 mkdir -p /installer/var/log
