@@ -53,7 +53,9 @@ echo 'options brcmfmac nvram_mac_addr='"$MAC_ADDR"' debug=524288' > /persist/brc
 depmod -a
 for i in $(seq 1 10); do
     modprobe brcmfmac nvram_mac_addr=$MAC_ADDR debug=524288
-    sleep 3
+    # used to be sleep 3, but that was a fabulously bad choice,
+    # interfering with the driver's own timeouts.
+    sleep 8
     if ifconfig wlan0 | grep -q wlan0; then
 	break;
     fi
