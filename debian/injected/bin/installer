@@ -1,6 +1,8 @@
 #!/bin/bash
 mkdir /installer
 mount -t ramfs installer /installer
+mkdir /installer/persist
+mount --bind /persist /installer/persist
 cat /installer.cpio | (cd /installer; cpio -id)
 (echo "#!/bin/sh -x"; cat /installer/init) > /installer/new-init
 mv /installer/new-init /installer/init
