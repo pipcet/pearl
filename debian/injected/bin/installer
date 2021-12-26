@@ -11,7 +11,7 @@ d-i anna/standard_modules boolean false
 d-i partman-auto/init_automatically_partition select custom
 EOF
 cat /installer.cpio | (cd /installer; cpio -id)
-(cat <<EOF; cat /installer/init) > /installer-new-init
+(cat <<EOF; cat /installer/init) > /installer/new-init
 #!/bin/sh -x
 EOF
 mv /installer/new-init /installer/init
