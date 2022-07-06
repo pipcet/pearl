@@ -1238,6 +1238,7 @@ if ($ARGV[0] eq "--help") {
 	    my $strs = join("", @bytes);
 	    my @strs = split("\0", $strs);
 	    for my $str (@strs) {
+		$str =~ tr/A-Z/a-z/;
 		print "$str\n";
 	    }
 	} elsif ($line =~ /^adt\.device-tree\.target-type = \[(.*?)\]$/) {
@@ -1246,6 +1247,7 @@ if ($ARGV[0] eq "--help") {
 	    my $strs = join("", @bytes);
 	    my @strs = split("\0", $strs);
 	    for my $str (@strs) {
+		$str =~ tr/A-Z/a-z/;
 		print "$str\n";
 	    }
 	}

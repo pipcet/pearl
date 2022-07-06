@@ -9,6 +9,7 @@ echo "$PEARL" >> /persist/stage1.zsh
 [ -e /persist/payload ] || dt extract-payload /persist/payload
 (echo $MODEL; dt adt-model /boot/adt) | while read REPLY; do
     if [ -e /boot/stage2-$REPLY.dtb ]; then
+	echo "$REPLY" > /persist/model
 	cp /boot/stage2-$REPLY.dtb /boot/stage2.dtb
 	break
     fi
