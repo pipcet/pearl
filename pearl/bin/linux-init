@@ -7,6 +7,7 @@ while true; do
     echo -ne '\x01\x00\x00\x00' > value || continue
     break
 done
+sleep 5
 cd /sys/bus/platform/drivers/pcie-apple
 for i in $(seq 1 16); do
     echo 690000000.pcie > bind
