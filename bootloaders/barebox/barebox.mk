@@ -3,7 +3,7 @@ bootloaders/barebox/barebox{menuconfig}: bootloaders/barebox/barebox.config | $(
 	$(MAKE) -C bootloaders/barebox/barebox ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/barebox/.config $<
 
-barebox/barebox{oldconfig}: barebox/barebox.config stamp/barebox | $(BUILD)barebox/
+bootloaders/barebox/barebox{oldconfig}: bootloaders/barebox/barebox.config stamp/barebox | $(BUILD)barebox/
 	$(CP) $< $(BUILD)/barebox/.config
 	$(MAKE) -C submodule/barebox oldconfig ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	$(CP) $(BUILD)/barebox/.config $<
