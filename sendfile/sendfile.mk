@@ -33,6 +33,7 @@ $(BUILD)/sendfile/linux-$(stage).sendfile.d/sendfile: $(BUILD)/linux/linux.image
 	chmod u+x $$@
 
 
+SECTARGETS += $(BUILD)/sendfile/linux-$(stage).sendfile
 endef
 
 $(eval $(foreach stage,$(stages),$(stagerule)))

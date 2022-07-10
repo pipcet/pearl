@@ -27,5 +27,8 @@ include userspace/zstd/zstd.mk
 $(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(module)/done/%) | $(BUILD)/userspace/done/
 	@touch $@
 
+SECTARGETS += $(BUILD)/userspace/done/build
+SECTARGETS += $(BUILD)/userspace/done/install
+
 $(BUILD)/userspace.tar: $(BUILD)/userspace/done/install
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/toolchain $(wildcard $(BUILD)/*/done))

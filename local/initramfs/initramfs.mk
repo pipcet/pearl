@@ -29,6 +29,9 @@ $(BUILD)/initramfs/pearl/boot/stage2-j313.dtb: $(BUILD)/linux/stage2-j313.dtb ; 
 $(BUILD)/initramfs/pearl/boot/stage2-j293.dtb: $(BUILD)/linux/stage2-j293.dtb ; $(COPY)
 $(BUILD)/initramfs/pearl/boot/stage2-j274.dtb: $(BUILD)/linux/stage2-j274.dtb ; $(COPY)
 $(BUILD)/initramfs/pearl/boot/linux.dtb: $(BUILD)/linux/linux.dtb ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/linux-j313.dtb: $(BUILD)/linux/linux-j313.dtb ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/linux-j293.dtb: $(BUILD)/linux/linux-j293.dtb ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/linux-j274.dtb: $(BUILD)/linux/linux-j274.dtb ; $(COPY)
 $(BUILD)/initramfs/pearl/boot/linux.modules: $(BUILD)/linux/linux.modules ; $(COPY)
 
 $(BUILD)/initramfs/debian.cpiospec: $(BUILD)/initramfs/pearl.cpiospec $(BUILD)/debian/debootstrap/stage15.tar
@@ -43,3 +46,19 @@ $(BUILD)/initramfs/debian.cpiospec: $(BUILD)/initramfs/pearl.cpiospec $(BUILD)/d
 # 	done > $@
 
 # -include $(BUILD)/initramfs/list.mk
+
+SECTARGETS += $(BUILD)/linux/pearl.cpio
+SECTARGETS += $(BUILD)/initramfs/pearl.cpio
+SECTARGETS += $(BUILD)/initramfs/pearl.cpiospec
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2.image
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2.modules
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2-j313.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2-j293.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/stage2-j274.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux.image
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux-j313.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux-j293.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux-j274.dtb
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/linux.modules
