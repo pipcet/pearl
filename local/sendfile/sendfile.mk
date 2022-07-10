@@ -6,7 +6,7 @@ $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/
 	$(MKDIR) $(dir $@)
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -static -Os -o $@ $<
 
-%.image.sendfile: %.image %.image.d/sendfile
+%.image.sendfile: %.image %.modules %.dtb %.image.d/sendfile
 	$(MKDIR) $@.d
 	$(CP) $(filter-out $*.image.d/sendfile,$^) $@.d
 	$(CP) -a $*.image.d/sendfile $@.d/script
