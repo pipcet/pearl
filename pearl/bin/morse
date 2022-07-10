@@ -2,7 +2,7 @@
 while true; do
     for LED in /sys/class/leds/*capslock; do
         echo pattern > $LED/trigger
-	(echo -n "1 300 0 100 1 300 0 300 1 100 0 100 1 100 0 100 1 300 0 100 1 300 0 100 1 300 0 900"; [ -e /interactive ] && echo -n " 1 100 0 100 1 100 0 900"; echo) > $LED/pattern
+	(echo -n "1 300 0 100 1 300 0 300 1 100 0 100 1 100 0 100 1 300 0 100 1 300 0 100 1 300 0 900"; [ -e /interactive ] && echo -n " 1 100 0 100 1 100 0 900"; echo) | dd bs=1M > $LED/pattern
     done
     for LED in /sys/class/leds/*scrolllock; do
     	echo heartbeat > $LED/trigger
