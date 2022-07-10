@@ -51,3 +51,7 @@ $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image
 $(BUILD)/initramfs/pearl/boot/barebox.image: $(BUILD)/barebox.image ; $(COPY)
 
 $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
+
+SECTARGETS += $(BUILD)/barebox/done/build
+SECTARGETS += $(BUILD)/barebox.image
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/barebox.image

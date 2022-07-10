@@ -21,6 +21,10 @@ $(BUILD)/m1n1/done/checkout: | $(BUILD)/m1n1/done/
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/m1n1.macho
 $(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/m1n1.macho ; $(COPY)
 
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/m1n1.macho
+SECTARGETS += $(BUILD)/m1n1.macho
+SECTARGETS += $(BUILD)/m1n1/done/build
+
 $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 
 %.macho{m1n1}: %.macho

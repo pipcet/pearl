@@ -62,3 +62,7 @@ $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.dtb
 $(BUILD)/initramfs/pearl/boot/u-boot.dtb: $(BUILD)/u-boot.dtb ; $(COPY)
 
 $(call pearl-static,$(wildcard bootloaders/u-boot/pearl/bin/*),bootloaders/u-boot/pearl)
+
+SECTARGETS += $(BUILD)/u-boot/done/build
+SECTARGETS += $(BUILD)/u-boot.image
+SECTARGETS += $(BUILD)/initramfs/pearl/boot/u-boot.image

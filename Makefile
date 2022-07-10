@@ -128,6 +128,10 @@ $(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/
 
 $(call pearl-static,$(wildcard $(PWD)/pearl/bin/* $(PWD)/pearl/init),$(PWD)/pearl)
 
+SECTARGETS += $(BUILD)/linux/pearl.image.macho
+SECTARGETS += $(BUILD)/pearl-debian.macho
+SECTARGETS += $(BUILD)/pearl.pl
+
 delsectarget:
 	rm -f $(SECTARGETS)
 

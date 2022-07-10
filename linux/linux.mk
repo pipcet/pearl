@@ -3,6 +3,12 @@ kernels = linux stage2 pearl
 SECTARGETS += $(BUILD)/linux/done/linux/configure
 SECTARGETS += $(BUILD)/linux/done/linux/build
 SECTARGETS += $(BUILD)/linux/pearl.cpio
+SECTARGETS += $(BUILD)/linux/linux.image
+SECTARGETS += $(BUILD)/linux/linux.modules
+SECTARGETS += $(BUILD)/linux/stage2.image
+SECTARGETS += $(BUILD)/linux/stage2.modules
+SECTARGETS += $(BUILD)/linux/pearl.image
+SECTARGETS += $(BUILD)/linux/pearl.modules
 
 $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 
