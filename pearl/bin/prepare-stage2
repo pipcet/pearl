@@ -1,5 +1,6 @@
 #!/bin/sh
 cd /
+cat /proc/iomem > /persist/iomem-stage1
 dt dtb-to-dtp /sys/firmware/fdt /boot/fdt.dtb.dtp
 dt dtb-to-dtp /sys/firmware/fdt /persist/stage1.dtb.dtp
 dt extract-bootargs /boot/bootargs.dtp
