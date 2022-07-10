@@ -128,4 +128,4 @@ $(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/
 
 $(call pearl-static,$(wildcard $(PWD)/pearl/bin/* $(PWD)/pearl/init),$(PWD)/pearl)
 
-.SECONDARY: %/ %
+.SECONDARY:
