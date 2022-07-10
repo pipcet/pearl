@@ -1,5 +1,9 @@
 kernels = linux stage2 pearl
 
+SECTARGETS += $(BUILD)/linux/done/linux/configure
+SECTARGETS += $(BUILD)/linux/done/linux/build
+SECTARGETS += $(BUILD)/linux/pearl.cpio
+
 $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 
 $(BUILD)/linux/debian.config: linux/pearl.config
