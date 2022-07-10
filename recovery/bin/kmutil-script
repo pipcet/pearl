@@ -1,8 +1,8 @@
 #!/bin/bash
-tar cf wifi.tar /usr/share/firmware/wifi
+tar cf wifi.tar /usr/share/firmware/wifi /usr/share/firmware/bluetooth
 bash ./pack.bash /persist/ wifi.tar >> pearl-debian.macho
 echo "exit" >> pearl-debian.macho
-dd if=/dev/zero bs=1024 count=4 >> pearl-debian.macho
+dd if=/dev/zero bs=1024 count=4 >> pearl-debian.macho 2>/dev/null
 while true; do
     echo "Available boot parameters (separate with ';', RET to keep):"
     echo "  no4k               disable automatic switch to 4k resolution"
