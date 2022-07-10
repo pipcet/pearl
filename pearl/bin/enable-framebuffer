@@ -22,8 +22,8 @@ modprobe apple_asc_syslog ; sleep 1
 echo 231c00000.remoteproc:dcp_asc_syslog@2 > /sys/bus/platform/drivers/apple-asc-syslog/bind
 modprobe apple_asc_iorpt ; sleep 1
 echo 231c00000.remoteproc:dcp_asc_ioreport@4 > /sys/bus/platform/drivers/apple-asc-ioreport/bind
-modprobe apple_asc_oslog; sleep 1
-echo 231c00000.remoteproc:dcp_asc_oslog@8 > /sys/bus/platform/drivers/apple-asc-oslog/bind
+modprobe apple_asc_initonly; sleep 1
+echo 231c00000.remoteproc:dcp_asc_oslog@8 > /sys/bus/platform/drivers/apple-asc-initonly/bind
 modprobe apple_asc_dcp ; sleep 1
 echo 231c00000.remoteproc:dcp_asc_dcp@37 > /sys/bus/platform/drivers/apple-asc-dcp/bind
 modprobe apple-dcp-display & sleep 1
