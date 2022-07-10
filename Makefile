@@ -63,6 +63,8 @@ include g/github/github.mk
 
 include blobs/blobs.mk
 
+include sendfile/sendfile.mk
+
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
