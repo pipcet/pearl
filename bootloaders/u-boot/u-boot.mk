@@ -5,13 +5,17 @@ bootloaders/u-boot/u-boot{menuconfig}: bootloaders/u-boot/u-boot.config | $(BUIL
 
 $(BUILD)/u-boot.image.sendfile: $(BUILD)/u-boot.dtb
 
+$(BUILD)/u-boot.modules:
+	touch $@
+
 $(BUILD)/u-boot.image.d/sendfile: $(BUILD)/u-boot/done/build | $(BUILD)/u-boot.image.d/
 	echo "#!/bin/sh" > $@
-	echo "enable-framebuffer &" >> $@
-	echo "while ! ls /sys/kernel/debug/dcp/trigger; do sleep 1; done" >> $@
-	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
-	echo "sleep 6" >> $@
-	echo "echo /bin/kexec -fix u-boot.image --dtb=u-boot.dtb" >> $@
+	echo "dt dtb-to-dtp u-boot.dtb u-boot.dtp" >> $@
+	echo "cat persist/bootargs.dtp >> u-boot.dtp" >> $@
+	echo "cat u-boot.dtp" >> $@
+	echo "(cd /sys/bus/platform/drivers/dwc3; for a in *0*; do echo \$$a > unbind; done)" >> $@
+	echo "sleep 2" >> $@
+	echo "kexec -fix u-boot.image --dtb=u-boot.dtb" >> $@
 	chmod u+x $@
 
 $(BUILD)/u-boot-plus-grub.image.sendfile: $(BUILD)/u-boot.dtb
@@ -65,4 +69,7 @@ $(call pearl-static,$(wildcard bootloaders/u-boot/pearl/bin/*),bootloaders/u-boo
 
 SECTARGETS += $(BUILD)/u-boot/done/build
 SECTARGETS += $(BUILD)/u-boot.image
+SECTARGETS += $(BUILD)/u-boot.dtb
+SECTARGETS += $(BUILD)/u-boot.d/sendfile
+SECTARGETS += $(BUILD)/u-boot.image.sendfile
 SECTARGETS += $(BUILD)/initramfs/pearl/boot/u-boot.image
