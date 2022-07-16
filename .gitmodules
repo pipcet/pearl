@@ -117,3 +117,6 @@
 [submodule "userspace/zstd/zstd"]
 	path = userspace/zstd/zstd
 	url = https://github.com/facebook/zstd
+[submodule "userspace/dropbear/dropbear"]
+	path = userspace/dropbear/dropbear
+	url = https://github.com/mkj/dropbear
