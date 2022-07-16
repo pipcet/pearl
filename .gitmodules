@@ -120,3 +120,6 @@
 [submodule "userspace/dropbear/dropbear"]
 	path = userspace/dropbear/dropbear
 	url = https://github.com/mkj/dropbear
+[submodule "userspace/zlib/zlib"]
+	path = userspace/zlib/zlib
+	url = https://github.com/madler/zlib
