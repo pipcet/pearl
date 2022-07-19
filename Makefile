@@ -132,7 +132,7 @@ SECTARGETS += $(BUILD)/linux/pearl.image.macho
 SECTARGETS += $(BUILD)/pearl-debian.macho
 SECTARGETS += $(BUILD)/pearl.pl
 
-delsectarget:
+delsex:
 	rm -f $(SECTARGETS)
 
 .SECONDARY:
