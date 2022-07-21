@@ -1,4 +1,5 @@
 #!/bin/sh
+mount -t configfs configfs /sys/kernel/config 2> /dev/null
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS1 c $NUM 1; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
@@ -56,14 +57,15 @@ mkdir /sys/kernel/config/usb_gadget/G2/functions/mass_storage.usb0
 (cd /sys/kernel/config/usb_gadget/G2; ln -s functions/acm.usb0 configs/c.1; ln -s functions/eem.usb0 configs/c.1; ln -s functions/mass_storage.usb0 configs/c.1)
 sleep 1
 echo 382280000.dwc3 > /sys/kernel/config/usb_gadget/G2/UDC
-sleep 1
+sleep 2
 (cd /sys/bus/platform/drivers/dwc3;
  echo 382280000.dwc3 > unbind;
- sleep 1
+ sleep 2
  echo 382280000.dwc3 > bind)
+sleep 2
 (cd /sys/bus/i2c/drivers/tps6598x/;
  echo 0-0038 > unbind;
- sleep 1;
+ sleep 2;
  echo 0-0038 > bind)
 (while true; do stty -F /dev/ttyGS0 crtscts; getty -w -h -n -l bash 0 /dev/ttyGS0; sleep 1; done) &
 (while true; do stty -F /dev/ttyGS1 crtscts; getty -w -h -n -l bash 0 /dev/ttyGS1; sleep 1; done) &
