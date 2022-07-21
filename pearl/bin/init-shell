@@ -7,7 +7,7 @@ mount -t configfs config /sys/kernel/config
 mount -t debugfs debug /sys/kernel/debug
 cp modules.tar /persist
 cd /
-tar xvf /boot/linux.modules
+tar xf /boot/linux.modules
 # sleep 1; memtool md 0xbfff80000
 # sleep 1; memtool md 0xbfff84000
 # sleep 1; memtool md 0xbfff88000
