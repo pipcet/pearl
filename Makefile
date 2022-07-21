@@ -34,7 +34,7 @@ endef
 
 define COPY
 	$(MKDIR) -p $(dir $@)
-	$(CP) -a $< $@
+	$(CP) --reflink=auto $< $@
 endef
 
 all:
