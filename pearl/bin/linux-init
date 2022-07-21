@@ -50,7 +50,7 @@ for MODEL in j274 j293 j313; do
 done
 (cd /; tar c lib/firmware/brcm/brcmfmac4378*) > /persist/brcmfmac.tar
 echo 'options brcmfmac nvram_mac_addr='"$MAC_ADDR"' debug=524288' > /persist/brcmfmac.conf
-(cd /; tar xvf /persist/linux.modules)
+(cd /; tar xf /persist/linux.modules)
 depmod -a
 for i in $(seq 1 10); do
     modprobe brcmfmac nvram_mac_addr=$MAC_ADDR debug=524288
