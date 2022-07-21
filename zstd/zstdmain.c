@@ -6,6 +6,7 @@ typedef unsigned long u64;
 typedef unsigned int u32;
 typedef unsigned long uint64_t;
 typedef unsigned int uint32_t;
+typedef unsigned long size_t;
 
 #define isb() __asm__ __volatile__ ("isb" : : : "memory")
 #define dsb() __asm__ __volatile__ ("dsb sy" : : : "memory")
@@ -87,34 +88,30 @@ struct apple_bootargs {
 };
 
 asm(" \
-__stack:\n								\
-	.rept 65536\n							\
-	.quad 0\n							\
-	.endr\n								\
-	.align 5\n							\
-__main: \n								\
-	adr     x3, __main\n						\
-	mov     sp, x3 \n						\
-stp     x0, x1, [sp, #-16]!					\n	\
-stp     x2, x3, [sp, #-16]!					\n	\
-bl init_cpu\n							\n	\
-ldp	x2, x3, [sp], #16					\n	\
-ldp     x0, x1, [sp], #16					\n	\
-mov x1, x0\n\
-        bl	_premain \n						\
+__stack:								\n\
+	.rept 16							\n\
+	.quad 0								\n\
+	.endr								\n\
+	.align 5							\n\
+__main:									\n\
+	adr     x3, __main						\n\
+	mov     sp, x3 							\n\
+	stp     x0, x1, [sp, #-16]!					\n\
+	stp     x2, x3, [sp, #-16]!					\n\
+	bl	init_cpu						\n\
+	ldp	x2, x3, [sp], #16					\n\
+	ldp     x0, x1, [sp], #16					\n\
+	mov 	x1, x0 							\n\
+        bl	_main 							\n\
     ");
 
 asm(".text\n\t.align 4\n\t__malloc_ptr: .quad 0");
 asm("ZSTD_trace_decompress_begin: mov x0, #0\n\tret");
 asm("ZSTD_trace_decompress_end: ret");
 
-typedef unsigned long size_t;
 extern size_t ZSTD_decompress(void* dst, size_t dstCapacity, const void* src, size_t srcSize);
-extern void __main(struct apple_bootargs *, void *)
-	__attribute__((noreturn, used));
 extern void _main(unsigned long dummy, struct apple_bootargs *ba, void *)
 	__attribute__((noreturn, used));
-extern void __end(void);
 extern void *malloc(unsigned long size);
 extern void *memset(void *dst, int c, unsigned long count);
 extern void *memcpy(void *dst, void *src, unsigned long count);
@@ -151,18 +148,6 @@ void *xmemalign(unsigned long size, unsigned long align);
 			 PTE_BLOCK_INNER_SHARE |	\
 			 PTE_BLOCK_AF)
 
-static void create_sections(uint64_t virt, uint64_t phys, uint64_t size,
-			    uint64_t attr);
-
-extern void main_with_stack(void *, void *, void *) __attribute__((noreturn));
-
-asm("main_with_stack:\n\t"
-    "b _main\n\t");
-void _premain(struct apple_bootargs *ba, void *start, void *m)
-{
-	main_with_stack(ba, ba, ba->framebuffer.phys_base + ba->framebuffer.height * ba->framebuffer.stride);
-}
-
 void _main(unsigned long dummy, struct apple_bootargs *ba, void *start)
 {
 	void *start_of_mem = ba->start_of_usable_memory;
@@ -177,13 +162,19 @@ void _main(unsigned long dummy, struct apple_bootargs *ba, void *start)
 		end = begp + PAYLOAD_SIZE;
 	*malloc_pptr = end;
 
+	void *stack = xmemalign(65536, 64);
+	asm volatile("mov sp,%0" :: "r" (stack));
 	void *dst = xmemalign(2 * 1024 * 1024 * 1024L, 2 * 1024 * 1024);
-	mmu_init(0x800000000, 0x400000000);
-	ZSTD_decompress(dst, 1024 * 1024 * 1024, begp, PAYLOAD_SIZE);
-	void (*dstf)(struct apple_bootargs *ba) __attribute__((noreturn));
-	dstf = dst + 0x2000;
+	mmu_init(start, end_of_mem - start);
+	ZSTD_decompress(dst, 2 * 1024 * 1024 * 1024, begp, PAYLOAD_SIZE);
 	mmu_disable();
-	dstf(ba);
+	void (*dstf)(struct apple_bootargs *ba, void *base)
+		__attribute__((noreturn));
+	dstf = dst + 0x2000;
+	uint32_t *first_insn = dst + 0x2000;
+	if (*first_insn == 0x10ff001d)
+		*first_insn = 0xaa0103fd;
+	dstf(ba, start);
 }
 
 void *memset(void *dst, int c, unsigned long count)
