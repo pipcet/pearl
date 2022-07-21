@@ -65,6 +65,8 @@ include blobs/blobs.mk
 
 include sendfile/sendfile.mk
 
+include zstd/zstd.mk
+
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
