@@ -40,7 +40,7 @@ $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/lin
 	echo "/bin/kexec --mem-min=\`dt mem-min\` -fix linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line=\"clk_ignore_unused\"" >> $@
 	chmod u+x $@
 
-$(BUILD)/linux/stage2.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
+$(BUILD)/linux/stage2.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/stage2.image.d/
 	echo "#!/bin/sh" > $@
 	echo "cp stage2.modules /boot" >> $@
 	echo "cp stage2.modules /persist" >> $@
@@ -139,3 +139,8 @@ $(BUILD)/linux/done/checkout: | $(BUILD)/linux/done/
 	@touch $@
 
 {non-intermediate}: $(BUILD)/linux/done/headers/copy $(BUILD)/linux/done/headers/configure
+
+SECTARGETS += build/linux/done/stage2/build
+SECTARGETS += build/linux/stage2.image
+SECTARGETS += build/linux/stage2.image.sendfile
+SECTARGETS += build/linux/pearl.image.macho.sendfile
