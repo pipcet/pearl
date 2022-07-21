@@ -1,5 +1,5 @@
 #define SZ_1G (1LL << 30)
-#define MEMTOP (0x800000000 + (bootargs->mem_size))
+#define MEMTOP ((bootargs->phys_base) + (bootargs->mem_size))
 
 #define AIC_FIQ 1
 #define AIC_TMR_HV_PHYS		0
