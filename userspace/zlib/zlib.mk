@@ -1,3 +1,4 @@
+DEP_zlib += $(BUILD)/zlib/done/install
 $(BUILD)/zlib/done/install: $(BUILD)/zlib/done/build
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/zlib/build install
 	@touch $@
