@@ -123,3 +123,6 @@
 [submodule "userspace/zlib/zlib"]
 	path = userspace/zlib/zlib
 	url = https://github.com/madler/zlib
+[submodule "zstd/zstd"]
+	path = zstd/zstd
+	url = https://github.com/facebook/zstd
