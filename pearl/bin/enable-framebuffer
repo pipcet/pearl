@@ -7,8 +7,7 @@ if ! grep -q 'dance = <0x01>' /persist/dcp.dtp; then
     x8r8g8b8
     exit
 fi
-grep framebuffer /boot/linux.dtp
-tar xvf /boot/stage2.modules
+tar xf /boot/stage2.modules
 depmod -a
 echo 0 > /sys/bus/platform/drivers_autoprobe
 modprobe apple_mailbox ; sleep 1
