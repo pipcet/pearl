@@ -48,7 +48,7 @@ EOF
 [ "$STAGE" = "stage2" ] && gadget
 [ "$STAGE" = "stage3" ] && wifi &
 
-echo 4 5 4 4 > /proc/sys/kernel/printk
+echo 1 5 4 4 > /proc/sys/kernel/printk
 
 while sleep 1m; do screen -X redisplay; done &
 screen -c .screenrc
