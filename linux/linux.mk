@@ -16,7 +16,7 @@ $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
 $(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
-	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
+	$(CP) --reflink=auto $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
 $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
 	echo "#!/bin/sh" > $@
