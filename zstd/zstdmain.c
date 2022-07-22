@@ -89,7 +89,7 @@ struct apple_bootargs {
 
 asm(" \
 __stack:								\n\
-	.rept 16							\n\
+	.rept 32							\n\
 	.quad 0								\n\
 	.endr								\n\
 	.align 5							\n\
@@ -102,7 +102,7 @@ __main:									\n\
 	ldp	x2, x3, [sp], #16					\n\
 	ldp     x0, x1, [sp], #16					\n\
 	mov 	x1, x0 							\n\
-        bl	_main 							\n\
+        bl	main_smallstack						\n\
     ");
 
 asm(".text\n\t.align 4\n\t__malloc_ptr: .quad 0");
@@ -110,8 +110,6 @@ asm("ZSTD_trace_decompress_begin: mov x0, #0\n\tret");
 asm("ZSTD_trace_decompress_end: ret");
 
 extern size_t ZSTD_decompress(void* dst, size_t dstCapacity, const void* src, size_t srcSize);
-extern void _main(unsigned long dummy, struct apple_bootargs *ba, void *)
-	__attribute__((noreturn, used));
 extern void *malloc(unsigned long size);
 extern void *memset(void *dst, int c, unsigned long count);
 extern void *memcpy(void *dst, void *src, unsigned long count);
@@ -148,25 +146,34 @@ void *xmemalign(unsigned long size, unsigned long align);
 			 PTE_BLOCK_INNER_SHARE |	\
 			 PTE_BLOCK_AF)
 
-void _main(unsigned long dummy, struct apple_bootargs *ba, void *start)
+extern void main_switchstack(unsigned char *, struct apple_bootargs *, void *, void *) __attribute__((noreturn));
+
+asm(
+	"main_switchstack:\n\
+		mov sp,x3\n\
+		b main_largestack\n\
+");
+
+void main_smallstack(unsigned long dummy, struct apple_bootargs *ba, void *start)
 {
 	void *start_of_mem = ba->start_of_usable_memory;
-	void *end_of_mem = ba->phys_base + ba->mem_size;
 	void **malloc_pptr;
 	asm("adr %0,__malloc_ptr" : "=r" (malloc_pptr));
 	unsigned char *begp = (void *)malloc_pptr;
 	while (begp[0] != 0x28 || begp[1] != 0xb5 || begp[2] != 0x2f || begp[3] != 0xfd)
 		begp++;
-	void *end = start_of_mem;
-	if (end < begp + PAYLOAD_SIZE)
-		end = begp + PAYLOAD_SIZE;
-	*malloc_pptr = end;
+	*malloc_pptr = start_of_mem;
 
-	void *stack = xmemalign(65536, 64);
-	asm volatile("mov sp,%0" :: "r" (stack));
-	void *dst = xmemalign(2 * 1024 * 1024 * 1024L, 2 * 1024 * 1024);
+	void *stack = xmemalign(512 * 1024, 64);
+	main_switchstack(begp, ba, start, stack + 512 * 1024);
+}
+
+void main_largestack(unsigned char *begp, struct apple_bootargs *ba, void *start)
+{
+	void *dst = xmemalign(UNCOMPRESSED_SIZE, 2 * 1024 * 1024);
+	void *end_of_mem = ba->phys_base + ba->mem_size;
 	mmu_init(start, end_of_mem - start);
-	ZSTD_decompress(dst, 2 * 1024 * 1024 * 1024, begp, PAYLOAD_SIZE);
+	ZSTD_decompress(dst, UNCOMPRESSED_SIZE, begp, PAYLOAD_SIZE);
 	mmu_disable();
 	void (*dstf)(struct apple_bootargs *ba, void *base)
 		__attribute__((noreturn));
