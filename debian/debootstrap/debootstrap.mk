@@ -41,7 +41,8 @@ $(BUILD)/debian.cpio.gz: $(BUILD)/debian.cpio
 	gzip < $< > $@
 
 $(BUILD)/debian.cpio.zstd: $(BUILD)/debian.cpio
-	zstd -22 --ultra --long --verbose < $< > $@
+	rm -f $@
+	zstd -22 --ultra --long=31 --verbose $< -o $@
 
 $(BUILD)/debian.cpio.xz: $(BUILD)/debian.cpio
 	xz --compress < $< > $@
