@@ -13,7 +13,7 @@ $(BUILD)/zstd/zstdout: $(BUILD)/zstd/zstdlib zstd/payload
 
 %.macho.zst: %.macho
 	rm -f $@
-	zstd -22 --ultra --long=31 --verbose --zstd=wlog=31,chainLog=30,searchLog=30 $< -o $@
+	zstd -22 --ultra --long=31 --verbose $< -o $@
 
 %.macho.size: %.macho
 	wc -c < $< > $@
