@@ -39,7 +39,7 @@ endef
 
 define SYMLINK
 	$(MKDIR) -p $(dir $@)
-	$(LN) -sf $< $@
+	ln -sf $< $@
 endef
 
 all:
