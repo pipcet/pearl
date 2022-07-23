@@ -119,14 +119,23 @@ random-target:
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.zstd.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@
 
+$(BUILD)/pearl-debian-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio
+	cat $^ > $@
+
 $(BUILD)/kmutil-script: recovery/bin/kmutil-script
-	$(CP) $< $@
+	$(COPY)
+
+$(BUILD)/kmutil-script-raw: recovery/bin/kmutil-script-raw
+	$(COPY)
 
 build/pearl.pl:
 	$(MAKE) $(PWD)/build/pearl.pl
 
 $(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
+
+$(BUILD)/pearl-zst.pl: $(BUILD)/kmutil-script-raw $(BUILD)/pearl-debian-uncompressed.macho.zst.image host/pack/pack.pl recovery/bin/readline.pm
+	perl host/pack/pack.pl $(BUILD)/kmutil-script-raw recovery/bin/readline.pm $(BUILD)/pearl-debian-uncompressed.macho.zst.image host/pack/pack.bash > $@
 
 $(call pearl-static,$(wildcard $(PWD)/pearl/bin/* $(PWD)/pearl/init),$(PWD)/pearl)
 
