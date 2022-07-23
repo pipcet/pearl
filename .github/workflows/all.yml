@@ -1,4 +1,4 @@
-name: modules
+name: all
 on:
   workflow_dispatch:
   push:
