@@ -26,11 +26,11 @@ include userspace/zlib/zlib.mk
 include userspace/zsh/zsh.mk
 include userspace/zstd/zstd.mk
 
-$(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/userspace/$(module)/done/%) | $(BUILD)/userspace/done/
+$(call done,userspace,%): $(foreach module,$(userspace-modules),$(call done,userspace/$(module),%)) | $(call done,userspace,)
 	@touch $@
 
-SECTARGETS += $(BUILD)/userspace/done/build
-SECTARGETS += $(BUILD)/userspace/done/install
+SECTARGETS += $(call done,userspace,build)
+SECTARGETS += $(call done,userspace,install)
 
-$(BUILD)/userspace.tar: $(BUILD)/userspace/done/install
+$(BUILD)/userspace.tar: $(call done,userspace,install)
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/toolchain $(wildcard $(BUILD)/*/done))

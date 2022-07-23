@@ -1,19 +1,19 @@
-$(BUILD)/userspace/dtc/done/install: $(BUILD)/userspace/dtc/done/build
+$(call done,userspace/dtc,install): $(call done,userspace/dtc,build)
 	$(WITH_CROSS_PATH) $(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build install
 	@touch $@
 
-$(BUILD)/userspace/dtc/done/build: $(BUILD)/userspace/dtc/done/configure
+$(call done,userspace/dtc,build): $(call done,userspace/dtc,configure)
 	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build
 	@touch $@
 
-$(BUILD)/userspace/dtc/done/configure: $(BUILD)/userspace/dtc/done/copy $(BUILD)/userspace/glibc/done/glibc/install
+$(call done,userspace/dtc,configure): $(call done,userspace/dtc,copy) $(call done,userspace/glibc,glibc/install)
 	@touch $@
 
-$(BUILD)/userspace/dtc/done/copy: $(BUILD)/userspace/dtc/done/checkout | $(BUILD)/userspace/dtc/done/ $(BUILD)/userspace/dtc/build/
+$(call done,userspace/dtc,copy): $(call done,userspace/dtc,checkout) | $(call done,userspace/dtc,) $(BUILD)/userspace/dtc/build/
 	$(CP) -aus $(PWD)/userspace/dtc/dtc/* $(BUILD)/userspace/dtc/build/
 	@touch $@
 
-$(BUILD)/userspace/dtc/done/checkout: | $(BUILD)/userspace/dtc/done/
+$(call done,userspace/dtc,checkout): | $(call done,userspace/dtc,)
 	$(MAKE) userspace/dtc/dtc{checkout}
 	@touch $@
 

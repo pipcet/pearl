@@ -1,58 +1,58 @@
-DEP_glibc += $(BUILD)/userspace/glibc/done/glibc/install
-$(BUILD)/userspace/glibc/done/glibc/install: $(BUILD)/userspace/glibc/done/glibc/build
+DEP_glibc += $(call done,userspace/glibc,glibc/install)
+$(call done,userspace/glibc,glibc/install): $(call done,userspace/glibc,glibc/build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build DESTDIR=$(BUILD)/pearl/install CXX="" install
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/glibc/build: $(BUILD)/userspace/glibc/done/glibc/configure
+$(call done,userspace/glibc,glibc/build): $(call done,userspace/glibc,glibc/configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build CXX=""
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/glibc/configure: $(BUILD)/userspace/glibc/done/glibc/copy $(BUILD)/linux/done/headers/install $(BUILD)/toolchain/gcc/done/gcc/install | $(BUILD)/userspace/glibc/glibc/build/
+$(call done,userspace/glibc,glibc/configure): $(call done,userspace/glibc,glibc/copy) $(call done,linux,headers/install) $(call done,toolchain/gcc,gcc/install) | $(BUILD)/userspace/glibc/glibc/build/
 	(cd $(BUILD)/userspace/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="")
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/glibc/copy: $(BUILD)/userspace/glibc/done/checkout | $(BUILD)/userspace/glibc/glibc/source/ $(BUILD)/userspace/glibc/done/glibc/
+$(call done,userspace/glibc,glibc/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/glibc/source/ $(call done,userspace/glibc,glibc/)
 	$(CP) -naus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/glibc/source/
 	@touch $@
 
 
-$(BUILD)/userspace/glibc/done/stage1/install: $(BUILD)/userspace/glibc/done/stage1/build
+$(call done,userspace/glibc,stage1/install): $(call done,userspace/glibc,stage1/build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/stage1/build DESTDIR=$(BUILD)/pearl/install install-headers install
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/stage1/build: $(BUILD)/userspace/glibc/done/stage1/configure
+$(call done,userspace/glibc,stage1/build): $(call done,userspace/glibc,stage1/configure)
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/stage1/configure: $(BUILD)/userspace/glibc/done/stage1/copy | $(BUILD)/userspace/glibc/stage1/build/
+$(call done,userspace/glibc,stage1/configure): $(call done,userspace/glibc,stage1/copy) | $(BUILD)/userspace/glibc/stage1/build/
 	(cd $(BUILD)/userspace/glibc/stage1/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/stage1/copy: $(BUILD)/userspace/glibc/done/checkout | $(BUILD)/userspace/glibc/stage1/source/ $(BUILD)/userspace/glibc/done/stage1/
+$(call done,userspace/glibc,stage1/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/stage1/source/ $(call done,userspace/glibc,stage1/)
 	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/headers/install: $(BUILD)/userspace/glibc/done/headers/build
+$(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/headers/build DESTDIR=$(BUILD)/pearl/install install-headers
 	$(MKDIR) $(BUILD)/pearl/install/include/gnu/
 	touch $(BUILD)/pearl/install/include/gnu/stubs.h
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/headers/build: $(BUILD)/userspace/glibc/done/headers/configure
+$(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/configure)
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/headers/configure: $(BUILD)/userspace/glibc/done/headers/copy | $(BUILD)/userspace/glibc/headers/build/
+$(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,headers/copy) | $(BUILD)/userspace/glibc/headers/build/
 	(cd $(BUILD)/userspace/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/headers/copy: $(BUILD)/userspace/glibc/done/checkout | $(BUILD)/userspace/glibc/headers/source/ $(BUILD)/userspace/glibc/done/headers/
+$(call done,userspace/glibc,headers/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/headers/source/ $(call done,userspace/glibc,headers/)
 	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/headers/source/
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/checkout: | $(BUILD)/userspace/glibc/done/
+$(call done,userspace/glibc,checkout): | $(call done,userspace/glibc,)
 	$(MAKE) userspace/glibc/glibc{checkout}
 	@touch $@
 
-$(BUILD)/userspace/glibc/done/install: $(BUILD)/userspace/glibc/done/glibc/install
+$(call done,userspace/glibc,install): $(call done,userspace/glibc,glibc/install)
 	@touch $@
 
 userspace-modules += glibc

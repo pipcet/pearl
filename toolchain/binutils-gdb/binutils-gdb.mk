@@ -1,22 +1,22 @@
-$(BUILD)/toolchain/binutils-gdb/done/install: $(BUILD)/toolchain/binutils-gdb/done/build
+$(call done,toolchain/binutils-gdb,install): $(call done,toolchain/binutils-gdb,build)
 	$(MAKE) -C $(BUILD)/toolchain/binutils-gdb/source install
 	@touch $@
 
-$(BUILD)/toolchain/binutils-gdb.tar: $(BUILD)/toolchain/binutils-gdb/done/build
+$(BUILD)/toolchain/binutils-gdb.tar: $(call done,toolchain/binutils-gdb,build)
 	tar -C $(BUILD)/toolchain/binutils-gdb -cf $@ done source
 
-$(BUILD)/toolchain/binutils-gdb/done/build: $(BUILD)/toolchain/binutils-gdb/done/configure
+$(call done,toolchain/binutils-gdb,build): $(call done,toolchain/binutils-gdb,configure)
 	$(MAKE) -C $(BUILD)/toolchain/binutils-gdb/source
 	@touch $@
 
-$(BUILD)/toolchain/binutils-gdb/done/configure: $(BUILD)/toolchain/binutils-gdb/done/copy
+$(call done,toolchain/binutils-gdb,configure): $(call done,toolchain/binutils-gdb,copy)
 	(cd $(BUILD)/toolchain/binutils-gdb/source/; ../source/configure --target=aarch64-linux-gnu --prefix=$(BUILD)/pearl/toolchain)
 	@touch $@
 
-$(BUILD)/toolchain/binutils-gdb/done/copy: $(BUILD)/toolchain/binutils-gdb/done/checkout | $(BUILD)/toolchain/binutils-gdb/source/ $(BUILD)/toolchain/binutils-gdb/done/
+$(call done,toolchain/binutils-gdb,copy): $(call done,toolchain/binutils-gdb,checkout) | $(BUILD)/toolchain/binutils-gdb/source/ $(call done,toolchain/binutils-gdb,)
 	$(CP) -aus $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/toolchain/binutils-gdb/source/
 	@touch $@
 
-$(BUILD)/toolchain/binutils-gdb/done/checkout: | $(BUILD)/toolchain/binutils-gdb/done/
+$(call done,toolchain/binutils-gdb,checkout): | $(call done,toolchain/binutils-gdb,)
 	$(MAKE) toolchain/binutils-gdb/binutils-gdb{checkout}
 	@touch $@

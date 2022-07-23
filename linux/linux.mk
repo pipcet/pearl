@@ -1,7 +1,7 @@
 kernels = linux stage2 pearl
 
-SECTARGETS += $(BUILD)/linux/done/linux/configure
-SECTARGETS += $(BUILD)/linux/done/linux/build
+SECTARGETS += $(call done,linux,linux/configure)
+SECTARGETS += $(call done,linux,linux/build)
 SECTARGETS += $(BUILD)/linux/pearl.cpio
 SECTARGETS += $(BUILD)/linux/linux.image
 SECTARGETS += $(BUILD)/linux/linux.modules
@@ -15,7 +15,7 @@ $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
-$(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(call done,linux,%/build)
 	$(CP) --reflink=auto $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
 $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
@@ -71,76 +71,76 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
 
-$(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(BUILD)/linux/done/pearl/build
+$(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(call done,linux,pearl/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j313.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%-j313.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
 
-$(BUILD)/linux/%-j293.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%-j293.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j274.dtb: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%-j274.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
 
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 
-$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.dts.h
-$(BUILD)/linux/done/pearl/build: $(BUILD)/linux/pearl.cpio
+$(call done,linux,pearl/build): $(BUILD)/linux/pearl.dts.h
+$(call done,linux,pearl/build): $(BUILD)/linux/pearl.cpio
 
 $(BUILD)/linux/debian.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/debian.image: $(BUILD)/linux/debian.cpio
 
-$(BUILD)/linux/done/debian/build: $(BUILD)/linux/pearl.dts.h
-$(BUILD)/linux/done/debian/build: $(BUILD)/linux/debian.cpio
+$(call done,linux,debian/build): $(BUILD)/linux/pearl.dts.h
+$(call done,linux,debian/build): $(BUILD)/linux/debian.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-$(BUILD)/linux/%.modules: $(BUILD)/linux/done/%/build
+$(BUILD)/linux/%.modules: $(call done,linux,%/build)
 	rm -rf $@.d
 	$(MKDIR) $@.d
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
 	$(TAR) -C $@.d -c . -f $@
 
-$(BUILD)/linux/done/%/build: $(BUILD)/linux/done/%/configure
+$(call done,linux,%/build): $(call done,linux,%/configure)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) dtbs
 	@touch $@
 
-$(BUILD)/linux/done/%/configure: $(BUILD)/linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
+$(call done,linux,%/configure): $(BUILD)/linux/%.config $(call done,linux,%/copy) $(call done,gcc,gcc/install)
 	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	@touch $@
 
-linux/%{menuconfig}: linux/%.config $(BUILD)/linux/done/%/copy $(BUILD)/gcc/done/gcc/install
+linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,gcc,gcc/install)
 	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/linux/$*/build/.config $<
 
-$(BUILD)/linux/done/%/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/%/ $(BUILD)/linux/%/build/
+$(call done,linux,%/copy): $(call done,linux,checkout) | $(call done,linux,%/) $(BUILD)/linux/%/build/
 	$(CP) -ausn $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
-$(BUILD)/linux/done/headers/install: $(BUILD)/linux/done/headers/copy | $(BUILD)/pearl/done/install/mkdir
+$(call done,linux,headers/install): $(call done,linux,headers/copy) | $(call done,pearl,install/)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/pearl/install headers_install
 	@touch $@
 
-$(BUILD)/linux/done/headers/copy: $(BUILD)/linux/done/checkout | $(BUILD)/linux/done/headers/ $(BUILD)/linux/headers/source/
+$(call done,linux,headers/copy): $(call done,linux,checkout) | $(call done,linux,headers/) $(BUILD)/linux/headers/source/
 	$(CP) -ausn $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
 	@touch $@
 
-$(BUILD)/linux/done/checkout: | $(BUILD)/linux/done/
+$(call done,linux,checkout): | $(call done,linux,)
 	$(MAKE) linux/linux{checkout}
 	@touch $@
 
-{non-intermediate}: $(BUILD)/linux/done/headers/copy $(BUILD)/linux/done/headers/configure
+{non-intermediate}: $(call done,linux,headers/copy) $(call done,linux,headers/configure)
 
-SECTARGETS += build/linux/done/stage2/build
+SECTARGETS += $(call done,linux,stage2/build)
 SECTARGETS += build/linux/stage2.image
 SECTARGETS += build/linux/stage2.image.sendfile
 SECTARGETS += build/linux/pearl.image.macho.sendfile

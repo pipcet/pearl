@@ -8,7 +8,7 @@ $(BUILD)/bootloaders/u-boot.image.sendfile: $(BUILD)/bootloaders/u-boot.dtb
 $(BUILD)/bootloaders/u-boot.modules:
 	touch $@
 
-$(BUILD)/bootloaders/u-boot.image.d/sendfile: $(BUILD)/bootloaders/u-boot/done/build | $(BUILD)/bootloaders/u-boot.image.d/
+$(BUILD)/bootloaders/u-boot.image.d/sendfile: $(call done,bootloaders/u-boot,build) | $(BUILD)/bootloaders/u-boot.image.d/
 	echo "#!/bin/sh" > $@
 	echo "dt dtb-to-dtp u-boot.dtb u-boot.dtp" >> $@
 	echo "cat persist/bootargs.dtp >> u-boot.dtp" >> $@
@@ -21,7 +21,7 @@ $(BUILD)/bootloaders/u-boot.image.d/sendfile: $(BUILD)/bootloaders/u-boot/done/b
 $(BUILD)/bootloaders/u-boot-plus-grub.image.sendfile: $(BUILD)/bootloaders/u-boot.dtb
 $(BUILD)/bootloaders/u-boot-plus-grub.image.sendfile: $(BUILD)/bootloaders/grub.efi
 
-$(BUILD)/bootloaders/u-boot-plus-grub.image.d/sendfile: $(BUILD)/bootloaders/u-boot/done/build | $(BUILD)/bootloaders/u-boot-plus-grub.image.d/
+$(BUILD)/bootloaders/u-boot-plus-grub.image.d/sendfile: $(call done,bootloaders/u-boot,build) | $(BUILD)/bootloaders/u-boot-plus-grub.image.d/
 	echo "#!/bin/sh" > $@
 	echo "dt dtb-to-dtp u-boot.dtb u-boot.dtp" >> $@
 	echo "cat persist/bootargs.dtp >> u-boot.dtp" >> $@
@@ -40,29 +40,29 @@ $(BUILD)/bootloaders/u-boot-plus-grub.modules:
 $(BUILD)/bootloaders/u-boot-plus-grub.image: $(BUILD)/bootloaders/u-boot.image $(BUILD)/grub.efi
 	(cat < $<; cat $(BUILD)/bootloaders/grub.efi) > $@
 
-$(BUILD)/bootloaders/u-boot.dtb: $(BUILD)/bootloaders/u-boot/done/build
+$(BUILD)/bootloaders/u-boot.dtb: $(call done,bootloaders/u-boot,build)
 	$(CP) $(BUILD)/bootloaders/u-boot/build/u-boot.dtb $@
 
-$(BUILD)/bootloaders/u-boot.image: $(BUILD)/bootloaders/u-boot/done/build
+$(BUILD)/bootloaders/u-boot.image: $(call done,bootloaders/u-boot,build)
 	cat < $(BUILD)/bootloaders/u-boot/build/u-boot.bin > $@
 
-$(BUILD)/bootloaders/u-boot/done/install: $(BUILD)/bootloaders/u-boot/done/build
+$(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,build)
 	@touch $@
 
-$(BUILD)/bootloaders/u-boot/done/build: $(BUILD)/bootloaders/u-boot/done/configure
+$(call done,bootloaders/u-boot,build): $(call done,bootloaders/u-boot,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE)
 	@touch $@
 
-$(BUILD)/bootloaders/u-boot/done/configure: bootloaders/u-boot/u-boot.config $(BUILD)/bootloaders/u-boot/done/copy $(BUILD)/gcc/done/gcc/install
+$(call done,bootloaders/u-boot,configure): bootloaders/u-boot/u-boot.config $(call done,bootloaders/u-boot,copy) $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/bootloaders/u-boot/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	@touch $@
 
-$(BUILD)/bootloaders/u-boot/done/copy: $(BUILD)/bootloaders/u-boot/done/checkout | $(BUILD)/bootloaders/u-boot/done/ $(BUILD)/bootloaders/u-boot/build/
+$(call done,bootloaders/u-boot,copy): $(call done,bootloaders/u-boot,checkout) | $(call done,bootloaders/u-boot,) $(BUILD)/bootloaders/u-boot/build/
 	$(CP) -n -aus $(PWD)/bootloaders/u-boot/u-boot/* $(BUILD)/bootloaders/u-boot/build/
 	@touch $@
 
-$(BUILD)/bootloaders/u-boot/done/checkout: | $(BUILD)/bootloaders/u-boot/done/
+$(call done,bootloaders/u-boot,checkout): | $(call done,bootloaders/u-boot,)
 	$(MAKE) bootloaders/u-boot/u-boot{checkout}
 	@touch $@
 
@@ -74,7 +74,7 @@ $(BUILD)/initramfs/pearl/boot/u-boot.dtb: $(BUILD)/bootloaders/u-boot.dtb ; $(CO
 
 $(call pearl-static,$(wildcard bootloaders/u-boot/pearl/bin/*),bootloaders/u-boot/pearl)
 
-SECTARGETS += $(BUILD)/bootloaders/u-boot/done/build
+SECTARGETS += $(call done,bootloaders/u-boot,build)
 SECTARGETS += $(BUILD)/bootloaders/u-boot.image
 SECTARGETS += $(BUILD)/bootloaders/u-boot.dtb
 SECTARGETS += $(BUILD)/bootloaders/u-boot.d/sendfile

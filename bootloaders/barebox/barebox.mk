@@ -11,15 +11,15 @@ bootloaders/barebox/barebox{oldconfig}: bootloaders/barebox/barebox.config stamp
 $(BUILD)/bootloaders/barebox.modules:
 	touch $@
 
-$(BUILD)/bootloaders/barebox.image: $(BUILD)/bootloaders/barebox/done/build
+$(BUILD)/bootloaders/barebox.image: $(call done,bootloaders/barebox,build)
 	$(CP) $(BUILD)/bootloaders/barebox/build/images/barebox-dt-2nd.img $@
 
-$(BUILD)/bootloaders/barebox.dtb: $(BUILD)/bootloaders/barebox/done/build
+$(BUILD)/bootloaders/barebox.dtb: $(call done,bootloaders/barebox,build)
 	$(CP) $(BUILD)/bootloaders/barebox/build/arch/arm/dts/apple-m1-j274.dtb $@
 
 $(BUILD)/bootloaders/barebox.image.sendfile: $(BUILD)/bootloaders/barebox.dtb
 
-$(BUILD)/bootloaders/barebox.image.d/sendfile: $(BUILD)/bootloaders/barebox/done/build | $(BUILD)/bootloaders/barebox.image.d/
+$(BUILD)/bootloaders/barebox.image.d/sendfile: $(call done,bootloaders/barebox,build) | $(BUILD)/bootloaders/barebox.image.d/
 	echo "#!/bin/sh" > $@
 	echo "enable-framebuffer &" >> $@
 	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
@@ -33,24 +33,24 @@ $(BUILD)/bootloaders/barebox.image.d/sendfile: $(BUILD)/bootloaders/barebox/done
 	echo "kexec -fix barebox.image --dtb=barebox.dtb" >> $@
 	chmod u+x $@
 
-$(BUILD)/bootloaders/barebox/done/install: $(BUILD)/bootloaders/barebox/done/build
+$(call done,bootloaders/barebox,install): $(call done,bootloaders/barebox,build)
 	@touch $@
 
-$(BUILD)/bootloaders/barebox/done/build: $(BUILD)/bootloaders/barebox/done/configure
+$(call done,bootloaders/barebox,build): $(call done,bootloaders/barebox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	@touch $@
 
-$(BUILD)/bootloaders/barebox/done/configure: bootloaders/barebox/barebox.config $(BUILD)/bootloaders/barebox/done/copy $(BUILD)/gcc/done/gcc/install $(BUILD)/glibc/done/glibc/install
+$(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $(call done,bootloaders/barebox,copy) $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install)
 	$(CP) $< $(BUILD)/bootloaders/barebox/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	@touch $@
 
-$(BUILD)/bootloaders/barebox/done/copy: $(BUILD)/bootloaders/barebox/done/checkout | $(BUILD)/bootloaders/barebox/done/ $(BUILD)/bootloaders/barebox/build/
+$(call done,bootloaders/barebox,copy): $(call done,bootloaders/barebox,checkout) | $(call done,bootloaders/barebox,) $(BUILD)/bootloaders/barebox/build/
 	$(CP) -aus $(PWD)/bootloaders/barebox/barebox/* $(BUILD)/bootloaders/barebox/build/
 	@touch $@
 
-$(BUILD)/bootloaders/barebox/done/checkout: | $(BUILD)/bootloaders/barebox/done/
+$(call done,bootloaders/barebox,checkout): | $(call done,bootloaders/barebox,)
 	$(MAKE) bootloaders/barebox/barebox{checkout}
 	@touch $@
 
@@ -59,7 +59,7 @@ $(BUILD)/initramfs/pearl/boot/barebox.image: $(BUILD)/bootloaders/barebox.image 
 
 $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
 
-SECTARGETS += $(BUILD)/bootloaders/barebox/done/build
+SECTARGETS += $(call done,bootloaders/barebox,build)
 SECTARGETS += $(BUILD)/bootloaders/barebox.image
 SECTARGETS += $(BUILD)/bootloaders/barebox.image.sendfile
 SECTARGETS += $(BUILD)/initramfs/pearl/boot/barebox.image

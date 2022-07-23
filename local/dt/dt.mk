@@ -1,13 +1,13 @@
 $(BUILD)/dt/build/bin/dt: local/dt/dt | $(BUILD)/dt/build/bin/
 	$(COPY)
 
-$(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c $(BUILD)/glibc/done/glibc/install | $(BUILD)/dt/build/bin/
+$(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c $(call done,glibc,glibc/install) | $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
-$(BUILD)/dt/build/bin/macho-version: local/dt/macho-version.c $(BUILD)/glibc/done/glibc/install | $(BUILD)/dt/build/bin/
+$(BUILD)/dt/build/bin/macho-version: local/dt/macho-version.c $(call done,glibc,glibc/install) | $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
-$(BUILD)/dt/build/bin/adtp: local/dt/adtp.cc $(BUILD)/glibc/done/glibc/install  $(BUILD)/gcc/done/g++/install | $(BUILD)/dt/build/bin/
+$(BUILD)/dt/build/bin/adtp: local/dt/adtp.cc $(call done,glibc,glibc/install)  $(call done,gcc,g++/install) | $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)g++ -Os -static -o $@ $<
 
 $(BUILD)/dt.tar: $(BUILD)/dt/bin/dt $(BUILD)/dt/bin/adtdump

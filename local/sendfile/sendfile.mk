@@ -2,7 +2,7 @@ $(BUILD)/host/sendfile/send-sendfile: local/sendfile/send-sendfile
 	$(MKDIR) $(dir $@)
 	$(CP) $< $@
 
-$(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(BUILD)/gcc/done/gcc/install $(BUILD)/glibc/done/glibc/install
+$(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c $(call done,gcc,gcc/install) $(call done,glibc,glibc/install)
 	$(MKDIR) $(dir $@)
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -static -Os -o $@ $<
 
