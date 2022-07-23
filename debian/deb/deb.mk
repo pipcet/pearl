@@ -122,7 +122,7 @@ $(BUILD)/debian/deb.tar: \
 	for file in $^; do if which dpkg > /dev/null 2>&1; then dpkg -x $$file $(BUILD)/deb-tmp; else ar -x $$file --output $(BUILD)/deb-tmp-ar && tar -C $(BUILD)/deb-tmp -axf $(BUILD)/deb-tmp-ar/data.tar.*; rm -rf $(BUILD)/deb-tmp-ar; fi; done
 	(tar -C $(BUILD)/deb-tmp -cf $@ .)
 
-$(BUILD)/qemu-kernel: $(BUILD)/debian/deb/linux-image-cloud-arm64.deb
+$(BUILD)/qemu-kernel: $(BUILD)/debian/deb/linux-image-5.18.0-2-cloud-arm64-unsigned.deb
 	mkdir $(BUILD)/kernel
 	dpkg --extract $< $(BUILD)/kernel
 	cp $(BUILD)/kernel/boot/vmlinuz* $@
