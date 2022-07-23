@@ -1,22 +1,22 @@
-$(BUILD)/screen/done/install: $(BUILD)/screen/done/build
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/screen/build/src DESTDIR="$(BUILD)/pearl/install" install
+$(BUILD)/userspace/screen/done/install: $(BUILD)/userspace/screen/done/build
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/screen/build/src DESTDIR="$(BUILD)/pearl/install" install
 	@touch $@
 
-$(BUILD)/screen/done/build: $(BUILD)/screen/done/configure
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/screen/build/src
+$(BUILD)/userspace/screen/done/build: $(BUILD)/userspace/screen/done/configure
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/screen/build/src
 	@touch $@
 
-$(BUILD)/screen/done/configure: $(BUILD)/screen/done/copy $(call deps,glibc ncurses)
-	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) autoreconf --install)
-	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) sh autogen.sh)
-	(cd $(BUILD)/screen/build/src; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")
+$(BUILD)/userspace/screen/done/configure: $(BUILD)/userspace/screen/done/copy $(call deps,glibc ncurses)
+	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) autoreconf --install)
+	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) sh autogen.sh)
+	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")
 	@touch $@
 
-$(BUILD)/screen/done/copy: $(BUILD)/screen/done/checkout | $(BUILD)/screen/done/ $(BUILD)/screen/build/
-	$(CP) -aus $(PWD)/userspace/screen/screen/* $(BUILD)/screen/build/
+$(BUILD)/userspace/screen/done/copy: $(BUILD)/userspace/screen/done/checkout | $(BUILD)/userspace/screen/done/ $(BUILD)/userspace/screen/build/
+	$(CP) -aus $(PWD)/userspace/screen/screen/* $(BUILD)/userspace/screen/build/
 	@touch $@
 
-$(BUILD)/screen/done/checkout: | $(BUILD)/screen/done/
+$(BUILD)/userspace/screen/done/checkout: | $(BUILD)/userspace/screen/done/
 	$(MAKE) userspace/screen/screen{checkout}
 	@touch $@
 

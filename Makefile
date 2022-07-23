@@ -98,28 +98,28 @@ build/%: $(PWD)/build/%
 random-target:
 	target=$$( (echo build/linux/pearl.image.sendfile; \
 	 echo build/linux/pearl.image.macho; \
-	 echo build/busybox/done/install; \
-	 echo build/cryptsetup/done/install; \
-	 echo build/dialog/done/install; \
-	 echo build/dtc/done/install; \
-	 echo build/emacs/done/install; \
-	 echo build/glibc/done/install; \
-	 echo build/IPC-Run/done/install; \
-	 echo build/json-c/done/install; \
-	 echo build/kexec-tools/done/install; \
-	 echo build/libaio/done/install; \
-	 echo build/libnl/done/install; \
-	 echo build/lvm2/done/install; \
-	 echo build/memtool/done/install; \
-	 echo build/ncurses/done/install; \
-	 echo build/openssl/done/install; \
-	 echo build/perl/done/install; \
-	 echo build/popt/done/install; \
-	 echo build/procps/done/install; \
-	 echo build/screen/done/install; \
-	 echo build/slurp/done/install; \
-	 echo build/libuuid/done/install; \
-	 echo build/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
+	 echo build/userspace/busybox/done/install; \
+	 echo build/userspace/cryptsetup/done/install; \
+	 echo build/userspace/dialog/done/install; \
+	 echo build/userspace/dtc/done/install; \
+	 echo build/userspace/emacs/done/install; \
+	 echo build/userspace/glibc/done/install; \
+	 echo build/userspace/IPC-Run/done/install; \
+	 echo build/userspace/json-c/done/install; \
+	 echo build/userspace/kexec-tools/done/install; \
+	 echo build/userspace/libaio/done/install; \
+	 echo build/userspace/libnl/done/install; \
+	 echo build/userspace/lvm2/done/install; \
+	 echo build/userspace/memtool/done/install; \
+	 echo build/userspace/ncurses/done/install; \
+	 echo build/userspace/openssl/done/install; \
+	 echo build/userspace/perl/done/install; \
+	 echo build/userspace/popt/done/install; \
+	 echo build/userspace/procps/done/install; \
+	 echo build/userspace/screen/done/install; \
+	 echo build/userspace/slurp/done/install; \
+	 echo build/userspace/libuuid/done/install; \
+	 echo build/userspace/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
 
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.zstd.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@

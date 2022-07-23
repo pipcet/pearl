@@ -1,16 +1,16 @@
-$(BUILD)/nvme-cli/done/install: $(BUILD)/nvme-cli/done/build
-	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/nvme-cli/build install-bin
+$(BUILD)/userspace/nvme-cli/done/install: $(BUILD)/userspace/nvme-cli/done/build
+	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/userspace/nvme-cli/build install-bin
 	@touch $@
 
-$(BUILD)/nvme-cli/done/build: $(BUILD)/nvme-cli/done/copy $(call deps,glibc libblkid libuuid)
-	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/nvme-cli/build
+$(BUILD)/userspace/nvme-cli/done/build: $(BUILD)/userspace/nvme-cli/done/copy $(call deps,glibc libblkid libuuid)
+	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/userspace/nvme-cli/build
 	@touch $@
 
-$(BUILD)/nvme-cli/done/copy: $(BUILD)/nvme-cli/done/checkout | $(BUILD)/nvme-cli/done/ $(BUILD)/nvme-cli/build/
-	$(CP) -naus $(PWD)/userspace/nvme-cli/nvme-cli/* $(BUILD)/nvme-cli/build/
+$(BUILD)/userspace/nvme-cli/done/copy: $(BUILD)/userspace/nvme-cli/done/checkout | $(BUILD)/userspace/nvme-cli/done/ $(BUILD)/userspace/nvme-cli/build/
+	$(CP) -naus $(PWD)/userspace/nvme-cli/nvme-cli/* $(BUILD)/userspace/nvme-cli/build/
 	@touch $@
 
-$(BUILD)/nvme-cli/done/checkout: | $(BUILD)/nvme-cli/done/
+$(BUILD)/userspace/nvme-cli/done/checkout: | $(BUILD)/userspace/nvme-cli/done/
 	$(MAKE) userspace/nvme-cli/nvme-cli{checkout}
 	@touch $@
 

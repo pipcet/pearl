@@ -1,20 +1,20 @@
-$(BUILD)/dropbear/done/install: $(BUILD)/dropbear/done/build
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/dropbear/build PROGRAMS="dropbear dbclient scp" install
+$(BUILD)/userspace/dropbear/done/install: $(BUILD)/userspace/dropbear/done/build
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp" install
 	@touch $@
 
-$(BUILD)/dropbear/done/build: $(BUILD)/dropbear/done/configure
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/dropbear/build PROGRAMS="dropbear dbclient scp"
+$(BUILD)/userspace/dropbear/done/build: $(BUILD)/userspace/dropbear/done/configure
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp"
 	@touch $@
 
-$(BUILD)/dropbear/done/configure: $(BUILD)/dropbear/done/copy $(call deps,glibc gcc zlib)
-	(cd $(BUILD)/dropbear/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc ./configure CFLAGS="$(CROSS_CFLAGS)" --host=x86_64-pc-linux-gnu --disable-harden --prefix=$(BUILD)/pearl/install)
+$(BUILD)/userspace/dropbear/done/configure: $(BUILD)/userspace/dropbear/done/copy $(call deps,glibc gcc zlib)
+	(cd $(BUILD)/userspace/dropbear/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc ./configure CFLAGS="$(CROSS_CFLAGS)" --host=x86_64-pc-linux-gnu --disable-harden --prefix=$(BUILD)/pearl/install)
 	@touch $@
 
-$(BUILD)/dropbear/done/copy: $(BUILD)/dropbear/done/checkout | $(BUILD)/dropbear/done/ $(BUILD)/dropbear/build/
-	$(CP) -aus $(PWD)/userspace/dropbear/dropbear/* $(BUILD)/dropbear/build/
+$(BUILD)/userspace/dropbear/done/copy: $(BUILD)/userspace/dropbear/done/checkout | $(BUILD)/userspace/dropbear/done/ $(BUILD)/userspace/dropbear/build/
+	$(CP) -aus $(PWD)/userspace/dropbear/dropbear/* $(BUILD)/userspace/dropbear/build/
 	@touch $@
 
-$(BUILD)/dropbear/done/checkout: | $(BUILD)/dropbear/done/
+$(BUILD)/userspace/dropbear/done/checkout: | $(BUILD)/userspace/dropbear/done/
 	$(MAKE) userspace/dropbear/dropbear{checkout}
 	@touch $@
 

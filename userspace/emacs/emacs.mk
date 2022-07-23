@@ -1,37 +1,37 @@
-$(BUILD)/emacs/done/cross/install: $(BUILD)/emacs/done/cross/build
-	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross DESTDIR=$(BUILD)/pearl/install install
+$(BUILD)/userspace/emacs/done/cross/install: $(BUILD)/userspace/emacs/done/cross/build
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross DESTDIR=$(BUILD)/pearl/install install
 	@touch $@
 
-$(BUILD)/emacs/done/cross/build: $(BUILD)/emacs/done/cross/configure
-	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/emacs/cross/
+$(BUILD)/userspace/emacs/done/cross/build: $(BUILD)/userspace/emacs/done/cross/configure
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross/
 	@touch $@
 
-$(BUILD)/emacs/done/cross/configure: $(BUILD)/emacs/done/cross/copy $(BUILD)/gcc/done/gcc/install $(BUILD)/glibc/done/glibc/install $(BUILD)/ncurses/done/install
-	(cd $(BUILD)/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
+$(BUILD)/userspace/emacs/done/cross/configure: $(BUILD)/userspace/emacs/done/cross/copy $(BUILD)/toolchain/gcc/done/gcc/install $(BUILD)/userspace/glibc/done/glibc/install $(BUILD)/userspace/ncurses/done/install
+	(cd $(BUILD)/userspace/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	@touch $@
 
-$(BUILD)/emacs/done/cross/copy: $(BUILD)/emacs/done/native/build $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/cross/ $(BUILD)/emacs/cross/
-	$(CP) -aus $(BUILD)/emacs/native/* $(BUILD)/emacs/cross/
+$(BUILD)/userspace/emacs/done/cross/copy: $(BUILD)/userspace/emacs/done/native/build $(BUILD)/userspace/emacs/done/checkout | $(BUILD)/userspace/emacs/done/cross/ $(BUILD)/userspace/emacs/cross/
+	$(CP) -aus $(BUILD)/userspace/emacs/native/* $(BUILD)/userspace/emacs/cross/
 	@touch $@
 
-$(BUILD)/emacs/done/native/build: $(BUILD)/emacs/done/native/configure
-	$(MAKE) -C $(BUILD)/emacs/native
+$(BUILD)/userspace/emacs/done/native/build: $(BUILD)/userspace/emacs/done/native/configure
+	$(MAKE) -C $(BUILD)/userspace/emacs/native
 	@touch $@
 
-$(BUILD)/emacs/done/native/configure: $(BUILD)/emacs/done/native/copy
-	(cd $(BUILD)/emacs/native; sh autogen.sh)
-	(cd $(BUILD)/emacs/native; ./configure --without-all --without-x)
+$(BUILD)/userspace/emacs/done/native/configure: $(BUILD)/userspace/emacs/done/native/copy
+	(cd $(BUILD)/userspace/emacs/native; sh autogen.sh)
+	(cd $(BUILD)/userspace/emacs/native; ./configure --without-all --without-x)
 	@touch $@
 
-$(BUILD)/emacs/done/native/copy: $(BUILD)/emacs/done/checkout | $(BUILD)/emacs/done/native/ $(BUILD)/emacs/native/
-	$(CP) -aus $(PWD)/userspace/emacs/emacs/* $(BUILD)/emacs/native/
+$(BUILD)/userspace/emacs/done/native/copy: $(BUILD)/userspace/emacs/done/checkout | $(BUILD)/userspace/emacs/done/native/ $(BUILD)/userspace/emacs/native/
+	$(CP) -aus $(PWD)/userspace/emacs/emacs/* $(BUILD)/userspace/emacs/native/
 	@touch $@
 
-$(BUILD)/emacs/done/checkout: | $(BUILD)/emacs/done/
+$(BUILD)/userspace/emacs/done/checkout: | $(BUILD)/userspace/emacs/done/
 	$(MAKE) userspace/emacs/emacs{checkout}
 	@touch $@
 
-$(BUILD)/emacs/done/install: $(BUILD)/emacs/done/cross/install
+$(BUILD)/userspace/emacs/done/install: $(BUILD)/userspace/emacs/done/cross/install
 	@touch $@
 
 userspace-modules += emacs

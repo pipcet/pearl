@@ -1,20 +1,20 @@
-$(BUILD)/dialog/done/install: $(BUILD)/dialog/done/build
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/dialog/build install
+$(BUILD)/userspace/dialog/done/install: $(BUILD)/userspace/dialog/done/build
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dialog/build install
 	@touch $@
 
-$(BUILD)/dialog/done/build: $(BUILD)/dialog/done/configure
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/dialog/build
+$(BUILD)/userspace/dialog/done/build: $(BUILD)/userspace/dialog/done/configure
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dialog/build
 	@touch $@
 
-$(BUILD)/dialog/done/configure: $(BUILD)/dialog/done/copy $(BUILD)/glibc/done/glibc/install $(BUILD)/gcc/done/gcc/install $(call deps,ncurses glibc gcc)
-	(cd $(BUILD)/dialog/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(BUILD)/pearl/install --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding)
+$(BUILD)/userspace/dialog/done/configure: $(BUILD)/userspace/dialog/done/copy $(BUILD)/userspace/glibc/done/glibc/install $(BUILD)/toolchain/gcc/done/gcc/install $(call deps,ncurses glibc gcc)
+	(cd $(BUILD)/userspace/dialog/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(BUILD)/pearl/install --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding)
 	@touch $@
 
-$(BUILD)/dialog/done/copy: $(BUILD)/dialog/done/checkout | $(BUILD)/dialog/done/ $(BUILD)/dialog/build/
-	$(CP) -aus $(PWD)/userspace/dialog/dialog/* $(BUILD)/dialog/build/
+$(BUILD)/userspace/dialog/done/copy: $(BUILD)/userspace/dialog/done/checkout | $(BUILD)/userspace/dialog/done/ $(BUILD)/userspace/dialog/build/
+	$(CP) -aus $(PWD)/userspace/dialog/dialog/* $(BUILD)/userspace/dialog/build/
 	@touch $@
 
-$(BUILD)/dialog/done/checkout: | $(BUILD)/dialog/done/
+$(BUILD)/userspace/dialog/done/checkout: | $(BUILD)/userspace/dialog/done/
 	$(MAKE) userspace/dialog/dialog{checkout}
 	@touch $@
 

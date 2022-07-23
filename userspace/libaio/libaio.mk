@@ -1,20 +1,20 @@
-DEP_libaio += $(BUILD)/libaio/done/install
-$(BUILD)/libaio/done/install: $(BUILD)/libaio/done/build
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/pearl/install/ install
+DEP_libaio += $(BUILD)/userspace/libaio/done/install
+$(BUILD)/userspace/libaio/done/install: $(BUILD)/userspace/libaio/done/build
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(BUILD)/pearl/install/ install
 	@touch $@
 
-$(BUILD)/libaio/done/build: $(BUILD)/libaio/done/configure
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -I."
+$(BUILD)/userspace/libaio/done/build: $(BUILD)/userspace/libaio/done/configure
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -I."
 	@touch $@
 
-$(BUILD)/libaio/done/configure: $(BUILD)/libaio/done/copy $(call deps,libblkid glibc gcc)
+$(BUILD)/userspace/libaio/done/configure: $(BUILD)/userspace/libaio/done/copy $(call deps,libblkid glibc gcc)
 	@touch $@
 
-$(BUILD)/libaio/done/copy: $(BUILD)/libaio/done/checkout | $(BUILD)/libaio/build/ $(BUILD)/libaio/done/
-	$(CP) -aus $(PWD)/userspace/libaio/libaio/* $(BUILD)/libaio/build
+$(BUILD)/userspace/libaio/done/copy: $(BUILD)/userspace/libaio/done/checkout | $(BUILD)/userspace/libaio/build/ $(BUILD)/userspace/libaio/done/
+	$(CP) -aus $(PWD)/userspace/libaio/libaio/* $(BUILD)/userspace/libaio/build
 	@touch $@
 
-$(BUILD)/libaio/done/checkout: | $(BUILD)/libaio/done/
+$(BUILD)/userspace/libaio/done/checkout: | $(BUILD)/userspace/libaio/done/
 	$(MAKE) userspace/libaio/libaio{checkout}
 	@touch $@
 

@@ -1,19 +1,19 @@
-$(BUILD)/dtc/done/install: $(BUILD)/dtc/done/build
-	$(WITH_CROSS_PATH) $(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/dtc/build install
+$(BUILD)/userspace/dtc/done/install: $(BUILD)/userspace/dtc/done/build
+	$(WITH_CROSS_PATH) $(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(BUILD)/pearl/install" CFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build install
 	@touch $@
 
-$(BUILD)/dtc/done/build: $(BUILD)/dtc/done/configure
-	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/dtc/build
+$(BUILD)/userspace/dtc/done/build: $(BUILD)/userspace/dtc/done/configure
+	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build
 	@touch $@
 
-$(BUILD)/dtc/done/configure: $(BUILD)/dtc/done/copy $(BUILD)/glibc/done/glibc/install
+$(BUILD)/userspace/dtc/done/configure: $(BUILD)/userspace/dtc/done/copy $(BUILD)/userspace/glibc/done/glibc/install
 	@touch $@
 
-$(BUILD)/dtc/done/copy: $(BUILD)/dtc/done/checkout | $(BUILD)/dtc/done/ $(BUILD)/dtc/build/
-	$(CP) -aus $(PWD)/userspace/dtc/dtc/* $(BUILD)/dtc/build/
+$(BUILD)/userspace/dtc/done/copy: $(BUILD)/userspace/dtc/done/checkout | $(BUILD)/userspace/dtc/done/ $(BUILD)/userspace/dtc/build/
+	$(CP) -aus $(PWD)/userspace/dtc/dtc/* $(BUILD)/userspace/dtc/build/
 	@touch $@
 
-$(BUILD)/dtc/done/checkout: | $(BUILD)/dtc/done/
+$(BUILD)/userspace/dtc/done/checkout: | $(BUILD)/userspace/dtc/done/
 	$(MAKE) userspace/dtc/dtc{checkout}
 	@touch $@
 

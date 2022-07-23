@@ -26,7 +26,7 @@ include userspace/zlib/zlib.mk
 include userspace/zsh/zsh.mk
 include userspace/zstd/zstd.mk
 
-$(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/$(module)/done/%) | $(BUILD)/userspace/done/
+$(BUILD)/userspace/done/%: $(foreach module,$(userspace-modules),$(BUILD)/userspace/$(module)/done/%) | $(BUILD)/userspace/done/
 	@touch $@
 
 SECTARGETS += $(BUILD)/userspace/done/build
