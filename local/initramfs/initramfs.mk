@@ -1,7 +1,7 @@
 # XXX this currently makes all files executable
 
-$(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(COPY)
-$(BUILD)/linux/debian.cpio: $(BUILD)/initramfs/debian.cpio ; $(COPY)
+$(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(SYMLINK)
+$(BUILD)/linux/debian.cpio: $(BUILD)/initramfs/debian.cpio ; $(SYMLINK)
 $(BUILD)/initramfs/%: local/initramfs/% ; $(COPY)
 $(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec $(BUILD)/userspace/done/install local/initramfs/build-cpiospec.pl
 	$(MKDIR) $(dir $@)
