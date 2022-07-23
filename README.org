@@ -2,7 +2,11 @@
 
 GNU/Linux on Apple M1-based hardware, including, in particular, a MacBook Pro called "pearl". No relationship to [[https://www.perl.com][Perl]], though we do use that.
 
-Ideally, this repository will contain everything you need to build and run Debian GNU/Linux on any M1 machine.
+* Project Status
+
+This project presumably never achieved usability sufficient for people other than myself; while I continue to use it daily, I'm continuing it mostly as a matter of personal education (yes, the dreaded "learning experience" thing) rather than in any realistic hope others will be convinced to use it.
+
+Still, this repository contains everything you need to build and run Debian GNU/Linux on an original M1 machine.
 
 Currently, the following models should work:
 
@@ -15,9 +19,9 @@ The following are all not expected to work:
 
 - 2021 MacBooks (14 inch, 16 inch, M1 Max/Pro)
 
-The hardware I actually have is a MacBook Pro 13 inch (2020) running macOS 12.0 firmware, and a mini currently running macOS 12.1 firmware.
+The hardware I actually have is a MacBook Pro 13 inch (2020) running macOS 12.1 firmware, and a mini currently running macOS 12.4 firmware.
 
-* Obligatory warning
+* Obligatory Warning
 
 Please consider that this is experimental software and I'm unable to give warranties of any kind, as clearly stated in the respective licenses. Since this is experimental software running on undocumented hardware, there is some extra probability that it may destroy data or, hypothetically so far, render your device unusable.
 
@@ -50,27 +54,6 @@ By contrast, the Pearl boot process looks like this:
 
 That means we only need to write device drivers once, and we can use all devices that have a Linux driver.
 
-** Status
-
-The current status is that Pearl is a usable everyday desktop system, including everything I use on a daily basis, with the exception of audio support.
-
-| Feature              | Upstream   | Asahi   | Corellium     | Pearl      |
-|----------------------+------------+---------+---------------+------------|
-| kernel version       | 5.14.0-rc6 | ?       | February 2021 | 5.14.0-rc6 |
-| audio                | no         | no      | no            | no         |
-| bluetooth            | no         | no      | no            | no         |
-| resume/suspend       | no         | no      | no            | no         |
-| SMP                  | partial    | partial | yes           | yes        |
-| keyboard/touchpad    | no         | no      | yes           | yes        |
-| backlight blanking   | no         | no      | no            | yes        |
-| keyboard backlight   | no         | no      | no            | yes        |
-| kexecs other kernels | yes        | yes     | no            | yes        |
-| KVM support          | yes        | yes     | no            | yes        |
-| WiFi                 | no         | no      | yes           | yes        |
-| USB host support     | no         | yes     | yes           | yes        |
-| USB gadget support   | no         | yes     | no            | yes        |
-| NVMe support         | no         | yes     | yes           | yes        |
-
 ** Testing
 
 Testers wanted! Please contact me at =pipcet@gmail.com= if you have M1 hardware and want to try Pearl.
@@ -83,7 +66,7 @@ That initial kernel does not rely on the existence of a complete device tree; in
 
 That second kernel can then perform as much or as little I/O as the user desires, using standard Linux device drivers, to load a third kernel.
 
-For debugging and development, the second kernel can also load something different, such as m1n1 or U-Boot (further options would be MacOS or GRUB, but those don't work yet), but that's not what the ordinary boot process would look like.
+For debugging and development, the second kernel can also load something different, such as m1n1 or U-Boot or GRUB (another option would be MacOS, but that don't work yet), but that's not what the ordinary boot process would look like.
 
 As a special case, the second kernel can load an updated version of itself; this is important because the first version is signed by =kmutil= and is difficult to replace, while the second version need not be and can be provided over the net straight from a development machine.
 
@@ -298,7 +281,7 @@ This will need to be changed to support Macs with USB keyboards, though those te
 
 *** Backlight brightness level
 
-MacOS appears to have a bug which makes it reset the backlight level to "very dim" when it is booted. However, it's possible to use =nvram= to set the right level in Recovery Mode. There is also an experimental driver in the tree to set backlight brightness in the usual way.
+MacOS appears to have a bug which makes it reset the backlight level to "very dim" when it is booted. With MacOS 12, it is no longer possible to use =nvram= to set the right level in Recovery Mode. There is an experimental driver in the tree to set backlight brightness in the usual way.
 
 *** That boot chime
 
@@ -308,8 +291,6 @@ It's possible to disable the somewhat annoying boot chime using =nvram= or the M
 
 We're currently using 16 KB pages, while most distribution kernels use 4 KB pages. The CPU's MMU supports using 4 KB pages, but it appears the IOMMU does not, and the Linux code assumes identical page sizes for both.
 
-This breaks Debian's Emacs package, but the bug has been reported and will be fixed in the next Emacs release; in any case, building Emacs from source works fine.
-
 *** x8r8g8b8
 
 When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works fine for the boot loaders and Linux but isn't supported by X.org. Putting the framebuffer into x8r8g8b8 mode works, but it means colors will be off either before or after the switch. We currently have code to switch the framebuffer to x8r8g8b8 mode early in the boot process.
@@ -317,10 +298,6 @@ When initialized by iBoot, the framebuffer is in x2r10g10b10 mode, which works f
 *** Chromium
 
 Chromium currently does not appear to work.
-
-*** sys_shutdown
-
-There appears to be a bug in the current linux-next kernel that prevents sys_shutdown from working properly. I hope this bug affects other machines, so that it will be fixed soon.
 
 ** Contact
 
