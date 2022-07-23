@@ -47,7 +47,7 @@ $(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $
 	@touch $@
 
 $(call done,bootloaders/barebox,copy): $(call done,bootloaders/barebox,checkout) | $(call done,bootloaders/barebox,) $(BUILD)/bootloaders/barebox/build/
-	$(CP) -aus $(PWD)/bootloaders/barebox/barebox/* $(BUILD)/bootloaders/barebox/build/
+	$(COPY_SAUNA) $(PWD)/bootloaders/barebox/barebox/* $(BUILD)/bootloaders/barebox/build/
 	@touch $@
 
 $(call done,bootloaders/barebox,checkout): | $(call done,bootloaders/barebox,)
