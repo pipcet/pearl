@@ -1,0 +1,54 @@
+#!/bin/bash
+tar cf wifi.tar /usr/share/firmware/wifi /usr/share/firmware/bluetooth
+bash ./pack.bash /persist/ wifi.tar >> pearl-debian-uncompressed.macho.zst.image
+echo "exit" >> pearl-debian-uncompressed.macho.zst.image
+dd if=/dev/zero bs=1024 count=4 >> pearl-debian-uncompressed.macho.zst.image 2>/dev/null
+while true; do
+    echo "Available boot parameters (separate with ';', RET to keep):"
+    echo "  no4k               disable automatic switch to 4k resolution"
+    echo "  root DEV [-o OPT]  automatically boot from device"
+    echo "  gadget-mode 0      put USB port 0 (top/left) in gadget mode"
+    echo "  gadget-mode 1      put USB port 1 (bottom/right) in gadget mode"
+    echo "  delay SECS         delay n seconds before booting automatically"
+    nvram pearl > pearl-params
+    read DUMMY EXISTING < pearl-params
+    echo
+    echo "Old boot parameters: $EXISTING"
+    (perl ./readline.pm "New boot parameters: " "$EXISTING" || read -e -p "New boot parameters: " PARAMS; echo "$PARAMS") > params < /dev/tty
+    PARAMS="$(cat params)"
+    nvram pearl-volume > pearl-volume
+    read DUMMY EXISTING_VOLUME < pearl-volume
+    echo "Old volume to install: $EXISTING_VOLUME"
+    if [ -z "$EXISTING_VOLUME" ]; then
+	EXISTING_VOLUME="Macintosh HD"
+    fi
+    echo "Available volumes:"
+    (cd /Volumes; ls -dl [A-Za-z]*)
+    echo
+    (perl ./readline.pm "New volume to install: " "$EXISTING_VOLUME" || read -e -p "New Volume to install: " VOLUME; echo "$VOLUME") > volume < /dev/tty
+    VOLUME="$(cat volume|sed -e 's/^\/Volumes\///g')"
+    echo
+    echo
+    echo "New boot parameters: $PARAMS"
+    echo "New volume to install: $VOLUME"
+    echo
+    echo "Please abort with Ctrl-C if this is incorrect."
+    echo
+    break;
+done
+KMUTIL_OPTS=""
+KMUTIL_OPTS="--raw --entry-point 0 --lowest-virtual-address 0"
+if kmutil configure-boot -c pearl-debian-uncompressed.macho.zst.image -v /Volumes/"$VOLUME" $KMUTIL_OPTS < /dev/stdout; then
+    if [ -z "$PARAMS" ]; then
+	nvram -d pearl
+    else
+	nvram 'pearl='"$PARAMS"
+    fi
+    if [ -z "$VOLUME" ]; then
+	nvram -d pearl-volume
+    else
+	nvram 'pearl-volume='"$VOLUME"
+    fi
+    reboot
+fi
+echo "Since we got here, something went wrong. Did you use bputil and csrutil?"
