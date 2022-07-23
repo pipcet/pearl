@@ -8,7 +8,7 @@ while [ $counter -gt 0 ]; do
     echo "will boot installed system or Debian in $counter seconds" > /var/help/010-auto-action
 done
 if [ $counter -gt 0 ]; then
-    rm /var/help/010-auto-action
+    rm -f /var/help/010-auto-action
     exit 1
 fi
 echo "booting" > /var/help/010-auto-action
