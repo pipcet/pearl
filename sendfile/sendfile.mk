@@ -1,6 +1,6 @@
-kernels = linux stage2 pearl
+kernels = linux stage2 stage3 pearl
 models = j274 j293 j313
-stages = root shell stage2
+stages = root shell stage2 stage3
 
 define stagerule
 $(BUILD)/sendfile/linux-$(stage).sendfile: $(BUILD)/linux/linux.modules
@@ -21,6 +21,7 @@ $(BUILD)/sendfile/linux-$(stage).sendfile.d/sendfile: $(BUILD)/linux/linux.image
 	echo "mv /file.list.new /file.list" >> $$@
 	echo "echo final > /persist/stage" >> $$@
 	echo "echo $(stage) > /persist/substages" >> $$@
+	echo "(echo '#!/bin/sh'; echo 'gadget &'; echo exec /bin/sh -i) > /bin/init-final-shell" >> $$@
 	echo "find persist >> /file.list" >> $$@
 	echo "cat /file.list | cpio -H newc -o > /boot/linux.cpio" >> $$@
 	echo "dt dtb-to-dtp /boot/linux.dtb /boot/linux.dtp" >> $$@
