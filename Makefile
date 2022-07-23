@@ -18,6 +18,8 @@ WITH_CROSS_CC= CC="$(CROSS_CC)"
 NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)/pearl/install/lib
 WITH_QEMU = $(NATIVE_CODE_ENV)
 
+all: $(BUILD)/pearl.pl
+
 .SECONDEXPANSION:
 
 define done
