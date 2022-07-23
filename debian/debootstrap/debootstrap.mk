@@ -1,5 +1,6 @@
 $(BUILD)/debian/debootstrap/stage1.tar: | $(BUILD)/debian/debootstrap/
-	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=dash,wget,busybox,busybox-static,network-manager,openssh-client,net-tools,libpam-systemd,cryptsetup,lvm2,memtool,nvme-cli,watchdog,minicom,device-tree-compiler,file,gpm,ssh,usbutils,pciutils sid $(BUILD)/debian/debootstrap/stage1 http://deb.debian.org/debian
+	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=dash,wget,busybox,busybox-static,network-manager,openssh-client,net-tools,libpam-systemd,cryptsetup,lvm2,memtool,nvme-cli,watchdog,minicom,device-tree-compiler,file,gpm,ssh,usbutils,pciutils,wpasupplicant,ntpdate sid $(BUILD)/debian/debootstrap/stage1 http://deb.debian.org/debian
+	sudo rm -f $(BUILD)/debian/debootstrap/stage1/var/lib/apt/lists/*Packages*
 	(cd $(BUILD)/debian/debootstrap/stage1; sudo tar c .) > $@
 
 $(BUILD)/debian/debootstrap/stage15.tar: $(BUILD)/debian/debootstrap/stage1.tar
@@ -47,7 +48,7 @@ $(BUILD)/debian.cpio.xz: $(BUILD)/debian.cpio
 
 $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	sudo rm -rf $(BUILD)/debian/di-debootstrap
-	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=build-essential,git,linux-image-cloud-arm64,bash,kmod,dash,wget,busybox,busybox-static,net-tools,libpam-systemd,file,xsltproc,mtools,openssl,mokutil,libx11-data,libx11-6,sharutils,dpkg-dev sid $(BUILD)/debian/di-debootstrap http://deb.debian.org/debian
+	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=build-essential,git,linux-image-cloud-arm64,bash,kmod,dash,wget,busybox,busybox-static,net-tools,libpam-systemd,file,xsltproc,mtools,openssl,mokutil,libx11-data,libx11-6,sharutils,dpkg-dev,ntnpdate sid $(BUILD)/debian/di-debootstrap http://deb.debian.org/debian
 	sudo chmod a+r -R $(BUILD)/debian/di-debootstrap/root
 	sudo chmod a+x $(BUILD)/debian/di-debootstrap/root
 	(cd $(BUILD)/debian/di-debootstrap/root; sudo git clone $(or $(DIREPO),https://github.com/pipcet/debian-installer))
