@@ -49,6 +49,10 @@ define SYMLINK
 	ln -sf $< $@
 endef
 
+define COPY_SAUNA
+	$(CP) -ausn
+endef
+
 all:
 
 %/:
