@@ -2,5 +2,6 @@
 mkdir -p /persist
 cat /proc/iomem > /persist/stage1-iomem.txt
 uname -a > /persist/stage1-uname.txt
+dmesg > /persist/stage1-dmesg.txt
 prepare-stage2
 stage2
