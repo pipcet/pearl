@@ -52,7 +52,7 @@
 	url = https://github.com/json-c/json-c
 [submodule "userspace/kexec-tools/kexec-tools"]
 	path = userspace/kexec-tools/kexec-tools
-	url = https://github.com/horms/kexec-tools
+	url = https://github.com/pipcet/kexec-tools
 [submodule "userspace/libaio/libaio"]
 	path = userspace/libaio/libaio
 	url = https://pagure.io/libaio.git
@@ -125,4 +125,4 @@
 	url = https://github.com/madler/zlib
 [submodule "zstd/zstd"]
 	path = zstd/zstd
-	url = https://github.com/facebook/zstd
+	url = https://github.com/pipcet/zstd
