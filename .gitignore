@@ -1,6 +1,7 @@
 *~
 .vscode/
 /build/
+/done/
 /stamp/
 /blobs/macos.tar
 /blobs/brcm.tar
