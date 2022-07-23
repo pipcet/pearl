@@ -11,11 +11,11 @@ $(call done,bootloaders/m1n1,build): $(call done,bootloaders/m1n1,copy) $(call d
 	$(TIMESTAMP)
 
 $(call done,bootloaders/m1n1,copy): $(call done,bootloaders/m1n1,checkout) | $(BUILD)/bootloaders/m1n1/build/
-	$(CP) -aus $(PWD)/bootloaders/bootloaders/m1n1/m1n1/* $(BUILD)/bootloaders/m1n1/build/
+	$(CP) -aus $(PWD)/bootloaders/m1n1/m1n1/* $(BUILD)/bootloaders/m1n1/build/
 	$(TIMESTAMP)
 
 $(call done,bootloaders/m1n1,checkout): | $(call done,bootloaders/m1n1,)
-	$(MAKE) bootloaders/bootloaders/m1n1/m1n1{checkout}
+	$(MAKE) bootloaders/m1n1/m1n1{checkout}
 	$(TIMESTAMP)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/m1n1.macho
