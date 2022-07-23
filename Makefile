@@ -7,6 +7,7 @@ PWD = $(shell pwd)
 SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
 BUILD ?= $(PWD)/build
+DONE ?= $(PWD)/done
 CROSS_CFLAGS = -Os --sysroot=$(BUILD)/pearl/install -B$(BUILD)/pearl/install -L$(BUILD)/pearl/install/lib -I$(BUILD)/pearl/install/include
 CROSS_CC = $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gcc
 CROSS_PATH = $(BUILD)/pearl/toolchain/bin
@@ -18,6 +19,10 @@ NATIVE_CODE_ENV = QEMU_LD_PREFIX=$(BUILD)/pearl/install LD_LIBRARY_PATH=$(BUILD)
 WITH_QEMU = $(NATIVE_CODE_ENV)
 
 .SECONDEXPANSION:
+
+define done
+$(DONE)/$(1)/$(2)
+endef
 
 define pearl-static-file
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1))
@@ -75,13 +80,16 @@ include zstd/zstd.mk
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
-$(BUILD)/pearl/done/install/mkdir: | $(BUILD)/pearl/done/install/ $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
+$(call done,pearl,/install/mkdir): | $(call done,pearl,install/) $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
 	ln -sf . $(BUILD)/pearl/install/usr
 	ln -sf . $(BUILD)/pearl/install/local
 	ln -sf bin $(BUILD)/pearl/install/sbin
 	@touch $@
 
 build/%: $(PWD)/build/%
+	@true
+
+done/%: $(PWD)/done/%
 	@true
 
 %.dts.h: %.dts dtc/dtc-relocs
@@ -98,28 +106,28 @@ build/%: $(PWD)/build/%
 random-target:
 	target=$$( (echo build/linux/pearl.image.sendfile; \
 	 echo build/linux/pearl.image.macho; \
-	 echo build/userspace/busybox/done/install; \
-	 echo build/userspace/cryptsetup/done/install; \
-	 echo build/userspace/dialog/done/install; \
-	 echo build/userspace/dtc/done/install; \
-	 echo build/userspace/emacs/done/install; \
-	 echo build/userspace/glibc/done/install; \
-	 echo build/userspace/IPC-Run/done/install; \
-	 echo build/userspace/json-c/done/install; \
-	 echo build/userspace/kexec-tools/done/install; \
-	 echo build/userspace/libaio/done/install; \
-	 echo build/userspace/libnl/done/install; \
-	 echo build/userspace/lvm2/done/install; \
-	 echo build/userspace/memtool/done/install; \
-	 echo build/userspace/ncurses/done/install; \
-	 echo build/userspace/openssl/done/install; \
-	 echo build/userspace/perl/done/install; \
-	 echo build/userspace/popt/done/install; \
-	 echo build/userspace/procps/done/install; \
-	 echo build/userspace/screen/done/install; \
-	 echo build/userspace/slurp/done/install; \
-	 echo build/userspace/libuuid/done/install; \
-	 echo build/userspace/libblkid/done/install) | shuf | head -1); echo $$target; $(MAKE) $$target
+	 echo $(call done,userspace/busybox,install); \
+	 echo $(call done,userspace/cryptsetup,install); \
+	 echo $(call done,userspace/dialog,install); \
+	 echo $(call done,userspace/dtc,install); \
+	 echo $(call done,userspace/emacs,install); \
+	 echo $(call done,userspace/glibc,install); \
+	 echo $(call done,userspace/IPC-Run,install); \
+	 echo $(call done,userspace/json-c,install); \
+	 echo $(call done,userspace/kexec-tools,install); \
+	 echo $(call done,userspace/libaio,install); \
+	 echo $(call done,userspace/libnl,install); \
+	 echo $(call done,userspace/lvm2,install); \
+	 echo $(call done,userspace/memtool,install); \
+	 echo $(call done,userspace/ncurses,install); \
+	 echo $(call done,userspace/openssl,install); \
+	 echo $(call done,userspace/perl,install); \
+	 echo $(call done,userspace/popt,install); \
+	 echo $(call done,userspace/procps,install); \
+	 echo $(call done,userspace/screen,install); \
+	 echo $(call done,userspace/slurp,install); \
+	 echo $(call done,userspace/libuuid,install); \
+	 echo $(call done,userspace/libblkid,install)) | shuf | head -1); echo $$target; $(MAKE) $$target
 
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.zstd.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@
