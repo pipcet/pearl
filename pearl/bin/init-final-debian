@@ -2,7 +2,9 @@
 mkdir /debian
 mount -t ramfs debian /debian
 echo "uncompressing Debian filesystem"
-zstd --verbose -d < /persist/debian.cpio.zstd | (cd /debian; cpio -id)
+dt extract-payload /persist/payload /persist/debian.cpio
+cat /persist/debian.cpio | (cd /debian; cpio -id)
+rm -f /persist/debian.cpio
 cp -a /persist /debian/persist/
 cp /bin/debian-init /debian/init
 chmod a+x /debian/init

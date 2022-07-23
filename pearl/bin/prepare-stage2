@@ -7,7 +7,6 @@ dt extract-bootargs /boot/bootargs.dtp
 dt extract-adt /boot/adt
 PEARL="$(dt adt-pearl /boot/adt)"
 echo "$PEARL" >> /persist/stage1.zsh
-[ -e /persist/payload ] || dt extract-payload /persist/payload
 (echo $MODEL; dt adt-model /boot/adt) | while read REPLY; do
     if [ -e /boot/stage2-$REPLY.dtb ]; then
 	echo "$REPLY" > /persist/model
