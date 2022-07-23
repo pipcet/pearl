@@ -136,16 +136,17 @@ $(BUILD)/kmutil-script-raw: recovery/bin/kmutil-script-raw
 build/pearl.pl:
 	$(MAKE) $(PWD)/build/pearl.pl
 
-$(BUILD)/pearl.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
+$(BUILD)/pearl-old.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
-$(BUILD)/pearl-zst.pl: $(BUILD)/kmutil-script-raw $(BUILD)/pearl-debian-uncompressed.macho.zst.image host/pack/pack.pl recovery/bin/readline.pm
+$(BUILD)/pearl.pl: $(BUILD)/kmutil-script-raw $(BUILD)/pearl-debian-uncompressed.macho.zst.image host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script-raw recovery/bin/readline.pm $(BUILD)/pearl-debian-uncompressed.macho.zst.image host/pack/pack.bash > $@
 
 $(call pearl-static,$(wildcard $(PWD)/pearl/bin/* $(PWD)/pearl/init),$(PWD)/pearl)
 
 SECTARGETS += $(BUILD)/linux/pearl.image.macho
 SECTARGETS += $(BUILD)/pearl-debian.macho
+SECTARGETS += $(BUILD)/pearl-old.pl
 SECTARGETS += $(BUILD)/pearl.pl
 
 delsex:
