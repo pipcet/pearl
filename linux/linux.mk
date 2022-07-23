@@ -110,12 +110,12 @@ $(BUILD)/linux/%.modules: $(call done,linux,%/build)
 $(call done,linux,%/build): $(call done,linux,%/configure)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) dtbs
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,linux,%/configure): $(BUILD)/linux/%.config $(call done,linux,%/copy) $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
-	@touch $@
+	$(TIMESTAMP)
 
 linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,gcc,gcc/install)
 	$(CP) $< $(BUILD)/linux/$*/build/.config
@@ -124,19 +124,19 @@ linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,gcc,gc
 
 $(call done,linux,%/copy): $(call done,linux,checkout) | $(call done,linux,%/) $(BUILD)/linux/%/build/
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,linux,headers/install): $(call done,linux,headers/copy) | $(call done,pearl,install/)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/pearl/install headers_install
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,linux,headers/copy): $(call done,linux,checkout) | $(call done,linux,headers/) $(BUILD)/linux/headers/source/
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,linux,checkout): | $(call done,linux,)
 	$(MAKE) linux/linux{checkout}
-	@touch $@
+	$(TIMESTAMP)
 
 {non-intermediate}: $(call done,linux,headers/copy) $(call done,linux,headers/configure)
 

@@ -27,7 +27,7 @@ include userspace/zsh/zsh.mk
 include userspace/zstd/zstd.mk
 
 $(call done,userspace,%): $(foreach module,$(userspace-modules),$(call done,userspace/$(module),%)) | $(call done,userspace,)
-	@touch $@
+	$(TIMESTAMP)
 
 SECTARGETS += $(call done,userspace,build)
 SECTARGETS += $(call done,userspace,install)

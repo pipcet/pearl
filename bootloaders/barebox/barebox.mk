@@ -34,25 +34,25 @@ $(BUILD)/bootloaders/barebox.image.d/sendfile: $(call done,bootloaders/barebox,b
 	chmod u+x $@
 
 $(call done,bootloaders/barebox,install): $(call done,bootloaders/barebox,build)
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/barebox,build): $(call done,bootloaders/barebox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $(call done,bootloaders/barebox,copy) $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install)
 	$(CP) $< $(BUILD)/bootloaders/barebox/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/barebox,copy): $(call done,bootloaders/barebox,checkout) | $(call done,bootloaders/barebox,) $(BUILD)/bootloaders/barebox/build/
 	$(COPY_SAUNA) $(PWD)/bootloaders/barebox/barebox/* $(BUILD)/bootloaders/barebox/build/
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/barebox,checkout): | $(call done,bootloaders/barebox,)
 	$(MAKE) bootloaders/barebox/barebox{checkout}
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image
 $(BUILD)/initramfs/pearl/boot/barebox.image: $(BUILD)/bootloaders/barebox.image ; $(COPY)

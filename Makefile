@@ -53,6 +53,10 @@ define COPY_SAUNA
 	$(CP) -ausn
 endef
 
+define TIMESTAMP
+	@date --iso=ns > $@
+endef
+
 all:
 
 %/:
@@ -86,11 +90,11 @@ include zstd/zstd.mk
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
-$(call done,pearl,/install/mkdir): | $(call done,pearl,install/) $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
+$(call done,pearl,install/mkdir): | $(call done,pearl,install/) $(BUILD)/pearl/install/include/ $(BUILD)/pearl/install/bin/
 	ln -sf . $(BUILD)/pearl/install/usr
 	ln -sf . $(BUILD)/pearl/install/local
 	ln -sf bin $(BUILD)/pearl/install/sbin
-	@touch $@
+	$(TIMESTAMP)
 
 build/%: $(PWD)/build/%
 	@true

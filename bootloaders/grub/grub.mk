@@ -3,21 +3,21 @@ $(BUILD)/bootloaders/grub.efi: $(call done,bootloaders/grub,install)
 
 $(call done,bootloaders/grub,install): $(call done,bootloaders/grub,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/grub/build install
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/grub,build): $(call done,bootloaders/grub,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/grub/build
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/grub,configure): $(call done,bootloaders/grub,copy) $(call done,toolchain/glibc,glibc/install) | $(BUILD)/bootloaders/grub/build/
 	(cd $(BUILD)/bootloaders/grub/build; sh bootstrap)
 	(cd $(BUILD)/bootloaders/grub/build; $(WITH_CROSS_PATH) ./configure --host=$(NATIVE_TRIPLE) --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=efi --prefix=$(BUILD)/toolchain --disable-werror)
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/grub,copy): $(call done,bootloaders/grub,checkout) | $(BUILD)/bootloaders/grub/build/
 	$(CP) -aus $(PWD)/bootloaders/grub/grub/* $(BUILD)/bootloaders/grub/build/
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/grub,checkout): | $(call done,bootloaders/grub,)
 	$(MAKE) bootloaders/grub/grub{checkout}
-	@touch $@
+	$(TIMESTAMP)

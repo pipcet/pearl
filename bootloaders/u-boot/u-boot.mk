@@ -47,24 +47,24 @@ $(BUILD)/bootloaders/u-boot.image: $(call done,bootloaders/u-boot,build)
 	cat < $(BUILD)/bootloaders/u-boot/build/u-boot.bin > $@
 
 $(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,build)
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/u-boot,build): $(call done,bootloaders/u-boot,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE)
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/u-boot,configure): bootloaders/u-boot/u-boot.config $(call done,bootloaders/u-boot,copy) $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/bootloaders/u-boot/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/u-boot,copy): $(call done,bootloaders/u-boot,checkout) | $(call done,bootloaders/u-boot,) $(BUILD)/bootloaders/u-boot/build/
 	$(CP) -n -aus $(PWD)/bootloaders/u-boot/u-boot/* $(BUILD)/bootloaders/u-boot/build/
-	@touch $@
+	$(TIMESTAMP)
 
 $(call done,bootloaders/u-boot,checkout): | $(call done,bootloaders/u-boot,)
 	$(MAKE) bootloaders/u-boot/u-boot{checkout}
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.image
 $(BUILD)/initramfs/pearl/boot/u-boot.image: $(BUILD)/bootloaders/u-boot.image ; $(COPY)

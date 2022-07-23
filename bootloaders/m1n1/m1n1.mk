@@ -4,19 +4,19 @@ $(BUILD)/bootloaders/m1n1.macho: $(BUILD)/bootloaders/m1n1/done/build
 	$(CP) $(BUILD)/bootloaders/m1n1/build/build/m1n1.macho $@
 
 $(BUILD)/bootloaders/m1n1/done/install: $(BUILD)/bootloaders/m1n1/done/build
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/bootloaders/m1n1/done/build: $(BUILD)/bootloaders/m1n1/done/copy $(BUILD)/gcc/done/gcc/install
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/m1n1/build build/bootloaders/m1n1.macho
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/bootloaders/m1n1/done/copy: $(BUILD)/bootloaders/m1n1/done/checkout | $(BUILD)/bootloaders/m1n1/done/ $(BUILD)/bootloaders/m1n1/build/
 	$(CP) -aus $(PWD)/bootloaders/bootloaders/m1n1/m1n1/* $(BUILD)/bootloaders/m1n1/build/
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/bootloaders/m1n1/done/checkout: | $(BUILD)/bootloaders/m1n1/done/
 	$(MAKE) bootloaders/bootloaders/m1n1/m1n1{checkout}
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/m1n1.macho
 $(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/bootloaders/m1n1.macho ; $(COPY)
