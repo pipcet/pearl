@@ -13,21 +13,21 @@ typedef unsigned long size_t;
 
 #define BIT(nr)			(1UL << (nr))
 
-asm(" \
-0:\n\
-	nop\n\
-	b primary_entry\n\
-	.quad 0\n\
-	.quad 256 * 1024 * 1024	// image size, to be fixed by code\n\
-	.quad 0\n\
-	.quad 0\n\
-	.quad 0\n\
-	.quad 0\n\
-	.ascii \"ARMd\"\n\
-	.long 0xe\n\
-primary_entry:\n\
-	adr x2, 0b\n\
-	b __main\n\
+asm("                                             \n\
+0:						  \n\
+	nop					  \n\
+	b primary_entry				  \n\
+	.quad 0					  \n\
+	.quad 256 * 1024 * 1024			  \n\
+	.quad 0					  \n\
+	.quad 0					  \n\
+	.quad 0					  \n\
+	.quad 0					  \n\
+	.ascii \"ARMd\"				  \n\
+	.long 0xe				  \n\
+primary_entry:					  \n\
+	adr x2, 0b				  \n\
+	b __main                                  \n\
 ");
 
 static inline unsigned int current_el(void)
@@ -156,7 +156,7 @@ asm(
 
 void main_smallstack(unsigned long dummy, struct apple_bootargs *ba, void *start)
 {
-	void *start_of_mem = ba->start_of_usable_memory;
+	void *start_of_mem = (void *)ba->start_of_usable_memory;
 	void **malloc_pptr;
 	asm("adr %0,__malloc_ptr" : "=r" (malloc_pptr));
 	unsigned char *begp = (void *)malloc_pptr;
@@ -171,16 +171,30 @@ void main_smallstack(unsigned long dummy, struct apple_bootargs *ba, void *start
 void main_largestack(unsigned char *begp, struct apple_bootargs *ba, void *start)
 {
 	void *dst = xmemalign(UNCOMPRESSED_SIZE, 2 * 1024 * 1024);
-	void *end_of_mem = ba->phys_base + ba->mem_size;
+	void *end_of_mem = (void *)ba->phys_base + ba->mem_size;
 	mmu_init(start, end_of_mem - start);
-	ZSTD_decompress(dst, UNCOMPRESSED_SIZE, begp, PAYLOAD_SIZE);
+	ZSTD_decompress(dst, UNCOMPRESSED_SIZE, begp, COMPRESSED_SIZE);
 	mmu_disable();
+	uint64_t *s = start;
+	s[0] = 0xdeadbeeffeedbab1;
+	s[1] = COMPRESSED_SIZE;
+	s[2] = UNCOMPRESSED_SIZE;
+	s[3] = TOTAL_UNCOMPRESSED_SIZE;
+	s[4] = begp - (unsigned char *)start;
+	{
+		void *start_of_mem = (void *)ba->start_of_usable_memory;
+		void **malloc_pptr;
+		asm("adr %0,__malloc_ptr" : "=r" (malloc_pptr));
+		s[5] = *malloc_pptr - start_of_mem;
+	}
 	void (*dstf)(struct apple_bootargs *ba, void *base)
 		__attribute__((noreturn));
 	dstf = dst + 0x2000;
 	uint32_t *first_insn = dst + 0x2000;
 	if (*first_insn == 0x10ff001d)
 		*first_insn = 0xaa0103fd;
+	dsb();
+	isb();
 	dstf(ba, start);
 }
 
@@ -423,7 +437,7 @@ static void create_sections(uint64_t virt, uint64_t phys, uint64_t size,
 
 			uint64_t *pte = table + idx;
 
-			if (level >= 2 && size >= block_size && IS_ALIGNED(virt, block_size)) {
+			if (size >= block_size && IS_ALIGNED(virt, block_size)) {
 				uint64_t type = (level == 3) ? PTE_TYPE_PAGE : PTE_TYPE_BLOCK;
 				*pte = phys | attr | type;
 				virt += block_size;
