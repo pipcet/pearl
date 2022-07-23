@@ -116,7 +116,7 @@ extern void *memcpy(void *dst, void *src, unsigned long count);
 
 static void mmu_disable(void);
 static void mmu_init(void *, uint64_t);
-void *xmemalign(unsigned long size, unsigned long align);
+void *xmemalign(unsigned long size, unsigned long align, unsigned long off);
 
 #define PTE_TYPE_MASK           (3 << 0)
 #define PTE_TYPE_TABLE          (3 << 0)
@@ -164,13 +164,13 @@ void main_smallstack(unsigned long dummy, struct apple_bootargs *ba, void *start
 		begp++;
 	*malloc_pptr = start_of_mem;
 
-	void *stack = xmemalign(512 * 1024, 64);
+	void *stack = xmemalign(512 * 1024, 64, 0);
 	main_switchstack(begp, ba, start, stack + 512 * 1024);
 }
 
 void main_largestack(unsigned char *begp, struct apple_bootargs *ba, void *start)
 {
-	void *dst = xmemalign(UNCOMPRESSED_SIZE, 2 * 1024 * 1024);
+	void *dst = xmemalign(UNCOMPRESSED_SIZE + 2 * 1024 * 1024, 2 * 1024 * 1024, 2 * 1024 * 1024 - 16 * 1024);
 	void *end_of_mem = (void *)ba->phys_base + ba->mem_size;
 	mmu_init(start, end_of_mem - start);
 	ZSTD_decompress(dst, UNCOMPRESSED_SIZE, begp, COMPRESSED_SIZE);
@@ -380,7 +380,7 @@ static bool set_table(uint64_t *pt, uint64_t *table_addr)
 
 static uint64_t *create_table(void)
 {
-	uint64_t *new_table = xmemalign(PAGE_SIZE, PAGE_SIZE);
+	uint64_t *new_table = xmemalign(PAGE_SIZE, PAGE_SIZE, 0);
 
 	memset(new_table, 0, GRANULE_SIZE);
 
@@ -481,7 +481,7 @@ void mmu_init(void *start, uint64_t size)
 {
 	unsigned int el;
 
-	ttb = xmemalign(PAGE_SIZE, PAGE_SIZE);
+	ttb = xmemalign(PAGE_SIZE, PAGE_SIZE, 0);
 	el = effective_el();
 
 	create_sections((uint64_t)start, (uint64_t)start, size, CACHED_MEM);
@@ -491,12 +491,14 @@ void mmu_init(void *start, uint64_t size)
 	mmu_enable();
 }
 
-void *xmemalign(unsigned long size, unsigned long align)
+void *xmemalign(unsigned long size, unsigned long align, unsigned long offset)
 {
 	void **malloc_pptr;
 	asm("adr %0,__malloc_ptr" : "=r" (malloc_pptr));
+	*malloc_pptr += (align - offset);
 	*malloc_pptr += align - 1;
 	*malloc_pptr = (void *)((unsigned long)*malloc_pptr & -align);
+	*malloc_pptr -= (align - offset);
 	void *ret = *malloc_pptr;
 	*malloc_pptr += size;
 	return ret;
@@ -504,7 +506,7 @@ void *xmemalign(unsigned long size, unsigned long align)
 
 void *malloc(unsigned long size)
 {
-	return xmemalign(size, 64);
+	return xmemalign(size, 64, 0);
 }
 
 void *calloc(unsigned long count, unsigned long size)
