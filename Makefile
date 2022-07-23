@@ -124,6 +124,10 @@ random-target:
 $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio.zstd.pack
 	(cat $^; echo "/bin/auto-boot-debian &") > $@
 
+# It is unfortunately necessary for this to be a real file, as zstd
+# needs a real file to properly store size information in the
+# compressed stream.
+
 $(BUILD)/pearl-debian-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio
 	cat $^ > $@
 
