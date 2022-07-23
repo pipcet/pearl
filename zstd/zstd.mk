@@ -13,12 +13,20 @@ $(BUILD)/zstd/zstdout: $(BUILD)/zstd/zstdlib zstd/payload
 
 %.macho.zst: %.macho
 	zstd -22 --ultra --long=31 --verbose $< -o $@
+%.macho.size: %.macho
+	wc -c < $< > $@
+
+%.macho.real.size: %.macho
+	wc -c < $< > $@
+
+%/pearl-debian-uncompressed.macho.real.size: %/linux/pearl.image.macho
+	wc -c < $< > $@
 
 %.macho.zst.size: %.macho.zst
 	wc -c < $< > $@
 
-%.macho.zstlib.elf: %.macho.zst.size zstd/zstdmain.c | $(BUILD)/zstd/
-	aarch64-linux-gnu-gcc -mgeneral-regs-only -static -DPAYLOAD_SIZE=$$(cat $<) -Wl,--script=zstd/zstd.lds -O3 -Wall -fno-exceptions -fpie -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c zstd/chickens.S # -flto -fomit-frame-pointer -Os -fPIC 
+%.macho.zstlib.elf: %.macho.zst.size %.macho.size %.macho.real.size zstd/zstdmain.c | $(BUILD)/zstd/
+	aarch64-linux-gnu-gcc -mgeneral-regs-only -static -DTOTAL_UNCOMPRESSED_SIZE=$$(cat $*.macho.size) -DUNCOMPRESSED_SIZE=$$(cat $*.macho.real.size) -DCOMPRESSED_SIZE=$$(cat $<) -Wl,--script=zstd/zstd.lds -O3 -Wall -fno-exceptions -fpie -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c zstd/chickens.S # -flto -fomit-frame-pointer -Os -fPIC
 
 %.macho.zstlib: %.macho.zstlib.elf
 	aarch64-linux-gnu-objcopy -Obinary $< $@
