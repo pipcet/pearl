@@ -12,7 +12,7 @@ $(call done,userspace/cryptsetup,configure): $(call done,userspace/cryptsetup,co
 	@touch $@
 
 $(call done,userspace/cryptsetup,copy): $(call done,userspace/cryptsetup,checkout) | $(call done,userspace/cryptsetup,) $(BUILD)/userspace/cryptsetup/build/
-	$(CP) -aus $(PWD)/userspace/cryptsetup/cryptsetup/* $(BUILD)/userspace/cryptsetup/build/
+	$(COPY_SAUNA) $(PWD)/userspace/cryptsetup/cryptsetup/* $(BUILD)/userspace/cryptsetup/build/
 	@touch $@
 
 $(call done,userspace/cryptsetup,checkout): | $(call done,userspace/cryptsetup,)

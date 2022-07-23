@@ -13,7 +13,7 @@ $(call done,userspace/screen,configure): $(call done,userspace/screen,copy) $(ca
 	@touch $@
 
 $(call done,userspace/screen,copy): $(call done,userspace/screen,checkout) | $(call done,userspace/screen,) $(BUILD)/userspace/screen/build/
-	$(CP) -aus $(PWD)/userspace/screen/screen/* $(BUILD)/userspace/screen/build/
+	$(COPY_SAUNA) $(PWD)/userspace/screen/screen/* $(BUILD)/userspace/screen/build/
 	@touch $@
 
 $(call done,userspace/screen,checkout): | $(call done,userspace/screen,)

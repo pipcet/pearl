@@ -11,7 +11,7 @@ $(call done,userspace/dialog,configure): $(call done,userspace/dialog,copy) $(ca
 	@touch $@
 
 $(call done,userspace/dialog,copy): $(call done,userspace/dialog,checkout) | $(call done,userspace/dialog,) $(BUILD)/userspace/dialog/build/
-	$(CP) -aus $(PWD)/userspace/dialog/dialog/* $(BUILD)/userspace/dialog/build/
+	$(COPY_SAUNA) $(PWD)/userspace/dialog/dialog/* $(BUILD)/userspace/dialog/build/
 	@touch $@
 
 $(call done,userspace/dialog,checkout): | $(call done,userspace/dialog,)

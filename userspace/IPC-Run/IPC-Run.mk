@@ -14,7 +14,7 @@ $(call done,userspace/IPC-Run,configure): $(call done,userspace/IPC-Run,copy) $(
 	@touch $@
 
 $(call done,userspace/IPC-Run,copy): $(call done,userspace/IPC-Run,checkout) | $(call done,userspace/IPC-Run,) $(BUILD)/userspace/IPC-Run/build/
-	$(CP) -aus $(PWD)/userspace/IPC-Run/IPC-Run/* $(BUILD)/userspace/IPC-Run/build/
+	$(COPY_SAUNA) $(PWD)/userspace/IPC-Run/IPC-Run/* $(BUILD)/userspace/IPC-Run/build/
 	@touch $@
 
 $(call done,userspace/IPC-Run,checkout): | $(call done,userspace/IPC-Run,)

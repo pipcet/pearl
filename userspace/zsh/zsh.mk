@@ -12,7 +12,7 @@ $(call done,userspace/zsh,configure): $(call done,userspace/zsh,copy) $(call dep
 	@touch $@
 
 $(call done,userspace/zsh,copy): $(call done,userspace/zsh,checkout) | $(call done,userspace/zsh,) $(BUILD)/userspace/zsh/build/
-	$(CP) -aus $(PWD)/userspace/zsh/zsh/* $(BUILD)/userspace/zsh/build/
+	$(COPY_SAUNA) $(PWD)/userspace/zsh/zsh/* $(BUILD)/userspace/zsh/build/
 	@touch $@
 
 $(call done,userspace/zsh,checkout): | $(call done,userspace/zsh,)

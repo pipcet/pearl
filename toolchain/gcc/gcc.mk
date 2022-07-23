@@ -15,7 +15,7 @@ $(call done,toolchain/gcc,gcc/configure): $(call done,toolchain/gcc,gcc/copy) $(
 	@touch $@
 
 $(call done,toolchain/gcc,gcc/copy): $(call done,toolchain/gcc,checkout) | $(call done,toolchain/gcc,gcc/) $(BUILD)/toolchain/gcc/gcc/source/
-	$(CP) -aus $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/gcc/source/
+	$(COPY_SAUNA) $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/gcc/source/
 	@touch $@
 
 $(call done,toolchain/gcc,g++/install): $(call done,toolchain/gcc,libgcc/install) | $(call done,toolchain/gcc,g++/)
@@ -36,7 +36,7 @@ $(call done,toolchain/gcc,libgcc/configure): $(call done,toolchain/gcc,libgcc/co
 	@touch $@
 
 $(call done,toolchain/gcc,libgcc/copy): $(call done,toolchain/gcc,checkout) | $(call done,toolchain/gcc,libgcc/) $(BUILD)/toolchain/gcc/libgcc/source/
-	$(CP) -aus $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/libgcc/source/
+	$(COPY_SAUNA) $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/libgcc/source/
 	@touch $@
 
 $(call done,toolchain/gcc,checkout): | $(call done,toolchain/gcc,)

@@ -123,7 +123,7 @@ linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,gcc,gc
 	$(CP) $(BUILD)/linux/$*/build/.config $<
 
 $(call done,linux,%/copy): $(call done,linux,checkout) | $(call done,linux,%/) $(BUILD)/linux/%/build/
-	$(CP) -ausn $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
+	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	@touch $@
 
 $(call done,linux,headers/install): $(call done,linux,headers/copy) | $(call done,pearl,install/)
@@ -131,7 +131,7 @@ $(call done,linux,headers/install): $(call done,linux,headers/copy) | $(call don
 	@touch $@
 
 $(call done,linux,headers/copy): $(call done,linux,checkout) | $(call done,linux,headers/) $(BUILD)/linux/headers/source/
-	$(CP) -ausn $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
+	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
 	@touch $@
 
 $(call done,linux,checkout): | $(call done,linux,)

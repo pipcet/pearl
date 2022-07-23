@@ -11,7 +11,7 @@ $(call done,userspace/openssl,configure): $(call done,userspace/openssl,copy) $(
 	@touch $@
 
 $(call done,userspace/openssl,copy): $(call done,userspace/openssl,checkout) | $(call done,userspace/openssl,) $(BUILD)/userspace/openssl/build/
-	$(CP) -aus $(PWD)/userspace/openssl/openssl/* $(BUILD)/userspace/openssl/build/
+	$(COPY_SAUNA) $(PWD)/userspace/openssl/openssl/* $(BUILD)/userspace/openssl/build/
 	@touch $@
 
 $(call done,userspace/openssl,checkout): | $(call done,userspace/openssl,)

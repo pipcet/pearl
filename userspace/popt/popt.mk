@@ -15,7 +15,7 @@ $(call done,userspace/popt,configure): $(call done,userspace/popt,copy) $(call d
 	@touch $@
 
 $(call done,userspace/popt,copy): $(call done,userspace/popt,checkout) | $(call done,userspace/popt,) $(BUILD)/userspace/popt/build/
-	$(CP) -aus $(PWD)/userspace/popt/popt/* $(BUILD)/userspace/popt/build/
+	$(COPY_SAUNA) $(PWD)/userspace/popt/popt/* $(BUILD)/userspace/popt/build/
 	@touch $@
 
 $(call done,userspace/popt,checkout): | $(call done,userspace/popt,)

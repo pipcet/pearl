@@ -14,7 +14,7 @@ $(call done,userspace/ncurses,configure): $(call done,userspace/ncurses,copy) $(
 	@touch $@
 
 $(call done,userspace/ncurses,copy): $(call done,userspace/ncurses,checkout) | $(call done,userspace/ncurses,) $(BUILD)/userspace/ncurses/build/
-	$(CP) -aus $(PWD)/userspace/ncurses/ncurses/* $(BUILD)/userspace/ncurses/build/
+	$(COPY_SAUNA) $(PWD)/userspace/ncurses/ncurses/* $(BUILD)/userspace/ncurses/build/
 	@touch $@
 
 $(call done,userspace/ncurses,checkout): | $(call done,userspace/ncurses,)

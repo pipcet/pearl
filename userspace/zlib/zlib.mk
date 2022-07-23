@@ -12,7 +12,7 @@ $(call done,userspace/zlib,configure): $(call done,userspace/zlib,copy) $(call d
 	@touch $@
 
 $(call done,userspace/zlib,copy): $(call done,userspace/zlib,checkout) | $(call done,userspace/zlib,) $(BUILD)/userspace/zlib/build/
-	$(CP) -aus $(PWD)/userspace/zlib/zlib/* $(BUILD)/userspace/zlib/build/
+	$(COPY_SAUNA) $(PWD)/userspace/zlib/zlib/* $(BUILD)/userspace/zlib/build/
 	@touch $@
 
 $(call done,userspace/zlib,checkout): | $(call done,userspace/zlib,)

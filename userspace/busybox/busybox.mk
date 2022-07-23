@@ -26,7 +26,7 @@ $(call done,userspace/busybox,configure): userspace/busybox/busybox.config $(cal
 	@touch $@
 
 $(call done,userspace/busybox,copy): $(call done,userspace/busybox,checkout) | $(call done,userspace/busybox,) $(BUILD)/userspace/busybox/build/
-	$(CP) -aus $(PWD)/userspace/busybox/busybox/* $(BUILD)/userspace/busybox/build/
+	$(COPY_SAUNA) $(PWD)/userspace/busybox/busybox/* $(BUILD)/userspace/busybox/build/
 	@touch $@
 
 $(call done,userspace/busybox,checkout): | $(call done,userspace/busybox,)

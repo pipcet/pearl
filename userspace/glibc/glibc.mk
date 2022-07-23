@@ -28,7 +28,7 @@ $(call done,userspace/glibc,stage1/configure): $(call done,userspace/glibc,stage
 	@touch $@
 
 $(call done,userspace/glibc,stage1/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/stage1/source/ $(call done,userspace/glibc,stage1/)
-	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
+	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
 	@touch $@
 
 $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build)
@@ -45,7 +45,7 @@ $(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,head
 	@touch $@
 
 $(call done,userspace/glibc,headers/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/headers/source/ $(call done,userspace/glibc,headers/)
-	$(CP) -aus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/headers/source/
+	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/headers/source/
 	@touch $@
 
 $(call done,userspace/glibc,checkout): | $(call done,userspace/glibc,)

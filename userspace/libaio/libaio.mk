@@ -11,7 +11,7 @@ $(call done,userspace/libaio,configure): $(call done,userspace/libaio,copy) $(ca
 	@touch $@
 
 $(call done,userspace/libaio,copy): $(call done,userspace/libaio,checkout) | $(BUILD)/userspace/libaio/build/ $(call done,userspace/libaio,)
-	$(CP) -aus $(PWD)/userspace/libaio/libaio/* $(BUILD)/userspace/libaio/build
+	$(COPY_SAUNA) $(PWD)/userspace/libaio/libaio/* $(BUILD)/userspace/libaio/build
 	@touch $@
 
 $(call done,userspace/libaio,checkout): | $(call done,userspace/libaio,)

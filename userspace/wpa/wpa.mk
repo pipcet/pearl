@@ -12,7 +12,7 @@ $(call done,userspace/wpa_supplicant,configure): userspace/wpa/wpa_supplicant.co
 	@touch $@
 
 $(call done,userspace/wpa_supplicant,copy): $(call done,userspace/wpa_supplicant,checkout) | $(BUILD)/userspace/wpa_supplicant/build/
-	$(CP) -aus $(PWD)/userspace/wpa/wpa/* $(BUILD)/userspace/wpa_supplicant/build/
+	$(COPY_SAUNA) $(PWD)/userspace/wpa/wpa/* $(BUILD)/userspace/wpa_supplicant/build/
 	@touch $@
 
 $(call done,userspace/wpa_supplicant,checkout): | $(call done,userspace/wpa_supplicant,)

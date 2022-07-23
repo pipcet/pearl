@@ -10,7 +10,7 @@ $(call done,userspace/zstd,configure): $(call done,userspace/zstd,copy) $(call d
 	@touch $@
 
 $(call done,userspace/zstd,copy): $(call done,userspace/zstd,checkout) | $(call done,userspace/zstd,) $(BUILD)/userspace/zstd/build/
-	$(CP) -aus $(PWD)/userspace/zstd/zstd/* $(BUILD)/userspace/zstd/build/
+	$(COPY_SAUNA) $(PWD)/userspace/zstd/zstd/* $(BUILD)/userspace/zstd/build/
 	@touch $@
 
 $(call done,userspace/zstd,checkout): | $(call done,userspace/zstd,)

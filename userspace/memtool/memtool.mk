@@ -12,7 +12,7 @@ $(call done,userspace/memtool,configure): $(call done,userspace/memtool,copy) $(
 	@touch $@
 
 $(call done,userspace/memtool,copy): $(call done,userspace/memtool,checkout) | $(call done,userspace/memtool,) $(BUILD)/userspace/memtool/build/
-	$(CP) -aus $(PWD)/userspace/memtool/memtool/* $(BUILD)/userspace/memtool/build/
+	$(COPY_SAUNA) $(PWD)/userspace/memtool/memtool/* $(BUILD)/userspace/memtool/build/
 	@touch $@
 
 $(call done,userspace/memtool,checkout): | $(call done,userspace/memtool,)

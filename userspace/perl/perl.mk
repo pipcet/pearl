@@ -12,7 +12,7 @@ $(call done,userspace/perl,configure): $(call done,userspace/perl,copy) $(call d
 	@touch $@
 
 $(call done,userspace/perl,copy): $(call done,userspace/perl,checkout) | $(BUILD)/userspace/perl/build/ $(call done,userspace/perl,)
-	$(CP) -aus $(PWD)/userspace/perl/perl/* $(addprefix $(PWD)/userspace/perl/perl/.,dir-locals.el editorconfig lgtm.yml metaconf-exclusions.txt travis.yml) $(BUILD)/userspace/perl/build/
+	$(COPY_SAUNA) $(PWD)/userspace/perl/perl/* $(addprefix $(PWD)/userspace/perl/perl/.,dir-locals.el editorconfig lgtm.yml metaconf-exclusions.txt travis.yml) $(BUILD)/userspace/perl/build/
 	@touch $@
 
 $(call done,userspace/perl,checkout): | $(call done,userspace/perl,)

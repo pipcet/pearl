@@ -13,7 +13,7 @@ $(call done,userspace/libuuid,configure): $(call done,userspace/libuuid,copy) $(
 	@touch $@
 
 $(call done,userspace/libuuid,copy): $(call done,userspace/util-linux,checkout) | $(call done,userspace/libuuid,) $(BUILD)/userspace/libuuid/build/
-	$(CP) -aus $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/userspace/libuuid/build/
+	$(COPY_SAUNA) $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/userspace/libuuid/build/
 	@touch $@
 
 userspace-modules += libuuid
@@ -33,7 +33,7 @@ $(call done,userspace/libblkid,configure): $(call done,userspace/libblkid,copy) 
 	@touch $@
 
 $(call done,userspace/libblkid,copy): $(call done,userspace/util-linux,checkout) | $(call done,userspace/libblkid,) $(BUILD)/userspace/libblkid/build/
-	$(CP) -aus $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/userspace/libblkid/build/
+	$(COPY_SAUNA) $(PWD)/userspace/util-linux/util-linux/* $(BUILD)/userspace/libblkid/build/
 	@touch $@
 
 userspace-modules += libblkid

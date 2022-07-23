@@ -11,7 +11,7 @@ $(call done,userspace/lvm2,configure): $(call done,userspace/lvm2,copy) $(call d
 	@touch $@
 
 $(call done,userspace/lvm2,copy): $(call done,userspace/lvm2,checkout) | $(BUILD)/userspace/lvm2/build/ $(call done,userspace/lvm2,)
-	$(CP) -aus $(PWD)/userspace/lvm2/lvm2/* $(BUILD)/userspace/lvm2/build
+	$(COPY_SAUNA) $(PWD)/userspace/lvm2/lvm2/* $(BUILD)/userspace/lvm2/build
 	@touch $@
 
 $(call done,userspace/lvm2,checkout): | $(call done,userspace/lvm2,)

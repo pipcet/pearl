@@ -11,7 +11,7 @@ $(call done,userspace/dropbear,configure): $(call done,userspace/dropbear,copy) 
 	@touch $@
 
 $(call done,userspace/dropbear,copy): $(call done,userspace/dropbear,checkout) | $(call done,userspace/dropbear,) $(BUILD)/userspace/dropbear/build/
-	$(CP) -aus $(PWD)/userspace/dropbear/dropbear/* $(BUILD)/userspace/dropbear/build/
+	$(COPY_SAUNA) $(PWD)/userspace/dropbear/dropbear/* $(BUILD)/userspace/dropbear/build/
 	@touch $@
 
 $(call done,userspace/dropbear,checkout): | $(call done,userspace/dropbear,)

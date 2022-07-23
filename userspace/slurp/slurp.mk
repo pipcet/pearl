@@ -14,7 +14,7 @@ $(call done,userspace/slurp,configure): $(call done,userspace/slurp,copy) $(call
 	@touch $@
 
 $(call done,userspace/slurp,copy): $(call done,userspace/slurp,checkout) | $(call done,userspace/slurp,) $(BUILD)/userspace/slurp/build/
-	$(CP) -aus $(PWD)/userspace/slurp/slurp/* $(BUILD)/userspace/slurp/build/
+	$(COPY_SAUNA) $(PWD)/userspace/slurp/slurp/* $(BUILD)/userspace/slurp/build/
 	@touch $@
 
 $(call done,userspace/slurp,checkout): | $(call done,userspace/slurp,)

@@ -14,7 +14,7 @@ $(call done,userspace/sys-mmap,configure): $(call done,userspace/sys-mmap,copy) 
 	@touch $@
 
 $(call done,userspace/sys-mmap,copy): $(call done,userspace/sys-mmap,checkout) | $(call done,userspace/sys-mmap,) $(BUILD)/userspace/sys-mmap/build/
-	$(CP) -aus $(PWD)/userspace/sys-mmap/sys-mmap/* $(BUILD)/userspace/sys-mmap/build/
+	$(COPY_SAUNA) $(PWD)/userspace/sys-mmap/sys-mmap/* $(BUILD)/userspace/sys-mmap/build/
 	@touch $@
 
 $(call done,userspace/sys-mmap,checkout): | $(call done,userspace/sys-mmap,)

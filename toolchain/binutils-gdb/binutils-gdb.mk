@@ -14,7 +14,7 @@ $(call done,toolchain/binutils-gdb,configure): $(call done,toolchain/binutils-gd
 	@touch $@
 
 $(call done,toolchain/binutils-gdb,copy): $(call done,toolchain/binutils-gdb,checkout) | $(BUILD)/toolchain/binutils-gdb/source/ $(call done,toolchain/binutils-gdb,)
-	$(CP) -aus $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/toolchain/binutils-gdb/source/
+	$(COPY_SAUNA) $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/toolchain/binutils-gdb/source/
 	@touch $@
 
 $(call done,toolchain/binutils-gdb,checkout): | $(call done,toolchain/binutils-gdb,)

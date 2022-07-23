@@ -11,7 +11,7 @@ $(call done,userspace/emacs,cross/configure): $(call done,userspace/emacs,cross/
 	@touch $@
 
 $(call done,userspace/emacs,cross/copy): $(call done,userspace/emacs,native/build) $(call done,userspace/emacs,checkout) | $(call done,userspace/emacs,cross/) $(BUILD)/userspace/emacs/cross/
-	$(CP) -aus $(BUILD)/userspace/emacs/native/* $(BUILD)/userspace/emacs/cross/
+	$(COPY_SAUNA) $(BUILD)/userspace/emacs/native/* $(BUILD)/userspace/emacs/cross/
 	@touch $@
 
 $(call done,userspace/emacs,native/build): $(call done,userspace/emacs,native/configure)
@@ -24,7 +24,7 @@ $(call done,userspace/emacs,native/configure): $(call done,userspace/emacs,nativ
 	@touch $@
 
 $(call done,userspace/emacs,native/copy): $(call done,userspace/emacs,checkout) | $(call done,userspace/emacs,native/) $(BUILD)/userspace/emacs/native/
-	$(CP) -aus $(PWD)/userspace/emacs/emacs/* $(BUILD)/userspace/emacs/native/
+	$(COPY_SAUNA) $(PWD)/userspace/emacs/emacs/* $(BUILD)/userspace/emacs/native/
 	@touch $@
 
 $(call done,userspace/emacs,checkout): | $(call done,userspace/emacs,)

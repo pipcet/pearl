@@ -12,7 +12,7 @@ $(call done,userspace/procps,configure): $(call done,userspace/procps,copy) $(ca
 	@touch $@
 
 $(call done,userspace/procps,copy): $(call done,userspace/procps,checkout) | $(call done,userspace/procps,) $(BUILD)/userspace/procps/build/
-	$(CP) -aus $(PWD)/userspace/procps/procps/* $(BUILD)/userspace/procps/build/
+	$(COPY_SAUNA) $(PWD)/userspace/procps/procps/* $(BUILD)/userspace/procps/build/
 	@touch $@
 
 $(call done,userspace/procps,checkout): | $(call done,userspace/procps,)

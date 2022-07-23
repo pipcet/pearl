@@ -12,7 +12,7 @@ $(call done,userspace/kexec-tools,configure): $(call done,userspace/kexec-tools,
 	@touch $@
 
 $(call done,userspace/kexec-tools,copy): $(call done,userspace/kexec-tools,checkout) | $(BUILD)/userspace/kexec-tools/source/ $(call done,userspace/kexec-tools,)
-	$(CP) -aus $(PWD)/userspace/kexec-tools/kexec-tools/* $(BUILD)/userspace/kexec-tools/source/
+	$(COPY_SAUNA) $(PWD)/userspace/kexec-tools/kexec-tools/* $(BUILD)/userspace/kexec-tools/source/
 	@touch $@
 
 $(call done,userspace/kexec-tools,checkout): | $(call done,userspace/kexec-tools,)
