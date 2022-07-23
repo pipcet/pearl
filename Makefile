@@ -37,6 +37,11 @@ define COPY
 	$(CP) --reflink=auto $< $@
 endef
 
+define SYMLINK
+	$(MKDIR) -p $(dir $@)
+	$(LN) -sf $< $@
+endef
+
 all:
 
 %/:
