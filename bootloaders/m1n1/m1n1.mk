@@ -1,20 +1,20 @@
 M1N1DEVICE ?= $(shell ls /dev/ttyACM* | tail -2 | head -1)
 
-$(BUILD)/bootloaders/m1n1.macho: $(BUILD)/bootloaders/m1n1/done/build
+$(BUILD)/bootloaders/m1n1.macho: $(call done,bootloaders/m1n1,build)
 	$(CP) $(BUILD)/bootloaders/m1n1/build/build/m1n1.macho $@
 
-$(BUILD)/bootloaders/m1n1/done/install: $(BUILD)/bootloaders/m1n1/done/build
+$(call done,bootloaders/m1n1,install): $(call done,bootloaders/m1n1,build)
 	$(TIMESTAMP)
 
-$(BUILD)/bootloaders/m1n1/done/build: $(BUILD)/bootloaders/m1n1/done/copy $(BUILD)/gcc/done/gcc/install
+$(call done,bootloaders/m1n1,build): $(call done,bootloaders/m1n1,copy) $(call done,toolchain/gcc,gcc/install)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/m1n1/build build/bootloaders/m1n1.macho
 	$(TIMESTAMP)
 
-$(BUILD)/bootloaders/m1n1/done/copy: $(BUILD)/bootloaders/m1n1/done/checkout | $(BUILD)/bootloaders/m1n1/done/ $(BUILD)/bootloaders/m1n1/build/
+$(call done,bootloaders/m1n1,copy): $(call done,bootloaders/m1n1,checkout) | $(BUILD)/bootloaders/m1n1/build/
 	$(CP) -aus $(PWD)/bootloaders/bootloaders/m1n1/m1n1/* $(BUILD)/bootloaders/m1n1/build/
 	$(TIMESTAMP)
 
-$(BUILD)/bootloaders/m1n1/done/checkout: | $(BUILD)/bootloaders/m1n1/done/
+$(call done,bootloaders/m1n1,checkout): | $(call done,bootloaders/m1n1,)
 	$(MAKE) bootloaders/bootloaders/m1n1/m1n1{checkout}
 	$(TIMESTAMP)
 
@@ -23,7 +23,7 @@ $(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/bootloaders/m1n1.macho ; $(CO
 
 SECTARGETS += $(BUILD)/initramfs/pearl/boot/m1n1.macho
 SECTARGETS += $(BUILD)/bootloaders/m1n1.macho
-SECTARGETS += $(BUILD)/bootloaders/m1n1/done/build
+SECTARGETS += $(call done,bootloaders/m1n1,build)
 
 $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 
@@ -33,5 +33,5 @@ $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 {m1n1}:
 	(cd bootloaders/m1n1/m1n1/proxyclient; M1N1DEVICE=$(M1N1DEVICE) python3 -m m1n1.shell)
 
-$(BUILD)/m1n1-chickens.S: $(BUILD)/bootloaders/m1n1/done/install
+$(BUILD)/m1n1-chickens.S: $(call done,bootloaders/m1n1,install)
 	cat bootloaders/m1n1/m1n1/src/chickens_blizzard.c bootloaders/m1n1/m1n1/src/chickens_avalanche.c bootloaders/m1n1/m1n1/src/chickens_firestorm.c bootloaders/m1n1/m1n1/src/chickens_icestorm.c bootloaders/m1n1/m1n1/src/chickens.c  | $(CROSS_COMPILE)gcc -I$(BUILD)/bootloaders/m1n1/build/src -x c -finline -finline-functions -finline-limit=1000000000 -O3 -S -o $@ -
