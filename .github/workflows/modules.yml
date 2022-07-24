@@ -61,8 +61,7 @@ jobs:
     - run: make -j13 done/bootloaders/u-boot/install
     - run: make -j13 done/bootloaders/grub/install
     - run: make -j13 done/userspace/install
-    - run: make -j13 build/userspace.tar
-    - run: make -j13 build/linux/pearl.image
+    - run: rm -rf build/userspace
     - run: make -j13 build/linux/pearl.image.macho
     - run: rm -rf build/linux/linux
     - run: rm -rf build/linux/pearl
