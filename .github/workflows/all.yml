@@ -2,9 +2,9 @@ name: all
 on:
   workflow_dispatch:
   push:
-    branches: [ main, dcp, update ]
+    branches: [ ]
   pull_request:
-    branches: [ main, dcp, update ]
+    branches: [ ]
 jobs:
   all:
     name: all
