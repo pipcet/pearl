@@ -63,9 +63,9 @@ jobs:
     - run: make -j13 done/bootloaders/grub/install
     - run: make -j13 done/userspace/install
     - run: rm -rf build/userspace
-    - run: rm -rf userspace/emacs
-    - run: rm -rf userspace/glibc
-    - run: rm -rf userspace/openssl
+    - run: rm -rf userspace/emacs/emacs
+    - run: rm -rf userspace/glibc/glibc
+    - run: rm -rf userspace/openssl/openssl
     - run: make -j13 build/linux/pearl.image.macho
     - run: rm -rf build/linux/linux
     - run: rm -rf build/linux/pearl
