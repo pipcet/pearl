@@ -33,6 +33,8 @@ jobs:
     - run: make -j13 done/userspace/glibc/glibc/install
     - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: rm -rf build/toolchain/gcc/libgcc
+    - run: rm -rf toolchain/gcc/gcc
+    - run: rm -rf toolchain/binutils-gdb/binutils-gdb
     - run: make -j13 done/userspace/ncurses/install
     - run: make -j13 done/userspace/dialog/install
     - run: make -j13 done/userspace/screen/install
@@ -61,6 +63,9 @@ jobs:
     - run: make -j13 done/bootloaders/grub/install
     - run: make -j13 done/userspace/install
     - run: rm -rf build/userspace
+    - run: rm -rf userspace/emacs
+    - run: rm -rf userspace/glibc
+    - run: rm -rf userspace/openssl
     - run: make -j13 build/linux/pearl.image.macho
     - run: rm -rf build/linux/linux
     - run: rm -rf build/linux/pearl
