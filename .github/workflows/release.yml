@@ -67,6 +67,7 @@ jobs:
     - run: rm -rf build/linux/pearl
     - run: rm -rf build/linux/stage2
     - run: make -j3 debian/debootstrap/debootstrap{checkout}
+    - run: make -j3 zstd/zstd{checkout}
     - run: make -j3 build/pearl.pl
     - run: make -j3 build/pearl.pl{release}
     - run: make -j3 {release}
