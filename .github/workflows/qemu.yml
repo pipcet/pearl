@@ -24,5 +24,5 @@ jobs:
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
     - run: sudo apt-get install libtool-bin
-    - run: sudo apt-get install ninja meson
+    - run: sudo apt-get install ninja-build meson libglib-dev
     - run: make -j13 done/qemu/build
