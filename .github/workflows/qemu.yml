@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main, update ]
 jobs:
-  qemu
+  qemu:
     name: qemu
     runs-on: ubuntu-latest
     steps:
