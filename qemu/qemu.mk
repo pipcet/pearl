@@ -3,7 +3,7 @@ $(call done,qemu,build): $(call done,qemu,configure)
 	$(TIMESTAMP)
 
 $(call done,qemu,configure): $(call done,qemu,copy)
-	(cd $(BUILD)/qemu; ./configure --target-list=aarch64-softmmu)
+	(cd $(BUILD)/qemu; ./configure --target-list=aarch64-softmmu --static)
 	$(TIMESTAMP)
 
 $(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/
