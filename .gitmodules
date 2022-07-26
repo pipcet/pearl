@@ -126,3 +126,6 @@
 [submodule "zstd/zstd"]
 	path = zstd/zstd
 	url = https://github.com/pipcet/zstd
+[submodule "qemu/qemu"]
+	path = qemu/qemu
+	url = https://github.com/pipcet/qemu
