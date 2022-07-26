@@ -87,6 +87,8 @@ include sendfile/sendfile.mk
 
 include zstd/zstd.mk
 
+include qemu/qemu.mk
+
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
