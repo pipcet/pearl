@@ -26,3 +26,4 @@ jobs:
     - run: sudo apt-get install libtool-bin
     - run: sudo apt-get install ninja-build meson libglib2.0-dev
     - run: make -j13 done/qemu/build
+    - run: make -j13 build/qemu/build/qemu-system-aarch64{artifact}
