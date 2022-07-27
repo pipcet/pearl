@@ -30,5 +30,3 @@ jobs:
     - run: git submodule update --init debian/debootstrap
     - run: make -j13 build/debian.cpio.zstd
     - run: make -j13 build/debian.cpio.zstd{artifact}
-    - run: make -j13 build/debian.cpio.zstd.pack
-    - run: make -j13 build/debian.cpio.zstd.pack{artifact}
