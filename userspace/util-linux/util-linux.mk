@@ -1,6 +1,7 @@
 DEP_libuuid += $(call done,userspace/libuuid,install)
 $(call done,userspace/libuuid,install): $(call done,userspace/libuuid,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libuuid/build DESTDIR=$(BUILD)/pearl/install install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libuuid/build DESTDIR=$(call install,userspace/libuuid) install
+	$(INSTALL_LIBS) userspace/libuuid
 	$(TIMESTAMP)
 
 $(call done,userspace/libuuid,build): $(call done,userspace/libuuid,configure)
@@ -20,7 +21,8 @@ userspace-modules += libuuid
 
 DEP_libblkid += $(call done,userspace/libblkid,install)
 $(call done,userspace/libblkid,install): $(call done,userspace/libblkid,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libblkid/build DESTDIR=$(BUILD)/pearl/install install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libblkid/build DESTDIR=$(call install,userspace/libblkid) install
+	$(INSTALL_LIBS) userspace/libblkid
 	$(TIMESTAMP)
 
 $(call done,userspace/libblkid,build): $(call done,userspace/libblkid,configure)

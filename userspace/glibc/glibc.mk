@@ -1,6 +1,7 @@
 DEP_glibc += $(call done,userspace/glibc,glibc/install)
 $(call done,userspace/glibc,glibc/install): $(call done,userspace/glibc,glibc/build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build DESTDIR=$(BUILD)/pearl/install CXX="" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build DESTDIR=$(call install,userspace/glibc/glibc) CXX="" install
+	$(INSTALL_LIBS) userspace/glibc
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,glibc/build): $(call done,userspace/glibc,glibc/configure)
@@ -16,7 +17,8 @@ $(call done,userspace/glibc,glibc/copy): $(call done,userspace/glibc,checkout) |
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,stage1/install): $(call done,userspace/glibc,stage1/build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/stage1/build DESTDIR=$(BUILD)/pearl/install install-headers install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/stage1/build DESTDIR=$(call install,userspace/glibc/stage1) install
+	$(INSTALL_LIBS) userspace/glibc stage1
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,stage1/build): $(call done,userspace/glibc,stage1/configure)
@@ -31,9 +33,10 @@ $(call done,userspace/glibc,stage1/copy): $(call done,userspace/glibc,checkout) 
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build) $(call done,pearl,install/mkdir)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/headers/build DESTDIR=$(BUILD)/pearl/install install-headers
-	$(MKDIR) $(BUILD)/pearl/install/include/gnu/
-	touch $(BUILD)/pearl/install/include/gnu/stubs.h
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/headers/build DESTDIR=$(call install,userspace/glibc/headers) install-headers
+	$(MKDIR) $(call install,userspace/glibc/headers)/include/gnu/
+	touch $(call install,userspace/glibc/headers)/include/gnu/stubs.h
+	$(INSTALL_LIBS) userspace/glibc headers
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/configure)

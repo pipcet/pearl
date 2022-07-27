@@ -1,5 +1,6 @@
 $(call done,userspace/wpa_supplicant,install): $(call done,userspace/wpa_supplicant,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/wpa_supplicant/build/wpa_supplicant $(WITH_CROSS_CC) PKG_CONFIG=/bin/false DESTDIR=$(BUILD)/pearl/install install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/wpa_supplicant/build/wpa_supplicant $(WITH_CROSS_CC) PKG_CONFIG=/bin/false DESTDIR=$(call install,userspace/wpa_supplicant) install
+	$(INSTALL_LIBS) userspace/wpa_supplicant
 	$(TIMESTAMP)
 
 $(call done,userspace/wpa_supplicant,build): $(call done,userspace/wpa_supplicant,configure)

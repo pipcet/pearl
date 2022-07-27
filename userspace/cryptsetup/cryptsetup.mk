@@ -1,5 +1,6 @@
 $(call done,userspace/cryptsetup,install): $(call done,userspace/cryptsetup,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/cryptsetup/build DESTDIR=$(BUILD)/pearl/install install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/cryptsetup/build DESTDIR=$(call install,userspace/cryptsetup) install
+	$(INSTALL_LIBS) userspace/cryptsetup
 	$(TIMESTAMP)
 
 $(call done,userspace/cryptsetup,build): $(call done,userspace/cryptsetup,configure)

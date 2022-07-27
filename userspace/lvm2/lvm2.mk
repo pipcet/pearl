@@ -1,5 +1,6 @@
 $(call done,userspace/lvm2,install): $(call done,userspace/lvm2,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/lvm2/build DESTDIR=$(BUILD)/pearl/install/ install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/lvm2/build DESTDIR=$(call install,userspace/lvm2) install
+	$(INSTALL_LIBS) userspace/lvm2
 	$(TIMESTAMP)
 
 $(call done,userspace/lvm2,build): $(call done,userspace/lvm2,configure)

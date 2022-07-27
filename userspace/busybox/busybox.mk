@@ -14,6 +14,7 @@ $(call done,userspace/busybox,menuconfig): $(call done,userspace/busybox,configu
 
 $(call done,userspace/busybox,install): $(call done,userspace/busybox,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" install
+	$(INSTALL_LIBS) userspace/busybox
 	$(TIMESTAMP)
 
 $(call done,userspace/busybox,build): $(call done,userspace/busybox,configure)

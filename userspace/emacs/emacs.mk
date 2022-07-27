@@ -1,5 +1,6 @@
 $(call done,userspace/emacs,cross/install): $(call done,userspace/emacs,cross/build)
-	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross DESTDIR=$(BUILD)/pearl/install install
+	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross DESTDIR=$(call install,userspace/emacs) install
+	$(INSTALL_LIBS) userspace/emacs
 	$(TIMESTAMP)
 
 $(call done,userspace/emacs,cross/build): $(call done,userspace/emacs,cross/configure)

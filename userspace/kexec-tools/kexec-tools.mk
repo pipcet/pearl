@@ -1,5 +1,6 @@
 $(call done,userspace/kexec-tools,install): $(call done,userspace/kexec-tools,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/kexec-tools/source DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/kexec-tools/source DESTDIR="$(call install,userspace/kexec-tools)" install
+	$(INSTALL_LIBS) userspace/kexec-tools
 	$(TIMESTAMP)
 
 $(call done,userspace/kexec-tools,build): $(call done,userspace/kexec-tools,configure)

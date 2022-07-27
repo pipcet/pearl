@@ -1,5 +1,6 @@
 $(call done,userspace/procps,install): $(call done,userspace/procps,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/procps/build DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/procps/build DESTDIR="$(call install,userspace/procps)" install
+	$(INSTALL_LIBS) userspace/procps
 	$(TIMESTAMP)
 
 $(call done,userspace/procps,build): $(call done,userspace/procps,configure)

@@ -1,5 +1,6 @@
 $(call done,userspace/slurp,install): $(call done,userspace/slurp,build)
-	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/slurp/build DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/slurp/build DESTDIR="$(call install,userspace/slurp)" install
+	$(INSTALL_LIBS) userspace/slurp
 	$(TIMESTAMP)
 
 $(BUILD)/userspace/slurp/slurp.tar: $(call done,userspace/slurp,build)

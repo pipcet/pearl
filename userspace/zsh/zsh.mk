@@ -1,5 +1,6 @@
 $(call done,userspace/zsh,install): $(call done,userspace/zsh,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zsh/build DESTDIR="$(BUILD)/pearl/install" install.bin install.modules install.fns
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zsh/build DESTDIR="$(call install,userspace/zsh)" install.bin install.modules install.fns
+	$(INSTALL_LIBS) userspace/zsh
 	$(TIMESTAMP)
 
 $(call done,userspace/zsh,build): $(call done,userspace/zsh,configure)

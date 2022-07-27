@@ -1,5 +1,6 @@
 $(call done,userspace/json-c,install): $(call done,userspace/json-c,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/json-c/build DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/json-c/build DESTDIR="$(call install,userspace/json-c)" install
+	$(INSTALL_LIBS) userspace/json-c
 	$(TIMESTAMP)
 
 $(call done,userspace/json-c,build): $(call done,userspace/json-c,configure)

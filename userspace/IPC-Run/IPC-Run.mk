@@ -1,5 +1,6 @@
 $(call done,userspace/IPC-Run,install): $(call done,userspace/IPC-Run,build)
 	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/IPC-Run/build DESTDIR="$(BUILD)/pearl/install" install
+	$(INSTALL_LIBS) userspace/IPC-Run
 	$(TIMESTAMP)
 
 $(BUILD)/userspace/IPC-Run/IPC-Run.tar: $(call done,userspace/IPC-Run,build)

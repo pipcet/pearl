@@ -1,5 +1,6 @@
 $(call done,userspace/screen,install): $(call done,userspace/screen,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/screen/build/src DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/screen/build/src DESTDIR="$(call install,userspace/screen)" install
+	$(INSTALL_LIBS) userspace/screen
 	$(TIMESTAMP)
 
 $(call done,userspace/screen,build): $(call done,userspace/screen,configure)

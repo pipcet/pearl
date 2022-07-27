@@ -1,5 +1,6 @@
 $(call done,userspace/libnl,install): $(call done,userspace/libnl,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libnl/build DESTDIR=$(BUILD)/pearl/install install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libnl/build DESTDIR=$(call install,userspace/libnl) install
+	$(INSTALL_LIBS) userspace/libnl
 	$(TIMESTAMP)
 
 $(call done,userspace/libnl,build): $(call done,userspace/libnl,configure)

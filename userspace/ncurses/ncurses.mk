@@ -1,8 +1,9 @@
 DEP_ncurses += $(call done,userspace/ncurses,install)
 $(call done,userspace/ncurses,install): $(call done,userspace/ncurses,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/ncurses/build install
-	$(MKDIR) $(BUILD)/pearl/install/lib/pkgconfig/
-	$(CP) $(BUILD)/pearl/install/lib/aarch64-linux-gnu/pkgconfig/ncurses.pc $(BUILD)/pearl/install/lib/pkgconfig/ || $(CP) $(BUILD)/pearl/install/lib/x86_64-*linux-gnu/pkgconfig/ncurses.pc $(BUILD)/pearl/install/lib/pkgconfig/ || true
+	$(MKDIR) $(call install,userspace/ncurses)/lib/pkgconfig/
+	$(CP) $(call install,userspace/ncurses)/lib/aarch64-linux-gnu/pkgconfig/ncurses.pc $(call install,userspace/ncurses)/lib/pkgconfig/ || $(CP) $(call install,userspace/ncurses)/lib/x86_64-*linux-gnu/pkgconfig/ncurses.pc  $(call install,userspace/ncurses)/lib/pkgconfig/ || true
+	$(INSTALL_LIBS) userspace/ncurses
 	$(TIMESTAMP)
 
 $(call done,userspace/ncurses,build): $(call done,userspace/ncurses,configure)
@@ -10,7 +11,7 @@ $(call done,userspace/ncurses,build): $(call done,userspace/ncurses,configure)
 	$(TIMESTAMP)
 
 $(call done,userspace/ncurses,configure): $(call done,userspace/ncurses,copy) $(call deps,glibc gcc)
-	(cd $(BUILD)/userspace/ncurses/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(BUILD)/pearl/install --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding --enable-pc-files=yes)
+	(cd $(BUILD)/userspace/ncurses/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(call install,userspace/ncurses) --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding --enable-pc-files=yes)
 	$(TIMESTAMP)
 
 $(call done,userspace/ncurses,copy): $(call done,userspace/ncurses,checkout) | $(call done,userspace/ncurses,) $(BUILD)/userspace/ncurses/build/

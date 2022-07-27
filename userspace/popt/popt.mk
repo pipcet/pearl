@@ -1,5 +1,6 @@
 $(call done,userspace/popt,install): $(call done,userspace/popt,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/popt/build DESTDIR="$(BUILD)/pearl/install" install
+	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/popt/build DESTDIR="$(call install,userspace/popt)" install
+	$(INSTALL_LIBS) userspace/popt
 	$(TIMESTAMP)
 
 $(BUILD)/userspace/popt/popt.tar: $(call done,userspace/popt,build)
