@@ -1,5 +1,5 @@
 DEP_gcc += $(call done,toolchain/gcc,gcc/install)
-$(call done,toolchain/gcc,gcc/install): $(call done,toolchain/gcc,gcc/build)
+$(call done,toolchain/gcc,gcc/install): $(call done,toolchain/gcc,gcc/build) $(call done,pearl,install/mkdir)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	$(TIMESTAMP)
 

@@ -30,7 +30,7 @@ $(call done,userspace/glibc,stage1/copy): $(call done,userspace/glibc,checkout) 
 	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build)
+$(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build) $(call done,pearl,install/mkdir)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/headers/build DESTDIR=$(BUILD)/pearl/install install-headers
 	$(MKDIR) $(BUILD)/pearl/install/include/gnu/
 	touch $(BUILD)/pearl/install/include/gnu/stubs.h
