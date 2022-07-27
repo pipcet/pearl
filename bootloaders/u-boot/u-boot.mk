@@ -84,3 +84,7 @@ SECTARGETS += $(BUILD)/bootloaders/u-boot-plus-grub.image
 SECTARGETS += $(BUILD)/bootloaders/u-boot-plus-grub.image.d/sendfile
 SECTARGETS += $(BUILD)/bootloaders/u-boot-plus-grub.image.sendfile
 SECTARGETS += $(BUILD)/initramfs/pearl/boot/u-boot.image
+
+BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/u-boot.image
+BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/u-boot.dtb
+BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/u-boot-plus-grub.image

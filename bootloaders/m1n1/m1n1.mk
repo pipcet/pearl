@@ -35,3 +35,5 @@ $(call pearl-static,bootloaders/m1n1/pearl/bin/m1n1,bootloaders/m1n1/pearl)
 
 $(BUILD)/m1n1-chickens.S: $(call done,bootloaders/m1n1,install)
 	cat bootloaders/m1n1/m1n1/src/chickens_blizzard.c bootloaders/m1n1/m1n1/src/chickens_avalanche.c bootloaders/m1n1/m1n1/src/chickens_firestorm.c bootloaders/m1n1/m1n1/src/chickens_icestorm.c bootloaders/m1n1/m1n1/src/chickens.c  | $(CROSS_COMPILE)gcc -I$(BUILD)/bootloaders/m1n1/build/src -x c -finline -finline-functions -finline-limit=1000000000 -O3 -S -o $@ -
+
+BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/m1n1.macho

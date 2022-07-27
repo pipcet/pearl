@@ -21,3 +21,5 @@ $(call done,bootloaders/grub,copy): $(call done,bootloaders/grub,checkout) | $(B
 $(call done,bootloaders/grub,checkout): | $(call done,bootloaders/grub,)
 	$(MAKE) bootloaders/grub/grub{checkout}
 	$(TIMESTAMP)
+
+BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/grub.efi
