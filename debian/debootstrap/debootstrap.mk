@@ -9,6 +9,39 @@ $(BUILD)/debian/debootstrap/stage15.tar: $(BUILD)/debian/debootstrap/stage1.tar
 #	for a in $(BUILD)/debian/debootstrap/stage15/var/cache/apt/archives/*.deb; do sudo dpkg -x $$a $(BUILD)/debian/debootstrap/stage15; done
 	(cd $(BUILD)/debian/debootstrap/stage15; sudo tar c .) > $@
 
+$(BUILD)/debian/debootstrap/stage2.bash: | $(BUILD)/debian/debootstrap/
+	(echo "#!bin/bash -x"; \
+	 echo "mknod /dev/vdb b 254 16"; \
+	 echo "mkdir /root2"; \
+	 echo "cat /dev/vdb | uudecode"; \
+	 echo "cd /root2"; \
+	 echo "cat < /root1 | cpio -id"; \
+	 echo "chroot /root2 debootstrap/debootstrap --second-stage"; \
+	 echo "yes m1 | chroot /root2 passwd"; \
+	 echo "rm -f /root2/var/cache/apt/archives/*.deb"; \
+	 echo "rm -f /root2/var/lib/apt/lists/*Packages"; \
+	 echo "rm -rf /root2/usr/share/locale/*"; \
+	 echo "rm -f /root2/init"; \
+	 echo "ln -sf bin/bash /root2/init"; \
+	 echo "find . | cpio -H newc -o | uuencode root2 > /dev/vdb") > $@
+
+$(BUILD)/debian/debootstrap/stage15.cpio: $(BUILD)/debian/debootstrap/stage15.tar
+	$(MKDIR) $(BUILD)/debian/stage15.d
+	(cd $(BUILD)/debian/stage15.d; sudo tar x) < $<
+	sudo chown 'root:root' $(BUILD)/debian/stage15.d
+	(cd $(BUILD)/debian/stage15.d; sudo find | sudo cpio -o -H newc) > $@
+
+$(BUILD)/debian/root1.cpio.gz: | $(BUILD)/debian/
+	wget -O $@ https://github.com/pipcet/debian-rootfs/releases/latest/download/root1.cpio.gz
+
+$(BUILD)/debian/debootstrap/stage2.cpio: $(BUILD)/debian/debootstrap/stage2.bash $(BUILD)/debian/debootstrap/stage15.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/root1.cpio.gz
+	dd if=/dev/zero of=tmp bs=128M count=1
+	(uuencode script < $(BUILD)/debian/debootstrap/stage2.bash) | dd conv=notrunc of=tmp
+	dd if=/dev/zero of=tmp2 bs=1G count=2
+	(uuencode root1 < $(BUILD)/debian/debootstrap/stage15.cpio) | dd conv=notrunc of=tmp2
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/root1.cpio.gz -nic user,model=virtio -monitor none -smp 8 -nographic
+	uudecode -o $@ < tmp2
+
 $(BUILD)/debian/full-installer.cpio.gz: | $(BUILD)/debian/
 	wget -O $@ https://github.com/pipcet/debian-installer/releases/latest/download/netboot-initrd.cpio.gz
 
@@ -32,7 +65,7 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/in
 	(cd $(BUILD)/debian/cpio.d; sudo tar x) < $<
 	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/cpio.d
 	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/cpio.d/bin
-	sudo chown root.root $(BUILD)/debian/cpio.d
+	sudo chown 'root:root' $(BUILD)/debian/cpio.d
 	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
 	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
 
@@ -81,7 +114,7 @@ $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	echo "sync"; \
 	echo "poweroff -f") | sudo tee $(BUILD)/debian/di-debootstrap/init
 	sudo chmod u+x $(BUILD)/debian/di-debootstrap/init
-	(cd $(BUILD)/debian/di-debootstrap; sudo chown root.root .; sudo find . | sudo cpio -H newc -o) > $@
+	(cd $(BUILD)/debian/di-debootstrap; sudo chown 'root:root' .; sudo find . | sudo cpio -H newc -o) > $@
 
 $(BUILD)/netboot.tar.gz: $(BUILD)/qemu-kernel $(BUILD)/debian/di-debootstrap.cpio
 	dd if=/dev/zero of=tmp bs=128M count=1
