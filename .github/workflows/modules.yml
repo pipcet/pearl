@@ -12,7 +12,43 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       with:
-        submodules: recursive
+        submodules: false
+    - run: make bootloaders/barebox/barebox{checkout}
+    - run: make bootloaders/grub/grub{checkout}
+    - run: make bootloaders/m1n1/m1n1{checkout}
+    - run: make bootloaders/u-boot/u-boot{checkout}
+    - run: make linux/linux{checkout}
+    - run: make toolchain/binutils-gdb/binutils-gdb{checkout}
+    - run: make toolchain/gcc/gcc{checkout}
+    - run: make userspace/IPC-Run/IPC-Run{checkout}
+    - run: make userspace/busybox/busybox{checkout}
+    - run: make userspace/cryptsetup/cryptsetup{checkout}
+    - run: make userspace/dialog/dialog{checkout}
+    - run: make userspace/dropbear/dropbear{checkout}
+    - run: make userspace/dtc/dtc{checkout}
+    - run: make userspace/emacs/emacs{checkout}
+    - run: make userspace/glibc/glibc{checkout}
+    - run: make userspace/json-c/json-c{checkout}
+    - run: make userspace/kexec-tools/kexec-tools{checkout}
+    - run: make userspace/libaio/libaio{checkout}
+    - run: make userspace/libnl/libnl{checkout}
+    - run: make userspace/lvm2/lvm2{checkout}
+    - run: make userspace/memtool/memtool{checkout}
+    - run: make userspace/ncurses/ncurses{checkout}
+    - run: make userspace/nvme-cli/nvme-cli{checkout}
+    - run: make userspace/openssl/openssl{checkout}
+    - run: make userspace/perl/perl{checkout}
+    - run: make userspace/popt/popt{checkout}
+    - run: make userspace/procps/procps{checkout}
+    - run: make userspace/screen/screen{checkout}
+    - run: make userspace/slurp/slurp{checkout}
+    - run: make userspace/sys-mmap/sys-mmap{checkout}
+    - run: make userspace/util-linux/util-linux{checkout}
+    - run: make userspace/wpa/wpa{checkout}
+    - run: make userspace/zlib/zlib{checkout}
+    - run: make userspace/zsh/zsh{checkout}
+    - run: make userspace/zstd/zstd{checkout}
+    - run: make zstd/zstd{checkout}
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get update
