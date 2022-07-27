@@ -54,15 +54,15 @@ $(BUILD)/debian/installer.cpio: $(BUILD)/debian/full-installer.cpio
 	(cd $(BUILD)/debian/full-installer.d; sudo cpio -id) < $<
 	sudo rm -rf $(BUILD)/debian/full-installer.d/boot
 	sudo rm -rf $(BUILD)/debian/full-installer.d/lib/modules
-	(cd $(BUILD)/debian/full-installer.d; sudo find | sudo cpio -o) > $@
+	(cd $(BUILD)/debian/full-installer.d; sudo find | sudo cpio -H newc -o) > $@
 
 $(BUILD)/debian/installer: debian/injected/bin/installer
 	$(CP) $< $@
 	chmod u+x $@
 
-$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage15.tar $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
+$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
 	$(MKDIR) $(BUILD)/debian/cpio.d
-	(cd $(BUILD)/debian/cpio.d; sudo tar x) < $<
+	(cd $(BUILD)/debian/cpio.d; sudo cpio -id) < $<
 	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/cpio.d
 	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/cpio.d/bin
 	sudo chown 'root:root' $(BUILD)/debian/cpio.d
