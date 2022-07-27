@@ -30,6 +30,10 @@ define install
 $(BUILD)/pearl/install
 endef
 
+define INSTALL_LIBS
+echo
+endef
+
 define pearl-static-file
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1))
 $(BUILD)/initramfs/pearl/$(patsubst $(2)/%,%,$(1)): $(1) ; $$(COPY)
