@@ -21,6 +21,7 @@ jobs:
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support
+    - run: sudo apt-get install qemu-system
     - run: sudo apt-get install gettext
     - run: sudo apt-get install xz-utils
     - run: sudo apt-get install device-tree-compiler
