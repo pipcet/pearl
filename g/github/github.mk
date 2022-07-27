@@ -66,3 +66,6 @@ $(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
 
 %{checkout}:
 	g/bin/locked --lockfile git.lock git submodule update --depth=1 --single-branch --init --recursive $*
+
+build/released/%: .github-init | github/ g/github/
+	wget -O $@ https://github.com/$(word 1,$(subst /, ,$*))/$(word 2,$(subst /, ,$*))/releases/latest/download/$(word 3,$(subst /, ,$*))
