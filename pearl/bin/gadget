@@ -1,5 +1,4 @@
 #!/bin/sh
-mount -t configfs configfs /sys/kernel/config 2> /dev/null
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS0 c $NUM 0; fi; done
 cat /proc/devices | while read NUM NAME; do if [ "$NAME" = "ttyGS" ]; then mknod /dev/ttyGS1 c $NUM 1; fi; done
 mkdir /sys/kernel/config/usb_gadget/G1
