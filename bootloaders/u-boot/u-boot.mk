@@ -68,6 +68,7 @@ $(call done,bootloaders/u-boot,checkout): | $(call done,bootloaders/u-boot,)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.image
 $(BUILD)/initramfs/pearl/boot/u-boot.image: $(BUILD)/bootloaders/u-boot.image ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/u-boot-plus-grub.image: $(BUILD)/bootloaders/u-boot-plus-grub.image ; $(COPY)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/u-boot.dtb
 $(BUILD)/initramfs/pearl/boot/u-boot.dtb: $(BUILD)/bootloaders/u-boot.dtb ; $(COPY)

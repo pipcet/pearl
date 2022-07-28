@@ -56,6 +56,7 @@ $(call done,bootloaders/barebox,checkout): | $(call done,bootloaders/barebox,)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/barebox.image
 $(BUILD)/initramfs/pearl/boot/barebox.image: $(BUILD)/bootloaders/barebox.image ; $(COPY)
+$(BUILD)/initramfs/pearl/boot/barebox.dtb: $(BUILD)/bootloaders/barebox.dtb ; $(COPY)
 
 $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/barebox/pearl)
 

@@ -22,4 +22,7 @@ $(call done,bootloaders/grub,checkout): | $(call done,bootloaders/grub,)
 	$(MAKE) bootloaders/grub/grub{checkout}
 	$(TIMESTAMP)
 
+$(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/grub.efi
+$(BUILD)/initramfs/pearl/boot/grub.efi: $(BUILD)/bootloaders/grub.efi ; $(COPY)
+
 BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/grub.efi
