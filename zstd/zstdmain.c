@@ -14,6 +14,7 @@ typedef unsigned long size_t;
 #define BIT(nr)			(1UL << (nr))
 
 asm("                                             \n\
+entry:                                            \n\
 0:						  \n\
 	nop					  \n\
 	b primary_entry				  \n\
@@ -146,6 +147,8 @@ void *xmemalign(unsigned long size, unsigned long align, unsigned long off);
 			 PTE_BLOCK_INNER_SHARE |	\
 			 PTE_BLOCK_AF)
 
+extern void main_smallstack(unsigned long dummy, struct apple_bootargs *ba, void *start) __attribute__((noreturn,used));
+extern void main_largestack(unsigned char *begp, struct apple_bootargs *ba, void *start) __attribute__((noreturn,used));
 extern void main_switchstack(unsigned char *, struct apple_bootargs *, void *, void *) __attribute__((noreturn));
 
 asm(
@@ -206,6 +209,7 @@ void *memset(void *dst, int c, unsigned long count)
 	return dst;
 }
 
+#if 0
 void *memcpy(void *dst, void *src, unsigned long count)
 {
 	unsigned char *d8 = dst;
@@ -214,6 +218,7 @@ void *memcpy(void *dst, void *src, unsigned long count)
 		*d8++ = *s8++;
 	return dst;
 }
+#endif
 
 #define BITS_PER_VA                48
 
