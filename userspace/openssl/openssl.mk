@@ -8,7 +8,7 @@ $(call done,userspace/openssl,build): $(call done,userspace/openssl,configure)
 	$(TIMESTAMP)
 
 $(call done,userspace/openssl,configure): $(call done,userspace/openssl,copy) $(call deps,glibc gcc)
-	(cd $(BUILD)/userspace/openssl/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(call install,userspace/openssl)
+	(cd $(BUILD)/userspace/openssl/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(call install,userspace/openssl))
 	$(TIMESTAMP)
 
 $(call done,userspace/openssl,copy): $(call done,userspace/openssl,checkout) | $(call done,userspace/openssl,) $(BUILD)/userspace/openssl/build/
