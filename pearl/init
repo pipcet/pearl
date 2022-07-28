@@ -7,6 +7,7 @@ mkdir -p boot proc sys tmp persist
 mount -t proc proc proc
 mount -t sysfs sys sys
 mount -t debugfs debug sys/kernel/debug
+mount -t configfs configfs sys/kernel/config
 if [ -e persist/stage ]; then
     stage=$(cat persist/stage)
 else
