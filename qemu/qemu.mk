@@ -117,7 +117,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	for i in $$(seq 1 600); do \
 	    sleep 1; \
 	    (echo "target remote localhost:1234"; \
-	    echo "shell vncsnapshot -allowblank :1 $*.image$$(printf %05d $$i).jpg"; \
+	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image$$(printf %05d $$i).jpg"; \
 	    echo "pipe i reg | head -37 | tee $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
 	    echo "pipe bt | head -37 | tee -a $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
 	    echo "shell yes '' | head -100 | tee -a $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
