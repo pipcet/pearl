@@ -34,6 +34,10 @@ int main(int argc, char **argv)
     errorstr = "couldn't open /dev/mem";
     goto error;
   }
+  if (reg[0] == reg[1]) {
+    fprintf(stderr, "emulator detected, exiting\n");
+    return 1;
+  }
   void *buf = mmap(NULL, reg[1], PROT_READ, MAP_SHARED, fd, reg[0]);
   if (buf == MAP_FAILED) {
     asprintf(&errorstr, "couldn't mmap %016lx-%016lx\n",
