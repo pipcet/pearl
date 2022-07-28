@@ -123,11 +123,12 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    echo "shell yes '' | head -100 | tee -a $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
 	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
         done
-	for a in $*.image*.txt; do (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $$a > $$a.pbm; done || true
-	for a in $*.image*.jpg; do jpegtopnm $$a > $$a.ppm; done || true
+	for a in $*.image*.txt; do (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $$a > $$a.pbm; rm $$a; done || true
 	i=1; while [ -e $*.image$$(printf %05d $$i).jpg ]; do \
-	    pnmpad -white -right 256 $*.image$$(printf %05d $$i).jpg.ppm > $*.image$$(printf %05d $$i)-tmp.ppm; \
-	    pnmpaste -replace $*.image$$(printf %05d $$i).txt.pbm 1024 0 $*.image$$(printf %05d $$i)-tmp.ppm > $*.image$$(printf %05d $$i).ppm; \
+	    jpegtopnm $*.image$$(printf %05d $$i).jpg > $*.image$$(printf %05d $$i).jpg.ppm; done || true
+	    pnmpad -white -right 256 $*.image$$(printf %05d $$i).jpg.ppm > $*.image$$(printf %05d $$i).ppm; \
+	    pnmpaste -replace $*.image$$(printf %05d $$i).txt.pbm 1024 0 $*.image$$(printf %05d $$i).ppm | pnmtojpeg -quality=95 > $*.image$$(printf %05d $$i).jpg; \
+	    rm $*.image$$(printf %05d $$i).txt.pbm $*.image$$(printf %05d $$i).jpg.ppm $*.image$$(printf %05d $$i).ppm; \
 	    i=$$(($$i+1)); \
 	done
-	ffmpeg -r 1 -i $*.image%05d.ppm $@
+	ffmpeg -r 1 -i $*.image%05d.jpg $@
