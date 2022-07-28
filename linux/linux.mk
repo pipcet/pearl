@@ -140,7 +140,7 @@ $(call done,linux,checkout): | $(call done,linux,)
 
 {non-intermediate}: $(call done,linux,headers/copy) $(call done,linux,headers/configure)
 
-$(BUILD)/linux.tar: $(call done,linux,stage2/build) $(call done,linux/linux/build)
+$(BUILD)/linux.tar: $(call done,linux,stage2/build) $(call done,linux/linux/build) $(BUILD)/linux/stage2.image $(BUILD)/linux/stage2.modules $(BUILD)/linux/linux.image $(BUILD)/linux/linux.modules
 	tar -C . -cf $@ $(BUILD)/linux/stage2.image $(BUILD)/linux/stage2.modules $(BUILD)/linux/linux.image $(BUILD)/linux/linux.modules
 
 SECTARGETS += $(call done,linux,stage2/build)
