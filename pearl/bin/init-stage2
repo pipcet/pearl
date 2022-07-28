@@ -1,10 +1,12 @@
 #!/bin/sh
-(sleep 25 && enable-framebuffer) &
-prepare-linux
-[ -e /persist/payload ] || dt extract-payload /persist/payload
-(head -c 512 /persist/payload | egrep -q '[^\0]' && zsh < /persist/payload; rm /persist/payload) &
-> /persist/substages
-morse &
-auto-boot-debian &
+if ! [ -e /persist/emulated ]; then
+    (sleep 25 && enable-framebuffer) &
+    prepare-linux
+    [ -e /persist/payload ] || dt extract-payload /persist/payload
+    (head -c 512 /persist/payload | egrep -q '[^\0]' && zsh < /persist/payload; rm /persist/payload) &
+    > /persist/substages
+    morse &
+    auto-boot-debian &
+fi
 interactor
 linux
