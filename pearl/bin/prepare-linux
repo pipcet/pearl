@@ -1,5 +1,4 @@
 #!/bin/sh
-mount -t configfs configfs sys/kernel/config
 cp persist/tunables.dtp persist/resmem.dtp persist/bootargs.dtp boot
 dt dtb-to-dtp /persist/stage3.dtb /boot/fixed.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/linux.dtp
