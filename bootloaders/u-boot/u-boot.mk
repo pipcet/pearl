@@ -37,7 +37,7 @@ $(BUILD)/bootloaders/u-boot-plus-grub.dtb: $(BUILD)/bootloaders/u-boot.dtb
 $(BUILD)/bootloaders/u-boot-plus-grub.modules:
 	touch $@
 
-$(BUILD)/bootloaders/u-boot-plus-grub.image: $(BUILD)/bootloaders/u-boot.image $(BUILD)/grub.efi
+$(BUILD)/bootloaders/u-boot-plus-grub.image: $(BUILD)/bootloaders/u-boot.image $(BUILD)/bootloaders/grub.efi
 	(cat < $<; cat $(BUILD)/bootloaders/grub.efi) > $@
 
 $(BUILD)/bootloaders/u-boot.dtb: $(call done,bootloaders/u-boot,build)
