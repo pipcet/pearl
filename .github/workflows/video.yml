@@ -66,6 +66,7 @@ jobs:
     - run: sudo apt-get install libtool-bin
     - run: sudo apt-get install ffmpeg
     - run: sudo apt-get install vncsnapshot
+    - run: sudo apt-get install netpbm
     - run: make -j13 done/toolchain/binutils-gdb/install
     - run: make -j13 done/linux/headers/install
     - run: make -j13 done/userspace/glibc/headers/install
