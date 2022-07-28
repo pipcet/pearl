@@ -4,12 +4,13 @@ PHDRS {
 }
 
 SECTIONS {
-  .text : ALIGN(0x10000) {
+  . = 0x800200000;
+  /DISCARD/ : { *(.eh_frame) }
+  .text : {
     *(.text)
     *(.bss)
     *(.data)
     *(.rodata.*)
     *(.rodata)
   } :text
-  /DISCARD/ : { *(*) }
 }
