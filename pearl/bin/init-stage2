@@ -8,6 +8,6 @@ if ! [ -e /persist/emulated ]; then
     morse &
     auto-boot-debian &
 fi
-(sleep 1m && barebox)
+(sleep 1m && barebox) &
 interactor
 linux
