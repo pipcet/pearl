@@ -42,7 +42,7 @@ $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,header
 $(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/configure)
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,headers/copy) | $(BUILD)/userspace/glibc/headers/build/
+$(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,headers/copy) $(call done,linux,headers/install) | $(BUILD)/userspace/glibc/headers/build/
 	(cd $(BUILD)/userspace/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	$(TIMESTAMP)
 
