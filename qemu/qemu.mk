@@ -114,21 +114,17 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	timeout 900 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -device ramfb &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --command=$*.image.gdb3 --batch
-	for i in $$(seq 1 600); do \
-	    sleep 1; \
+	(while true; do \
 	    (echo "target remote localhost:1234"; \
-	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image$$(printf %05d $$i).jpg"; \
-	    echo "pipe i reg | head -37 | tee $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
-	    echo "pipe bt | head -37 | tee -a $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
-	    echo "shell yes '' | head -100 | tee -a $*.image$$(printf %05d $$i).txt 2>/dev/null"; \
+	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image.jpg"; \
+	    echo "pipe i reg | head -37 | tee $*.image.txt 2>/dev/null"; \
+	    echo "pipe x/32i $pc - 64 | head -37 | tee -a $*.image.txt 2>/dev/null"; \
+	    echo "pipe bt | head -37 | tee -a $*.image.txt 2>/dev/null"; \
+	    echo "shell yes '' | head -100 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
-        done
-	for a in $*.image*.txt; do (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $$a > $$a.pbm; rm $$a; done || true
-	i=1; while [ -e $*.image$$(printf %05d $$i).jpg ]; do \
-	    jpegtopnm $*.image$$(printf %05d $$i).jpg > $*.image$$(printf %05d $$i).jpg.ppm || true; \
-	    pnmpad -white -right 256 $*.image$$(printf %05d $$i).jpg.ppm > $*.image$$(printf %05d $$i).ppm; \
-	    pnmpaste -replace $*.image$$(printf %05d $$i).txt.pbm 1024 0 $*.image$$(printf %05d $$i).ppm | pnmtojpeg -quality=95 > $*.image$$(printf %05d $$i).jpg; \
-	    rm $*.image$$(printf %05d $$i).txt.pbm $*.image$$(printf %05d $$i).jpg.ppm $*.image$$(printf %05d $$i).ppm; \
-	    i=$$(($$i+1)); \
-	done
-	ffmpeg -r 1 -i $*.image%05d.jpg $@
+	    sleep 1; \
+	    (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $*.image.txt > $*.image.pbm || break; \
+	    jpegtopnm $*.image.jpg > $*.image.ppm || true; \
+	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
+	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
+        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
