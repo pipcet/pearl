@@ -118,12 +118,13 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    (echo "target remote localhost:1234"; \
 	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image.jpg"; \
 	    echo "pipe i reg | head -37 | tee $*.image.txt 2>/dev/null"; \
-	    echo "pipe x/32i $$pc - 64 | head -37 | tee -a $*.image.txt 2>/dev/null"; \
+	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "pipe bt | head -37 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "shell yes '' | head -100 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
 	    sleep 1; \
 	    (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $*.image.txt > $*.image.pbm || break; \
+	    grep x27 $*.image.txt || break; \
 	    jpegtopnm $*.image.jpg > $*.image.ppm || true; \
 	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
 	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
