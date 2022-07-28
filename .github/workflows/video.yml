@@ -112,4 +112,4 @@ jobs:
     - run: rm -rf build/linux/linux
     - run: rm -rf build/linux/pearl
     - run: rm -rf build/linux/stage2
-    - run: make -j13 build/linux/pearl.image.mpg{artifact}
+    - run: make -j13 build/linux/pearl.image.mp4{artifact}
