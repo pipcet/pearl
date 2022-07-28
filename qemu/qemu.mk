@@ -32,9 +32,9 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	 echo p '*(unsigned long *)0x900000020 = 0x900000000'; \
 	 echo p '*(unsigned long *)0x900000028 = 0xa00000000'; \
 	 echo p '*(unsigned long *)0x900000030 = 0'; \
-	 echo p '*(unsigned long *)0x900000038 = 8192'; \
-	 echo p '*(unsigned long *)0x900000040 = 2048'; \
-	 echo p '*(unsigned long *)0x900000048 = 2048'; \
+	 echo p '*(unsigned long *)0x900000038 = 4096'; \
+	 echo p '*(unsigned long *)0x900000040 = 1024'; \
+	 echo p '*(unsigned long *)0x900000048 = 1024'; \
 	 echo p '*(unsigned long *)0x900000050 = 32'; \
 	 echo p '*(unsigned long *)0x900000060 = 0x800000000'; \
 	 echo p '*(unsigned long *)0x900000068 = 0'; \
