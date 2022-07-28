@@ -1,3 +1,2 @@
 #!/bin/sh
-# enable-wdt
-kexec -fix /boot/barebox.image --dtb=/boot/barebox.dtb
+kexec -fix /boot/barebox.image --dtb=/sys/firmware/fdt
