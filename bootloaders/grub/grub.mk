@@ -9,7 +9,7 @@ $(call done,bootloaders/grub,build): $(call done,bootloaders/grub,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/grub/build
 	$(TIMESTAMP)
 
-$(call done,bootloaders/grub,configure): $(call done,bootloaders/grub,copy) $(call done,userspace/glibc,glibc/install) | $(BUILD)/bootloaders/grub/build/
+$(call done,bootloaders/grub,configure): $(call done,bootloaders/grub,copy) | $(BUILD)/bootloaders/grub/build/
 	(cd $(BUILD)/bootloaders/grub/build; sh bootstrap)
 	(cd $(BUILD)/bootloaders/grub/build; $(WITH_CROSS_PATH) ./configure --host=$(NATIVE_TRIPLE) --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=efi --prefix=$(BUILD)/toolchain --disable-werror)
 	$(TIMESTAMP)
