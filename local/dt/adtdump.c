@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     errorstr = "couldn't open /dev/mem";
     goto error;
   }
-  if (reg[0] == reg[1]) {
+  if (reg[1] == 0) {
     fprintf(stderr, "emulator detected, exiting\n");
     return 1;
   }
