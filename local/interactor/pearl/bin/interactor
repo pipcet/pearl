@@ -43,10 +43,12 @@ screen -t "shell" /bin/once-sh
 focus next
 EOF
 
-(while sleep 1; do receive-sendfile; done) &
+if ! [ -e /persist/emulated ]; then
+    (while sleep 1; do receive-sendfile; done) &
 
-[ "$STAGE" = "stage2" ] && gadget
-[ "$STAGE" = "stage3" ] && wifi &
+    [ "$STAGE" = "stage2" ] && gadget
+    [ "$STAGE" = "stage3" ] && wifi &
+fi
 
 echo 1 5 4 4 > /proc/sys/kernel/printk
 
