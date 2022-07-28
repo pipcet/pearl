@@ -1,9 +1,9 @@
 $(call done,qemu,build): $(call done,qemu,configure)
-	$(MAKE) -C $(BUILD)/qemu/build
+	$(MAKE) -C $(BUILD)/qemu
 	$(TIMESTAMP)
 
 $(call done,qemu,configure): $(call done,qemu,copy)
-	(cd $(BUILD)/qemu; ./configure --target-list=aarch64-softmmu --static)
+	(cd $(BUILD)/qemu; ./configure --target-list=aarch64-softmmu)
 	$(TIMESTAMP)
 
 $(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/
