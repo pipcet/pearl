@@ -69,6 +69,7 @@ jobs:
     - run: sudo apt-get install netpbm
     - run: sudo apt-get install ninja-build
     - run: sudo apt-get install meson
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 done/toolchain/binutils-gdb/install
     - run: make -j13 done/linux/headers/install
     - run: make -j13 done/userspace/glibc/headers/install
