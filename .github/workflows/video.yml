@@ -124,8 +124,8 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make -j13 build/released/pearl-bootloaders/bootloaders.tar.zstd
-    - run: zstd -d build/released/pearl-bootloaders/bootloaders.tar.zstd | tar -xvf
+    - run: make -j13 build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: zstd -d build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd | tar -xvf
     - run: make qemu/qemu{checkout}
     - name: Set env variables
       uses: ./g/github/env/
