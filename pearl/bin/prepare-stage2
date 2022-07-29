@@ -27,7 +27,6 @@ dt dtb-to-dtp /boot/stage2.dtb /boot/stage2.dtb.dtp
 cat /boot/fixed.dtp /boot/tunables.dtp /boot/bootargs.dtp /boot/resmem.dtp > /boot/stage3.dtp
 dt dtp-to-dtb /boot/stage3.dtp /boot/stage3.dtb
 dt dtb-to-dtp /boot/stage3.dtb /boot/stage3.dtb.dtp
-
 cp boot/tunables.dtp boot/resmem.dtp boot/dcp.dtp boot/bootargs.dtp boot/adt boot/stage2.dtp boot/stage2.dtb boot/stage2.dtb.dtp boot/stage3.dtp boot/stage3.dtb boot/stage3.dtb.dtp persist
 # cat /boot/resmem.dtp
 # cat /boot/stage2.dtb.dtp | while read REPLY; do echo $REPLY; sleep .1; done
