@@ -113,9 +113,30 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	./build/toolchain/binutils-gdb/source/gdb/gdb --batch --command=$*.image.gdb
 	ffmpeg -i $*.image%05d.jpg -r 20 $@
 
+%/barebox.image.mp4: %/barebox.image %/barebox.image.gdb3
+	$(RM) -f $@ $*/barebox.image*.jpg $*/barebox.image*.jpg.ppm $*/barebox.image*.txt $*/barebox.image*.txt.pbm
+	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -dtb ./build/bootloaders/barebox.dtb -no-defaults -icount shift=0 &
+	sleep 5
+	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*/barebox.image.gdb3 --batch
+	(while true; do \
+	    (echo "target remote localhost:1234"; \
+	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*/barebox.image.jpg"; \
+	    echo "pipe i reg | head -37 | tee $*/barebox.image.txt 2>/dev/null"; \
+	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*/barebox.image.txt 2>/dev/null"; \
+	    echo "pipe bt | head -37 | tee -a $*/barebox.image.txt 2>/dev/null"; \
+	    echo "shell yes '' | head -100 | tee -a $*/barebox.image.txt 2>/dev/null"; \
+	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
+	    sleep 1; \
+	    (cat $*/barebox.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*/barebox.image.pbm || break; \
+	    grep x27 $*/barebox.image.txt || break; \
+	    jpegtopnm $*/barebox.image.jpg > $*/barebox.image.ppm || true; \
+	    pnmpad -white -right 256 $*/barebox.image.ppm > $*/barebox.image.2.ppm; \
+	    pnmpaste -replace $*/barebox.image.pbm 1024 0 $*/barebox.image.2.ppm > /dev/fd/3; \
+        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
+
 %.image.mp4: %.image %.image.gdb3
 	$(RM) -f $@ $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
-	timeout 600 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -dtb ./build/bootloaders/barebox.dtb -no-defaults &
+	timeout 600 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -no-defaults &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*.image.gdb3 --batch
 	(while true; do \
