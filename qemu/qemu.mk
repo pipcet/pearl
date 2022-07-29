@@ -117,7 +117,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	$(RM) -f $@ $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
 	timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb &
 	sleep 5
-	./build/toolchain/binutils-gdb/source/gdb/gdb --command=$*.image.gdb3 --batch
+	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*.image.gdb3 --batch
 	(while true; do \
 	    (echo "target remote localhost:1234"; \
 	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image.jpg"; \
