@@ -77,8 +77,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	 echo q) > $@
 
 %.image.gdb3: %.image
-	(echo file ./build/linux/pearl/build/vmlinux; \
-	 echo set disassemble-next-line on; \
+	(echo set disassemble-next-line on; \
 	 echo target remote localhost:1234; \
 	 echo si; \
 	 echo p '$$'x0 = 0; \
