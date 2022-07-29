@@ -115,7 +115,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 
 %/barebox.image.mp4: %/barebox.image %/barebox.image.gdb3
 	$(RM) -f $@ $*/barebox.image*.jpg $*/barebox.image*.jpg.ppm $*/barebox.image*.txt $*/barebox.image*.txt.pbm
-	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -dtb ./build/bootloaders/barebox.dtb -no-defaults -icount shift=0 &
+	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -dtb ./build/bootloaders/barebox.dtb -icount shift=0 &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*/barebox.image.gdb3 --batch
 	(while true; do \
@@ -136,7 +136,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 
 %.image.mp4: %.image %.image.gdb3
 	$(RM) -f $@ $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
-	timeout 600 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb -no-defaults &
+	timeout 600 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*.image.gdb3 --batch
 	(while true; do \
