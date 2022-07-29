@@ -3,7 +3,13 @@ mkdir -p /persist
 cat /proc/iomem > /persist/stage1-iomem.txt
 uname -a > /persist/stage1-uname.txt
 dmesg > /persist/stage1-dmesg.txt
-prepare-stage2 && stage2
+dmesg
+sleep 10
+prepare-stage2 && exec stage2
 echo 1 > /persist/emulated
-echo stage2 > /persist/stage
-exec /bin/init-stage2
+cd /
+echo stage2 > persist/stage
+find persist >> /file.list
+cat /file.list | tee | cpio -H newc -o > /boot/stage2.cpio
+kexec -fix /boot/stage2.image --mem-min=0x900000000 --dtb=/sys/firmware/fdt --ramdisk=/boot/stage2.cpio --command-line="nosmp clk_ignore_unused console=tty0 earlycon debug boot_delay=1000 lpj=2400000"
+while true; do sleep 1; done
