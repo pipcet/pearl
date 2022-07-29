@@ -132,4 +132,4 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    jpegtopnm $*.image.jpg > $*.image.ppm || true; \
 	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
 	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
-        done) 3>&1 1>/dev/stderr | ffmpeg -r 1 -i pipe:0 $@
+        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
