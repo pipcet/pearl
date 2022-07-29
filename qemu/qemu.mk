@@ -76,6 +76,11 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	 echo p '*'0x8008f0004 = 0xd503201f; \
 	 echo q) > $@
 
+%/barebox.image.gdb3: %/barebox.image
+	(echo set disassemble-next-line on; \
+	 echo target remote localhost:1234; \
+	 echo q) > $@
+
 %.image.gdb3: %.image
 	(echo set disassemble-next-line on; \
 	 echo target remote localhost:1234; \
