@@ -81,6 +81,11 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	 echo target remote localhost:1234; \
 	 echo q) > $@
 
+%/u-boot.image.gdb3: %/u-boot.image
+	(echo set disassemble-next-line on; \
+	 echo target remote localhost:1234; \
+	 echo q) > $@
+
 %.image.gdb3: %.image
 	(echo set disassemble-next-line on; \
 	 echo target remote localhost:1234; \
@@ -132,6 +137,27 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    jpegtopnm $*/barebox.image.jpg > $*/barebox.image.ppm || true; \
 	    pnmpad -white -right 256 $*/barebox.image.ppm > $*/barebox.image.2.ppm; \
 	    pnmpaste -replace $*/barebox.image.pbm 1024 0 $*/barebox.image.2.ppm > /dev/fd/3; \
+        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
+
+%/u-boot.image.mp4: %/u-boot.image %/u-boot.image.gdb3
+	$(RM) -f $@ $*/u-boot.image*.jpg $*/u-boot.image*.jpg.ppm $*/u-boot.image*.txt $*/u-boot.image*.txt.pbm
+	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
+	sleep 5
+	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*/u-boot.image.gdb3 --batch
+	(while true; do \
+	    (echo "target remote localhost:1234"; \
+	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*/u-boot.image.jpg"; \
+	    echo "pipe i reg | head -37 | tee $*/u-boot.image.txt 2>/dev/null"; \
+	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
+	    echo "pipe bt | head -37 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
+	    echo "shell yes '' | head -100 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
+	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
+	    sleep 1; \
+	    (cat $*/u-boot.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*/u-boot.image.pbm || break; \
+	    grep x27 $*/u-boot.image.txt || break; \
+	    jpegtopnm $*/u-boot.image.jpg > $*/u-boot.image.ppm || true; \
+	    pnmpad -white -right 256 $*/u-boot.image.ppm > $*/u-boot.image.2.ppm; \
+	    pnmpaste -replace $*/u-boot.image.pbm 1024 0 $*/u-boot.image.2.ppm > /dev/fd/3; \
         done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
 
 %.image.mp4: %.image %.image.gdb3
