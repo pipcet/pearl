@@ -127,7 +127,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    echo "shell yes '' | head -100 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
 	    sleep 1; \
-	    (pbmtext -width 256 -builtin fixed | pamcut -height 1024) < $*.image.txt > $*.image.pbm || break; \
+	    (pbmtext -width 256 -builtin fixed "$$(cat $*.image.txt)"| pnmcut -height 1024) > $*.image.pbm || break; \
 	    grep x27 $*.image.txt || break; \
 	    jpegtopnm $*.image.jpg > $*.image.ppm || true; \
 	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
