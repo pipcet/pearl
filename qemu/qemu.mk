@@ -115,7 +115,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 
 %.image.mp4: %.image %.image.gdb3
 	$(RM) -f $@ $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
-	timeout 900 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -device ramfb &
+	timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d int,unimp -device ramfb &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --command=$*.image.gdb3 --batch
 	(while true; do \
