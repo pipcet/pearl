@@ -148,4 +148,10 @@ jobs:
     - run: sudo apt-get install meson
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 done/qemu/build
+    - run: mkdir -p done/bootloaders/barebox
+    - run: touch done/bootloaders/barebox/checkout
+    - run: touch done/bootloaders/barebox/copy
+    - run: touch done/bootloaders/barebox/build
+    - run: touch done/bootloaders/barebox/install
+    - run: touch build/bootloaders/barebox.image
     - run: make -j13 build/bootloaders/barebox.image.mp4{artifact}
