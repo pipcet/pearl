@@ -125,7 +125,7 @@ jobs:
       with:
         submodules: false
     - run: make -j13 build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
-    - run: zstd -d < build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd | tar -xv
+    - run: zstd -d < build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd | tar --strip-components 6 -xv
     - run: make qemu/qemu{checkout}
     - name: Set env variables
       uses: ./g/github/env/
@@ -153,5 +153,5 @@ jobs:
     - run: touch done/bootloaders/barebox/copy
     - run: touch done/bootloaders/barebox/build
     - run: touch done/bootloaders/barebox/install
-    - run: touch build/bootloaders/barebox.image
-    - run: make -j13 build/bootloaders/barebox.image.mp4{artifact}
+    - run: touch build/initramfs/pearl/boot/barebox.image
+    - run: make -j13 build/initramfs/pearl/boot/barebox.image.mp4{artifact}
