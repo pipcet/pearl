@@ -120,7 +120,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*.image.gdb3 --batch
 	(while true; do \
 	    (echo "target remote localhost:1234"; \
-	    echo "shell vncsnapshot -allowblank -quality 95 :1 $*.image.jpg"; \
+	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*.image.jpg"; \
 	    echo "pipe i reg | head -37 | tee $*.image.txt 2>/dev/null"; \
 	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*.image.txt 2>/dev/null"; \
 	    echo "pipe bt | head -37 | tee -a $*.image.txt 2>/dev/null"; \
