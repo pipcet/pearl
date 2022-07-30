@@ -97,6 +97,8 @@ include zstd/zstd.mk
 
 include qemu/qemu.mk
 
+include video/video.mk
+
 $(BUILD)/install%.tar: | $(BUILD)/pearl/build/install/
 	tar -C $(BUILD)/pearl/build/install -cf $@ .
 
