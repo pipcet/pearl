@@ -33,6 +33,7 @@ jobs:
     - run: sudo apt-get install libtool-bin
     - run: sudo apt-get install ffmpeg
     - run: sudo apt-get install vncsnapshot
+    - run: sudo apt-get install socat
     - run: sudo apt-get install netpbm
     - run: sudo apt-get install ninja-build
     - run: sudo apt-get install meson
