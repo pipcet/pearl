@@ -28,8 +28,10 @@ define video-mp4
 	$$(RM) -f $$@ $(1).fifo $(1).image*.jpg $(1).image*.jpg.ppm $(1).image*.txt $(1).image*.txt.pbm
 	sleep 5
 	mkfifo $(1).fifo
-	(cat $(2); for i in $$$$(seq 1 1000); do \
-	    echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(1).socket"; \
+	(echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
+         cat $(2); \
+	 for i in $$$$(seq 1 1000); do \
+	    echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
 	    echo "pipe i reg | head -37 | tee $(1).image.txt >/dev/null"; \
 	    echo "pipe x/32i \$$$$pc - 64 | head -37 | tee -a $(1).image.txt >/dev/null"; \
 	    echo "pipe bt | head -37 | tee -a $(1).image.txt >/dev/null"; \
