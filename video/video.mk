@@ -61,8 +61,9 @@ define video-mp4
 	    echo "pipe bt | head -37 | tee -a $(1).image.txt >/dev/null"; \
 	    echo "shell yes '' | head -100 | tee -a $(1).image.txt >/dev/null"; \
 	    echo "shell cat $(1).fifo"; \
-	    echo "shell (sleep .25 && kill -INT \$$$$PPID) &"; \
-	    echo "c"; \
+	    echo "c &"; \
+	    echo "shell sleep .25"; \
+	    echo "interrupt"; \
 	  done; \
 	  echo "shell rm $(1).fifo"; \
 	  echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
