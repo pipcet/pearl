@@ -78,13 +78,11 @@ $(call done,qemu,checkout): $(call done,qemu,)
 
 %/barebox.image.gdb3: %/barebox.image
 	(echo set disassemble-next-line on; \
-	 echo target remote localhost:1234; \
-	 echo q) > $@
+	 echo target remote localhost:1234) > $@
 
 %/u-boot.image.gdb3: %/u-boot.image
 	(echo set disassemble-next-line on; \
-	 echo target remote localhost:1234; \
-	 echo q) > $@
+	 echo target remote localhost:1234) > $@
 
 %.image.gdb3: %.image
 	(echo set disassemble-next-line on; \
@@ -107,8 +105,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	 echo p '*(unsigned long *)0x900000050 = 32'; \
 	 echo p '*(unsigned long *)0x900000060 = 0x800000000'; \
 	 echo p '*(unsigned long *)0x900000068 = 0'; \
-	 echo p '*(unsigned long *)0x9000002d8 = 0x200000000'; \
-	 echo q) > $@
+	 echo p '*(unsigned long *)0x9000002d8 = 0x200000000') > $@
 
 %/pearl.image.gdb3: %/pearl.image
 	(echo set disassemble-next-line on; \
