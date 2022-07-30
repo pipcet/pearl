@@ -164,6 +164,11 @@ $(call done,qemu,checkout): $(call done,qemu,)
 %.image{gdb}: %.image
 	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb &
 
+%.image{qemu2}: %.image
+	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -device qemu-xhci -monitor unix:$*.socket,server &
+	sleep 5
+	echo "info vnc" | socat - unix-connect:$*.socket > $*.vncinfo
+
 %/barebox.image{gdb}: %/barebox.image
 	QEMU_WITH_DTB=1 $(BUILD)/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
 
