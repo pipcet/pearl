@@ -10,7 +10,7 @@ $(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/
 	$(COPY_SAUNA) $(PWD)/qemu/qemu/* $(BUILD)/qemu/
 	$(TIMESTAMP)
 
-$(call done,qemu,checkout): $(call done,qemu,)
+$(call done,qemu,checkout): | $(call done,qemu,)
 	$(MAKE) qemu/qemu{checkout}
 	$(TIMESTAMP)
 
