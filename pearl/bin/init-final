@@ -7,7 +7,7 @@ if [ x"$SUBSTAGES" = x"" ]; then
 	SUBSTAGES="root debian"
     fi
 fi
-linux-init
+[ -e /persist/emulated ] || linux-init
 while true; do
     for SUBSTAGE in $SUBSTAGES root debian; do
 	echo "$SUBSTAGE" > /persist/substage
