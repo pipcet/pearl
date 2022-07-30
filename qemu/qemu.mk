@@ -180,3 +180,42 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
 	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
         done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
+
+%.image{gdb}: %.image
+	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb &
+
+%.image{qemu2}: %.image
+	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -device qemu-xhci -monitor unix:$*.socket,server &
+	sleep 5
+	echo "info vnc" | socat - unix-connect:$*.socket > $*.vncinfo
+
+%/barebox.image{gdb}: %/barebox.image
+	QEMU_WITH_DTB=1 $(BUILD)/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
+
+%/u-boot.image{gdb}: %/u-boot.image
+	QEMU_WITH_DTB=1 $(BUILD)/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
+
+%.image.mp4: %.image{gdb} %.image.gdb3
+	$(RM) -f $@ $*.fifo $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
+	sleep 5
+	mkfifo $*.fifo
+	(cat $*.image.gdb3; for i in $$(seq 1 1000); do \
+	    echo "shell vncsnapshot -quiet -allowblank -quality 95 :0 $*.image.jpg"; \
+	    echo "pipe i reg | head -37 | tee $*.image.txt >/dev/null"; \
+	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*.image.txt >/dev/null"; \
+	    echo "pipe bt | head -37 | tee -a $*.image.txt >/dev/null"; \
+	    echo "shell yes '' | head -100 | tee -a $*.image.txt >/dev/null"; \
+	    echo "shell cat $*.fifo"; \
+	    echo "shell (sleep .25 && kill -INT \$$PPID) &"; \
+	    echo "c"; \
+	  done; \
+	  echo "shell rm $*.fifo"; \
+	  echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
+	(while [ -p $*.fifo ]; do \
+	    timeout 10 sh -c 'echo > $*.fifo'; \
+	    (cat $*.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*.image.pbm || break; \
+	    grep x27 $*.image.txt || break; \
+	    jpegtopnm $*.image.jpg > $*.image.ppm || true; \
+	    pnmpad -white -right 256 $*.image.ppm > $*.image.2.ppm; \
+	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
+	done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 10 -i pipe:0 $@
