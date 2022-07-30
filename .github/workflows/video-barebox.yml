@@ -1,13 +1,13 @@
-name: barebox video
+name: video-barebox
 on:
   workflow_dispatch:
   push:
-    branches: [ main, dcp, update, video ]
+    branches: [ dcp, update, video ]
   pull_request:
-    branches: [ main, dcp, update, video ]
+    branches: [ dcp, update, video ]
 jobs:
   video-barebox:
-    name: barebox video
+    name: video-barebox
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3

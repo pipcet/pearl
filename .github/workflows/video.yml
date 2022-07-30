@@ -2,9 +2,9 @@ name: video
 on:
   workflow_dispatch:
   push:
-    branches: [ main, dcp, update, video ]
+    branches: [ dcp, update, video ]
   pull_request:
-    branches: [ main, dcp, update, video ]
+    branches: [ dcp, update, video ]
 jobs:
   video:
     name: video
