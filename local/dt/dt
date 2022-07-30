@@ -1226,7 +1226,7 @@ if ($ARGV[0] eq "--help") {
     apply_tunables();
 } elsif ($ARGV[0] eq "extract-adt") {
     my $adt = "";
-    run(["adtdump"], \$stdin, \$adt) or die;
+    run(["adtdump"], \$stdin, \$adt) or exit 1;
     write_file($ARGV[1], $adt) or die;
 } elsif ($ARGV[0] eq "adt-model") {
     my $adt = read_file($ARGV[1]);
