@@ -185,7 +185,7 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb &
 
 %.image.qemu: %.image
-	(./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -device qemu-xhci -monitor unix:$@,server; rm $@) &
+	(./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -device qemu-xhci -monitor unix:$@,server -chardev socket,path=$*.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0; rm $@) &
 	sleep 5
 
 %.image{qemu2}: %.image

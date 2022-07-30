@@ -1,6 +1,6 @@
 define video-gdb-bootargs
 	(echo set disassemble-next-line on; \
-	 echo target remote localhost:1234; \
+	 echo target remote $(1); \
 	 echo si; \
 	 echo p '$$$$'x0 = 0; \
 	 echo si; \
