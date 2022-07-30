@@ -54,7 +54,7 @@ define video-mp4
 	mkfifo $(1).fifo
 	(echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
          cat $(2); \
-	 for i in $$$$(seq 1 1000); do \
+	 for i in $$$$(seq 1 $(4)); do \
 	    echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
 	    echo "pipe i reg | head -37 | tee $(1).image.txt >/dev/null"; \
 	    echo "pipe x/32i \$$$$pc - 64 | head -37 | tee -a $(1).image.txt >/dev/null"; \
