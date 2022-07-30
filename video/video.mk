@@ -75,4 +75,5 @@ define video-mp4
 	done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 10 -i pipe:0 $$@
 endef
 
-include video/video-pearl.mk
+include video/pearl-debian.mk
+include video/pearl.mk
