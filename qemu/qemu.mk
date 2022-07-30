@@ -135,52 +135,10 @@ $(call done,qemu,checkout): $(call done,qemu,)
 %.image.mpg: %.image %.image.gdb
 	timeout 300 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -device ramfb &
 	sleep 5
-	vncsnapshot -fps 1 -count 200 :1  $*.image.jpg &
+	vncsnapshot -fps 1 -count 200 :0  $*.image.jpg &
 	sleep 5
 	./build/toolchain/binutils-gdb/source/gdb/gdb --batch --command=$*.image.gdb
 	ffmpeg -i $*.image%05d.jpg -r 20 $@
-
-%/barebox.image.mp4: %/barebox.image %/barebox.image.gdb3
-	$(RM) -f $@ $*/barebox.image*.jpg $*/barebox.image*.jpg.ppm $*/barebox.image*.txt $*/barebox.image*.txt.pbm
-	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
-	sleep 5
-	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*/barebox.image.gdb3 --batch
-	(while true; do \
-	    (echo "target remote localhost:1234"; \
-	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*/barebox.image.jpg"; \
-	    echo "pipe i reg | head -37 | tee $*/barebox.image.txt 2>/dev/null"; \
-	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*/barebox.image.txt 2>/dev/null"; \
-	    echo "pipe bt | head -37 | tee -a $*/barebox.image.txt 2>/dev/null"; \
-	    echo "shell yes '' | head -100 | tee -a $*/barebox.image.txt 2>/dev/null"; \
-	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
-	    sleep 1; \
-	    (cat $*/barebox.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*/barebox.image.pbm || break; \
-	    grep x27 $*/barebox.image.txt || break; \
-	    jpegtopnm $*/barebox.image.jpg > $*/barebox.image.ppm || true; \
-	    pnmpad -white -right 256 $*/barebox.image.ppm > $*/barebox.image.2.ppm; \
-	    pnmpaste -replace $*/barebox.image.pbm 1024 0 $*/barebox.image.2.ppm > /dev/fd/3; \
-        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
-
-%/u-boot.image.mp4: %/u-boot.image %/u-boot.image.gdb3
-	$(RM) -f $@ $*/u-boot.image*.jpg $*/u-boot.image*.jpg.ppm $*/u-boot.image*.txt $*/u-boot.image*.txt.pbm
-	QEMU_WITH_DTB=1 timeout 60 ./build/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
-	sleep 5
-	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*/u-boot.image.gdb3 --batch
-	(while true; do \
-	    (echo "target remote localhost:1234"; \
-	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*/u-boot.image.jpg"; \
-	    echo "pipe i reg | head -37 | tee $*/u-boot.image.txt 2>/dev/null"; \
-	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
-	    echo "pipe bt | head -37 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
-	    echo "shell yes '' | head -100 | tee -a $*/u-boot.image.txt 2>/dev/null"; \
-	    echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb || break; \
-	    sleep 1; \
-	    (cat $*/u-boot.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*/u-boot.image.pbm || break; \
-	    grep x27 $*/u-boot.image.txt || break; \
-	    jpegtopnm $*/u-boot.image.jpg > $*/u-boot.image.ppm || true; \
-	    pnmpad -white -right 256 $*/u-boot.image.ppm > $*/u-boot.image.2.ppm; \
-	    pnmpaste -replace $*/u-boot.image.pbm 1024 0 $*/u-boot.image.2.ppm > /dev/fd/3; \
-        done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
 
 %.image.mp4.old: %.image %.image.gdb3
 	$(RM) -f $@ $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
@@ -203,25 +161,31 @@ $(call done,qemu,checkout): $(call done,qemu,)
 	    pnmpaste -replace $*.image.pbm 1024 0 $*.image.2.ppm > /dev/fd/3; \
         done) 3>&1 1>/dev/null 2>/dev/null | ffmpeg -r 1 -i pipe:0 $@
 
-%.image.mp4: %.image %.image.gdb3
-	$(RM) -f $@ $*.fifo $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
+%.image{gdb}: %.image
 	./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb &
+
+%/barebox.image{gdb}: %/barebox.image
+	QEMU_WITH_DTB=1 $(BUILD)/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
+
+%/u-boot.image{gdb}: %/u-boot.image
+	QEMU_WITH_DTB=1 $(BUILD)/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -s -d unimp -device ramfb -dtb $*/barebox.dtb -icount shift=0 &
+
+%.image.mp4: %.image{gdb} %.image.gdb3
+	$(RM) -f $@ $*.fifo $*.image*.jpg $*.image*.jpg.ppm $*.image*.txt $*.image*.txt.pbm
 	sleep 5
-	./build/toolchain/binutils-gdb/source/gdb/gdb --data-directory=$(PWD)/build/toolchain/binutils-gdb/source/gdb/data-directory --command=$*.image.gdb3 --batch
 	mkfifo $*.fifo
-	(echo "target remote localhost:1234"; \
-	 (for i in $$(seq 1 1000); do \
-	    echo "shell vncsnapshot -allowblank -quality 95 :0 $*.image.jpg"; \
-	    echo "pipe i reg | head -37 | tee $*.image.txt 2>/dev/null"; \
-	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*.image.txt 2>/dev/null"; \
-	    echo "pipe bt | head -37 | tee -a $*.image.txt 2>/dev/null"; \
-	    echo "shell yes '' | head -100 | tee -a $*.image.txt 2>/dev/null"; \
+	(cat $*.image.gdb3; for i in $$(seq 1 1000); do \
+	    echo "shell vncsnapshot -quiet -allowblank -quality 95 :0 $*.image.jpg"; \
+	    echo "pipe i reg | head -37 | tee $*.image.txt >/dev/null"; \
+	    echo "pipe x/32i \$$pc - 64 | head -37 | tee -a $*.image.txt >/dev/null"; \
+	    echo "pipe bt | head -37 | tee -a $*.image.txt >/dev/null"; \
+	    echo "shell yes '' | head -100 | tee -a $*.image.txt >/dev/null"; \
 	    echo "shell cat $*.fifo"; \
 	    echo "shell (sleep .25 && kill -INT \$$PPID) &"; \
 	    echo "c"; \
-	  done); \
+	  done; \
 	  echo "shell rm $*.fifo"; \
-	  echo "k"; echo "q";) | ./build/toolchain/binutils-gdb/source/gdb/gdb  >/dev/null 2>/dev/null &
+	  echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
 	(while [ -p $*.fifo ]; do \
 	    timeout 10 sh -c 'echo > $*.fifo'; \
 	    (cat $*.image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $*.image.pbm || break; \
