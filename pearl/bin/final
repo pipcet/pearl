@@ -17,5 +17,6 @@ dt permallocs >> /boot/linux.dtp
 # sed -e 's/host\|dual-role/gadget/g' < /boot/linux.dtp > /boot/linux.dtp.new
 # mv /boot/linux.dtp.new /boot/linux.dtp
 dt dtp-to-dtb /boot/linux.dtp /boot/linux.dtb
+if [ -e /persist/emulated ]; then cp /sys/firmware/fdt /boot/linux.dtb; fi
 cat /file.list | cpio -H newc -o > /boot/linux.cpio
 /bin/kexec --mem-min=`dt mem-min` -fix /boot/linux.image --dtb=/boot/linux.dtb --ramdisk=/boot/linux.cpio --command-line="clk_ignore_unused"
