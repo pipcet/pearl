@@ -45,6 +45,8 @@ define video-gdb-bootargs-x0
 	 echo 0 set disassemble-next-line on; \
 	 echo 0 shell sleep 3; \
 	 echo 0 target remote $(1); \
+	 echo 0 disco; \
+	 echo 0 target remote $(1); \
 	 echo 0 si; \
 	 echo 0 si; \
 	 echo 0 si; \
