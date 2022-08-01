@@ -46,4 +46,5 @@ jobs:
     - run: touch done/bootloaders/u-boot/build
     - run: touch done/bootloaders/u-boot/install
     - run: touch build/initramfs/pearl/boot/u-boot.image
+    - run: cp build/initramfs/pearl/boot/u-boot.image build/bootloaders/u-boot.image
     - run: make -j13 build/video/u-boot.mp4{artifact}
