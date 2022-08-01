@@ -87,7 +87,7 @@ define video-mp4
 	    echo "$$$$COMMAND" > /dev/stderr; \
 	  done; \
 	  echo "shell rm $(1).fifo"; \
-	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | tee | ./build/toolchain/binutils-gdb/source/gdb/gdb &
+	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | tee | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
 	(while [ -p $(1).fifo ]; do \
 	    timeout 10 sh -c 'echo > $(1).fifo' || continue; \
 	    (cat $(1).image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $(1).image.pbm || break; \
