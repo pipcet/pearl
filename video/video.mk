@@ -11,21 +11,21 @@ define video-gdb-bootargs
 	 echo 0 si; \
 	 echo 0 si; \
 	 echo 0 si; \
-	 echo 0 p '$$$$x1 = 0x900000000'; \
+	 echo 0 p '$$$$x1 = 0x820000000'; \
 	 echo 0 p '$$$$x2 = ($$$$x4 &~0x3fff)'; \
-	 echo 0 p '*(unsigned long *)0x900000008 = 0x800000000'; \
-	 echo 0 p '*(unsigned long *)0x900000010 = 0x800000000'; \
-	 echo 0 p '*(unsigned long *)0x900000018 = 0x200000000'; \
-	 echo 0 p '*(unsigned long *)0x900000020 = 0x820000000'; \
-	 echo 0 p '*(unsigned long *)0x900000028 = 0xa00000000'; \
-	 echo 0 p '*(unsigned long *)0x900000030 = 0'; \
-	 echo 0 p '*(unsigned long *)0x900000038 = 4096'; \
-	 echo 0 p '*(unsigned long *)0x900000040 = 1024'; \
-	 echo 0 p '*(unsigned long *)0x900000048 = 1024'; \
-	 echo 0 p '*(unsigned long *)0x900000050 = 32'; \
-	 echo 0 p '*(unsigned long *)0x900000060 = 0x800000000'; \
-	 echo 0 p '*(unsigned long *)0x900000068 = 0'; \
-	 echo 0 p '*(unsigned long *)0x9000002d8 = 0x200000000'; \
+	 echo 0 p '*(unsigned long *)0x820000008 = 0x800000000'; \
+	 echo 0 p '*(unsigned long *)0x820000010 = 0x800000000'; \
+	 echo 0 p '*(unsigned long *)0x820000018 = 0x1d0000000'; \
+	 echo 0 p '*(unsigned long *)0x820000020 = 0x830000000'; \
+	 echo 0 p '*(unsigned long *)0x820000028 = 0xa00000000'; \
+	 echo 0 p '*(unsigned long *)0x820000030 = 0'; \
+	 echo 0 p '*(unsigned long *)0x820000038 = 4096'; \
+	 echo 0 p '*(unsigned long *)0x820000040 = 1024'; \
+	 echo 0 p '*(unsigned long *)0x820000048 = 1024'; \
+	 echo 0 p '*(unsigned long *)0x820000050 = 32'; \
+	 echo 0 p '*(unsigned long *)0x820000060 = 0x800000000'; \
+	 echo 0 p '*(unsigned long *)0x820000068 = 0'; \
+	 echo 0 p '*(unsigned long *)0x8200002d8 = 0x200600000'; \
 	 echo 500 shell echo sendkey down '|' socat - unix-connect:$(2).qemu; \
 	 echo 500 shell echo sendkey down '|' socat - unix-connect:$(2).qemu; \
 	 echo 500 shell echo sendkey down '|' socat - unix-connect:$(2).qemu; \
