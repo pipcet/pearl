@@ -101,3 +101,7 @@ endef
 
 include video/pearl-debian.mk
 include video/pearl.mk
+
+$(BUILD)/video/%.mp4: $(BUILD)/video/%/video.mp4
+	$(CP) --reflink=auto $< $@
+
