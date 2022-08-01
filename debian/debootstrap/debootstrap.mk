@@ -21,6 +21,11 @@ $(BUILD)/debian/debootstrap/stage2.bash: | $(BUILD)/debian/debootstrap/
 	 echo "rm -f /root2/var/cache/apt/archives/*.deb"; \
 	 echo "rm -f /root2/var/lib/apt/lists/*Packages"; \
 	 echo "rm -rf /root2/usr/share/locale/*"; \
+	 echo "rm -rf /root2/usr/share/zoneinfo/*"; \
+	 echo "rm -rf /root2/usr/share/doc/*"; \
+	 echo "rm -rf /root2/usr/share/man/*"; \
+	 echo "rm -rf /root2/var/lib/dpkg/info/*"; \
+	 echo "rm -rf /root2/usr/lib/aarch64-linux-gnu/gconv/*"; \
 	 echo "rm -f /root2/init"; \
 	 echo "ln -sf bin/bash /root2/init"; \
 	 echo "find . | cpio -H newc -o | uuencode root2 > /dev/vdb") > $@
