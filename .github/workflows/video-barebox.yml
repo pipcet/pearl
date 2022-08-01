@@ -46,4 +46,4 @@ jobs:
     - run: touch done/bootloaders/barebox/build
     - run: touch done/bootloaders/barebox/install
     - run: touch build/initramfs/pearl/boot/barebox.image
-    - run: make -j13 build/initramfs/pearl/boot/barebox.image.mp4{artifact}
+    - run: make -j13 build/video/barebox.mp4{artifact}
