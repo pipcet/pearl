@@ -83,6 +83,15 @@
 			interrupt-controller;
 			reg = <0x2 0x3b100000 0x0 0x8000>;
 		};
+
+		xhci: usb0@100000000000 {
+		       compatible = "generic-xhci";
+		       reg = <0x10 0 0 0x4000>;
+		       dma-coherent;
+		       interrupt-parent = <&fiq>;
+		       interrupts = <AIC_FIQ 4 IRQ_TYPE_LEVEL_HIGH>;
+		       status = "okay";
+		};
 	};
 
 	memory@800000000 {
