@@ -37,7 +37,44 @@ define video-gdb-bootargs
 	 echo 500 shell echo sendkey a '|' socat - unix-connect:$(2).qemu; \
 	 echo 500 shell echo sendkey n '|' socat - unix-connect:$(2).qemu; \
 	 echo 500 shell echo sendkey ret '|' socat - unix-connect:$(2).qemu; \
-	 echo 1500 echo done) > $$@
+	 echo 500 shell echo sendkey k '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey e '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey x '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey e '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey c '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey space '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey minus '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey f '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey i '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey x '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey space '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey slash '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey b '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey o '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey o '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey t '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey slash '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey l '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey i '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey n '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey u '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey x '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey . '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey c '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey p '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey i '|' socat - unix-connect:$(2).qemu; \
+	 echo 500 shell echo sendkey o '|' socat - unix-connect:$(2).qemu; \
+	 echo 3600 echo done) > $$@
+endef
+
+define video-gdb-no-bootargs
+	(echo 0 shell echo screendump $(2).ppm '|' socat - unix-connect:$(2).qemu; \
+	 echo 0 set disassemble-next-line on; \
+	 echo 0 shell sleep 3; \
+	 echo 0 target remote $(1); \
+	 echo 0 disco; \
+	 echo 0 target remote $(1); \
+	 echo 3600 echo done) > $$@
 endef
 
 define video-gdb-bootargs-x0
@@ -66,7 +103,7 @@ define video-gdb-bootargs-x0
 	 echo 0 p '*(unsigned long *)0x900000060 = 0x800000000'; \
 	 echo 0 p '*(unsigned long *)0x900000068 = 0'; \
 	 echo 0 p '*(unsigned long *)0x9000002d8 = 0x200000000'; \
-	 echo 1500 echo done) > $$@
+	 echo 3600 echo done) > $$@
 endef
 
 define video-mp4
