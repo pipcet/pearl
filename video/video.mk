@@ -64,7 +64,7 @@ define video-gdb-bootargs-x0
 	 echo 0 p '*(unsigned long *)0x900000060 = 0x800000000'; \
 	 echo 0 p '*(unsigned long *)0x900000068 = 0'; \
 	 echo 0 p '*(unsigned long *)0x9000002d8 = 0x200000000'; \
-	 echo 1 q) > $$@
+	 echo 1500 echo done) > $$@
 endef
 
 define video-mp4
