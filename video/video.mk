@@ -99,6 +99,8 @@ endef
 
 include video/pearl-debian.mk
 include video/pearl.mk
+include video/barebox.mk
+include video/u-boot.mk
 
 $(BUILD)/video/%.mp4: $(BUILD)/video/%/video.mp4
 	$(CP) --reflink=auto $< $@
