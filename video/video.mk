@@ -74,15 +74,13 @@ define video-mp4
 	(TICKS=0; cat $(2) | while read NEXT COMMAND; do \
 	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" > /dev/stderr; \
 	    while [ "$$$$TICKS" -lt "$$$$NEXT" ]; do \
-		echo "interrupt"; \
 		echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
 		echo "pipe i reg | head -37 | tee $(1).image.txt >/dev/null"; \
 		echo "pipe x/32i \$$$$pc - 64 | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "pipe bt | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "shell yes '' | head -100 | tee -a $(1).image.txt >/dev/null"; \
 		echo "shell cat $(1).fifo"; \
-		echo "c &"; \
-		echo "shell sleep .25"; \
+		echo "c"; \
 		TICKS=$$$$(($$$$TICKS + 1)); \
 	    done; \
 	    echo "$$$$COMMAND"; \
