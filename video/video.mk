@@ -127,12 +127,12 @@ define video-mp4
 	(TICKS=0; cat $(2) | while read NEXT COMMAND; do \
 	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" > /dev/stderr; \
 	    while [ "$$$$TICKS" -lt "$$$$NEXT" ]; do \
+		echo "shell cat $(1).fifo"; \
 		echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
 		echo "pipe i reg | head -37 | tee $(1).image.txt >/dev/null"; \
 		echo "pipe x/32i \$$$$pc - 64 | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "pipe bt | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "shell yes '' | head -100 | tee -a $(1).image.txt >/dev/null"; \
-		echo "shell sleep .1"; \
 		echo "shell cat $(1).fifo"; \
 		echo "c"; \
 		TICKS=$$$$(($$$$TICKS + 1)); \
@@ -143,6 +143,7 @@ define video-mp4
 	  echo "shell rm $(1).fifo"; \
 	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | tee | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
 	(while [ -p $(1).fifo ]; do \
+	    timeout 10 sh -c 'echo > $(1).fifo' || continue; \
 	    timeout 10 sh -c 'echo > $(1).fifo' || continue; \
 	    (cat $(1).image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $(1).image.pbm || break; \
 	    grep x27 $(1).image.txt || break; \
