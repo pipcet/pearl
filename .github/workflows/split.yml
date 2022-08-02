@@ -33,7 +33,7 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/debian.cpio.zstd{artifact}
+    - run: make build/debian.cpio.zstd{artifact}
   userspace:
     name: userspace
     needs: toolchain
@@ -42,9 +42,9 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
-    - run: make $(BUILD)/userspace.tar.zstd{artifact}
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/userspace.tar.zstd{artifact}
   linux:
     name: linux
     needs: toolchain
@@ -53,9 +53,9 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
-    - run: make $(BUILD)/linux.tar.zstd{artifact}
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/linux.tar.zstd{artifact}
   bootloaders:
     name: bootloaders
     needs: toolchain
@@ -64,9 +64,9 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
-    - run: make $(BUILD)/bootloaders.tar.zstd{artifact}
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/bootloaders.tar.zstd{artifact}
   pearl:
     name: pearl
     needs: [ toolchain, linux, bootloaders, userspace ]
@@ -75,15 +75,15 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
-    - run: make $(BUILD)/artifacts/down/linux.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/linux.tar.zstd
-    - run: make $(BUILD)/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/bootloaders.tar.zstd
-    - run: make $(BUILD)/artifacts/down/userspace.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/userspace.tar.zstd
-    - run: make $(BUILD)/pearl.tar.zstd{artifact}
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/linux.tar.zstd{}
+    - run: tar -xf build/artifacts/down/linux.tar.zstd
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/userspace.tar.zstd{}
+    - run: tar -xf build/artifacts/down/userspace.tar.zstd
+    - run: make build/pearl.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
     needs: [ toolchain, linux, bootloaders, userspace, pearl, debian ]
@@ -92,16 +92,16 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: false
-    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
-    - run: make $(BUILD)/artifacts/down/linux.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/linux.tar.zstd
-    - run: make $(BUILD)/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/bootloaders.tar.zstd
-    - run: make $(BUILD)/artifacts/down/userspace.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/userspace.tar.zstd
-    - run: make $(BUILD)/artifacts/down/pearl.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/pearl.tar.zstd
-    - run: make $(BUILD)/artifacts/down/debian.tar.zstd{}
-    - run: tar -xf $(BUILD)/artifacts/down/debian.tar.zstd
-    - run: make -j13 $(BUILD)/pearl-debian-uncompressed.macho.zst.image{artifact}
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/linux.tar.zstd{}
+    - run: tar -xf build/artifacts/down/linux.tar.zstd
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/userspace.tar.zstd{}
+    - run: tar -xf build/artifacts/down/userspace.tar.zstd
+    - run: make build/artifacts/down/pearl.tar.zstd{}
+    - run: tar -xf build/artifacts/down/pearl.tar.zstd
+    - run: make build/artifacts/down/debian.tar.zstd{}
+    - run: tar -xf build/artifacts/down/debian.tar.zstd
+    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
