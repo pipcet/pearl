@@ -106,3 +106,68 @@ jobs:
     - run: make build/artifacts/down/debian.tar.zstd{}
     - run: tar -xf build/artifacts/down/debian.tar.zstd
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
+  video-uboot:
+    name: video-uboot
+    needs: [ toolchain, bootloaders, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: make build/video/u-boot.mp4{artifact}
+  video-barebox:
+    name: video-barebox
+    needs: [ toolchain, bootloaders, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: make build/video/barebox.mp4{artifact}
+  video-pearl:
+    name: video-pearl
+    needs: [ toolchain, pearl, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/pearl.tar.zstd{}
+    - run: tar -xf build/artifacts/down/pearl.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: make build/video/pearl.mp4{artifact}
+  video-debian:
+    name: video-debian
+    needs: [ toolchain, pearl-debian, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/pearl.tar.zstd{}
+    - run: tar -xf build/artifacts/down/pearl-debian-uncompressed.macho.zst.image{}
+    - run: mv build/artifacts/down/pearl-debian-uncompressed.macho.zst.image build/
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: make build/video/pearl-debian.mp4{artifact}
