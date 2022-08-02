@@ -1,13 +1,17 @@
+$(call done,qemu,install): $(call done,qemu,build)
+	$(MAKE) -C $(BUILD)/qemu/source DESTDIR=$(BUILD)/qemu/install install
+	$(TIMESTAMP)
+
 $(call done,qemu,build): $(call done,qemu,configure)
-	$(MAKE) -C $(BUILD)/qemu
+	$(MAKE) -C $(BUILD)/qemu/source
 	$(TIMESTAMP)
 
 $(call done,qemu,configure): $(call done,qemu,copy)
-	(cd $(BUILD)/qemu; ./configure --target-list=aarch64-softmmu)
+	(cd $(BUILD)/qemu/source; ./configure --target-list=aarch64-softmmu)
 	$(TIMESTAMP)
 
-$(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/
-	$(COPY_SAUNA) $(PWD)/qemu/qemu/* $(BUILD)/qemu/
+$(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/source/
+	$(COPY_SAUNA) $(PWD)/qemu/qemu/* $(BUILD)/qemu/source/
 	$(TIMESTAMP)
 
 $(call done,qemu,checkout): | $(call done,qemu,)
