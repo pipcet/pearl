@@ -74,6 +74,9 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/in
 	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
 	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
 
+$(BUILD)/debian.tar: $(BUILD)/debian.cpio
+	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$<)
+
 $(BUILD)/debian.cpio.gz: $(BUILD)/debian.cpio
 	gzip < $< > $@
 
