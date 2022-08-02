@@ -1,0 +1,102 @@
+name: split
+on:
+  workflow_dispatch:
+  push:
+    branches: [ split ]
+  pull_request:
+    branches: [ split ]
+jobs:
+  toolchain:
+    name: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev gettext libtool-bin
+    - run: make -j13 toolchain/binutils-gdb/binutils-gdb{checkout} toolchain/gcc/gcc{checkout} userspace/glibc/glibc{checkout} linux/linux{checkout}
+    - run: make -j13 done/toolchain/binutils-gdb/install done/linux/headers/install done/userspace/glibc/headers/install done/toolchain/gcc/gcc/install
+    - run: make -j13 build/toolchain.tar.zstd{artifact}
+  qemu:
+    name: qemu
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: sudo apt-get install meson ninja-build
+    - run: make -j13 qemu/qemu.tar.zstd{artifact}
+  debian:
+    name: debian
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make $(BUILD)/debian.cpio.zstd{artifact}
+  userspace:
+    name: userspace
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
+    - run: make $(BUILD)/userspace.tar.zstd{artifact}
+  linux:
+    name: linux
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
+    - run: make $(BUILD)/linux.tar.zstd{artifact}
+  bootloaders:
+    name: bootloaders
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
+    - run: make $(BUILD)/bootloaders.tar.zstd{artifact}
+  pearl:
+    name: pearl
+    needs: [ toolchain, linux, bootloaders, userspace ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
+    - run: make $(BUILD)/artifacts/down/linux.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/linux.tar.zstd
+    - run: make $(BUILD)/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/bootloaders.tar.zstd
+    - run: make $(BUILD)/artifacts/down/userspace.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/userspace.tar.zstd
+    - run: make $(BUILD)/pearl.tar.zstd{artifact}
+  pearl-debian:
+    name: pearl-debian
+    needs: [ toolchain, linux, bootloaders, userspace, pearl, debian ]
+    - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/toolchain.tar.zstd
+    - run: make $(BUILD)/artifacts/down/linux.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/linux.tar.zstd
+    - run: make $(BUILD)/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/bootloaders.tar.zstd
+    - run: make $(BUILD)/artifacts/down/userspace.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/userspace.tar.zstd
+    - run: make $(BUILD)/artifacts/down/pearl.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/pearl.tar.zstd
+    - run: make $(BUILD)/artifacts/down/debian.tar.zstd{}
+    - run: tar -xf $(BUILD)/artifacts/down/debian.tar.zstd
+    - run: make -j13 $(BUILD)/pearl-debian-uncompressed.macho.zst.image{artifact}
