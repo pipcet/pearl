@@ -17,6 +17,12 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/ar
 	rm -rf $@.new
 	ls -l $@
 
+$(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/artifact-init
+	bash g/github/dl-artifact $*
+	mv $@.new/$* $@
+	rm -rf $@.new
+	ls -l $@
+
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
 	@touch $@
