@@ -1313,7 +1313,6 @@ if ($ARGV[0] eq "--help") {
 				    $end - $base - $offset - $compressed_size);
 	write_file($ARGV[1], $range2);
 	$range2 = "";
-	warn;
     } else {
 	my $base = unpack("Q>", substr(read_file("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg"), 0, 8));
 	my $end = unpack("Q<", substr($bootargs, 0x20, 8));
