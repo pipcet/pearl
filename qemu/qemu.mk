@@ -1,3 +1,6 @@
+build/qemu.tar: $(call done,qemu,install)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/qemu/install $(wildcard $(call done,qemu,*)))
+
 $(call done,qemu,install): $(call done,qemu,build)
 	$(MAKE) -C $(BUILD)/qemu/source DESTDIR=$(BUILD)/qemu/install install
 	$(TIMESTAMP)
