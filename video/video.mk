@@ -117,6 +117,41 @@ define video-gdb-bootargs-x0
 	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2); \
 	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2); \
 	 echo 3000 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 6500 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 6500 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 6500 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 6500 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey i '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey n '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey s '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey t '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey a '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey l '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey l '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey e '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey r '|' socat - unix-connect:$(2); \
+	 echo 7000 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 8500 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 8600 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 8700 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 8900 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 9000 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 9100 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 9200 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 9300 shell echo sendkey ret '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey r '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey e '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey b '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey o '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey o '|' socat - unix-connect:$(2); \
+	 echo 9500 shell echo sendkey t '|' socat - unix-connect:$(2); \
+	 echo 9600 shell echo sendkey ret '|' socat - unix-connect:$(2); \
 	 echo $(or $(3),3600) echo done) > $$@
 endef
 
