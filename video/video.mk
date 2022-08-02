@@ -74,6 +74,20 @@ define video-gdb-no-bootargs
 	 echo 0 target remote $(1); \
 	 echo 0 disco; \
 	 echo 0 target remote $(1); \
+	 echo 100 shell echo sendkey h '|' socat - unix-connect:$(2).qemu; \
+	 echo 100 shell echo sendkey e '|' socat - unix-connect:$(2).qemu; \
+	 echo 100 shell echo sendkey l '|' socat - unix-connect:$(2).qemu; \
+	 echo 100 shell echo sendkey p '|' socat - unix-connect:$(2).qemu; \
+	 echo 100 shell echo sendkey ret '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey u '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey s '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey b '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey spc '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey t '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey r '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey e '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey e '|' socat - unix-connect:$(2).qemu; \
+	 echo 200 shell echo sendkey ret '|' socat - unix-connect:$(2).qemu; \
 	 echo 3600 echo done) > $$@
 endef
 
