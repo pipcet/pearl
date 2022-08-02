@@ -19,9 +19,9 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/ar
 
 $(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/artifact-init
 	bash g/github/dl-artifact $*
-	mv $@.new/$* $@
-	rm -rf $@.new
-	ls -l $@
+	mv $(patsubst %{},%,$@).new/$* $(patsubst %{},%,$@)
+	rm -rf $(patsubst %{},%,$@).new
+	ls -l $(patsubst %{},%,$@)
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
