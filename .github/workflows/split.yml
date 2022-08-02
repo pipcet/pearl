@@ -84,7 +84,7 @@ jobs:
     - run: make $(BUILD)/artifacts/down/userspace.tar.zstd{}
     - run: tar -xf $(BUILD)/artifacts/down/userspace.tar.zstd
     - run: make $(BUILD)/pearl.tar.zstd{artifact}
-  pearl-debian:
+  pearldebian:
     name: pearl-debian
     needs: [ toolchain, linux, bootloaders, userspace, pearl, debian ]
     - run: make $(BUILD)/artifacts/down/toolchain.tar.zstd{}
