@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ dcp, update, video ]
 jobs:
-  video-debian:
-    name: video-debian
+  build:
+    name: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -48,7 +48,6 @@ jobs:
     - run: make userspace/zlib/zlib{checkout}
     - run: make userspace/zsh/zsh{checkout}
     - run: make userspace/zstd/zstd{checkout}
-    - run: make qemu/qemu{checkout}
     - run: make zstd/zstd{checkout}
     - name: Set env variables
       uses: ./g/github/env/
@@ -108,7 +107,6 @@ jobs:
     - run: make -j13 done/bootloaders/u-boot/install
     - run: make -j13 done/bootloaders/grub/install
     - run: make -j13 done/userspace/install
-    - run: make -j13 done/qemu/build
     - run: rm -rf build/userspace
     - run: rm -rf userspace/emacs/emacs
     - run: rm -rf userspace/glibc/glibc
@@ -117,4 +115,37 @@ jobs:
     - run: rm -rf build/linux/linux
     - run: rm -rf build/linux/pearl
     - run: rm -rf build/linux/stage2
+    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
+  video:
+    name: video
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - run: make qemu/qemu{checkout}
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get update
+    - run: sudo apt-get install autopoint
+    - run: sudo apt-get install lzop
+    - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support
+    - run: sudo apt-get install qemu-system-arm
+    - run: sudo apt-get install sharutils
+    - run: sudo apt-get install gettext
+    - run: sudo apt-get install xz-utils
+    - run: sudo apt-get install device-tree-compiler
+    - run: sudo apt-get install libtool-bin
+    - run: sudo apt-get install ffmpeg
+    - run: sudo apt-get install vncsnapshot
+    - run: sudo apt-get install socat
+    - run: sudo apt-get install netpbm
+    - run: sudo apt-get install ninja-build
+    - run: sudo apt-get install meson
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: make -j13 done/qemu/build
+    - run: make -j13 build/artifacts/down/pearl-debian-uncompressed.macho.zst.image{artifact}
     - run: make -j13 build/video/pearl-debian.mp4{artifact}
