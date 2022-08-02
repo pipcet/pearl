@@ -48,4 +48,5 @@ jobs:
     - run: touch build/initramfs/pearl/boot/u-boot.image
     - run: mkdir -p build/bootloaders
     - run: cp build/initramfs/pearl/boot/u-boot.image build/bootloaders/u-boot.image
+    - run: cp build/initramfs/pearl/boot/barebox.dtb build/bootloaders/barebox.dtb
     - run: make -j13 build/video/u-boot.mp4{artifact}

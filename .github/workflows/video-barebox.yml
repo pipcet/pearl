@@ -48,4 +48,5 @@ jobs:
     - run: touch build/initramfs/pearl/boot/barebox.image
     - run: mkdir -p build/bootloaders
     - run: cp build/initramfs/pearl/boot/barebox.image build/bootloaders/barebox.image
+    - run: cp build/initramfs/pearl/boot/barebox.dtb build/bootloaders/barebox.dtb
     - run: make -j13 build/video/barebox.mp4{artifact}
