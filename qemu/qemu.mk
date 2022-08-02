@@ -19,7 +19,7 @@ $(call done,qemu,checkout): | $(call done,qemu,)
 	sleep 5
 
 %/barebox.image.qemu %/barebox.image.gdb: %/barebox.image %/barebox.dtb
-	(QEMU_WITH_DTB=1 ./build/qemu/build/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -monitor unix:$@,server,wait=off -chardev socket,path=$*/barebox.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0 -device usb-kbd -icount shift=0 -dtb $*/barebox.dtb; rm -f $@ $*/barebox.image.gdb) &
+	(QEMU_WITH_DTB=1 ./build/qemu/build/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -monitor unix:$@,server,wait=off -chardev socket,path=$*/barebox.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0 -device usb-kbd -icount shift=0 -dtb $*/barebox.dtb; rm -f $@ $*/barebox.image.gdb) &
 	sleep 5
 
 %/u-boot.image.qemu: %/u-boot.image %/barebox.dtb
