@@ -87,6 +87,7 @@ jobs:
   pearl-debian:
     name: pearl-debian
     needs: [ toolchain, linux, bootloaders, userspace, pearl, debian ]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
       with:
