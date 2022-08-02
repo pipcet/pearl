@@ -117,7 +117,7 @@ $(call done,linux,%/configure): $(BUILD)/linux/%.config $(call done,linux,%/copy
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(TIMESTAMP)
 
-linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,gcc,gcc/install)
+linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/linux/$*/build/.config $<
