@@ -420,7 +420,7 @@ package main;
 use strict;
 use bytes;
 use File::Slurp qw(read_file write_file);
-use IPC::Run qw(run);
+use IPC::Run qw(run start);
 
 sub buf_to_bytes {
     my ($buf) = @_;
@@ -1297,17 +1297,23 @@ if ($ARGV[0] eq "--help") {
 	my ($magic, $compressed_size, $uncompressed_size, $total_uncompressed_size, $offset) = unpack("Q<*", substr($macho_header, $off, 40));
 	my $base = unpack("Q>", substr(read_file("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg"), 0, 8));
 	my $end = unpack("Q<", substr($bootargs, 0x20, 8));
+	if ($ARGV[2]) {
+	    my $range = $devmem->range($base + $offset, $compressed_size);
+	    write_file($ARGV[2] . ".zst", $range);
+	    $range = "";
+	    run(["zstd", "--long=31", "-d", "-o", $ARGV[2] . ".tmp", $ARGV[2] . ".zst"]) or die;
+	    run(["rm", $ARGV[2] . ".zst"]);
+	    # one-based counting! how barbaric!
+	    $uncompressed_size++;
+	    run(["tail", "-c", "+$uncompressed_size", $ARGV[2] . ".tmp"], '>', $ARGV[2]);
+	    $uncompressed_size--;
+	    run(["rm", $ARGV[2] . ".tmp"]);
+	}
 	my $range2 = $devmem->range($base + $offset + $compressed_size,
 				    $end - $base - $offset - $compressed_size);
 	write_file($ARGV[1], $range2);
-	if ($ARGV[2]) {
-	    my $range = $devmem->range($base + $offset, $compressed_size);
-	    my $drange = "";
-	    run(["zstd", "-d", "--long=31"], \$range, \$drange);
-	    $range = "";
-	    $drange = substr($drange, $uncompressed_size);
-	    write_file($ARGV[2], $drange);
-	}
+	$range2 = "";
+	warn;
     } else {
 	my $base = unpack("Q>", substr(read_file("/sys/firmware/devicetree/base/reserved-memory/base\@800000000/reg"), 0, 8));
 	my $end = unpack("Q<", substr($bootargs, 0x20, 8));
