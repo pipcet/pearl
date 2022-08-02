@@ -121,7 +121,7 @@ define video-gdb-bootargs-x0
 endef
 
 define video-mp4
-	$$(RM) -f $$@ $(1).fifo $(1).image*.jpg $(1).image*.jpg.ppm $(1).image*.txt $(1).image*.txt.pbm
+	$$(RM) -f $$@ $(1).fifo $(1).image*.txt $(1).image*.txt.pbm
 	sleep 2
 	rm -f $(1).fifo $(1).fifo1 $(1).fifo2
 	mkfifo $(1).fifo
