@@ -25,7 +25,7 @@ jobs:
       with:
         submodules: false
     - run: sudo apt-get install meson ninja-build
-    - run: make -j13 qemu/qemu.tar.zstd{artifact}
+    - run: make -j13 build/qemu/qemu.tar.zstd{artifact}
   debian:
     name: debian
     runs-on: ubuntu-latest
