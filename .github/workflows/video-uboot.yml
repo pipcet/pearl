@@ -46,6 +46,12 @@ jobs:
     - run: touch done/bootloaders/u-boot/build
     - run: touch done/bootloaders/u-boot/install
     - run: touch build/initramfs/pearl/boot/u-boot.image
+    - run: mkdir -p done/bootloaders/barebox
+    - run: touch done/bootloaders/barebox/checkout
+    - run: touch done/bootloaders/barebox/copy
+    - run: touch done/bootloaders/barebox/build
+    - run: touch done/bootloaders/barebox/install
+    - run: touch build/initramfs/pearl/boot/barebox.image
     - run: mkdir -p build/bootloaders
     - run: cp build/initramfs/pearl/boot/u-boot.image build/bootloaders/u-boot.image
     - run: cp build/initramfs/pearl/boot/barebox.dtb build/bootloaders/barebox.dtb
