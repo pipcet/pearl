@@ -1,5 +1,5 @@
 #!/bin/sh
-/bin/busybox find / >> file.list
+/bin/busybox find / > file.list
 /bin/busybox --list | while read TARGET; do busybox ln -sf busybox bin/$TARGET; done
 export PATH=/bin:/usr/bin:/sbin:/usr/sbin
 ln -sf /proc/self/fd/0 /dev/stdin
