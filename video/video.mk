@@ -132,6 +132,7 @@ define video-mp4
 		echo "pipe x/32i \$$$$pc - 64 | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "pipe bt | head -37 | tee -a $(1).image.txt >/dev/null"; \
 		echo "shell yes '' | head -100 | tee -a $(1).image.txt >/dev/null"; \
+		echo "shell sleep .1"; \
 		echo "shell cat $(1).fifo"; \
 		echo "c"; \
 		TICKS=$$$$(($$$$TICKS + 1)); \
