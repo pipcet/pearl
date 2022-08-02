@@ -114,9 +114,9 @@ define video-gdb-bootargs-x0
 	 echo 0 p '*(unsigned long *)0x820000060 = 0x800000000'; \
 	 echo 0 p '*(unsigned long *)0x820000068 = 0'; \
 	 echo 0 p '*(unsigned long *)0x8200002d8 = 0x200000000'; \
-	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2).qemu; \
-	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2).qemu; \
-	 echo 3000 shell echo sendkey ret '|' socat - unix-connect:$(2).qemu; \
+	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 3000 shell echo sendkey down '|' socat - unix-connect:$(2); \
+	 echo 3000 shell echo sendkey ret '|' socat - unix-connect:$(2); \
 	 echo $(or $(3),3600) echo done) > $$@
 endef
 
