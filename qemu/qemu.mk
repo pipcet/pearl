@@ -1,4 +1,4 @@
-build/qemu.tar: $(call done,qemu,install)
+$(BUILD)/qemu.tar: $(call done,qemu,install)
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/qemu/install $(wildcard $(call done,qemu,*)))
 
 $(call done,qemu,install): $(call done,qemu,build)
