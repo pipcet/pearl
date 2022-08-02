@@ -123,7 +123,11 @@ done/%: $(PWD)/done/%
 %.zstd: %
 	zstd -cv < $< > $@
 
-.PHONY: %}
+%!:
+	rm -f $*
+	$(MAKE) $*
+
+.PHONY: %} %!
 
 random-target:
 	target=$$( (echo build/linux/pearl.image.sendfile; \
