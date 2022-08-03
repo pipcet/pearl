@@ -4,6 +4,6 @@ include bootloaders/u-boot/u-boot.mk
 include bootloaders/grub/grub.mk
 
 $(BUILD)/bootloaders.tar: $(call done,bootloaders/m1n1,install) $(call done,bootloaders/barebox,install) $(call done,bootloaders/u-boot,install) $(call done,bootloaders/grub,install) $(BOOTLOADER_FILES)
-	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/toolchain $(BOOTLOADER_FILES) $(call done,bootloaders/*,*))
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BOOTLOADER_FILES) $(call done,*/*,*/*) $(call done,*/*,*))
 
 SECTARGETS += $(BUILD)/bootloaders.tar
