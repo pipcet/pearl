@@ -162,7 +162,7 @@ jobs:
     - run: make build/video/u-boot.mp4{artifact}
   video-uboot1:
     name: video-uboot1
-    needs: [ bootloaders, qemu ]
+    needs: [ bootloaders1, qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
