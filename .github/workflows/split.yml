@@ -192,8 +192,8 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/bootloaders1.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
