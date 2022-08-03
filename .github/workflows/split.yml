@@ -68,7 +68,21 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/linux.tar.zstd{artifact}
+    - run: make -j13 build/linux.tar.zstd{artifact}
+  linux1:
+    name: linux
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make -j13 build/linux.tar.zstd
+    - run: mv build/linux.tar.zstd build/linux1.tar.zstd
+    - run: make -j13 build/linux1.tar.zstd{artifact}
   bootloaders:
     name: bootloaders
     needs: toolchain
