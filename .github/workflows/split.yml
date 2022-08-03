@@ -83,6 +83,21 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/bootloaders.tar.zstd{artifact}
+  bootloaders1:
+    name: bootloaders1
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install autopoint lzop
+    - run: make build/released/pipcet/pearl-toolchain/pearl-toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/pearl-toolchain.tar.zstd
+    - run: make build/bootloaders.tar.zstd
+    - run: cp build/bootloaders.tar.zstd build/bootloaders1.tar.zstd
+    - run: make build/bootloaders1.tar.zstd{artifact}
   pearl:
     name: pearl
     needs: [ toolchain, linux, bootloaders, userspace ]
@@ -165,6 +180,28 @@ jobs:
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/video/barebox.mp4{artifact}
+  video-barebox1:
+    name: video-barebox1
+    needs: [ bootloaders1, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/pearl-toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/pearl-toolchain.tar.zstd
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: make build/video/barebox.mp4
+    - run: cp build/video/barebox.mp4 build/video/barebox1.mp4
+    - run: make build/video/barebox1.mp4{artifact}
   video-pearl:
     name: video-pearl
     needs: [ toolchain, pearl, qemu ]
