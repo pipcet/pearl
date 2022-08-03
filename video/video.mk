@@ -163,7 +163,7 @@ define video-mp4
 	mkfifo $(1).fifo1
 	mkfifo $(1).fifo2
 	(TICKS=0; cat $(2) | while read NEXT COMMAND; do \
-	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" > /dev/stderr; \
+	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" > /dev/fd/2; \
 	    while [ "$$$$TICKS" -lt "$$$$NEXT" ] && [ -p $(1).fifo2 ]; do \
 		echo "shell cat $(1).fifo2"; \
 		echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
@@ -176,7 +176,7 @@ define video-mp4
 		TICKS=$$$$(($$$$TICKS + 1)); \
 	    done; \
 	    echo "$$$$COMMAND"; \
-	    echo "$$$$COMMAND" > /dev/stderr; \
+	    echo "$$$$COMMAND" > /dev/fd/2; \
 	  done; \
 	  echo "shell rm $(1).fifo1 $(1).fifo2"; \
 	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
