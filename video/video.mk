@@ -163,7 +163,7 @@ define video-mp4
 	mkfifo $(1).fifo1
 	mkfifo $(1).fifo2
 	(TICKS=0; cat $(2) | while read NEXT COMMAND; do \
-	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" > /dev/fd/2; \
+	    echo "$$$$NEXT $$$$TICKS $$$$COMMAND" 1>&2; \
 	    while [ "$$$$TICKS" -lt "$$$$NEXT" ] && [ -p $(1).fifo2 ]; do \
 		echo "shell cat $(1).fifo2"; \
 		echo "shell echo \"screendump $(1).image.ppm\" | socat - unix-connect:$(3)"; \
@@ -176,7 +176,7 @@ define video-mp4
 		TICKS=$$$$(($$$$TICKS + 1)); \
 	    done; \
 	    echo "$$$$COMMAND"; \
-	    echo "$$$$COMMAND" > /dev/fd/2; \
+	    echo "$$$$COMMAND" > 1>&2; \
 	  done; \
 	  echo "shell rm $(1).fifo1 $(1).fifo2"; \
 	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
@@ -186,7 +186,7 @@ define video-mp4
 	    (cat $(1).image.txt | pbmtext -builtin fixed | pnmpad -width 256 -height 1024 | pnmcut -width 256 -height 1024) > $(1).image.pbm || break; \
 	    grep x27 $(1).image.txt || break; \
 	    pnmpad -white -right 256 $(1).image.ppm > $(1).image.2.ppm; \
-	    pnmpaste -replace $(1).image.pbm 1024 0 $(1).image.2.ppm > /dev/fd/3; \
+	    pnmpaste -replace $(1).image.pbm 1024 0 $(1).image.2.ppm 1>&3; \
 	done) 4>&2 3>&1 >/dev/null 2>/dev/null | ffmpeg -r 25 -i pipe:0 $$@
 endef
 
