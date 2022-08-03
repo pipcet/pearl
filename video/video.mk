@@ -177,7 +177,7 @@ define video-mp4
 	    echo "$$$$COMMAND"; \
 	  done; \
 	  echo "shell rm $(1).fifo1 $(1).fifo2"; \
-	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | $(BUILD)/toolchain/bin/aarch64-linux-gnu-gdb &
+	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gdb &
 	(while [ -p $(1).fifo1 ]; do \
 	    timeout 30 sh -c 'echo > $(1).fifo2' || (rm $(1).fifo2; continue); \
 	    timeout 30 sh -c 'echo > $(1).fifo1' || (rm $(1).fifo1; continue); \
