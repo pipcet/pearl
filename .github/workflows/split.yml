@@ -160,6 +160,28 @@ jobs:
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/video/u-boot.mp4{artifact}
+  video-uboot1:
+    name: video-uboot1
+    needs: [ bootloaders, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/bootloaders1.tar.zstd{}
+    - run: tar -xf build/artifacts/down/bootloaders1.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: make build/video/u-boot.mp4
+    - run: cp build/video/u-boot.mp4 build/video/u-boot1.mp4
+    - run: make build/video/u-boot1.mp4{artifact}
   video-barebox:
     name: video-barebox
     needs: [ toolchain, bootloaders, qemu ]
