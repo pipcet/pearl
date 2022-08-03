@@ -56,6 +56,22 @@ jobs:
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -f done/userspace/glibc/checkout
     - run: make build/userspace.tar.zstd{artifact}
+  userspace1:
+    name: userspace1
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -f done/userspace/glibc/checkout
+    - run: make -j13 build/userspace.tar.zstd
+    - run: mv build/userspace.tar.zstd build/userspace1.tar.zstd
+    - run: make -j13 build/userspace1.tar.zstd{artifact}
   linux:
     name: linux
     needs: toolchain
