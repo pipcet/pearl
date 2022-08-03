@@ -176,7 +176,7 @@ define video-mp4
 		TICKS=$$$$(($$$$TICKS + 1)); \
 	    done; \
 	    echo "$$$$COMMAND"; \
-	    echo "$$$$COMMAND" > 1>&2; \
+	    echo "$$$$COMMAND" 1>&2; \
 	  done; \
 	  echo "shell rm $(1).fifo1 $(1).fifo2"; \
 	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | ./build/toolchain/binutils-gdb/source/gdb/gdb >/dev/null 2>/dev/null &
