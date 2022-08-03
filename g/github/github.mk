@@ -76,3 +76,7 @@ $(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
 $(BUILD)/released/%: .github-init | github/ g/github/
 	$(MKDIR) $(dir $(BUILD)/released/$*)
 	wget -O $@ https://github.com/$(word 1,$(subst /, ,$*))/$(word 2,$(subst /, ,$*))/releases/latest/download/$(word 3,$(subst /, ,$*))
+
+$(BUILD)/released/%{}: .github-init | github/ g/github/
+	$(MKDIR) $(dir $(BUILD)/released/$*)
+	wget -O $(patsubst %{},%,$@) https://github.com/$(word 1,$(subst /, ,$*))/$(word 2,$(subst /, ,$*))/releases/latest/download/$(word 3,$(subst /, ,$*))
