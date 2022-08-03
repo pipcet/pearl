@@ -173,7 +173,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/u-boot.mp4{artifact}
   video-uboot1:
     name: video-uboot1
@@ -194,7 +194,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/u-boot.mp4
     - run: cp build/video/u-boot.mp4 build/video/u-boot1.mp4
     - run: make build/video/u-boot1.mp4{artifact}
@@ -217,7 +217,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/u-boot.mp4
     - run: cp build/video/u-boot.mp4 build/video/u-boot2.mp4
     - run: make build/video/u-boot2.mp4{artifact}
@@ -239,7 +239,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/u-boot.mp4
     - run: cp build/video/u-boot.mp4 build/video/u-boot9.mp4
     - run: make build/video/u-boot9.mp4{artifact}
@@ -262,7 +262,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/barebox.mp4{artifact}
   video-barebox1:
     name: video-barebox1
@@ -283,7 +283,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/barebox.mp4
     - run: cp build/video/barebox.mp4 build/video/barebox1.mp4
     - run: make build/video/barebox1.mp4{artifact}
@@ -306,7 +306,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/barebox.mp4
     - run: cp build/video/barebox.mp4 build/video/barebox2.mp4
     - run: make build/video/barebox2.mp4{artifact}
@@ -328,7 +328,7 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/barebox.mp4
     - run: cp build/video/barebox.mp4 build/video/barebox9.mp4
     - run: make build/video/barebox9.mp4{artifact}
@@ -349,7 +349,7 @@ jobs:
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
@@ -369,5 +369,5 @@ jobs:
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
-    - run: echo 1 > /proc/sys/vm/overcommit_memory
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/pearl-debian.mp4{artifact}
