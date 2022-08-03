@@ -142,6 +142,8 @@ jobs:
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/video/u-boot.mp4{artifact}
   video-barebox:
     name: video-barebox
@@ -160,6 +162,8 @@ jobs:
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/video/barebox.mp4{artifact}
   video-pearl:
     name: video-pearl
