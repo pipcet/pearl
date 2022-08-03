@@ -177,7 +177,7 @@ define video-mp4
 	    echo "$$$$COMMAND"; \
 	  done; \
 	  echo "shell rm $(1).fifo1 $(1).fifo2"; \
-	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gdb &
+	  echo "interrupt"; echo "shell sleep 1"; echo "k"; echo "q") | $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gdb >/dev/null 2>/dev/null &
 	(while [ -p $(1).fifo1 ]; do \
 	    timeout 30 sh -c 'echo > $(1).fifo2' || (rm $(1).fifo2; continue); \
 	    timeout 30 sh -c 'echo > $(1).fifo1' || (rm $(1).fifo1; continue); \
@@ -185,7 +185,7 @@ define video-mp4
 	    grep x27 $(1).image.txt || break; \
 	    pnmpad -white -right 256 $(1).image.ppm > $(1).image.2.ppm; \
 	    pnmpaste -replace $(1).image.pbm 1024 0 $(1).image.2.ppm 1>&3; \
-	done) 3>&1 >/dev/null | ffmpeg -r 25 -i pipe:0 $$@
+	done) 3>&1 >/dev/null 2>/dev/null | ffmpeg -r 25 -i pipe:0 $$@
 endef
 
 include video/pearl-debian.mk
