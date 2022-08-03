@@ -40,7 +40,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-system-aarch64
-    - run: make build/debian.cpio.zstd{artifact}
+    - run: make -j13 build/debian.cpio.zstd{artifact}
   userspace:
     name: userspace
     needs: toolchain
@@ -55,7 +55,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -f done/userspace/glibc/checkout
-    - run: make build/userspace.tar.zstd{artifact}
+    - run: make -j13 build/userspace.tar.zstd{artifact}
   userspace1:
     name: userspace1
     runs-on: ubuntu-latest
