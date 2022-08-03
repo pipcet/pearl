@@ -218,6 +218,28 @@ jobs:
     - run: make build/video/u-boot.mp4
     - run: cp build/video/u-boot.mp4 build/video/u-boot2.mp4
     - run: make build/video/u-boot2.mp4{artifact}
+  video-uboot9:
+    name: video-uboot9
+    needs: [ qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-qemu/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: make build/video/u-boot.mp4
+    - run: cp build/video/u-boot.mp4 build/video/u-boot9.mp4
+    - run: make build/video/u-boot9.mp4{artifact}
   video-barebox:
     name: video-barebox
     needs: [ toolchain, bootloaders, qemu ]
@@ -282,6 +304,27 @@ jobs:
     - run: make build/video/barebox.mp4
     - run: cp build/video/barebox.mp4 build/video/barebox2.mp4
     - run: make build/video/barebox2.mp4{artifact}
+  video-barebox9:
+    name: video-barebox9
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
+    - run: tar -xf build/released/pipcet/pearl-qemu/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: make build/video/barebox.mp4
+    - run: cp build/video/barebox.mp4 build/video/barebox9.mp4
+    - run: make build/video/barebox9.mp4{artifact}
   video-pearl:
     name: video-pearl
     needs: [ toolchain, pearl, qemu ]
