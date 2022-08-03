@@ -220,7 +220,6 @@ jobs:
     - run: make build/video/u-boot2.mp4{artifact}
   video-uboot9:
     name: video-uboot9
-    needs: [ qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
