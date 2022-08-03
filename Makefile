@@ -174,6 +174,9 @@ $(BUILD)/kmutil-script-raw: recovery/bin/kmutil-script-raw
 build/pearl.pl:
 	$(MAKE) $(PWD)/build/pearl.pl
 
+build/qemu.tar:
+	$(MAKE) $(PWD)/build/qemu.tar
+
 $(BUILD)/pearl-old.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
