@@ -70,7 +70,7 @@ jobs:
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: make -j13 build/linux.tar.zstd{artifact}
   linux1:
-    name: linux
+    name: linux1
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
