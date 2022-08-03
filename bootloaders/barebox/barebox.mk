@@ -62,6 +62,8 @@ $(call pearl-static,$(wildcard bootloaders/barebox/pearl/bin/*),bootloaders/bare
 
 BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/barebox.image
 BOOTLOADER_FILES += $(BUILD)/initramfs/pearl/boot/barebox.dtb
+BOOTLOADER_FILES += $(BUILD)/bootloaders/barebox.image
+BOOTLOADER_FILES += $(BUILD)/bootloaders/barebox.dtb
 
 SECTARGETS += $(call done,bootloaders/barebox,build)
 SECTARGETS += $(BUILD)/bootloaders/barebox.image
