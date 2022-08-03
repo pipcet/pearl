@@ -146,6 +146,8 @@ jobs:
     - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/userspace.tar.zstd{}
     - run: tar -xf build/artifacts/down/userspace.tar.zstd
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
@@ -167,6 +169,8 @@ jobs:
     - run: tar -xf build/artifacts/down/userspace1.tar.zstd
     - run: make build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/pearl1.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
