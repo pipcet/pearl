@@ -185,7 +185,7 @@ define video-mp4
 	    grep x27 $(1).image.txt || break; \
 	    pnmpad -white -right 256 $(1).image.ppm > $(1).image.2.ppm; \
 	    pnmpaste -replace $(1).image.pbm 1024 0 $(1).image.2.ppm 1>&3; \
-	done) 3>&1 | ffmpeg -r 25 -i pipe:0 $$@
+	done) 3>&1 >/dev/null | ffmpeg -r 25 -i pipe:0 $$@
 endef
 
 include video/pearl-debian.mk
