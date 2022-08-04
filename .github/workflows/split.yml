@@ -171,7 +171,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - sudo apt-get install libipc-run-perl libfile-slurp-perl
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/artifacts/down/linux1.tar.zstd{}
