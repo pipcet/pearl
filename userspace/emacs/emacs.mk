@@ -7,7 +7,7 @@ $(call done,userspace/emacs,cross/build): $(call done,userspace/emacs,cross/conf
 	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross/
 	$(TIMESTAMP)
 
-$(call done,userspace/emacs,cross/configure): $(call done,userspace/emacs,cross/copy) $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install) $(call done,userspace/ncurses,install)
+$(call done,userspace/emacs,cross/configure): $(call done,userspace/emacs,cross/copy) | $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install) $(call done,userspace/ncurses,install)
 	(cd $(BUILD)/userspace/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	$(TIMESTAMP)
 
