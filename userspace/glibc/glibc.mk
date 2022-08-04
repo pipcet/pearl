@@ -9,7 +9,7 @@ $(call done,userspace/glibc,glibc/build): $(call done,userspace/glibc,glibc/conf
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,glibc/configure): $(call done,userspace/glibc,glibc/copy) $(call done,linux,headers/install) $(call done,toolchain/gcc,gcc/install) | $(BUILD)/userspace/glibc/glibc/build/
-	(cd $(BUILD)/userspace/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="")
+	(cd $(BUILD)/userspace/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="" --with-headers=$(BUILD)/pearl/install/usr/include/)
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,glibc/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/glibc/source/ $(call done,userspace/glibc,glibc/)
@@ -43,7 +43,7 @@ $(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,headers/copy) $(call done,linux,headers/install) | $(BUILD)/userspace/glibc/headers/build/
-	(cd $(BUILD)/userspace/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
+	(cd $(BUILD)/userspace/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="" --with-headers=$(BUILD)/pearl/install/usr/include/)
 	$(TIMESTAMP)
 
 $(call done,userspace/glibc,headers/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/headers/source/ $(call done,userspace/glibc,headers/)
