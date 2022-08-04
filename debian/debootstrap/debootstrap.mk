@@ -77,16 +77,6 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/in
 $(BUILD)/debian.tar: $(BUILD)/debian.cpio
 	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$<)
 
-$(BUILD)/debian.cpio.gz: $(BUILD)/debian.cpio
-	gzip < $< > $@
-
-$(BUILD)/debian.cpio.zstd: $(BUILD)/debian.cpio
-	rm -f $@
-	zstd -22 --ultra --long=31 --verbose $< -o $@
-
-$(BUILD)/debian.cpio.xz: $(BUILD)/debian.cpio
-	xz --compress < $< > $@
-
 $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
 	sudo rm -rf $(BUILD)/debian/di-debootstrap
 	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap/debootstrap ./debian/debootstrap/debootstrap/debootstrap --foreign --arch=arm64 --include=build-essential,git,linux-image-cloud-arm64,bash,kmod,dash,wget,busybox,busybox-static,net-tools,libpam-systemd,file,xsltproc,mtools,openssl,mokutil,libx11-data,libx11-6,sharutils,dpkg-dev,ntpdate sid $(BUILD)/debian/di-debootstrap http://deb.debian.org/debian
