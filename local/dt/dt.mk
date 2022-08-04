@@ -1,7 +1,7 @@
 $(BUILD)/dt/build/bin/dt: local/dt/dt | $(BUILD)/dt/build/bin/
 	$(COPY)
 
-$(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c | $(call done,userspace/glibc,glibc/install) | $(BUILD)/dt/build/bin/
+$(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c | $(call done,userspace/glibc,glibc/install) $(BUILD)/dt/build/bin/
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
 
 $(BUILD)/dt/build/bin/macho-version: local/dt/macho-version.c | $(call done,userspace/glibc,glibc/install) $(BUILD)/dt/build/bin/
