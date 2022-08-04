@@ -40,7 +40,7 @@ $(call done,bootloaders/barebox,build): $(call done,bootloaders/barebox,configur
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
 	$(TIMESTAMP)
 
-$(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $(call done,bootloaders/barebox,copy) $(call done,toolchain/gcc,gcc/install)
+$(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $(call done,bootloaders/barebox,copy) | $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/bootloaders/barebox/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
