@@ -53,7 +53,7 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/glibc done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
     - run: make -j13 done/userspace/emacs/install
@@ -71,7 +71,7 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/glibc done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
     - run: make -j13 done/userspace/emacs/install
@@ -91,7 +91,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make -j13 build/linux.tar.zstd{artifact}
   linux1:
     name: linux1
@@ -103,7 +103,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux.tar.zstd
     - run: mv build/linux.tar.zstd build/linux1.tar.zstd
@@ -120,7 +120,7 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install autopoint lzop
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/bootloaders.tar.zstd{artifact}
   bootloaders1:
     name: bootloaders1
@@ -133,7 +133,7 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install autopoint lzop
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/bootloaders.tar.zstd
     - run: cp build/bootloaders.tar.zstd build/bootloaders1.tar.zstd
@@ -149,13 +149,13 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/linux.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/linux.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/linux.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/userspace.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/userspace.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/userspace.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make build/pearl.tar.zstd{artifact}
@@ -170,14 +170,14 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/artifacts/down/linux1.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/linux1.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/linux1.tar.zstd
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders1.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/userspace1.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/userspace1.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/userspace1.tar.zstd
     - run: make build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
@@ -194,17 +194,17 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/linux.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/linux.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/linux.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/userspace.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/userspace.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/userspace.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/pearl.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/debian.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
   video-uboot:
     name: video-uboot
@@ -217,11 +217,11 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -238,12 +238,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders1.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -262,12 +262,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -285,12 +285,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files --skip-old-files build/released/pipcet/pearl-qemu/qemu.tar.zstd
+    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-qemu/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -309,11 +309,11 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -330,12 +330,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/bootloaders1.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -354,12 +354,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -377,11 +377,11 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/released/pipcet/pearl-qemu/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-qemu/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
@@ -400,11 +400,11 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/pearl.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/pearl.mp4{artifact}
@@ -419,12 +419,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/pearl-debian-uncompressed.macho.zst.image{}
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl-debian-uncompressed.macho.zst.image{}
     - run: mv build/artifacts/down/pearl-debian-uncompressed.macho.zst.image build/
     - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar -xf --skip-old-files build/artifacts/down/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/pearl-debian.mp4{artifact}
