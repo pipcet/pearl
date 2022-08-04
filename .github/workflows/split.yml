@@ -104,7 +104,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make -j13 build/linux.tar.zstd
     - run: mv build/linux.tar.zstd build/linux1.tar.zstd
     - run: make -j13 build/linux1.tar.zstd{artifact}
@@ -134,7 +133,6 @@ jobs:
     - run: sudo apt-get install autopoint lzop
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/bootloaders.tar.zstd
     - run: cp build/bootloaders.tar.zstd build/bootloaders1.tar.zstd
     - run: make build/bootloaders1.tar.zstd{artifact}
@@ -171,7 +169,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/artifacts/down/linux1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/linux1.tar.zstd
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
@@ -239,7 +236,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -263,7 +259,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -286,7 +281,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
@@ -331,7 +325,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -355,7 +348,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
