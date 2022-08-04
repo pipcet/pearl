@@ -10,7 +10,7 @@ $(call done,userspace/IPC-Run,build): $(call done,userspace/IPC-Run,configure)
 	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/IPC-Run/build
 	$(TIMESTAMP)
 
-$(call done,userspace/IPC-Run,configure): $(call done,userspace/IPC-Run,copy) $(call done,userspace/perl,install)
+$(call done,userspace/IPC-Run,configure): $(call done,userspace/IPC-Run,copy) | $(call done,userspace/perl,install)
 	(cd $(BUILD)/userspace/IPC-Run/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL INSTALLSITELIB=/lib/perl5/site_perl INSTALLSITEARCH=/lib/perl5/site_perl)
 	$(TIMESTAMP)
 

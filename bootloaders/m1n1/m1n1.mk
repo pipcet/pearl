@@ -6,7 +6,7 @@ $(BUILD)/bootloaders/m1n1.macho: $(call done,bootloaders/m1n1,build)
 $(call done,bootloaders/m1n1,install): $(call done,bootloaders/m1n1,build)
 	$(TIMESTAMP)
 
-$(call done,bootloaders/m1n1,build): $(call done,bootloaders/m1n1,copy) $(call done,toolchain/gcc,gcc/install)
+$(call done,bootloaders/m1n1,build): $(call done,bootloaders/m1n1,copy) | $(call done,toolchain/gcc,gcc/install)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/m1n1/build build/m1n1.macho
 	$(TIMESTAMP)
 

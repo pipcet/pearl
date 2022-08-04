@@ -7,7 +7,7 @@ $(call done,userspace/lvm2,build): $(call done,userspace/lvm2,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/lvm2/build
 	$(TIMESTAMP)
 
-$(call done,userspace/lvm2,configure): $(call done,userspace/lvm2,copy) $(call deps,libaio libblkid glibc gcc)
+$(call done,userspace/lvm2,configure): $(call done,userspace/lvm2,copy) | $(call deps,libaio libblkid glibc gcc)
 	(cd $(BUILD)/userspace/lvm2/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS) -I." LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)
 

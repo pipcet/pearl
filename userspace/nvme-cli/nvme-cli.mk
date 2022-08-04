@@ -3,7 +3,7 @@ $(call done,userspace/nvme-cli,install): $(call done,userspace/nvme-cli,build)
 	$(INSTALL_LIBS) userspace/nvme-cli
 	$(TIMESTAMP)
 
-$(call done,userspace/nvme-cli,build): $(call done,userspace/nvme-cli,copy) $(call deps,glibc libblkid libuuid)
+$(call done,userspace/nvme-cli,build): $(call done,userspace/nvme-cli,copy) | $(call deps,glibc libblkid libuuid)
 	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(call install,userspace/nvme-cli)" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/userspace/nvme-cli/build
 	$(TIMESTAMP)
 

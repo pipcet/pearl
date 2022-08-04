@@ -10,7 +10,7 @@ $(call done,userspace/slurp,build): $(call done,userspace/slurp,configure)
 	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/slurp/build
 	$(TIMESTAMP)
 
-$(call done,userspace/slurp,configure): $(call done,userspace/slurp,copy) $(call deps,perl)
+$(call done,userspace/slurp,configure): $(call done,userspace/slurp,copy) | $(call deps,perl)
 	(cd $(BUILD)/userspace/slurp/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL INSTALLSITELIB=/lib/perl5/site_perl)
 	$(TIMESTAMP)
 

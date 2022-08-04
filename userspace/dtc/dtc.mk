@@ -7,7 +7,7 @@ $(call done,userspace/dtc,build): $(call done,userspace/dtc,configure)
 	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build
 	$(TIMESTAMP)
 
-$(call done,userspace/dtc,configure): $(call done,userspace/dtc,copy) $(call done,userspace/glibc,glibc/install)
+$(call done,userspace/dtc,configure): $(call done,userspace/dtc,copy) | $(call done,userspace/glibc,glibc/install)
 	$(TIMESTAMP)
 
 $(call done,userspace/dtc,copy): $(call done,userspace/dtc,checkout) | $(call done,userspace/dtc,) $(BUILD)/userspace/dtc/build/

@@ -7,7 +7,7 @@ $(call done,userspace/libnl,build): $(call done,userspace/libnl,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libnl/build
 	$(TIMESTAMP)
 
-$(call done,userspace/libnl,configure): $(call done,userspace/libnl,copy) $(call deps,glibc gcc)
+$(call done,userspace/libnl,configure): $(call done,userspace/libnl,copy) | $(call deps,glibc gcc)
 	(cd $(BUILD)/userspace/libnl/build; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/userspace/libnl/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)

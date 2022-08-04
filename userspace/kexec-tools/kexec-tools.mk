@@ -7,7 +7,7 @@ $(call done,userspace/kexec-tools,build): $(call done,userspace/kexec-tools,conf
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/kexec-tools/source
 	$(TIMESTAMP)
 
-$(call done,userspace/kexec-tools,configure): $(call done,userspace/kexec-tools,copy) $(call deps,glibc gcc)
+$(call done,userspace/kexec-tools,configure): $(call done,userspace/kexec-tools,copy) | $(call deps,glibc gcc)
 	(cd $(BUILD)/userspace/kexec-tools/source; ./bootstrap)
 	(cd $(BUILD)/userspace/kexec-tools/source; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	$(TIMESTAMP)

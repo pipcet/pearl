@@ -7,7 +7,7 @@ $(call done,userspace/screen,build): $(call done,userspace/screen,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/screen/build/src
 	$(TIMESTAMP)
 
-$(call done,userspace/screen,configure): $(call done,userspace/screen,copy) $(call deps,glibc ncurses)
+$(call done,userspace/screen,configure): $(call done,userspace/screen,copy) | $(call deps,glibc ncurses)
 	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) autoreconf --install)
 	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")

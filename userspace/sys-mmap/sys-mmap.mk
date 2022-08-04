@@ -10,7 +10,7 @@ $(call done,userspace/sys-mmap,build): $(call done,userspace/sys-mmap,configure)
 	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/sys-mmap/build
 	$(TIMESTAMP)
 
-$(call done,userspace/sys-mmap,configure): $(call done,userspace/sys-mmap,copy) $(call deps,perl)
+$(call done,userspace/sys-mmap,configure): $(call done,userspace/sys-mmap,copy) | $(call deps,perl)
 	(cd $(BUILD)/userspace/sys-mmap/build; export PERLDIR=$$(ls -d $(PWD)/build/pearl/install/lib/perl5/5.*); $(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(WITH_QEMU) $(PWD)/build/pearl/install/bin/perl -I $$PERLDIR/linux-gnu -I $$PERLDIR Makefile.PL PERLPREFIX=$(PWD)/build/pearl/install/ PERL_ARCHLIB=$$PERLDIR/linux-gnu PERL_LIB=$$PERLDIR INSTALLDIRS=perl)
 	$(TIMESTAMP)
 

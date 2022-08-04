@@ -10,7 +10,7 @@ $(call done,userspace/ncurses,build): $(call done,userspace/ncurses,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/ncurses/build
 	$(TIMESTAMP)
 
-$(call done,userspace/ncurses,configure): $(call done,userspace/ncurses,copy) $(call deps,glibc gcc)
+$(call done,userspace/ncurses,configure): $(call done,userspace/ncurses,copy) | $(call deps,glibc gcc)
 	(cd $(BUILD)/userspace/ncurses/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(call install,userspace/ncurses) --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding --enable-pc-files=yes)
 	$(TIMESTAMP)
 

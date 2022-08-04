@@ -1,4 +1,4 @@
-$(call done,toolchain/binutils-gdb,install): $(call done,toolchain/binutils-gdb,build) $(call done,pearl/install,mkdir)
+$(call done,toolchain/binutils-gdb,install): $(call done,toolchain/binutils-gdb,build) | $(call done,pearl/install,mkdir)
 	$(MAKE) -C $(BUILD)/toolchain/binutils-gdb/source install
 	$(TIMESTAMP)
 

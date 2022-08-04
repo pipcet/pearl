@@ -10,7 +10,7 @@ $(call done,userspace/popt,build): $(call done,userspace/popt,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/popt/build
 	$(TIMESTAMP)
 
-$(call done,userspace/popt,configure): $(call done,userspace/popt,copy) $(call deps,glibc gcc)
+$(call done,userspace/popt,configure): $(call done,userspace/popt,copy) | $(call deps,glibc gcc)
 	(cd $(BUILD)/userspace/popt/build; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/userspace/popt/build; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	$(TIMESTAMP)

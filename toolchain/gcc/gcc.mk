@@ -10,7 +10,7 @@ $(call done,toolchain/gcc,gcc/build): $(call done,toolchain/gcc,gcc/configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build
 	$(TIMESTAMP)
 
-$(call done,toolchain/gcc,gcc/configure): $(call done,toolchain/gcc,gcc/copy) $(call done,linux,headers/install) $(call done,userspace/glibc,headers/install) $(call done,toolchain/binutils-gdb,install) | $(BUILD)/toolchain/gcc/gcc/build/
+$(call done,toolchain/gcc,gcc/configure): $(call done,toolchain/gcc,gcc/copy) | $(call done,linux,headers/install) $(call done,userspace/glibc,headers/install) $(call done,toolchain/binutils-gdb,install) $(BUILD)/toolchain/gcc/gcc/build/
 	(cd $(BUILD)/toolchain/gcc/gcc/build; $(WITH_CROSS_PATH) ../source/configure --target=aarch64-linux-gnu --enable-languages=c,lto --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/pearl/install" --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --disable-shared --with-static-standard-libraries --with-build-sysroot="$(BUILD)/pearl/install" --disable-c++tools)
 	$(TIMESTAMP)
 
@@ -31,7 +31,7 @@ $(call done,toolchain/gcc,libgcc/build): $(call done,toolchain/gcc,libgcc/config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/libgcc/build
 	$(TIMESTAMP)
 
-$(call done,toolchain/gcc,libgcc/configure): $(call done,toolchain/gcc,libgcc/copy) $(call done,linux,headers/install) $(call done,userspace/glibc,headers/install) $(call done,toolchain/binutils-gdb,install) $(call done,userspace/glibc,glibc/install) | $(BUILD)/toolchain/gcc/libgcc/build/
+$(call done,toolchain/gcc,libgcc/configure): $(call done,toolchain/gcc,libgcc/copy) | $(call done,linux,headers/install) $(call done,userspace/glibc,headers/install) $(call done,toolchain/binutils-gdb,install) $(call done,userspace/glibc,glibc/install) $(BUILD)/toolchain/gcc/libgcc/build/
 	(cd $(BUILD)/toolchain/gcc/libgcc/build; $(WITH_CROSS_PATH) ../source/configure --target=aarch64-linux-gnu --enable-languages=c,c++,lto --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/pearl/install" --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --with-build-sysroot="$(BUILD)/pearl/install" --disable-c++tools)
 	$(TIMESTAMP)
 

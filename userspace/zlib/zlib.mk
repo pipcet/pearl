@@ -8,7 +8,7 @@ $(call done,userspace/zlib,build): $(call done,userspace/zlib,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zlib/build CFLAGS="$(CROSS_CFLAGS)"
 	$(TIMESTAMP)
 
-$(call done,userspace/zlib,configure): $(call done,userspace/zlib,copy) $(call deps,glibc gcc)
+$(call done,userspace/zlib,configure): $(call done,userspace/zlib,copy) | $(call deps,glibc gcc)
 	(cd $(BUILD)/userspace/zlib/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -fPIC" ./configure --prefix=$(call install,userspace/zlib))
 	$(TIMESTAMP)
 
