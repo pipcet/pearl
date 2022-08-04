@@ -53,7 +53,7 @@ $(call done,bootloaders/u-boot,build): $(call done,bootloaders/u-boot,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE)
 	$(TIMESTAMP)
 
-$(call done,bootloaders/u-boot,configure): bootloaders/u-boot/u-boot.config $(call done,bootloaders/u-boot,copy) $(call done,toolchain/gcc,gcc/install)
+$(call done,bootloaders/u-boot,configure): bootloaders/u-boot/u-boot.config $(call done,bootloaders/u-boot,copy) | $(call done,toolchain/gcc,gcc/install)
 	$(CP) $< $(BUILD)/bootloaders/u-boot/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	$(TIMESTAMP)
