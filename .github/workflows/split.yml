@@ -55,6 +55,10 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -f done/userspace/glibc/checkout
+    - run: make -j13 done/userspace/glibc/install
+    - run: make -j13 done/userspace/emacs/install
+    - run: make -j13 done/userspace/openssl/install
+    - run: make -j13 done/userspace/perl/install
     - run: make -j13 build/userspace.tar.zstd{artifact}
   userspace1:
     name: userspace1
@@ -70,6 +74,10 @@ jobs:
     - run: tar -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: rm -f done/userspace/glibc/checkout
+    - run: make -j13 done/userspace/glibc/install
+    - run: make -j13 done/userspace/emacs/install
+    - run: make -j13 done/userspace/openssl/install
+    - run: make -j13 done/userspace/perl/install
     - run: make -j13 build/userspace.tar.zstd
     - run: mv build/userspace.tar.zstd build/userspace1.tar.zstd
     - run: make -j13 build/userspace1.tar.zstd{artifact}
