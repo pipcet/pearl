@@ -285,12 +285,12 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-bootloaders/bootloaders.tar.zstd
     - run: make build/released/pipcet/pearl-qemu/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf --skip-old-files build/released/pipcet/pearl-qemu/qemu.tar.zstd
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-qemu/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
