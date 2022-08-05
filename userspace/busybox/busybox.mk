@@ -26,7 +26,7 @@ $(call done,userspace/busybox,configure): userspace/busybox/busybox.config $(cal
 	yes "" | $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" oldconfig
 	$(TIMESTAMP)
 
-$(call done,userspace/busybox,copy): $(call done,userspace/busybox,checkout) | $(call done,userspace/busybox,) $(BUILD)/userspace/busybox/build/
+$(call done,userspace/busybox,copy): | $(call done,userspace/busybox,checkout) $(call done,userspace/busybox,) $(BUILD)/userspace/busybox/build/
 	$(COPY_SAUNA) $(PWD)/userspace/busybox/busybox/* $(BUILD)/userspace/busybox/build/
 	$(TIMESTAMP)
 

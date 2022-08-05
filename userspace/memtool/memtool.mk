@@ -12,7 +12,7 @@ $(call done,userspace/memtool,configure): $(call done,userspace/memtool,copy) | 
 	(cd $(BUILD)/userspace/memtool/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix="$(call install,userspace/memtool)" CFLAGS="$(CROSS_CFLAGS)")
 	$(TIMESTAMP)
 
-$(call done,userspace/memtool,copy): $(call done,userspace/memtool,checkout) | $(call done,userspace/memtool,) $(BUILD)/userspace/memtool/build/
+$(call done,userspace/memtool,copy): | $(call done,userspace/memtool,checkout) $(call done,userspace/memtool,) $(BUILD)/userspace/memtool/build/
 	$(COPY_SAUNA) $(PWD)/userspace/memtool/memtool/* $(BUILD)/userspace/memtool/build/
 	$(TIMESTAMP)
 

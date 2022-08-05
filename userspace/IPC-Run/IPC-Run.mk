@@ -14,7 +14,7 @@ $(call done,userspace/IPC-Run,configure): $(call done,userspace/IPC-Run,copy) | 
 	(cd $(BUILD)/userspace/IPC-Run/build; $(WITH_CROSS_PATH) $(WITH_QEMU) perl Makefile.PL INSTALLSITELIB=/lib/perl5/site_perl INSTALLSITEARCH=/lib/perl5/site_perl)
 	$(TIMESTAMP)
 
-$(call done,userspace/IPC-Run,copy): $(call done,userspace/IPC-Run,checkout) | $(call done,userspace/IPC-Run,) $(BUILD)/userspace/IPC-Run/build/
+$(call done,userspace/IPC-Run,copy): | $(call done,userspace/IPC-Run,checkout) $(call done,userspace/IPC-Run,) $(BUILD)/userspace/IPC-Run/build/
 	$(COPY_SAUNA) $(PWD)/userspace/IPC-Run/IPC-Run/* $(BUILD)/userspace/IPC-Run/build/
 	$(TIMESTAMP)
 

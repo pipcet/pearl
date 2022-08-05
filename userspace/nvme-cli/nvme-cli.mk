@@ -7,7 +7,7 @@ $(call done,userspace/nvme-cli,build): $(call done,userspace/nvme-cli,copy) | $(
 	$(WITH_CROSS_PATH) CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(call install,userspace/nvme-cli)" $(MAKE) $(WITH_CROSS_CC) -C $(BUILD)/userspace/nvme-cli/build
 	$(TIMESTAMP)
 
-$(call done,userspace/nvme-cli,copy): $(call done,userspace/nvme-cli,checkout) | $(call done,userspace/nvme-cli,) $(BUILD)/userspace/nvme-cli/build/
+$(call done,userspace/nvme-cli,copy): | $(call done,userspace/nvme-cli,checkout) $(call done,userspace/nvme-cli,) $(BUILD)/userspace/nvme-cli/build/
 	$(COPY_SAUNA) $(PWD)/userspace/nvme-cli/nvme-cli/* $(BUILD)/userspace/nvme-cli/build/
 	$(TIMESTAMP)
 

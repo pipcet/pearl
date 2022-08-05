@@ -11,7 +11,7 @@ $(call done,userspace/lvm2,configure): $(call done,userspace/lvm2,copy) | $(call
 	(cd $(BUILD)/userspace/lvm2/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS) -I." LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)
 
-$(call done,userspace/lvm2,copy): $(call done,userspace/lvm2,checkout) | $(BUILD)/userspace/lvm2/build/ $(call done,userspace/lvm2,)
+$(call done,userspace/lvm2,copy): | $(call done,userspace/lvm2,checkout) $(BUILD)/userspace/lvm2/build/ $(call done,userspace/lvm2,)
 	$(COPY_SAUNA) $(PWD)/userspace/lvm2/lvm2/* $(BUILD)/userspace/lvm2/build
 	$(TIMESTAMP)
 

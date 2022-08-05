@@ -13,7 +13,7 @@ $(call done,userspace/screen,configure): $(call done,userspace/screen,copy) | $(
 	(cd $(BUILD)/userspace/screen/build/src; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ --enable-pam=no CFLAGS="$(CROSS_CFLAGS)")
 	$(TIMESTAMP)
 
-$(call done,userspace/screen,copy): $(call done,userspace/screen,checkout) | $(call done,userspace/screen,) $(BUILD)/userspace/screen/build/
+$(call done,userspace/screen,copy): | $(call done,userspace/screen,checkout) $(call done,userspace/screen,) $(BUILD)/userspace/screen/build/
 	$(COPY_SAUNA) $(PWD)/userspace/screen/screen/* $(BUILD)/userspace/screen/build/
 	$(TIMESTAMP)
 

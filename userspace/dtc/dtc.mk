@@ -10,7 +10,7 @@ $(call done,userspace/dtc,build): $(call done,userspace/dtc,configure)
 $(call done,userspace/dtc,configure): $(call done,userspace/dtc,copy) | $(call done,userspace/glibc,glibc/install)
 	$(TIMESTAMP)
 
-$(call done,userspace/dtc,copy): $(call done,userspace/dtc,checkout) | $(call done,userspace/dtc,) $(BUILD)/userspace/dtc/build/
+$(call done,userspace/dtc,copy): | $(call done,userspace/dtc,checkout) $(call done,userspace/dtc,) $(BUILD)/userspace/dtc/build/
 	$(COPY_SAUNA) $(PWD)/userspace/dtc/dtc/* $(BUILD)/userspace/dtc/build/
 	$(TIMESTAMP)
 

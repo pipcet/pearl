@@ -13,7 +13,7 @@ $(call done,qemu,configure): $(call done,qemu,copy)
 	(cd $(BUILD)/qemu/source; ./configure --target-list=aarch64-softmmu)
 	$(TIMESTAMP)
 
-$(call done,qemu,copy): $(call done,qemu,checkout) | $(BUILD)/qemu/source/
+$(call done,qemu,copy): | $(call done,qemu,checkout) $(BUILD)/qemu/source/
 	$(COPY_SAUNA) $(PWD)/qemu/qemu/* $(BUILD)/qemu/source/
 	$(TIMESTAMP)
 

@@ -10,7 +10,7 @@ $(call done,bootloaders/m1n1,build): $(call done,bootloaders/m1n1,copy) | $(call
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/m1n1/build build/m1n1.macho
 	$(TIMESTAMP)
 
-$(call done,bootloaders/m1n1,copy): $(call done,bootloaders/m1n1,checkout) | $(BUILD)/bootloaders/m1n1/build/
+$(call done,bootloaders/m1n1,copy): | $(call done,bootloaders/m1n1,checkout) $(BUILD)/bootloaders/m1n1/build/
 	$(CP) -aus $(PWD)/bootloaders/m1n1/m1n1/* $(BUILD)/bootloaders/m1n1/build/
 	$(TIMESTAMP)
 

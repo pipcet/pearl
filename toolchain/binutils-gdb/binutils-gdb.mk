@@ -13,7 +13,7 @@ $(call done,toolchain/binutils-gdb,configure): $(call done,toolchain/binutils-gd
 	(cd $(BUILD)/toolchain/binutils-gdb/source/; ../source/configure --target=aarch64-linux-gnu --prefix=$(BUILD)/pearl/toolchain)
 	$(TIMESTAMP)
 
-$(call done,toolchain/binutils-gdb,copy): $(call done,toolchain/binutils-gdb,checkout) | $(BUILD)/toolchain/binutils-gdb/source/ $(call done,toolchain/binutils-gdb,)
+$(call done,toolchain/binutils-gdb,copy): | $(call done,toolchain/binutils-gdb,checkout) $(BUILD)/toolchain/binutils-gdb/source/ $(call done,toolchain/binutils-gdb,)
 	$(COPY_SAUNA) $(PWD)/toolchain/binutils-gdb/binutils-gdb/* $(BUILD)/toolchain/binutils-gdb/source/
 	$(TIMESTAMP)
 

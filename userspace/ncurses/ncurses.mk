@@ -14,7 +14,7 @@ $(call done,userspace/ncurses,configure): $(call done,userspace/ncurses,copy) | 
 	(cd $(BUILD)/userspace/ncurses/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ --with-install-prefix=$(call install,userspace/ncurses) --disable-stripping CFLAGS="$(CROSS_CFLAGS)" CXXFLAGS="$(CROSS_CFLAGS)" --without-cxx-binding --enable-pc-files=yes)
 	$(TIMESTAMP)
 
-$(call done,userspace/ncurses,copy): $(call done,userspace/ncurses,checkout) | $(call done,userspace/ncurses,) $(BUILD)/userspace/ncurses/build/
+$(call done,userspace/ncurses,copy): | $(call done,userspace/ncurses,checkout) $(call done,userspace/ncurses,) $(BUILD)/userspace/ncurses/build/
 	$(COPY_SAUNA) $(PWD)/userspace/ncurses/ncurses/* $(BUILD)/userspace/ncurses/build/
 	$(TIMESTAMP)
 

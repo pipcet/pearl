@@ -14,7 +14,7 @@ $(call done,toolchain/gcc,gcc/configure): $(call done,toolchain/gcc,gcc/copy) | 
 	(cd $(BUILD)/toolchain/gcc/gcc/build; $(WITH_CROSS_PATH) ../source/configure --target=aarch64-linux-gnu --enable-languages=c,lto --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/pearl/install" --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --disable-shared --with-static-standard-libraries --with-build-sysroot="$(BUILD)/pearl/install" --disable-c++tools)
 	$(TIMESTAMP)
 
-$(call done,toolchain/gcc,gcc/copy): $(call done,toolchain/gcc,checkout) | $(call done,toolchain/gcc,gcc/) $(BUILD)/toolchain/gcc/gcc/source/
+$(call done,toolchain/gcc,gcc/copy): | $(call done,toolchain/gcc,checkout) $(call done,toolchain/gcc,gcc/) $(BUILD)/toolchain/gcc/gcc/source/
 	$(COPY_SAUNA) $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/gcc/source/
 	$(TIMESTAMP)
 
@@ -35,7 +35,7 @@ $(call done,toolchain/gcc,libgcc/configure): $(call done,toolchain/gcc,libgcc/co
 	(cd $(BUILD)/toolchain/gcc/libgcc/build; $(WITH_CROSS_PATH) ../source/configure --target=aarch64-linux-gnu --enable-languages=c,c++,lto --enable-shared --disable-bootstrap --prefix=/ --with-sysroot="$(BUILD)/pearl/install" --disable-libssp --disable-libquadmath --disable-libatomic --disable-libgomp --without-headers --with-build-sysroot="$(BUILD)/pearl/install" --disable-c++tools)
 	$(TIMESTAMP)
 
-$(call done,toolchain/gcc,libgcc/copy): $(call done,toolchain/gcc,checkout) | $(call done,toolchain/gcc,libgcc/) $(BUILD)/toolchain/gcc/libgcc/source/
+$(call done,toolchain/gcc,libgcc/copy): | $(call done,toolchain/gcc,checkout) $(call done,toolchain/gcc,libgcc/) $(BUILD)/toolchain/gcc/libgcc/source/
 	$(COPY_SAUNA) $(PWD)/toolchain/gcc/gcc/* $(BUILD)/toolchain/gcc/libgcc/source/
 	$(TIMESTAMP)
 

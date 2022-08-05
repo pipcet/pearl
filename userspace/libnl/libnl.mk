@@ -12,7 +12,7 @@ $(call done,userspace/libnl,configure): $(call done,userspace/libnl,copy) | $(ca
 	(cd $(BUILD)/userspace/libnl/build; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)
 
-$(call done,userspace/libnl,copy): $(call done,userspace/libnl,checkout) | $(call done,userspace/libnl,) $(BUILD)/userspace/libnl/build/
+$(call done,userspace/libnl,copy): | $(call done,userspace/libnl,checkout) $(call done,userspace/libnl,) $(BUILD)/userspace/libnl/build/
 	$(COPY_SAUNA) $(PWD)/userspace/libnl/libnl/* $(BUILD)/userspace/libnl/build/
 	$(TIMESTAMP)
 

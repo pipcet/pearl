@@ -12,7 +12,7 @@ $(call done,userspace/kexec-tools,configure): $(call done,userspace/kexec-tools,
 	(cd $(BUILD)/userspace/kexec-tools/source; $(WITH_CROSS_PATH) ./configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)")
 	$(TIMESTAMP)
 
-$(call done,userspace/kexec-tools,copy): $(call done,userspace/kexec-tools,checkout) | $(BUILD)/userspace/kexec-tools/source/ $(call done,userspace/kexec-tools,)
+$(call done,userspace/kexec-tools,copy): | $(call done,userspace/kexec-tools,checkout) $(BUILD)/userspace/kexec-tools/source/ $(call done,userspace/kexec-tools,)
 	$(COPY_SAUNA) $(PWD)/userspace/kexec-tools/kexec-tools/* $(BUILD)/userspace/kexec-tools/source/
 	$(TIMESTAMP)
 

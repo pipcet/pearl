@@ -14,7 +14,7 @@ $(call done,bootloaders/grub,configure): $(call done,bootloaders/grub,copy) | $(
 	(cd $(BUILD)/bootloaders/grub/build; $(WITH_CROSS_PATH) ./configure --host=$(NATIVE_TRIPLE) --build=$(NATIVE_TRIPLE) --target=aarch64-linux-gnu --with-platform=efi --prefix=$(BUILD)/toolchain --disable-werror)
 	$(TIMESTAMP)
 
-$(call done,bootloaders/grub,copy): $(call done,bootloaders/grub,checkout) | $(BUILD)/bootloaders/grub/build/
+$(call done,bootloaders/grub,copy): | $(call done,bootloaders/grub,checkout) $(BUILD)/bootloaders/grub/build/
 	$(CP) -aus $(PWD)/bootloaders/grub/grub/* $(BUILD)/bootloaders/grub/build/
 	$(TIMESTAMP)
 

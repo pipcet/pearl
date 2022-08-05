@@ -10,7 +10,7 @@ $(call done,userspace/zstd,build): $(call done,userspace/zstd,configure)
 $(call done,userspace/zstd,configure): $(call done,userspace/zstd,copy) | $(call deps,glibc gcc libgcc)
 	$(TIMESTAMP)
 
-$(call done,userspace/zstd,copy): $(call done,userspace/zstd,checkout) | $(call done,userspace/zstd,) $(BUILD)/userspace/zstd/build/
+$(call done,userspace/zstd,copy): | $(call done,userspace/zstd,checkout) $(call done,userspace/zstd,) $(BUILD)/userspace/zstd/build/
 	$(COPY_SAUNA) $(PWD)/userspace/zstd/zstd/* $(BUILD)/userspace/zstd/build/
 	$(TIMESTAMP)
 

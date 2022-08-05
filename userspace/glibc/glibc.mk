@@ -12,7 +12,7 @@ $(call done,userspace/glibc,glibc/configure): $(call done,userspace/glibc,glibc/
 	(cd $(BUILD)/userspace/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="" --with-headers=$(BUILD)/pearl/install/usr/include/)
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,glibc/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/glibc/source/ $(call done,userspace/glibc,glibc/)
+$(call done,userspace/glibc,glibc/copy): | $(call done,userspace/glibc,checkout) $(BUILD)/userspace/glibc/glibc/source/ $(call done,userspace/glibc,glibc/)
 	$(CP) -naus $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/glibc/source/
 	$(TIMESTAMP)
 
@@ -28,7 +28,7 @@ $(call done,userspace/glibc,stage1/configure): $(call done,userspace/glibc,stage
 	(cd $(BUILD)/userspace/glibc/stage1/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="")
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,stage1/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/stage1/source/ $(call done,userspace/glibc,stage1/)
+$(call done,userspace/glibc,stage1/copy): | $(call done,userspace/glibc,checkout) $(BUILD)/userspace/glibc/stage1/source/ $(call done,userspace/glibc,stage1/)
 	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
 	$(TIMESTAMP)
 
@@ -46,7 +46,7 @@ $(call done,userspace/glibc,headers/configure): $(call done,userspace/glibc,head
 	(cd $(BUILD)/userspace/glibc/headers/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS)" CXX="" --with-headers=$(BUILD)/pearl/install/usr/include/)
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,headers/copy): $(call done,userspace/glibc,checkout) | $(BUILD)/userspace/glibc/headers/source/ $(call done,userspace/glibc,headers/)
+$(call done,userspace/glibc,headers/copy): | $(call done,userspace/glibc,checkout) $(BUILD)/userspace/glibc/headers/source/ $(call done,userspace/glibc,headers/)
 	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/headers/source/
 	$(TIMESTAMP)
 

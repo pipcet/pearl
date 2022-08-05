@@ -46,7 +46,7 @@ $(call done,bootloaders/barebox,configure): bootloaders/barebox/barebox.config $
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	$(TIMESTAMP)
 
-$(call done,bootloaders/barebox,copy): $(call done,bootloaders/barebox,checkout) | $(call done,bootloaders/barebox,) $(BUILD)/bootloaders/barebox/build/
+$(call done,bootloaders/barebox,copy): | $(call done,bootloaders/barebox,checkout) $(call done,bootloaders/barebox,) $(BUILD)/bootloaders/barebox/build/
 	$(COPY_SAUNA) $(PWD)/bootloaders/barebox/barebox/* $(BUILD)/bootloaders/barebox/build/
 	$(TIMESTAMP)
 

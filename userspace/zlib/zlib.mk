@@ -12,7 +12,7 @@ $(call done,userspace/zlib,configure): $(call done,userspace/zlib,copy) | $(call
 	(cd $(BUILD)/userspace/zlib/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -fPIC" ./configure --prefix=$(call install,userspace/zlib))
 	$(TIMESTAMP)
 
-$(call done,userspace/zlib,copy): $(call done,userspace/zlib,checkout) | $(call done,userspace/zlib,) $(BUILD)/userspace/zlib/build/
+$(call done,userspace/zlib,copy): | $(call done,userspace/zlib,checkout) $(call done,userspace/zlib,) $(BUILD)/userspace/zlib/build/
 	$(COPY_SAUNA) $(PWD)/userspace/zlib/zlib/* $(BUILD)/userspace/zlib/build/
 	$(TIMESTAMP)
 

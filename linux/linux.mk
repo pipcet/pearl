@@ -122,7 +122,7 @@ linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) $(call done,toolch
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/linux/$*/build/.config $<
 
-$(call done,linux,%/copy): $(call done,linux,checkout) | $(call done,linux,%/) $(BUILD)/linux/%/build/
+$(call done,linux,%/copy): | $(call done,linux,checkout) $(call done,linux,%/) $(BUILD)/linux/%/build/
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	$(TIMESTAMP)
 
@@ -130,7 +130,7 @@ $(call done,linux,headers/install): $(call done,linux,headers/copy) $(call done,
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/pearl/install headers_install
 	$(TIMESTAMP)
 
-$(call done,linux,headers/copy): $(call done,linux,checkout) | $(call done,linux,headers/) $(BUILD)/linux/headers/source/
+$(call done,linux,headers/copy): | $(call done,linux,checkout) $(call done,linux,headers/) $(BUILD)/linux/headers/source/
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
 	$(TIMESTAMP)
 
