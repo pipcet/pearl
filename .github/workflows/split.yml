@@ -122,8 +122,8 @@ jobs:
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/linux.image.zstd
-    - run: mv build/linux.image.zstd build/linux.image1.zstd
-    - run: make -j13 build/linux.image1{artifact}
+    - run: mv build/linux/linux.image.zstd build/linux/linux.image1.zstd
+    - run: make -j13 build/linux/linux.image1{artifact}
   linux_modules1:
     name: linux.modules1
     runs-on: ubuntu-latest
@@ -137,8 +137,8 @@ jobs:
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/linux.modules.zstd
-    - run: mv build/linux.modules.zstd build/linux.modules1.zstd
-    - run: make -j13 build/linux.modules1{artifact}
+    - run: mv build/linux/linux.modules.zstd build/linux/linux.modules1.zstd
+    - run: make -j13 build/linux/linux.modules1{artifact}
   stage2_image1:
     name: stage2.image1
     runs-on: ubuntu-latest
@@ -152,8 +152,8 @@ jobs:
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/stage2.image.zstd
-    - run: mv build/stage2.image.zstd build/stage2.image1.zstd
-    - run: make -j13 build/stage2.image1{artifact}
+    - run: mv build/linux/stage2.image.zstd build/linux/stage2.image1.zstd
+    - run: make -j13 build/linux/stage2.image1{artifact}
   stage2_modules1:
     name: stage2.modules1
     runs-on: ubuntu-latest
@@ -167,8 +167,8 @@ jobs:
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/stage2.modules.zstd
-    - run: mv build/stage2.modules.zstd build/stage2.modules1.zstd
-    - run: make -j13 build/stage2.modules1{artifact}
+    - run: mv build/linux/stage2.modules.zstd build/linux/stage2.modules1.zstd
+    - run: make -j13 build/linux/stage2.modules1{artifact}
   bootloaders:
     name: bootloaders
     needs: toolchain
