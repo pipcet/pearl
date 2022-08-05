@@ -219,7 +219,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/userspace.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: rm -rf done/*/*/checkout done/*/checkout
+    - run: make done/linux/checkout!
     - run: make build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
