@@ -208,7 +208,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/linux.tar.zstd{}
@@ -231,7 +231,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/artifacts/down/linux1.tar.zstd{}
