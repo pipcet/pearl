@@ -220,7 +220,7 @@ jobs:
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make done/linux/checkout!
-    - run: make build/pearl.tar.zstd{artifact}
+    - run: make -j13 build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
     needs: [ linux1, bootloaders1, userspace1 ]
@@ -240,7 +240,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: make build/artifacts/down/userspace1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/userspace1.tar.zstd
-    - run: make build/pearl.tar.zstd
+    - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
