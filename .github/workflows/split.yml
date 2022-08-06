@@ -464,7 +464,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
-    - run: make build/video/pearl.mp4{artifact}
+    - run: make --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
     needs: [ toolchain, pearl-debian, qemu ]
