@@ -8,7 +8,7 @@ SUDO ?= $(and $(filter pip,$(shell whoami)),sudo)
 NATIVE_TRIPLE ?= amd64-linux-gnu
 BUILD ?= $(PWD)/build
 DONE ?= $(PWD)/done
-CROSS_CFLAGS = -Os --sysroot=$(BUILD)/pearl/install -B$(BUILD)/pearl/install -L$(BUILD)/pearl/install/lib -I$(BUILD)/pearl/install/include
+CROSS_CFLAGS = -Os --sysroot=$(BUILD)/pearl/install -B$(BUILD)/pearl/toolchain/lib/gcc/aarch64-linux-gnu/13.0.0/ -L$(BUILD)/pearl/install/lib -I$(BUILD)/pearl/install/include
 CROSS_CC = $(BUILD)/pearl/toolchain/bin/aarch64-linux-gnu-gcc
 CROSS_PATH = $(BUILD)/pearl/toolchain/bin
 WITH_CROSS_PATH = PATH="$(CROSS_PATH):$$PATH"
