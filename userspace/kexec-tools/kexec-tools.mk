@@ -4,7 +4,7 @@ $(call done,userspace/kexec-tools,install): $(call done,userspace/kexec-tools,bu
 	$(TIMESTAMP)
 
 $(call done,userspace/kexec-tools,build): $(call done,userspace/kexec-tools,configure)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/kexec-tools/source
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS) -B$(BUILD)/pearl/toolchain/lib/gcc/aarch64-linux-gnu/13.0.0/" -C $(BUILD)/userspace/kexec-tools/source
 	$(TIMESTAMP)
 
 $(call done,userspace/kexec-tools,configure): $(call done,userspace/kexec-tools,copy) | $(call deps,glibc gcc)
