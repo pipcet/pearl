@@ -1,10 +1,10 @@
 $(call done,userspace/dropbear,install): $(call done,userspace/dropbear,build)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp" install
+	$(WITH_CROSS_PATH) $(MAKE) LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp" install
 	$(INSTALL_LIBS) userspace/dropbear
 	$(TIMESTAMP)
 
 $(call done,userspace/dropbear,build): $(call done,userspace/dropbear,configure)
-	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp"
+	$(WITH_CROSS_PATH) $(MAKE) LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp"
 	$(TIMESTAMP)
 
 $(call done,userspace/dropbear,configure): $(call done,userspace/dropbear,copy) | $(call deps,glibc gcc zlib)
