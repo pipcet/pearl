@@ -1,10 +1,10 @@
 $(call done,userspace/screen,install): $(call done,userspace/screen,build)
-	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src DESTDIR="$(call install,userspace/screen)" install
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src DESTDIR="$(call install,userspace/screen)" install
 	$(INSTALL_LIBS) userspace/screen
 	$(TIMESTAMP)
 
 $(call done,userspace/screen,build): $(call done,userspace/screen,configure)
-	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src
 	$(TIMESTAMP)
 
 $(call done,userspace/screen,configure): $(call done,userspace/screen,copy) | $(call deps,glibc ncurses)
