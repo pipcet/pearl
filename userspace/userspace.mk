@@ -33,4 +33,13 @@ SECTARGETS += $(call done,userspace,build)
 SECTARGETS += $(call done,userspace,install)
 
 $(BUILD)/userspace.tar: $(call done,userspace,install)
-	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/toolchain $(wildcard $(BUILD)/*/done))
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
+$(BUILD)/glibc.tar: $(call done,userspace/glibc,glibc/install)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
+$(BUILD)/emacs.tar: $(call done,userspace/emacs,cross/install)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
+$(BUILD)/perl.tar: $(call done,userspace/perl,install) $(call done,userspace/IPC-Run,install) $(call done,userspace/sys-mmap,install) $(call done,userspace/slurp,install)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
