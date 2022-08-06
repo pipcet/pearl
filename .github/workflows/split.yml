@@ -210,13 +210,13 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/linux.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/linux.tar.zstd
+    - run: tar -xf build/artifacts/down/linux.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/userspace.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/userspace.tar.zstd
+    - run: tar -xf build/artifacts/down/userspace.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make done/linux/checkout!
