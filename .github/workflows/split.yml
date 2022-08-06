@@ -169,6 +169,66 @@ jobs:
     - run: make -j13 build/linux/stage2.modules.zstd
     - run: mv build/linux/stage2.modules.zstd build/linux/stage2.modules1.zstd
     - run: make -j13 build/linux/stage2.modules1.zstd{artifact}
+  linux_image:
+    name: linux.image
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 build/linux/linux.image.zstd
+    - run: make -j13 build/linux/linux.image.zstd{artifact}
+  linux_modules:
+    name: linux.modules
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 build/linux/linux.modules.zstd
+    - run: make -j13 build/linux/linux.modules.zstd{artifact}
+  stage2_image:
+    name: stage2.image
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 build/linux/stage2.image.zstd
+    - run: make -j13 build/linux/stage2.image.zstd{artifact}
+  stage2_modules:
+    name: stage2.modules
+    needs: toolchain
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 build/linux/stage2.modules.zstd
+    - run: make -j13 build/linux/stage2.modules.zstd{artifact}
   bootloaders:
     name: bootloaders
     needs: toolchain
