@@ -1,5 +1,5 @@
 $(call done,userspace/zsh,install): $(call done,userspace/zsh,build)
-	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/zsh/build DESTDIR="$(call install,userspace/zsh)" install.bin install.modules install.fns
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/zsh/build DESTDIR="$(call install,userspace/zsh)" install.bin install.modules install.fns
 	$(INSTALL_LIBS) userspace/zsh
 	$(TIMESTAMP)
 
