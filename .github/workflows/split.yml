@@ -137,10 +137,30 @@ jobs:
     - run: make -j13 build/perl.tar.zstd
     - run: mv build/perl.tar.zstd build/perl1.tar.zstd
     - run: make -j13 build/perl1.tar.zstd{artifact}
+  openssl1:
+    name: openssl1
+    runs-on: ubuntu-latest
+    needs: glibc1
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc1.tar.zstd
+    - run: make -j13 done/userspace/openssl/install
+    - run: make -j13 build/openssl.tar.zstd
+    - run: mv build/openssl.tar.zstd build/openssl1.tar.zstd
+    - run: make -j13 build/openssl1.tar.zstd{artifact}
   rest1:
     name: rest1
     runs-on: ubuntu-latest
-    needs: [ glibc1, emacs1, perl1 ]
+    needs: [ glibc1, emacs1, perl1, openssl1 ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -157,6 +177,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/emacs1.tar.zstd
     - run: make build/artifacts/down/perl1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/perl1.tar.zstd
+    - run: make build/artifacts/down/openssl1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/openssl1.tar.zstd
     - run: make -j13 build/rest.tar.zstd
     - run: mv build/rest.tar.zstd build/rest1.tar.zstd
     - run: make -j13 build/rest1.tar.zstd{artifact}
