@@ -60,6 +60,10 @@ $(BUILD)/lvm2.tar: $(call done,userspace/lvm2,install)
 	$(MKDIR) $(BUILD)/pearl/userspace
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
 
+$(BUILD)/wpa_supplicant.tar: $(call done,userspace/wpa_supplicant,install)
+	$(MKDIR) $(BUILD)/pearl/userspace
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
 $(BUILD)/rest.tar: $(call done,userspace,install)
 	$(MKDIR) $(BUILD)/pearl/userspace
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
