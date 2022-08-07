@@ -620,6 +620,7 @@ jobs:
     - run: touch done/linux/linux/build
     - run: touch done/linux/linux/install
     - run: rm -rf done/linux/checkout
+    - run: rm -rf done/gcc/checkout
     - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: make build/pearl1.tar.zstd{artifact}
