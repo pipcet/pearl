@@ -8,10 +8,10 @@ $(BUILD)/%.S: %.S ; $(COPY)
 $(BUILD)/include/snippet.h: host/snippet/snippet.h | $(BUILD)/include/ ; $(COPY)
 
 %.c.S: %.c $(BUILD)/include/snippet.h | $(call done,toolchain/gcc,gcc/install)
-	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) -I$(dir $<) -I$(BUILD)/host/macho-tools -I$(BUILD)/include -fno-builtin -ffunction-sections -march=armv8.5-a -Os -S -o $@ $<
+	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) $(CROSS_CFLAGS) -I$(dir $<) -I$(BUILD)/host/macho-tools -I$(BUILD)/include -fno-builtin -ffunction-sections -march=armv8.5-a -Os -S -o $@ $<
 
 %.S.elf: %.S | $(call done,toolchain/gcc,gcc/install)
-	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) -Os -static -march=armv8.5-a -nostdlib -o $@ $<
+	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(CROSS_CC) $(CROSS_CFLAGS) -Os -static -march=armv8.5-a -nostdlib -o $@ $<
 
 %.elf.bin: %.elf | $(call done,toolchain/gcc,gcc/install)
 	$(WITH_CROSS_PATH) $(CROSS_COMPILE)objcopy -O binary -S --only-section .pretext.0 --only-section .text --only-section .data --only-section .got --only-section .last --only-section .text.2 $< $@
