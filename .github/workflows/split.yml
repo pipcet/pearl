@@ -654,6 +654,8 @@ jobs:
     - run: touch done/linux/linux/configure
     - run: touch done/linux/linux/build
     - run: touch done/linux/linux/install
+    - run: touch --reference=done/linux/stage2/configure linux/stage2.config
+    - run: touch --reference=done/linux/linu/configure linux/linux.config
     - run: rm -rf done/linux/checkout
     - run: rm -rf done/gcc/checkout
     - run: make -j13 build/pearl.tar.zstd
