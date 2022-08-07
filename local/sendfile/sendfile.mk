@@ -4,7 +4,7 @@ $(BUILD)/host/sendfile/send-sendfile: local/sendfile/send-sendfile
 
 $(BUILD)/pearl/bin/receive-sendfile: local/sendfile/receive-sendfile.c | $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install)
 	$(MKDIR) $(dir $@)
-	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -static -Os -o $@ $<
+	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc $(CROSS_CFLAGS) -static -Os -o $@ $<
 
 %.image.sendfile: %.image %.modules %.dtb %.image.d/sendfile
 	$(MKDIR) $@.d
