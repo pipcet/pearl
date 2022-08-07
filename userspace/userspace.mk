@@ -52,6 +52,14 @@ $(BUILD)/openssl.tar: $(call done,userspace/openssl,install)
 	$(MKDIR) $(BUILD)/pearl/userspace
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
 
+$(BUILD)/busybox.tar: $(call done,userspace/busybox,install)
+	$(MKDIR) $(BUILD)/pearl/userspace
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
+$(BUILD)/lvm2.tar: $(call done,userspace/lvm2,install)
+	$(MKDIR) $(BUILD)/pearl/userspace
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+
 $(BUILD)/rest.tar: $(call done,userspace,install)
 	$(MKDIR) $(BUILD)/pearl/userspace
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
