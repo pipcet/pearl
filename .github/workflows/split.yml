@@ -499,7 +499,9 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/pearl1.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
-    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
+    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image
+    - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian1.image
+    - run: make -j13 build/pearl-debian1.image{artifact}
   video-uboot:
     name: video-uboot
     needs: [ toolchain, bootloaders, qemu ]
@@ -697,6 +699,27 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make --trace build/video/pearl.mp4{artifact}
+  video-pearl1:
+    name: video-pearl1
+    needs: [ pearl1, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/pearl1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl1.tar.zstd
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: make --trace build/video/pearl.mp4
+    - run: mv build/video/pearl.mp4 build/video/pearl1.mp4
+    - run: make --trace build/video/pearl1.mp4{artifact}
   video-debian:
     name: video-debian
     needs: [ toolchain, pearl-debian, qemu ]
@@ -717,3 +740,24 @@ jobs:
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make build/video/pearl-debian.mp4{artifact}
+  video-debian1:
+    name: video-debian1
+    needs: [ pearl-debian1, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/pearl-debian1.image{}
+    - run: mv build/artifacts/down/pearl-debian1.image build/pearl-debian-uncompressed.macho.zst.image
+    - run: make build/artifacts/down/qemu.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
+    - run: sudo apt-get install ffmpeg netpbm socat
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: make build/video/pearl-debian.mp4
+    - run: mv build/video/pearl-debian.mp4 build/video/pearl-debian1.mp4
+    - run: make build/video/pearl-debian1.mp4{artifact}
