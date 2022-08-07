@@ -94,6 +94,24 @@ jobs:
     - run: make -j13 build/emacs.tar.zstd
     - run: mv build/emacs.tar.zstd build/emacs1.tar.zstd
     - run: make -j13 build/emacs1.tar.zstd{artifact}
+  emacs:
+    name: emacs
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/emacs/install
+    - run: make -j13 build/emacs.tar.zstd{artifact}
   perl1:
     name: perl1
     runs-on: ubuntu-latest
@@ -114,6 +132,42 @@ jobs:
     - run: make -j13 build/perl.tar.zstd
     - run: mv build/perl.tar.zstd build/perl1.tar.zstd
     - run: make -j13 build/perl1.tar.zstd{artifact}
+  perl:
+    name: perl
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/perl/install
+    - run: make -j13 build/perl.tar.zstd{artifact}
+  openssl:
+    name: openssl
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/openssl/install
+    - run: make -j13 build/openssl.tar.zstd{artifact}
   openssl1:
     name: openssl1
     runs-on: ubuntu-latest
@@ -154,6 +208,42 @@ jobs:
     - run: make -j13 build/busybox.tar.zstd
     - run: mv build/busybox.tar.zstd build/busybox1.tar.zstd
     - run: make -j13 build/busybox1.tar.zstd{artifact}
+  busybox:
+    name: busybox
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/busybox/install
+    - run: make -j13 build/busybox.tar.zstd{artifact}
+  lvm2:
+    name: lvm2
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/lvm2/install
+    - run: make -j13 build/lvm2.tar.zstd{artifact}
   lvm21:
     name: lvm21
     runs-on: ubuntu-latest
@@ -174,6 +264,24 @@ jobs:
     - run: make -j13 build/lvm2.tar.zstd
     - run: mv build/lvm2.tar.zstd build/lvm21.tar.zstd
     - run: make -j13 build/lvm21.tar.zstd{artifact}
+  wpa_supplicant:
+    name: wpa_supplicant
+    runs-on: ubuntu-latest
+    needs: [ toolchain, glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make -j13 done/userspace/wpa_supplicant/install
+    - run: make -j13 build/wpa_supplicant.tar.zstd{artifact}
   wpa_supplicant1:
     name: wpa_supplicant1
     runs-on: ubuntu-latest
@@ -226,20 +334,36 @@ jobs:
     - run: make -j13 build/rest.tar.zstd
     - run: mv build/rest.tar.zstd build/rest1.tar.zstd
     - run: make -j13 build/rest1.tar.zstd{artifact}
-  linux:
-    name: linux
-    needs: toolchain
+  rest:
+    name: rest
     runs-on: ubuntu-latest
+    needs: [ toolchain, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant ]
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 build/linux.tar.zstd{artifact}
+    - run: rm -rf done/userspace/glibc/checkout
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make build/artifacts/down/emacs.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
+    - run: make build/artifacts/down/perl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
+    - run: make build/artifacts/down/openssl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
+    - run: make build/artifacts/down/busybox.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
+    - run: make build/artifacts/down/lvm2.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
+    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
+    - run: rm -rf build/userspace/util-linux done/userspace/util-linux
+    - run: make -j13 build/rest.tar.zstd{artifact}
   linux_image1:
     name: linux.image1
     runs-on: ubuntu-latest
@@ -391,7 +515,7 @@ jobs:
     - run: make build/bootloaders1.tar.zstd{artifact}
   pearl:
     name: pearl
-    needs: [ toolchain, linux, bootloaders, userspace ]
+    needs: [ toolchain, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -402,16 +526,47 @@ jobs:
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/artifacts/down/linux.tar.zstd{}
-    - run: tar -xf build/artifacts/down/linux.tar.zstd
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make build/artifacts/down/emacs.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
+    - run: make build/artifacts/down/perl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
+    - run: make build/artifacts/down/openssl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
+    - run: make build/artifacts/down/busybox.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
+    - run: make build/artifacts/down/lvm2.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
+    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
+    - run: make build/artifacts/down/rest.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/rest.tar.zstd
+    - run: mkdir -p build/linux
+    - run: make build/artifacts/down/linux.image.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
+    - run: make build/artifacts/down/linux.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.modules.zstd > build/linux/linux.modules
+    - run: make build/artifacts/down/stage2.image.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
+    - run: make build/artifacts/down/stage2.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/userspace.tar.zstd{}
-    - run: tar -xf build/artifacts/down/userspace.tar.zstd
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: make done/linux/checkout!
-    - run: make --trace -j13 build/pearl.tar.zstd{artifact}
+    - run: mkdir -p done/linux/stage2
+    - run: touch done/linux/stage2/copy
+    - run: touch done/linux/stage2/configure
+    - run: touch done/linux/stage2/build
+    - run: touch done/linux/stage2/install
+    - run: mkdir -p done/linux/linux
+    - run: touch done/linux/linux/copy
+    - run: touch done/linux/linux/configure
+    - run: touch done/linux/linux/build
+    - run: touch done/linux/linux/install
+    - run: rm -rf done/linux/checkout
+    - run: make -j13 build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
     needs: [ glibc1, emacs1, perl1, openssl1, busybox1, lvm21, wpa_supplicant1, rest1, linux_image1, linux_modules1, stage2_image1, stage2_modules1, bootloaders1 ]
@@ -470,7 +625,7 @@ jobs:
     - run: make build/pearl1.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
-    needs: [ toolchain, linux, bootloaders, userspace, pearl, debian ]
+    needs: [ toolchain, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders, pearl, debian ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -478,18 +633,61 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/artifacts/down/linux.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/linux.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/userspace.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/userspace.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make build/artifacts/down/glibc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make build/artifacts/down/emacs.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
+    - run: make build/artifacts/down/perl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
+    - run: make build/artifacts/down/openssl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
+    - run: make build/artifacts/down/busybox.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
+    - run: make build/artifacts/down/lvm2.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
+    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
+    - run: make build/artifacts/down/rest.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/rest.tar.zstd
+    - run: make build/artifacts/down/pearl.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
+    - run: make build/artifacts/down/debian.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
+    - run: mkdir -p build/linux
+    - run: make build/artifacts/down/linux.image.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
+    - run: make build/artifacts/down/linux.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.modules.zstd > build/linux/linux.modules
+    - run: make build/artifacts/down/stage2.image.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
+    - run: make build/artifacts/down/stage2.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
+    - run: make build/artifacts/down/bootloaders.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
+    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
+    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: mkdir -p done/linux/stage2
+    - run: touch done/linux/stage2/copy
+    - run: touch done/linux/stage2/configure
+    - run: touch done/linux/stage2/build
+    - run: touch done/linux/stage2/install
+    - run: mkdir -p done/linux/linux
+    - run: touch done/linux/linux/copy
+    - run: touch done/linux/linux/configure
+    - run: touch done/linux/linux/build
+    - run: touch done/linux/linux/install
+    - run: rm -rf done/linux/checkout
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
   pearl-debian1:
     name: pearl-debian1
