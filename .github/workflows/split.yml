@@ -511,6 +511,23 @@ jobs:
     - run: make build/artifacts/down/debian.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
+  pearl-debian1:
+    name: pearl-debian1
+    needs: [ pearl1, debian ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: make build/artifacts/down/pearl1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/pearl1.tar.zstd
+    - run: make build/artifacts/down/debian.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
+    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
   video-uboot:
     name: video-uboot
     needs: [ toolchain, bootloaders, qemu ]
