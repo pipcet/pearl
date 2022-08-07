@@ -2,13 +2,13 @@ $(BUILD)/dt/build/bin/dt: local/dt/dt | $(BUILD)/dt/build/bin/
 	$(COPY)
 
 $(BUILD)/dt/build/bin/adtdump: local/dt/adtdump.c | $(call done,userspace/glibc,glibc/install) $(BUILD)/dt/build/bin/
-	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
+	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc $(CROSS_CFLAGS) -Os -static -o $@ $<
 
 $(BUILD)/dt/build/bin/macho-version: local/dt/macho-version.c | $(call done,userspace/glibc,glibc/install) $(BUILD)/dt/build/bin/
-	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc -Os -static -o $@ $<
+	$(WITH_CROSS_PATH) $(CROSS_COMPILE)gcc $(CROSS_CFLAGS) -Os -static -o $@ $<
 
 $(BUILD)/dt/build/bin/adtp: local/dt/adtp.cc | $(call done,userspace/glibc,glibc/install) $(call done,toolchain/gcc,g++/install) $(BUILD)/dt/build/bin/
-	$(WITH_CROSS_PATH) $(CROSS_COMPILE)g++ -Os -static -o $@ $<
+	$(WITH_CROSS_PATH) $(CROSS_COMPILE)g++ $(CROSS_CFLAGS) -Os -static -o $@ $<
 
 $(BUILD)/dt.tar: $(BUILD)/dt/bin/dt $(BUILD)/dt/bin/adtdump
 	(cd $(BUILD)/dt; tar c bin/dt bin/adtdump) > $@
