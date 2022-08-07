@@ -41,9 +41,9 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-system-aarch64
     - run: make -j13 build/debian.tar.zstd{artifact}
-  userspace:
-    name: userspace
-    needs: toolchain
+  glibc:
+    name: glibc
+    needs: [ toolchain ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -56,10 +56,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
-    - run: make -j13 done/userspace/emacs/install
-    - run: make -j13 done/userspace/openssl/install
-    - run: make -j13 done/userspace/perl/install
-    - run: make -j13 build/userspace.tar.zstd{artifact}
+    - run: make -j13 build/glibc.tar.zstd{artifact}
   glibc1:
     name: glibc1
     runs-on: ubuntu-latest
