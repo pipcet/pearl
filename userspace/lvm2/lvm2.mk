@@ -1,10 +1,10 @@
 $(call done,userspace/lvm2,install): $(call done,userspace/lvm2,build)
-	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS) -I." LDFLAGS="-L$(BUILD)/pearl/install/lib" -C $(BUILD)/userspace/lvm2/build DESTDIR=$(call install,userspace/lvm2) install
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS) -I. -fPIC" LDFLAGS="-L$(BUILD)/pearl/install/lib" -C $(BUILD)/userspace/lvm2/build DESTDIR=$(call install,userspace/lvm2) install
 	$(INSTALL_LIBS) userspace/lvm2
 	$(TIMESTAMP)
 
 $(call done,userspace/lvm2,build): $(call done,userspace/lvm2,configure)
-	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS) -I." LDFLAGS="-L$(BUILD)/pearl/install/lib" -C $(BUILD)/userspace/lvm2/build
+	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS) -I. -fPIC" LDFLAGS="-L$(BUILD)/pearl/install/lib" -C $(BUILD)/userspace/lvm2/build
 	$(TIMESTAMP)
 
 $(call done,userspace/lvm2,configure): $(call done,userspace/lvm2,copy) | $(call deps,libaio libblkid glibc gcc)
