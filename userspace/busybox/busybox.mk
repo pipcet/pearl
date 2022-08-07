@@ -21,7 +21,7 @@ $(call done,userspace/busybox,build): $(call done,userspace/busybox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)"
 	$(TIMESTAMP)
 
-$(call done,userspace/busybox,configure): userspace/busybox/busybox.config $(call done,userspace/busybox,copy) | $(call deps,glibc gcc libgcc)
+$(call done,userspace/busybox,configure): $(call done,userspace/busybox,copy) | userspace/busybox/busybox.config $(call deps,glibc gcc libgcc)
 	$(CP) $< $(BUILD)/userspace/busybox/build/.config
 	yes "" | $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" oldconfig
 	$(TIMESTAMP)
