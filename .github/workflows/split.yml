@@ -452,7 +452,7 @@ jobs:
     - run: make --trace -j13 build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
-    needs: [ linux1, bootloaders1, userspace1 ]
+    needs: [ glibc1, emacs1, perl1, openssl1, busybox1, lvm21, wpa_supplicant1, rest1, linux1, bootloaders1 ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -463,12 +463,26 @@ jobs:
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/glibc1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/glibc1.tar.zstd
+    - run: make build/artifacts/down/emacs1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/emacs1.tar.zstd
+    - run: make build/artifacts/down/perl1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/perl1.tar.zstd
+    - run: make build/artifacts/down/openssl1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/openssl1.tar.zstd
+    - run: make build/artifacts/down/busybox1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/busybox1.tar.zstd
+    - run: make build/artifacts/down/lvm21.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/lvm21.tar.zstd
+    - run: make build/artifacts/down/wpa_supplicant1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant1.tar.zstd
+    - run: make build/artifacts/down/rest1.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/rest1.tar.zstd
     - run: make build/artifacts/down/linux1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/linux1.tar.zstd
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
-    - run: make build/artifacts/down/userspace1.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/userspace1.tar.zstd
     - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
