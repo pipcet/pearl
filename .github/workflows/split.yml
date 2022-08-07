@@ -457,6 +457,17 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: mkdir -p done/linux/stage2
+    - run: touch done/linux/stage2/copy
+    - run: touch done/linux/stage2/configure
+    - run: touch done/linux/stage2/build
+    - run: touch done/linux/stage2/install
+    - run: mkdir -p done/linux/linux
+    - run: touch done/linux/linux/copy
+    - run: touch done/linux/linux/configure
+    - run: touch done/linux/linux/build
+    - run: touch done/linux/linux/install
+    - run: rm -rf done/linux/checkout
     - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: make build/pearl1.tar.zstd{artifact}
