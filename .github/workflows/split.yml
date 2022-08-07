@@ -223,6 +223,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/busybox1.tar.zstd
     - run: make build/artifacts/down/lvm21.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/lvm21.tar.zstd
+    - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd
     - run: mv build/rest.tar.zstd build/rest1.tar.zstd
     - run: make -j13 build/rest1.tar.zstd{artifact}
