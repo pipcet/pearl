@@ -60,26 +60,6 @@ jobs:
     - run: make -j13 done/userspace/openssl/install
     - run: make -j13 done/userspace/perl/install
     - run: make -j13 build/userspace.tar.zstd{artifact}
-  userspace1:
-    name: userspace1
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make -j13 done/userspace/glibc/install
-    - run: make -j13 done/userspace/emacs/install
-    - run: make -j13 done/userspace/openssl/install
-    - run: make -j13 done/userspace/perl/install
-    - run: make -j13 build/userspace.tar.zstd
-    - run: mv build/userspace.tar.zstd build/userspace1.tar.zstd
-    - run: make -j13 build/userspace1.tar.zstd{artifact}
   glibc1:
     name: glibc1
     runs-on: ubuntu-latest
@@ -263,21 +243,6 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux.tar.zstd{artifact}
-  linux1:
-    name: linux1
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 build/linux.tar.zstd
-    - run: mv build/linux.tar.zstd build/linux1.tar.zstd
-    - run: make -j13 build/linux1.tar.zstd{artifact}
   linux_image1:
     name: linux.image1
     runs-on: ubuntu-latest
@@ -452,7 +417,7 @@ jobs:
     - run: make --trace -j13 build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
-    needs: [ glibc1, emacs1, perl1, openssl1, busybox1, lvm21, wpa_supplicant1, rest1, linux1, bootloaders1 ]
+    needs: [ glibc1, emacs1, perl1, openssl1, busybox1, lvm21, wpa_supplicant1, rest1, linux_image1, linux_modules1, stage2_image1, stage2_modules1, bootloaders1 ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -479,14 +444,21 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant1.tar.zstd
     - run: make build/artifacts/down/rest1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/rest1.tar.zstd
-    - run: make build/artifacts/down/linux1.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/linux1.tar.zstd
+    - run: mkdir -p build/linux
+    - run: make build/artifacts/down/linux.image1.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.image1.zstd{} > build/linux/linux.image
+    - run: make build/artifacts/down/linux.modules1.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.modules1.zstd{} > build/linux/linux.modules
+    - run: make build/artifacts/down/stage2.image1.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.image1.zstd{} > build/linux/stage2.image
+    - run: make build/artifacts/down/stage2.modules1.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.modules1.zstd{} > build/linux/stage2.modules
     - run: make build/artifacts/down/bootloaders1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders1.tar.zstd
-    - run: make -j13 build/pearl.tar.zstd
-    - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
+    - run: make -j13 build/pearl.tar.zstd
+    - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
     - run: make build/pearl1.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
