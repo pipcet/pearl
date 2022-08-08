@@ -33,6 +33,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make -j13 done/toolchain/gcc/checkout!
+    - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: make -j13 build/libgcc.tar.zstd{artifact}
   libgcc1:
