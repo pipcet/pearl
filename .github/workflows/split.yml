@@ -634,6 +634,7 @@ jobs:
     - run: make build/artifacts/down/rest1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/rest1.tar.zstd
     - run: mkdir -p build/linux
+    - run: make -j13 done/linux/checkout!
     - run: make build/artifacts/down/linux.image1.zstd{}
     - run: zstd -d < build/artifacts/down/linux.image1.zstd > build/linux/linux.image
     - run: make build/artifacts/down/linux.modules1.zstd{}
