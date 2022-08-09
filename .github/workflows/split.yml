@@ -643,8 +643,6 @@ jobs:
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
-    - run: touch --reference=done/linux/stage2/configure linux/stage2.config
-    - run: touch --reference=done/linux/linux/configure linux/linux.config
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
