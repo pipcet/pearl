@@ -72,6 +72,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get update
+    - run: sudo apt-get -y dist-upgrade
     - run: sudo apt-get install qemu-system-aarch64
     - run: make -j13 build/debian.tar.zstd{artifact}
   glibc:
