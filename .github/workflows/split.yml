@@ -659,7 +659,7 @@ jobs:
     - run: touch done/linux/linux/install
     - run: touch --reference=done/linux/stage2/configure linux/stage2.config
     - run: touch --reference=done/linux/linux/configure linux/linux.config
-    - run: rm -rf done/linux/checkout
+    - run: make -j13 done/linux/checkout!
     - run: rm -rf done/gcc/checkout
     - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
@@ -728,7 +728,7 @@ jobs:
     - run: touch done/linux/linux/configure
     - run: touch done/linux/linux/build
     - run: touch done/linux/linux/install
-    - run: rm -rf done/linux/checkout
+    - run: make -j13 done/linux/checkout!
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
   pearl-debian1:
     name: pearl-debian1
