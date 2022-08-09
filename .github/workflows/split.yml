@@ -594,7 +594,8 @@ jobs:
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
-    - run: rm -rf done/linux/checkout
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl.tar.zstd{artifact}
   pearl1:
     name: pearl1
@@ -626,7 +627,6 @@ jobs:
     - run: make build/artifacts/down/rest1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/rest1.tar.zstd
     - run: mkdir -p build/linux
-    - run: make -j13 done/linux/checkout!
     - run: make build/artifacts/down/linux.image1.zstd{}
     - run: zstd -d < build/artifacts/down/linux.image1.zstd > build/linux/linux.image
     - run: make build/artifacts/down/linux.modules1.zstd{}
@@ -644,6 +644,8 @@ jobs:
     - run: touch --reference=done/linux/stage2/configure linux/stage2.config
     - run: touch --reference=done/linux/linux/configure linux/linux.config
     - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
     - run: rm -rf done/gcc/checkout
     - run: make -j13 build/pearl.tar.zstd
     - run: mv build/pearl.tar.zstd build/pearl1.tar.zstd
