@@ -225,7 +225,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
-    - run: make -j13 build/linux/linux.image.zstd{artifact}
+    - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
   linux_modules:
     name: linux.modules
     runs-on: ubuntu-latest
@@ -239,7 +239,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
-    - run: make -j13 build/linux/linux.modules.zstd{artifact}
+    - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
   stage2_image:
     name: stage2.image
     runs-on: ubuntu-latest
@@ -253,7 +253,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
-    - run: make -j13 build/linux/stage2.image.zstd{artifact}
+    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
   stage2_modules:
     name: stage2.modules
     runs-on: ubuntu-latest
@@ -267,7 +267,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
-    - run: make -j13 build/linux/stage2.modules.zstd{artifact}
+    - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
   bootloaders:
     name: bootloaders
     runs-on: ubuntu-latest
@@ -330,7 +330,7 @@ jobs:
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
     - run: rm -rf done/gcc/checkout
-    - run: make -j13 build/pearl.tar.zstd{artifact}
+    - run: make -j13 --trace build/pearl.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
     needs: [ toolchain, pearl, debian ]
