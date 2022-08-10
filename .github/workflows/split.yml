@@ -596,6 +596,9 @@ jobs:
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
+    - run: mkdir -p done/linux/stage2
+    - run: mkdir -p done/linux/linux
+    - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl.tar.zstd{artifact}
@@ -727,7 +730,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl1.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
@@ -950,6 +953,11 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: mkdir -p done/linux/stage2
+    - run: mkdir -p done/linux/linux
+    - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
     - run: make --trace build/video/pearl.mp4
     - run: mv build/video/pearl.mp4 build/video/pearl1.mp4
     - run: make --trace build/video/pearl1.mp4{artifact}
