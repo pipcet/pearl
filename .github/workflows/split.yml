@@ -581,6 +581,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
     - run: make build/artifacts/down/rest.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/rest.tar.zstd
+    - run: make build/artifacts/down/libgcc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
     - run: mkdir -p build/linux
     - run: make build/artifacts/down/linux.image.zstd{}
     - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
@@ -729,6 +731,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl1.tar.zstd{}
