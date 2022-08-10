@@ -28,8 +28,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: make -j13 build/libgcc.tar.zstd{artifact}
   qemu:
@@ -67,8 +67,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
     - run: make -j13 build/glibc.tar.zstd{artifact}
@@ -83,8 +83,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -101,8 +101,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -119,8 +119,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -137,8 +137,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -155,8 +155,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -173,8 +173,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -191,8 +191,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/libgcc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
@@ -222,8 +222,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/linux.image.zstd{artifact}
   linux_modules:
@@ -236,8 +236,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/linux.modules.zstd{artifact}
   stage2_image:
@@ -250,8 +250,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/stage2.image.zstd{artifact}
   stage2_modules:
@@ -264,8 +264,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 build/linux/stage2.modules.zstd{artifact}
   bootloaders:
@@ -279,8 +279,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install autopoint lzop
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/bootloaders.tar.zstd{artifact}
   pearl:
     name: pearl
@@ -293,8 +293,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make build/artifacts/down/emacs.tar.zstd{}
@@ -342,8 +342,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
@@ -364,8 +364,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -385,8 +385,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -433,8 +433,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl-debian.image{}
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian-uncompressed.macho.zst.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
