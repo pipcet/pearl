@@ -144,7 +144,7 @@ $(BUILD)/linux.tar: $(call done,linux,stage2/build) $(call done,linux,linux/buil
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/stage2.image $(BUILD)/linux/stage2.modules $(BUILD)/linux/linux.image $(BUILD)/linux/linux.modules)
 
 $(BUILD)/pearl.tar: $(BUILD)/linux/pearl.image $(call done,linux,pearl/build)
-	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/pearl.image)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/pearl.image done)
 
 SECTARGETS += $(call done,linux,stage2/build)
 SECTARGETS += build/linux/stage2.image
