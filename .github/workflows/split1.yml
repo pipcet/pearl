@@ -329,7 +329,7 @@ jobs:
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
-    - run: touch done/linux/linux/configure done/linux/linux/install done/linux/stage2/configure done/linux/stage2/install
+    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install
     - run: rm -rf done/gcc/checkout
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
   pearl-debian:
@@ -424,7 +424,7 @@ jobs:
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/userspace/glibc/glibc/copy!
-    - run: touch done/linux/linux/configure done/linux/linux/install done/linux/stage2/configure done/linux/stage2/install done/linux/pearl/configure done/linux/pearl/install
+    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install done/linux/pearl/configure done/linux/pearl/build done/linux/pearl/install
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
