@@ -420,8 +420,8 @@ jobs:
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
-    - run: make -j13 done/glibc/checkout!
-    - run: make -j13 done/glibc/glibc/copy!
+    - run: make -j13 done/userspace/glibc/checkout!
+    - run: make -j13 done/userspace/glibc/glibc/copy!
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
@@ -439,8 +439,8 @@ jobs:
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian-uncompressed.macho.zst.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
-    - run: make done/glibc/checkout!
-    - run: make done/glibc/glibc/copy!
+    - run: make done/userspace/glibc/checkout!
+    - run: make done/userspace/glibc/glibc/copy!
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
