@@ -424,6 +424,7 @@ jobs:
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/userspace/glibc/glibc/copy!
+    - run: touch done/linux/linux/configure done/linux/linux/install done/linux/stage2/configure done/linux/stage2/install done/linux/pearl/configure done/linux/pearl/install
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
