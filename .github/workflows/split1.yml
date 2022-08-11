@@ -341,7 +341,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin lzop
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
@@ -353,7 +353,7 @@ jobs:
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image
     - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian.image
-    - run: make -j13 build/pearl-debian.image{artifact}
+    - run: make -j13 --trace build/pearl-debian.image{artifact}
   video-uboot:
     name: video-uboot
     needs: [ toolchain, bootloaders, qemu ]
@@ -374,7 +374,7 @@ jobs:
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
-    - run: make build/video/u-boot.mp4{artifact}
+    - run: make -j13 --trace build/video/u-boot.mp4{artifact}
   video-barebox:
     name: video-barebox
     needs: [ toolchain, bootloaders, qemu ]
@@ -395,7 +395,7 @@ jobs:
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
-    - run: make build/video/barebox.mp4{artifact}
+    - run: make -j13 --trace build/video/barebox.mp4{artifact}
   video-pearl:
     name: video-pearl
     needs: [ toolchain, pearl, qemu ]
@@ -422,7 +422,7 @@ jobs:
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 done/glibc/checkout!
     - run: make -j13 done/glibc/glibc/copy!
-    - run: make --trace build/video/pearl.mp4{artifact}
+    - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
     needs: [ toolchain, pearl-debian, qemu ]
@@ -439,6 +439,8 @@ jobs:
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian-uncompressed.macho.zst.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
+    - run: make done/glibc/checkout!
+    - run: make done/glibc/glibc/copy!
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
-    - run: make build/video/pearl-debian.mp4{artifact}
+    - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
