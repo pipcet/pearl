@@ -354,7 +354,7 @@ jobs:
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
-    - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image
+    - run: make -j13 --trace build/pearl-debian-uncompressed.macho.zst.image
     - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian.image
     - run: make -j13 --trace build/pearl-debian.image{artifact}
   video-uboot:
