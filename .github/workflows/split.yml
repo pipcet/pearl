@@ -581,6 +581,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
     - run: make build/artifacts/down/rest.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/rest.tar.zstd
+    - run: make build/artifacts/down/libgcc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
     - run: mkdir -p build/linux
     - run: make build/artifacts/down/linux.image.zstd{}
     - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
@@ -596,6 +598,9 @@ jobs:
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
+    - run: mkdir -p done/linux/stage2
+    - run: mkdir -p done/linux/linux
+    - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl.tar.zstd{artifact}
@@ -643,8 +648,6 @@ jobs:
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
-    - run: touch --reference=done/linux/stage2/configure linux/stage2.config
-    - run: touch --reference=done/linux/linux/configure linux/linux.config
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
@@ -654,7 +657,7 @@ jobs:
     - run: make build/pearl1.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
-    needs: [ toolchain, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders, pearl, debian ]
+    needs: [ toolchain, libgcc, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders, pearl, debian ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -685,6 +688,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
     - run: make build/artifacts/down/lvm2.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
+    - run: make build/artifacts/down/libgcc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
     - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
     - run: make build/artifacts/down/rest.tar.zstd{}
@@ -706,17 +711,9 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: mkdir -p done/linux/stage2
-    - run: touch done/linux/stage2/copy
-    - run: touch done/linux/stage2/configure
-    - run: touch done/linux/stage2/build
-    - run: touch done/linux/stage2/install
-    - run: mkdir -p done/linux/linux
-    - run: touch done/linux/linux/copy
-    - run: touch done/linux/linux/configure
-    - run: touch done/linux/linux/build
-    - run: touch done/linux/linux/install
     - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image{artifact}
   pearl-debian1:
     name: pearl-debian1
@@ -728,12 +725,16 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/released/pipcet/pearl-toolchain/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl1.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl1.tar.zstd
     - run: make build/artifacts/down/debian.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
+    - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
     - run: make -j13 build/pearl-debian-uncompressed.macho.zst.image
     - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian1.image
     - run: make -j13 build/pearl-debian1.image{artifact}
@@ -925,6 +926,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
@@ -933,6 +935,11 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
+    - run: make -j13 done/glibc/checkout!
+    - run: make -j13 done/glibc/glibc/copy!
     - run: make --trace build/video/pearl.mp4{artifact}
   video-pearl1:
     name: video-pearl1
@@ -944,6 +951,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl1.tar.zstd{}
@@ -952,6 +960,13 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: mkdir -p done/linux/stage2
+    - run: mkdir -p done/linux/linux
+    - run: make -j13 done/linux/checkout!
+    - run: make -j13 done/linux/stage2/copy!
+    - run: make -j13 done/linux/linux/copy!
+    - run: make -j13 done/glibc/checkout!
+    - run: make -j13 done/glibc/glibc/copy!
     - run: make --trace build/video/pearl.mp4
     - run: mv build/video/pearl.mp4 build/video/pearl1.mp4
     - run: make --trace build/video/pearl1.mp4{artifact}
