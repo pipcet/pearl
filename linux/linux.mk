@@ -74,16 +74,16 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 $(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(call done,linux,pearl/build)
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
+$(BUILD)/linux/%.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j313.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
+$(BUILD)/linux/%-j313.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
 
-$(BUILD)/linux/%-j293.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
+$(BUILD)/linux/%-j293.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j274.dtb: $(BUILD)/linux/%.config $(call done,linux,%/build)
+$(BUILD)/linux/%-j274.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
 
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
