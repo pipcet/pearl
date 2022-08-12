@@ -15,7 +15,7 @@ $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
-$(BUILD)/linux/%.image: $(BUILD)/linux/%.config $(call done,linux,%/build)
+$(BUILD)/linux/%.image: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) --reflink=auto $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
 
 $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
@@ -71,7 +71,7 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
 
-$(BUILD)/linux/pearl.dtb: $(BUILD)/linux/pearl.config $(call done,linux,pearl/build)
+$(BUILD)/linux/pearl.dtb: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
 $(BUILD)/linux/%.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
@@ -112,13 +112,13 @@ $(call done,linux,%/build): $(call done,linux,%/configure)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) dtbs
 	$(TIMESTAMP)
 
-$(call done,linux,%/configure): $(BUILD)/linux/%.config $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install)
-	$(CP) $< $(BUILD)/linux/$*/build/.config
+$(call done,linux,%/configure): $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install) $(BUILD)/linux/%.config
+	$(CP) $(BUILD)/linux/$*.config $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(TIMESTAMP)
 
-linux/%{menuconfig}: linux/%.config $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install)
-	$(CP) $< $(BUILD)/linux/$*/build/.config
+linux/%{menuconfig}: $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install) linux/%.config
+	$(CP) linux/$*.config $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) menuconfig
 	$(CP) $(BUILD)/linux/$*/build/.config $<
 
