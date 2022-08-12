@@ -426,6 +426,15 @@ jobs:
     - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/userspace/glibc/glibc/copy!
     - run: mkdir -p done/linux/pearl
+    - run: mkdir -p build/linux
+    - run: make build/artifacts/down/linux.image.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
+    - run: make build/artifacts/down/linux.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/linux.modules.zstd > build/linux/linux.modules
+    - run: make build/artifacts/down/stage2.image.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
+    - run: make build/artifacts/down/stage2.modules.zstd{}
+    - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
     - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install done/linux/pearl/configure done/linux/pearl/build done/linux/pearl/install
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
