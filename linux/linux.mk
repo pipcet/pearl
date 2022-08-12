@@ -103,7 +103,7 @@ $(call done,linux,debian/build): $(BUILD)/linux/debian.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-$(BUILD)/linux/%.modules: $(call done,linux,%/build)
+$(BUILD)/linux/%.modules: $(call done,linux,%/configure)
 	rm -rf $@.d
 	$(MKDIR) $@.d
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
