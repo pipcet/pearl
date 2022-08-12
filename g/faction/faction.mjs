@@ -7,6 +7,8 @@ let {jobs} = await read(".github/workflows/split1.yml");
 for (let jobname in jobs) {
     let job = jobs[jobname];
     let sh = "";
+    sh += "#!/bin/bash -x\n";
+    sh += "set -e\n";
     sh += "mkdir -p $FACTION/" + jobname + "\n";
     sh += "cd $FACTION/" + jobname + "\n";
 

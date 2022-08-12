@@ -12,9 +12,10 @@ $(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
-	@touch $@
+	@touch $(patsubst %{},%,$@)
 
 $(BUILD)/artifacts{push}:
+	$(MKDIR) $(FACTION)/artifacts
 	(cd $(BUILD)/artifacts/up; for file in *; do name=$$(basename "$$file"); $(CP) $$file $(FACTION)/artifacts/$$name; done)
 
 $(BUILD)/%{artifact}: $(BUILD)/%
