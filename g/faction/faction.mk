@@ -7,12 +7,12 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/
 	ls -l $@
 
 $(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/
-	$(CP) $(FACTION)/artifacts/$* $@
+	$(CP) $(FACTION)/artifacts/$* $(patsubst %{},%,$@)
 	ls -l $@
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
-	@touch $(patsubst %{},%,$@)
+	@touch $@
 
 $(BUILD)/artifacts{push}:
 	$(MKDIR) $(FACTION)/artifacts
