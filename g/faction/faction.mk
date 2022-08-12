@@ -8,7 +8,7 @@ $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/
 
 $(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/
 	$(CP) $(FACTION)/artifacts/$* $(patsubst %{},%,$@)
-	ls -l $@
+	ls -l $(patsubst %{},%,$@)
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
