@@ -54,7 +54,7 @@ $(call done,bootloaders/u-boot,build): $(call done,bootloaders/u-boot,configure)
 	$(TIMESTAMP)
 
 $(call done,bootloaders/u-boot,configure): $(call done,bootloaders/u-boot,copy) | bootloaders/u-boot/u-boot.config $(call done,toolchain/gcc,gcc/install)
-	$(CP) $< $(BUILD)/bootloaders/u-boot/build/.config
+	$(CP) bootloaders/u-boot/u-boot.config $(BUILD)/bootloaders/u-boot/build/.config
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE) oldconfig
 	$(TIMESTAMP)
 
