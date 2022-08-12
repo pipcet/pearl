@@ -329,7 +329,7 @@ jobs:
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
     - run: make -j13 done/linux/linux/copy!
-    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install build/linux/linux.image build/linux/linux.modules build/linux/stage2.image build/linux/stage2.modules
+    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install build/linux/linux.image build/linux/linux.modules build/linux/stage2.image build/linux/stage2.modules build/linux/*.dtb
     - run: rm -rf done/gcc/checkout
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
