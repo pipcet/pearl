@@ -312,7 +312,7 @@ jobs:
     - run: make build/bootloaders.tar.zstd{artifact}
   pearl:
     name: pearl
-    needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
+    needs: [ rest, linux_image, linux_modules, linux_dtbs, stage2_image, stage2_modules, stage2_dtbs, bootloaders ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
