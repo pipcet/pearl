@@ -87,7 +87,11 @@ include bootloaders/bootloaders.mk
 
 include debian/debian.mk
 
+ifeq ($(FACTION),)
 include g/github/github.mk
+else
+include g/faction/faction.mk
+endif
 
 include blobs/blobs.mk
 
