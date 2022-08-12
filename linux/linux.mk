@@ -87,7 +87,7 @@ $(BUILD)/linux/%-j274.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
 
 $(BUILD)/linux/%.dtbs: $(BUILD)/linux/%.dtb $(BUILD)/linux/%-j313.dtb $(BUILD)/linux/%-j293.dtb $(BUILD)/linux/%-j274.dtb
-	tar -cvf $@ -C $(BUILD) $(patsubst $(BUILD)/%,%,$^)
+	tar -C . -cvf $@ $(patsubst $(BUILD)/%,%,$^)
 
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
