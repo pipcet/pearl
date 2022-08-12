@@ -75,7 +75,7 @@ jobs:
   emacs:
     name: emacs
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -93,7 +93,7 @@ jobs:
   perl:
     name: perl
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -111,7 +111,7 @@ jobs:
   openssl:
     name: openssl
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -129,7 +129,7 @@ jobs:
   busybox:
     name: busybox
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -147,7 +147,7 @@ jobs:
   lvm2:
     name: lvm2
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -165,7 +165,7 @@ jobs:
   wpa_supplicant:
     name: wpa_supplicant
     runs-on: ubuntu-latest
-    needs: [ toolchain, glibc ]
+    needs: [ glibc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -183,7 +183,7 @@ jobs:
   rest:
     name: rest
     runs-on: ubuntu-latest
-    needs: [ toolchain, libgcc, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant ]
+    needs: [ libgcc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -284,7 +284,7 @@ jobs:
     - run: make build/bootloaders.tar.zstd{artifact}
   pearl:
     name: pearl
-    needs: [ toolchain, glibc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
+    needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -335,7 +335,7 @@ jobs:
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
-    needs: [ toolchain, pearl, debian ]
+    needs: [ pearl, debian ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -359,7 +359,7 @@ jobs:
     - run: make -j13 --trace build/pearl-debian.image{artifact}
   video-uboot:
     name: video-uboot
-    needs: [ toolchain, bootloaders, qemu ]
+    needs: [ bootloaders, qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -380,7 +380,7 @@ jobs:
     - run: make -j13 --trace build/video/u-boot.mp4{artifact}
   video-barebox:
     name: video-barebox
-    needs: [ toolchain, bootloaders, qemu ]
+    needs: [ bootloaders, qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -401,7 +401,7 @@ jobs:
     - run: make -j13 --trace build/video/barebox.mp4{artifact}
   video-pearl:
     name: video-pearl
-    needs: [ toolchain, pearl, qemu ]
+    needs: [ pearl, qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -439,7 +439,7 @@ jobs:
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
   video-debian:
     name: video-debian
-    needs: [ toolchain, pearl-debian, qemu ]
+    needs: [ pearl-debian, qemu ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
