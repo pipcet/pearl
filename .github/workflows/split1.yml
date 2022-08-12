@@ -240,6 +240,20 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
+  linux_dtbs:
+    name: linux.dtbs
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
   stage2_image:
     name: stage2.image
     runs-on: ubuntu-latest
@@ -268,6 +282,20 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
+  stage2_dtbs:
+    name: stage2.dtbs
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/artifacts/down/toolchain.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
   bootloaders:
     name: bootloaders
     runs-on: ubuntu-latest
@@ -320,6 +348,10 @@ jobs:
     - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
     - run: make build/artifacts/down/stage2.modules.zstd{}
     - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
+    - run: make build/artifacts/down/linux.dtbs.zstd{}
+    - run: tar -xf build/artifacts/down/linux.dtbs.zstd
+    - run: make build/artifacts/down/stage2.dtbs.zstd{}
+    - run: tar -xf build/artifacts/down/stage2.dtbs.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
