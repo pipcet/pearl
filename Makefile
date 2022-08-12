@@ -177,6 +177,12 @@ build/pearl.pl:
 build/qemu.tar:
 	$(MAKE) $(PWD)/build/qemu.tar
 
+build/linux/linux.dtbs:
+	$(MAKE) $(PWD)/build/linux/linux.dtbs
+
+build/linux/stage2.dtbs:
+	$(MAKE) $(PWD)/build/linux/stage2.dtbs
+
 $(BUILD)/pearl-old.pl: $(BUILD)/kmutil-script $(BUILD)/pearl-debian.macho host/pack/pack.pl recovery/bin/readline.pm
 	perl host/pack/pack.pl $(BUILD)/kmutil-script recovery/bin/readline.pm $(BUILD)/pearl-debian.macho host/pack/pack.bash > $@
 
