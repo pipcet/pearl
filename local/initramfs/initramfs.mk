@@ -8,7 +8,7 @@ $(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec $(call done,us
 	@(cat $<; (ls $(wordlist 4,$(words $^),$^); find $(BUILD)/pearl/install/ -type f -o -type l) | LC_ALL=C perl local/initramfs/build-cpiospec.pl $(BUILD)/pearl/install $(BUILD)/initramfs/pearl) > $@
 
 $(BUILD)/initramfs/%.cpio: $(BUILD)/initramfs/%.cpiospec | $(call done,linux,checkout) $(BUILD)/initramfs/
-	(cd $(BUILD)/linux/linux/build/; ./usr/gen_initramfs.sh -o $@ $<)
+	(cd $(BUILD)/linux/pearl/build/; ./usr/gen_initramfs.sh -o $@ $<)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2.image
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/stage2.dtb
