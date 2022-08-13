@@ -71,19 +71,19 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
 
-$(BUILD)/linux/pearl.dtb: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
+$(BUILD)/linux/pearl.dtb: | $(call done,linux,pearl/build) $(BUILD)/linux/pearl.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
+$(BUILD)/linux/%.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j313.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
+$(BUILD)/linux/%-j313.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
 
-$(BUILD)/linux/%-j293.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
+$(BUILD)/linux/%-j293.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j274.dtb: $(call done,linux,%/build) | $(BUILD)/linux/%.config
+$(BUILD)/linux/%-j274.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
 
 $(BUILD)/linux/%.dtbs: $(BUILD)/linux/%.dtb $(BUILD)/linux/%-j313.dtb $(BUILD)/linux/%-j293.dtb $(BUILD)/linux/%-j274.dtb
