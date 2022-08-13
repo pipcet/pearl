@@ -2,9 +2,9 @@ name: split1
 on:
   workflow_dispatch:
   push:
-    branches: [ split, split1 ]
+    branches: [ split1 ]
   pull_request:
-    branches: [ split, split1 ]
+    branches: [ split1 ]
 jobs:
   toolchain:
     name: toolchain
