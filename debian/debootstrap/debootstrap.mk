@@ -65,16 +65,10 @@ $(BUILD)/debian/installer: debian/injected/bin/installer
 	$(CP) $< $@
 	chmod u+x $@
 
-$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
-	$(MKDIR) $(BUILD)/debian/cpio.d
-	(cd $(BUILD)/debian/cpio.d; sudo cpio -id) < $<
-	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/cpio.d
-	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/cpio.d/bin
-	sudo chown 'root:root' $(BUILD)/debian/cpio.d
-	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
-	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
+$(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio
+	$(COPY)
 
-$(BUILD)/dplusi.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
+$(BUILD)/dplusi.cpio: $(BUILD)/debian.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
 	$(MKDIR) $(BUILD)/debian/dplusi.d
 	(cd $(BUILD)/debian/dplusi.d; sudo cpio -id) < $<
 	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/dplusi.d
