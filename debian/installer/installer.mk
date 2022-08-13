@@ -23,6 +23,7 @@ $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | 
 	echo "apt-get -y build-dep debian-installer netcfg libdebian-installer user-setup-udeb nobootloader preseed preseed-common network-preseed file-preseed initrd-preseed env-preseed user-setup-udeb"; \
 	echo "apt-get -y install ca-certificates myrepos"; \
 	echo "apt-get -y clean"; \
+	echo "mknod /dev/vdb b 254 16"; \
 	echo "cd /root; uudecode -o sources.cpio < /dev/vdb"; \
 	echo "cd /root; cpio -id < sources.cpio"; \
 	echo "cd /root; tar xvf debian-installer.tar"; \
