@@ -17,8 +17,7 @@ jobs:
       uses: ./g/github/env/
       env:
         RELEASED_ARTIFACTS: toolchain
-    - run: make -j13 build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{}
-    - run: make -j13 build/released/pipcet/pearl-toolchain/toolchain.tar.zstd{artifact}
+    - run: make -j13 build/toolchain.tar.zstd{artifact}
   libgcc:
     name: libgcc
     runs-on: ubuntu-latest
