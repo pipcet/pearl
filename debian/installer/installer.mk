@@ -4,7 +4,7 @@ $(BUILD)/debian/installer/debian-installer.tar:
 	(cd $(BUILD)/debian/installer/debian-installer; git clone https://github.com/pipcet/debian-installer)
 	tar -C $(BUILD)/debian/installer -cf $@ debian-installer/
 
-$(BUILD)/debian/installer/packages/%.udeb:
+$(BUILD)/debian/installer/packages/%.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-$*/releases/latest/download/$*.udeb
 
 $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup-udeb netcfg-static nobootloader libdebian-installer4-udeb)
