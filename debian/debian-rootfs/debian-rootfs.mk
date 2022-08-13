@@ -73,7 +73,7 @@ $(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/debian-rootfs
 	echo "apt-get -y clean"; \
 	echo "cd /; find / -xdev | cpio -H newc -o | uuencode root2.cpio > /dev/vda") > $@
 
-ifeq ($(filter rootfs,$(RELEASED_ARTIFACTS),))
+ifeq ($(filter rootfs,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root1.cpio.gz $(BUILD)/debian/debian-rootfs/root2-script.bash | $(BUILD)/
 	dd if=/dev/zero of=tmp bs=1G count=2
 	uuencode script.bash < $(BUILD)/debian/debian-rootfs/root2-script.bash | dd of=tmp conv=notrunc
