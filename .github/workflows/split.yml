@@ -64,6 +64,7 @@ jobs:
   debian:
     name: debian
     runs-on: ubuntu-latest
+    needs: [ rootfs ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -73,6 +74,10 @@ jobs:
     - run: sudo apt-get update
     - run: sudo apt-get -y dist-upgrade
     - run: sudo apt-get install qemu-system-aarch64
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
+    - run: touch build/qemu-kernel build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
     - run: make -j13 build/debian.tar.zstd{artifact}
   glibc:
     name: glibc
