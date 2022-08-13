@@ -28,11 +28,11 @@ $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | 
 	echo "cd /root; tar xvf debian-installer.tar"; \
 	echo "cd /root; tar xvf packages.tar"; \
 	echo "cd /root/debian-installer; mr checkout"; \
-	echo "cd /root: cp partman-auto.udeb debian-installer/packages"; \
-	echo "cd /root: cp user-setup-udeb.udeb debian-installer/packages"; \
-	echo "cd /root: cp netcfg-static.udeb debian-installer/packages"; \
-	echo "cd /root: cp nobootloader.udeb debian-installer/packages"; \
-	echo "cd /root: cp libdebian-installer4-udeb.udeb debian-installer/packages"; \
+	echo "cd /root; cp partman-auto.udeb debian-installer/packages"; \
+	echo "cd /root; cp user-setup-udeb.udeb debian-installer/packages"; \
+	echo "cd /root; cp netcfg-static.udeb debian-installer/packages"; \
+	echo "cd /root; cp nobootloader.udeb debian-installer/packages"; \
+	echo "cd /root; cp libdebian-installer4-udeb.udeb debian-installer/packages"; \
 	echo "mkdir -p /root/debian-installer/installer/build/localudebs/"; \
 	echo "cp /root/debian-installer/packages/*.udeb /root/debian-installer/installer/build/localudebs/"; \
 	echo "rm -rf /root/debian-installer/packages"; \
