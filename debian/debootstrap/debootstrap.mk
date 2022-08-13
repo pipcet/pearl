@@ -39,12 +39,12 @@ $(BUILD)/debian/debootstrap/stage15.cpio: $(BUILD)/debian/debootstrap/stage15.ta
 $(BUILD)/debian/root1.cpio.gz: | $(BUILD)/debian/
 	wget -O $@ https://github.com/pipcet/debian-rootfs/releases/latest/download/root1.cpio.gz
 
-$(BUILD)/debian/debootstrap/stage2.cpio: $(BUILD)/debian/debootstrap/stage2.bash $(BUILD)/debian/debootstrap/stage15.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/root1.cpio.gz
+$(BUILD)/debian/debootstrap/stage2.cpio: $(BUILD)/debian/debootstrap/stage2.bash $(BUILD)/debian/debootstrap/stage15.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz
 	dd if=/dev/zero of=tmp bs=128M count=1
 	(uuencode script < $(BUILD)/debian/debootstrap/stage2.bash) | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=2
 	(uuencode root1 < $(BUILD)/debian/debootstrap/stage15.cpio) | dd conv=notrunc of=tmp2
-	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/root1.cpio.gz -nic user,model=virtio -monitor none -nographic
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $@ < tmp2
 
 $(BUILD)/debian/full-installer.cpio.gz: | $(BUILD)/debian/
