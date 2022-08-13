@@ -113,7 +113,7 @@ jobs:
       uses: ./g/github/env/
     - run: make -j13 --trace build/debian/installer/partman-auto.udeb.zstd{artifact}
   debian-user-setup:
-    name: debian-nobootloader
+    name: debian-user-setup
     runs-on: ubuntu-latest
     needs: [ rootfs ]
     steps:
@@ -135,7 +135,7 @@ jobs:
       uses: ./g/github/env/
     - run: make -j13 --trace build/debian/installer/netcfg-static.udeb.zstd{artifact}
   debian-libdebian-installer:
-    name: debian-nobootloader
+    name: debian-libdebian-installer
     runs-on: ubuntu-latest
     needs: [ rootfs ]
     steps:
