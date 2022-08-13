@@ -74,7 +74,19 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/in
 	sudo ln -sf sbin/init $(BUILD)/debian/cpio.d/init
 	(cd $(BUILD)/debian/cpio.d; sudo find | sudo cpio -o -H newc) > $@
 
+$(BUILD)/dplusi.cpio: $(BUILD)/debian/debootstrap/stage2.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
+	$(MKDIR) $(BUILD)/debian/dplusi.d
+	(cd $(BUILD)/debian/dplusi.d; sudo cpio -id) < $<
+	sudo cp $(BUILD)/debian/installer.cpio $(BUILD)/debian/dplusi.d
+	sudo cp $(BUILD)/debian/installer $(BUILD)/debian/dplusi.d/bin
+	sudo chown 'root:root' $(BUILD)/debian/dplusi.d
+	sudo ln -sf sbin/init $(BUILD)/debian/dplusi.d/init
+	(cd $(BUILD)/debian/dplusi.d; sudo find | sudo cpio -o -H newc) > $@
+
 $(BUILD)/debian.tar: $(BUILD)/debian.cpio
+	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$<)
+
+$(BUILD)/dplusi.tar: $(BUILD)/dplusi.cpio
 	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$<)
 
 $(BUILD)/debian/di-debootstrap.cpio: | $(BUILD)/debian/
