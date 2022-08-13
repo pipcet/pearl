@@ -16,7 +16,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
       env:
-        RELEASED_ARTIFACTS: toolchain rootfs
+        RELEASED_ARTIFACTS: &ARTs toolchain rootfs
     - run: make -j13 build/toolchain.tar.zstd{artifact}
   libgcc:
     name: libgcc
@@ -28,6 +28,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -42,6 +44,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install meson ninja-build
     - run: make -j13 build/qemu.tar.zstd{artifact}
   debian:
@@ -53,6 +57,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get update
     - run: sudo apt-get -y dist-upgrade
     - run: sudo apt-get install qemu-system-aarch64
@@ -67,6 +73,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -83,6 +91,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -101,6 +111,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -119,6 +131,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -137,6 +151,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -155,6 +171,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -173,6 +191,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -191,6 +211,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -223,6 +245,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
@@ -238,6 +262,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
@@ -252,6 +278,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
@@ -267,6 +295,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
@@ -281,6 +311,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install autopoint lzop
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -295,6 +327,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -350,6 +384,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get update
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin lzop qemu-system-aarch64
     - run: make build/artifacts/down/toolchain.tar.zstd{}
@@ -397,6 +433,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
@@ -418,6 +456,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
@@ -439,6 +479,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: sudo apt-get install libipc-run-perl libfile-slurp-perl device-tree-compiler qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin lzop
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
@@ -476,6 +518,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+      env:
+        RELEASED_ARTIFACTS: *ARTs
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl-debian.image{}
