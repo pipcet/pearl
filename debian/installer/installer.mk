@@ -26,7 +26,7 @@ $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | 
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "cd /root; uudecode -o sources.cpio < /dev/vdb"; \
 	echo "cd /root; cpio -id < sources.cpio"; \
-	echo "cd /root; tar xvf debian-installer.tar"; \
+	echo "cd /root; tar xf debian-installer.tar"; \
 	echo "cd /root; tar xvf packages.tar"; \
 	echo "cd /root/debian-installer; mr checkout"; \
 	echo "cd /root; cp partman-auto.udeb debian-installer/packages"; \
