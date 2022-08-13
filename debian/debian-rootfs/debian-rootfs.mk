@@ -81,6 +81,6 @@ $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/d
 	uudecode -o $@ < tmp
 	rm -f tmp
 else
-$(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/released/pipcet/debian-rootfs/root1.cpio.gz{}
+$(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/released/pipcet/debian-rootfs/root1.cpio.gz{} | $(BUILD)/debian/debian-rootfs/
 	gunzip < $(BUILD)/released/pipcet/debian-rootfs/root1.cpio.gz > $@
 endif
