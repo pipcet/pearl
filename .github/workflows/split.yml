@@ -17,8 +17,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 toolchain/binutils-gdb/binutils-gdb{checkout} toolchain/gcc/gcc{checkout} userspace/glibc/glibc{checkout} linux/linux{checkout}
-    - run: make -j13 done/toolchain/binutils-gdb/install done/linux/headers/install done/userspace/glibc/headers/install done/toolchain/gcc/gcc/install
     - run: make -j13 build/toolchain.tar.zstd{artifact}
   libgcc:
     name: libgcc
