@@ -5,6 +5,8 @@ on:
     branches: [ split ]
   pull_request:
     branches: [ split ]
+env:
+  BUILDER: 1
 jobs:
   toolchain:
     name: toolchain
