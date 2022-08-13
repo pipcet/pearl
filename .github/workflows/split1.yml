@@ -89,7 +89,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: true
+    - run: make -j13 --trace build/debian/installer/netboot-initrd.cpio.gz{artifact}
   glibc:
     name: glibc
     runs-on: ubuntu-latest
