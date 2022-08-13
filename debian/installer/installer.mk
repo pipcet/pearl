@@ -21,10 +21,10 @@ $(BUILD)/debian/installer/script.bash: | $(BUILD)/debian/installer/
 	echo "cd /root/debian-installer/installer/build; make build_netboot-gtk"; \
 	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz > /dev/vda") > $@
 
-$(BUILD)/debian/installer/netboot.tar.gz: $(BUILD)/debian/installer/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/rootfs/root2.cpio.gz | $(BUILD)/debian/installer/
+$(BUILD)/debian/installer/netboot.tar.gz: $(BUILD)/debian/installer/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/rootfs/root2.cpio.gz | $(BUILD)/debian/installer/ $(patsubst %,builder/packages/%{},qemu-system-aarch64 sharutils)
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
-	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/rootfs/root3.cpio.gz -nic user,model=virtio -monitor none -smp 8 -nographic
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $@ < tmp
 	rm -f tmp
 
