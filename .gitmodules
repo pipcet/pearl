@@ -132,3 +132,18 @@
 [submodule "debian/installer/debian-installer"]
 	path = debian/installer/debian-installer
 	url = https://github.com/pipcet/debian-installer
+[submodule "debian/installer/debian-nobootloader"]
+	path = debian/installer/debian-nobootloader
+	url = https://github.com/pipcet/debian-nobootloader
+[submodule "debian/installer/debian-partman-auto"]
+	path = debian/installer/debian-partman-auto
+	url = https://github.com/pipcet/debian-partman-auto
+[submodule "debian/installer/debian-user-setup"]
+	path = debian/installer/debian-user-setup
+	url = https://github.com/pipcet/debian-user-setup
+[submodule "debian/installer/debian-netcfg"]
+	path = debian/installer/debian-netcfg
+	url = https://github.com/pipcet/debian-netcfg
+[submodule "debian/installer/debian-libdebian-installer"]
+	path = debian/installer/debian-libdebian-installer
+	url = https://github.com/pipcet/debian-libdebian-installer
