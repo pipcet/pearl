@@ -1,3 +1,6 @@
+%.gz: %
+	gzip < $< > $@
+
 $(BUILD)/debian/debian-rootfs/root0.cpio: | $(BUILD)/debian/deebian-rootfs/
 	sudo rm -rf $(BUILD)/debian/debian-rootfs/di-debootstrap
 	sudo DEBOOTSTRAP_DIR=$(PWD)/debian/debootstrap ./debian/debootstrap/debootstrap --foreign --arch=arm64 --include=build-essential,git,linux-image-cloud-arm64,bash,kmod,dash,wget,busybox,busybox-static,net-tools,libpam-systemd,file,xsltproc,mtools,openssl,mokutil,libx11-data,libx11-6,sharutils,dpkg-dev sid $(BUILD)/debian/debian-rootfs/di-debootstrap http://deb.debian.org/debian
