@@ -16,7 +16,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
       env:
-        RELEASED_ARTIFACTS: toolchain
+        RELEASED_ARTIFACTS: toolchain rootfs
     - run: make -j13 build/toolchain.tar.zstd{artifact}
   libgcc:
     name: libgcc
