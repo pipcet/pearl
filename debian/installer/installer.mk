@@ -2,7 +2,7 @@ $(call done,debian/installer/debian-installer,checkout): debian/installer/debian
 	$(TIMESTAMP)
 
 $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/debian-installer,checkout)
-	tar -C $(BUILD)/debian/installer -cf $@ debian-installer/
+	tar -C debian/installer -cf $@ debian-installer/
 
 $(BUILD)/debian/installer/packages/%.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-$(subst 4,,$(patsubst %-static,%,$(patsubst %-udeb,%,$*)))/releases/latest/download/$*.udeb
