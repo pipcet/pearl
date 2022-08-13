@@ -7,6 +7,35 @@ $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/deb
 $(BUILD)/debian/installer/packages/%.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-$(subst 4,,$(patsubst %-static,%,$(patsubst %-udeb,%,$*)))/releases/latest/download/$*.udeb
 
+$(BUILD)/debian/installer/packages/nobootloader/script.bash: | $(BUILD)/debian/installer/packages/nobootloader/
+	(echo "#!/bin/bash -x"; \
+	echo "ln -sf /usr/bin/true /usr/sbin/update-initramfs"; \
+	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
+	echo "apt -y --fix-broken install"; \
+	echo "apt-get -y update"; \
+	echo "apt-get -y dist-upgrade"; \
+	echo "apt-get -y install man-db"; \
+	echo "ln -sf /usr/bin/true /usr/bin/mandb"; \
+	echo "apt-get -y install ca-certificates"; \
+	echo "apt-get -y build-dep nobootloader"; \
+	echo "apt-get install ca-certificates"; \
+	echo "apt-get clean"; \
+	echo "mknod /dev/vdb b 254 16"; \
+	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
+	echo "cd /root; tar xvf archive.tar"; \
+	echo "cd /root/nobootloader/; ./debian/rules build"; \
+	echo "cd /root/nobootloader/; ./debian/rules binary"; \
+	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
+
+$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/root2.cpio.gz | $(BUILD)/debian/installer/packages/nobootloader/
+	dd if=/dev/zero of=tmp bs=128M count=1
+	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
+	uudecode -o $(BUILD)/debian/installer/packages/nobootloader.udeb.tar < tmp
+	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	rm -f tmp
+
 $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup-udeb netcfg-static nobootloader libdebian-installer4-udeb)
 	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
 
