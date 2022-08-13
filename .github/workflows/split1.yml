@@ -17,6 +17,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev gettext libtool-bin
+    - run: make -j13 toolchain/binutils-gdb/binutils-gdb{checkout} toolchain/gcc/gcc{checkout} userspace/glibc/glibc{checkout} linux/linux{checkout}
+    - run: make -j13 done/toolchain/binutils-gdb/install done/linux/headers/install done/userspace/glibc/headers/install done/toolchain/gcc/gcc/install
     - run: make -j13 build/toolchain.tar.zstd{artifact}
   libgcc:
     name: libgcc
@@ -31,6 +34,8 @@ jobs:
     - run: sudo apt-get install libgmp-dev libmpfr-dev libmpc-dev gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
+    - run: make -j13 done/toolchain/gcc/checkout!
+    - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: make -j13 build/libgcc.tar.zstd{artifact}
   qemu:
@@ -44,8 +49,8 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get install meson ninja-build
     - run: make -j13 build/qemu.tar.zstd{artifact}
-  debian:
-    name: debian
+  rootfs:
+    name: rootfs
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -55,8 +60,38 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get update
     - run: sudo apt-get -y dist-upgrade
+    - run: sudo apt-get install qemu-system-aarch64 sharutils
+    - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
+    - run: make -j13 --trace build/debian/debian-rootfs/root2.cpio.zstd{artifact}
+  debian:
+    name: debian
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: sudo apt-get update
+    - run: sudo apt-get -y dist-upgrade
     - run: sudo apt-get install qemu-system-aarch64
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
+    - run: touch build/qemu-kernel build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
     - run: make -j13 build/debian.tar.zstd{artifact}
+  installer:
+    name: installer
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: true
   glibc:
     name: glibc
     runs-on: ubuntu-latest
@@ -300,6 +335,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make build/artifacts/down/libgcc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
     - run: make build/artifacts/down/emacs.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
     - run: make build/artifacts/down/perl.tar.zstd{}
