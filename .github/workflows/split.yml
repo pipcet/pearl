@@ -322,6 +322,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
+    - run: make build/artifacts/down/libgcc.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
     - run: make build/artifacts/down/emacs.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
     - run: make build/artifacts/down/perl.tar.zstd{}
