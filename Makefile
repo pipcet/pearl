@@ -93,6 +93,8 @@ else
 include g/faction/faction.mk
 endif
 
+include builder/builder.mk
+
 include blobs/blobs.mk
 
 include sendfile/sendfile.mk
