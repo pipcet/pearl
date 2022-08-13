@@ -58,7 +58,7 @@ $(BUILD)/debian/debian-rootfs/root1.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/d
 	uudecode -o $@ < tmp
 	rm -f tmp
 
-$(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/
+$(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/debian-rootfs/
 	(echo "#!/bin/bash -x"; \
 	echo "ln -sf /usr/bin/true /usr/sbin/update-initramfs"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
