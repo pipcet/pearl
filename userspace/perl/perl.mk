@@ -8,7 +8,7 @@ $(call done,userspace/perl,build): $(call done,userspace/perl,configure)
 	$(NATIVE_CODE_ENV) $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/perl/build
 	$(TIMESTAMP)
 
-$(call done,userspace/perl,configure): $(call done,userspace/perl,copy) | $(call deps,glibc gcc)
+$(call done,userspace/perl,configure): $(call done,userspace/perl,copy) | $(call deps,glibc gcc) $(patsubst %,builder/packages/%{},qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin)
 	(cd $(BUILD)/userspace/perl/build; $(NATIVE_CODE_ENV) $(WITH_CROSS_PATH) sh ./Configure -der -Uversiononly -Uusemymalloc -Dtargetarch="aarch64-linux-gnu" -Dcc="aarch64-linux-gnu-gcc $(CORE_CFLAGS)" -Dccflags="$(CORE_CFLAGS)" -Doptimize="$(CORE_CFLAGS) -fno-strict-aliasing" -Dincpth='' -Dcccdlflags="-fPIC -Wl,--shared -shared" -Dlddlflags="-Wl,--shared -shared" -Uman1dir -Dusedevel -Uversiononly -Dprefix="/" -Dsitelib="/lib/perl5/site_perl /share/perl5/site_perl" -Dinstallprefix="$(call install,userspace/perl)" -Dsysroot="$(BUILD)/pearl/install/")
 	$(TIMESTAMP)
 
