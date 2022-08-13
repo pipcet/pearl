@@ -41,7 +41,7 @@ $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | 
 	echo "uuencode 'netboot.tar.gz' < /root/debian-installer/installer/build/dest/netboot/gtk/netboot.tar.gz > /dev/vda") > $@
 
 $(BUILD)/debian/installer/netboot.tar.gz: $(BUILD)/debian/installer/script.bash $(BUILD)/debian/installer/sources.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz | $(BUILD)/debian/installer/ $(patsubst %,builder/packages/%{},qemu-system-aarch64 sharutils)
-	dd if=/dev/zero of=tmp bs=128M count=1
+	dd if=/dev/zero of=tmp bs=256M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
 	uuencode /dev/stdout < $(BUILD)/debian/installer/sources.cpio | dd conv=notrunc of=tmp2
