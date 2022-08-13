@@ -1,7 +1,7 @@
-$(BUILD)/debian/installer/debian-installer.tar:
-	$(RM) -rf $(BUILD)/debian/installer/debian-installer
-	$(MKDIR) $(BUILD)/debian/installer/debian-installer
-	(cd $(BUILD)/debian/installer/debian-installer; git clone https://github.com/pipcet/debian-installer)
+$(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout}
+	$(TIMESTAMP)
+
+$(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/debian-installer,checkout)
 	tar -C $(BUILD)/debian/installer -cf $@ debian-installer/
 
 $(BUILD)/debian/installer/packages/%.udeb: | $(BUILD)/debian/installer/packages/
