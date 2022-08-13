@@ -27,10 +27,10 @@ $(BUILD)/debian/installer/packages/nobootloader/script.bash: | $(BUILD)/debian/i
 	echo "cd /root/nobootloader/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
 
-$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/root2.cpio.gz | $(BUILD)/debian/installer/packages/nobootloader/
+$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
-	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/nobootloader.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
