@@ -53,7 +53,7 @@ $(BUILD)/debian/debian-rootfs/root0.cpio: | $(BUILD)/debian/debian-rootfs/ $(cal
 	(cd $(BUILD)/debian/debian-rootfs/di-debootstrap; sudo chown root.root .; sudo find . | sudo cpio -H newc -o) > $@
 
 $(BUILD)/debian/debian-rootfs/root1.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root0.cpio | $(BUILD)/
-	dd if=/dev/zero of=tmp bs=1G count=2
+	dd if=/dev/zero of=tmp bs=1G count=3
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root0.cpio -nic user,model=virtio -monitor none -smp 8 -nographic
 	uudecode -o $@ < tmp
 	rm -f tmp
@@ -75,7 +75,7 @@ $(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/debian-rootfs
 
 ifeq ($(filter rootfs,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root1.cpio.gz $(BUILD)/debian/debian-rootfs/root2-script.bash | $(BUILD)/
-	dd if=/dev/zero of=tmp bs=1G count=2
+	dd if=/dev/zero of=tmp bs=1G count=3
 	uuencode script.bash < $(BUILD)/debian/debian-rootfs/root2-script.bash | dd of=tmp conv=notrunc
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root1.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $@ < tmp
