@@ -388,7 +388,7 @@ jobs:
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
-    needs: [ pearl, debian ]
+    needs: [ pearl, dplusi ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -429,9 +429,8 @@ jobs:
     - run: touch done/linux/pearl/build
     - run: touch build/linux/pearl.image
     - run: touch build/debian.cpio
+    - run: touch build/dplusi.cpio
     - run: make zstd/zstd{checkout}
-    - run: make -j13 --trace build/pearl-debian-uncompressed.macho.zst.image
-    - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian.image
     - run: make -j13 --trace build/pearl-debian.image{artifact}
   video-uboot:
     name: video-uboot
