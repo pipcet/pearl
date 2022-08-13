@@ -226,6 +226,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
+    - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
   linux_modules:
     name: linux.modules
     runs-on: ubuntu-latest
@@ -240,20 +241,6 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
-  linux_dtbs:
-    name: linux.dtbs
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
   stage2_image:
     name: stage2.image
     runs-on: ubuntu-latest
@@ -268,6 +255,7 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
+    - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
   stage2_modules:
     name: stage2.modules
     runs-on: ubuntu-latest
@@ -282,20 +270,6 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
-  stage2_dtbs:
-    name: stage2.dtbs
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
   bootloaders:
     name: bootloaders
     runs-on: ubuntu-latest
@@ -312,7 +286,7 @@ jobs:
     - run: make build/bootloaders.tar.zstd{artifact}
   pearl:
     name: pearl
-    needs: [ rest, linux_image, linux_modules, linux_dtbs, stage2_image, stage2_modules, stage2_dtbs, bootloaders ]
+    needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
