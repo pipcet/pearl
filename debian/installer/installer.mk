@@ -1,4 +1,4 @@
-$(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout}
+$(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout} | $(call done,debian/installer/debian-installer)
 	$(TIMESTAMP)
 
 $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/debian-installer,checkout)
