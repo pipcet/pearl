@@ -1,4 +1,19 @@
-$(BUILD)/debian/installer/script.bash: | $(BUILD)/debian/installer/
+$(BUILD)/debian/installer/debian-installer.tar:
+	$(RM) -rf $(BUILD)/debian/installer/debian-installer
+	$(MKDIR) $(BUILD)/debian/installer/debian-installer
+	(cd $(BUILD)/debian/installer/debian-installer; git clone https://github.com/pipcet/debian-installer)
+	tar -C $(BUILD)/debian/installer -cf $@ debian-installer/
+
+$(BUILD)/debian/installer/packages/%.udeb:
+	wget -O $@ https://github.com/pipcet/debian-$*/releases/latest/download/$*.udeb
+
+$(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup-udeb netcfg-static nobootloader libdebian-installer4-udeb)
+	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
+
+$(BUILD)/debian/installer/sources.cpio: $(BUILD)/debian/installer/debian-installer.tar $(BUILD)/debian/installer/packages.tar
+	echo $(patsubst $(BUILD)/debian/installer/%,%,$^) | cpio -H newc -D $(BUILD)/debian/installer -o > $@
+
+$(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | $(BUILD)/debian/installer/
 	(echo "#!/bin/bash -x"; \
 	echo "echo deb-src https://deb.debian.org/debian sid main >> /etc/apt/sources.list"; \
 	echo "apt -y --fix-broken install"; \
