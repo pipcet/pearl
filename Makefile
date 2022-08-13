@@ -171,6 +171,12 @@ $(BUILD)/pearl-debian.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cp
 $(BUILD)/pearl-debian-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/debian.cpio
 	cat $^ > $@
 
+$(BUILD)/pearl-dplusi-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/dplusi.cpio
+	cat $^ > $@
+
+$(BUILD)/pearl-debian.image: $(BUILD)/pearl-dplusi-uncompressed.macho.zst.image
+	$(COPY)
+
 $(BUILD)/kmutil-script: recovery/bin/kmutil-script
 	$(COPY)
 
