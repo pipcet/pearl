@@ -507,8 +507,6 @@ jobs:
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian-uncompressed.macho.zst.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
-    - run: make done/userspace/glibc/checkout!
-    - run: make done/userspace/glibc/glibc/copy!
     - run: sudo apt-get install ffmpeg netpbm socat
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
