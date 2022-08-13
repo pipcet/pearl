@@ -387,14 +387,26 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
     - run: make -j13 done/linux/checkout!
     - run: make -j13 done/linux/stage2/copy!
+    - run: touch done/linux/stage2/configure
+    - run: touch done/linux/stage2/build
     - run: make -j13 done/linux/linux/copy!
-    - run: touch build/debian.cpio
+    - run: touch done/linux/linux/configure
+    - run: touch done/linux/linux/build
     - run: touch build/linux/pearl.dts.h
     - run: touch build/linux/pearl.cpio
     - run: touch done/linux/pearl/build
+    - run: touch build/linux/linux.config
+    - run: touch build/linux/linux.modules
+    - run: touch build/linux/linux.image
+    - run: touch build/linux/stage2.config
+    - run: touch build/linux/stage2.modules
+    - run: touch build/linux/stage2.image
     - run: touch build/linux/pearl.config
     - run: touch build/linux/pearl.image
     - run: touch build/debian.cpio
+    - run: touch build/initramfs/pearl.cpio
+    - run: touch done/linux/pearl/build
+    - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl-debian-uncompressed.macho.zst.image
     - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian.image
     - run: make -j13 --trace build/pearl-debian.image{artifact}
