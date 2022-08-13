@@ -5,7 +5,7 @@ $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/deb
 	tar -C $(BUILD)/debian/installer -cf $@ debian-installer/
 
 $(BUILD)/debian/installer/packages/%.udeb: | $(BUILD)/debian/installer/packages/
-	wget -O $@ https://github.com/pipcet/debian-$(patsubst %-udeb,%,$*)/releases/latest/download/$*.udeb
+	wget -O $@ https://github.com/pipcet/debian-$(patsubst %-static,%,$(patsubst %-udeb,%,$*))/releases/latest/download/$*.udeb
 
 $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup-udeb netcfg-static nobootloader libdebian-installer4-udeb)
 	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
