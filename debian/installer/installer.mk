@@ -23,7 +23,10 @@ $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | 
 	echo "apt-get -y build-dep debian-installer netcfg libdebian-installer user-setup-udeb nobootloader preseed preseed-common network-preseed file-preseed initrd-preseed env-preseed user-setup-udeb"; \
 	echo "apt-get -y install ca-certificates myrepos"; \
 	echo "apt-get -y clean"; \
-	echo "cd /root; git clone https://github.com/pipcet/debian-installer"; \
+	echo "cd /root; uudecode -o sources.cpio < /dev/vdb"; \
+	echo "cd /root; cpio -id < sources.cpio"; \
+	echo "cd /root; tar xvf debian-installer.tar"; \
+	echo "cd /root; tar xvf packages.tar"; \
 	echo "cd /root/debian-installer; mr checkout"; \
 	echo "(cd /root/debian-installer/packages; wget https://github.com/pipcet/debian-partman-auto/releases/latest/download/partman-auto.udeb) || exit 1"; \
 	echo "(cd /root/debian-installer/packages; wget https://github.com/pipcet/debian-user-setup/releases/latest/download/user-setup-udeb.udeb) || exit 1"; \
