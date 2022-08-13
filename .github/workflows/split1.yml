@@ -79,6 +79,17 @@ jobs:
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: touch build/qemu-kernel build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
     - run: make -j13 build/debian.tar.zstd{artifact}
+  dplusi:
+    name: dplusi
+    runs-on: ubuntu-latest
+    needs: [ debian, installer ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/dplusi.tar.zstd{artifact}
   installer:
     name: installer
     runs-on: ubuntu-latest
