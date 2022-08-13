@@ -90,8 +90,8 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make -j13 build/dplusi.tar.zstd{artifact}
-  installer:
-    name: installer
+  debian-nobootloader:
+    name: debian-nobootloader
     runs-on: ubuntu-latest
     needs: [ rootfs ]
     steps:
@@ -100,6 +100,72 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/nobootloader.udeb.zstd{artifact}
+  debian-partman-auto:
+    name: debian-partman-auto
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/partman-auto.udeb.zstd{artifact}
+  debian-user-setup:
+    name: debian-nobootloader
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/user-setup-udeb.udeb.zstd{artifact}
+  debian-netcfg-static:
+    name: debian-netcfg-static
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/netcfg-static.udeb.zstd{artifact}
+  debian-libdebian-installer:
+    name: debian-nobootloader
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/libdebian-installer4-udeb.udeb.zstd{artifact}
+  installer:
+    name: installer
+    runs-on: ubuntu-latest
+    needs: [ debian-partman-auto, debian-netcfg-static, debian-user-setup, debian-libdebian-installer, debian-nobootloader ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: mkdir -p build/debian/installer/packages
+    - run: make build/artifacts/down/partman-auto.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/partman-auto.udeb.zstd > build/debian/installer/packages/partman-auto.udeb
+    - run: make build/artifacts/down/nobootloader.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/nobootloader.udeb.zstd > build/debian/installer/packages/nobootloader.udeb
+    - run: make build/artifacts/down/user-setup-udeb.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/user-setup-udeb.udeb.zstd > build/debian/installer/packages/user-setup-udeb.udeb
+    - run: make build/artifacts/down/libdebian-installer4-udeb.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/libdebian-installer4-udeb.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
+    - run: make build/artifacts/down/netcfg-static.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/netcfg-static.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
     - run: make -j13 --trace build/debian/installer/netboot-initrd.cpio.gz{artifact}
   glibc:
     name: glibc
