@@ -129,3 +129,6 @@
 [submodule "qemu/qemu"]
 	path = qemu/qemu
 	url = https://github.com/pipcet/qemu
+[submodule "debian/installer/debian-installer"]
+	path = debian/installer/debian-installer
+	url = https://github.com/pipcet/debian-installer
