@@ -11,7 +11,7 @@ $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/p
 	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
 
 $(BUILD)/debian/installer/sources.cpio: $(BUILD)/debian/installer/debian-installer.tar $(BUILD)/debian/installer/packages.tar
-	echo $(patsubst $(BUILD)/debian/installer/%,%,$^) | cpio -H newc -D $(BUILD)/debian/installer -o > $@
+	(echo debian-installer.tar; echo packages.tar) | cpio -H newc -D $(BUILD)/debian/installer -o > $@
 
 $(BUILD)/debian/installer/script.bash: $(BUILD)/debian/installer/sources.cpio | $(BUILD)/debian/installer/
 	(echo "#!/bin/bash -x"; \
