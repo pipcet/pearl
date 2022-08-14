@@ -7,7 +7,7 @@ $(call done,userspace/openssl,build): $(call done,userspace/openssl,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/openssl/build CFLAGS="$(CROSS_CFLAGS)"
 	$(TIMESTAMP)
 
-$(call done,userspace/openssl,configure): $(call done,userspace/openssl,copy) | $(call deps,glibc gcc)
+$(call done,userspace/openssl,configure): $(call done,userspace/openssl,copy) | $(call deps,glibc gcc) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/openssl/build/; $(WITH_CROSS_PATH) CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" ./Configure linux-aarch64 --prefix=$(call install,userspace/openssl))
 	$(TIMESTAMP)
 

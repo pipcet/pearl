@@ -21,7 +21,7 @@ $(call done,userspace/busybox,build): $(call done,userspace/busybox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)"
 	$(TIMESTAMP)
 
-$(call done,userspace/busybox,configure): $(call done,userspace/busybox,copy) | userspace/busybox/busybox.config $(call deps,glibc gcc libgcc)
+$(call done,userspace/busybox,configure): $(call done,userspace/busybox,copy) | userspace/busybox/busybox.config $(call deps,glibc gcc libgcc)builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	$(CP) userspace/busybox/busybox.config $(BUILD)/userspace/busybox/build/.config
 	yes "" | $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" oldconfig
 	$(TIMESTAMP)
