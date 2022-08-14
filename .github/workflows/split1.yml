@@ -328,10 +328,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/busybox/install
     - run: make -j13 build/busybox.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
