@@ -78,7 +78,7 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: touch build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
-    - run: make -j13 build/debian.tar.zstd{artifact}
+    - run: make -j13 build/debian.cpio.zstd{artifact}
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
@@ -89,6 +89,11 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/debian.cpio.zstd{}
+    - run: mkdir -p build/debian
+    - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/installer.cpio
+    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
+    - run: make build/artifacts/down/installer.cpio.zstd{}
     - run: make -j13 build/dplusi.tar.zstd{artifact}
   debian-nobootloader:
     name: debian-nobootloader
@@ -166,7 +171,7 @@ jobs:
     - run: zstd -d < build/artifacts/down/libdebian-installer4-udeb.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
     - run: make build/artifacts/down/netcfg-static.udeb.zstd{}
     - run: zstd -d < build/artifacts/down/netcfg-static.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
-    - run: make -j13 --trace build/debian/installer/netboot-initrd.cpio.gz{artifact}
+    - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
   glibc:
     name: glibc
     runs-on: ubuntu-latest
