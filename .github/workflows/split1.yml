@@ -448,7 +448,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install autopoint lzop
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/bootloaders.tar.zstd{artifact}
