@@ -230,7 +230,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
