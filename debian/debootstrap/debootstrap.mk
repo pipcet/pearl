@@ -39,7 +39,7 @@ $(BUILD)/debian/debootstrap/stage15.cpio: $(BUILD)/debian/debootstrap/stage15.ta
 $(BUILD)/debian/root1.cpio.gz: | $(BUILD)/debian/
 	wget -O $@ https://github.com/pipcet/debian-rootfs/releases/latest/download/root1.cpio.gz
 
-$(BUILD)/debian/debootstrap/stage2.cpio: $(BUILD)/debian/debootstrap/stage2.bash $(BUILD)/debian/debootstrap/stage15.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz
+$(BUILD)/debian/debootstrap/stage2.cpio: $(BUILD)/debian/debootstrap/stage2.bash $(BUILD)/debian/debootstrap/stage15.cpio $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz | builder/packages/qemu-system-aarch64{} builder/packages/sharutils{}
 	dd if=/dev/zero of=tmp bs=128M count=1
 	(uuencode script < $(BUILD)/debian/debootstrap/stage2.bash) | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=2
