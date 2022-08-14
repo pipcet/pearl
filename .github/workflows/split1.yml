@@ -277,10 +277,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/emacs/install
     - run: make -j13 build/emacs.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
@@ -294,10 +290,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/perl/install
     - run: make -j13 build/perl.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
@@ -311,10 +303,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/openssl/install
     - run: make -j13 build/openssl.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
@@ -341,10 +329,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/lvm2/install
     - run: make -j13 build/lvm2.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
@@ -399,10 +383,6 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/libgcc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make build/artifacts/down/emacs.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
     - run: make build/artifacts/down/perl.tar.zstd{}
@@ -418,7 +398,7 @@ jobs:
     - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
