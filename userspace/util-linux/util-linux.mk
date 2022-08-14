@@ -8,7 +8,7 @@ $(call done,userspace/libuuid,build): $(call done,userspace/libuuid,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libuuid/build
 	$(TIMESTAMP)
 
-$(call done,userspace/libuuid,configure): $(call done,userspace/libuuid,copy) | $(call deps,glibc gcc)
+$(call done,userspace/libuuid,configure): $(call done,userspace/libuuid,copy) | $(call deps,glibc gcc) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/libuuid/build; $(WITH_CROSS_PATH) autoreconf -fi)
 	(cd $(BUILD)/userspace/libuuid/build; $(WITH_CROSS_PATH) ./configure --disable-all-programs --enable-libuuid --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)
@@ -29,7 +29,7 @@ $(call done,userspace/libblkid,build): $(call done,userspace/libblkid,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libblkid/build
 	$(TIMESTAMP)
 
-$(call done,userspace/libblkid,configure): $(call done,userspace/libblkid,copy) | $(call deps,glibc gcc)
+$(call done,userspace/libblkid,configure): $(call done,userspace/libblkid,copy) | $(call deps,glibc gcc) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/libblkid/build; $(WITH_CROSS_PATH) autoreconf -fi)
 	(cd $(BUILD)/userspace/libblkid/build; $(WITH_CROSS_PATH) ./configure --disable-all-programs --enable-libblkid --host=aarch64-linux-gnu --target=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="-L$(BUILD)/pearl/install/lib")
 	$(TIMESTAMP)
