@@ -59,7 +59,6 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get update
     - run: sudo apt-get -y dist-upgrade
-    - run: sudo apt-get install qemu-system-aarch64 sharutils
     - run: echo 1 | sudo tee /proc/sys/vm/overcommit_memory
     - run: make -j13 --trace build/debian/debian-rootfs/root2.cpio.zstd{artifact}
   debian:
