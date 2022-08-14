@@ -1,7 +1,13 @@
 DEP_gcc += $(call done,toolchain/gcc,gcc/install)
+
+ifeq ($(filter toolchain.tar.zstd,$(ARTIFACTS)),)
 $(call done,toolchain/gcc,gcc/install): $(call done,toolchain/gcc,gcc/build) $(call done,pearl,install/mkdir)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	$(TIMESTAMP)
+else
+$(call done,toolchain/gcc,gcc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+	$(TIMESTAMP)
+endif
 
 $(BUILD)/toolchain/gcc.tar: $(call done,toolchain/gcc,gcc/build)
 	tar -C $(BUILD) -cf $@ gcc/gcc/build
