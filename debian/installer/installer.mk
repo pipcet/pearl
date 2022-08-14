@@ -1,19 +1,19 @@
-$(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout} | $(call done,debian/installer/debian-installer)
+$(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout} | $(call done,debian/installer/debian-installer,)
 	$(TIMESTAMP)
 
-$(call done,debian/installer/nobootloader,checkout): debian/installer/debian-nobootloader{checkout} | $(call done,debian/installer/debian-nobootloader)
+$(call done,debian/installer/nobootloader,checkout): debian/installer/debian-nobootloader{checkout} | $(call done,debian/installer/nobootloader,)
 	$(TIMESTAMP)
 
-$(call done,debian/installer/partman-auto,checkout): debian/installer/debian-partman-auto{checkout} | $(call done,debian/installer/debian-partman-auto)
+$(call done,debian/installer/partman-auto,checkout): debian/installer/debian-partman-auto{checkout} | $(call done,debian/installer/partman-auto,)
 	$(TIMESTAMP)
 
-$(call done,debian/installer/user-setup,checkout): debian/installer/debian-user-setup{checkout} | $(call done,debian/installer/debian-user-setup)
+$(call done,debian/installer/user-setup,checkout): debian/installer/debian-user-setup{checkout} | $(call done,debian/installer/user-setup,)
 	$(TIMESTAMP)
 
-$(call done,debian/installer/netcfg,checkout): debian/installer/debian-netcfg{checkout} | $(call done,debian/installer/debian-netcfg)
+$(call done,debian/installer/netcfg,checkout): debian/installer/debian-netcfg{checkout} | $(call done,debian/installer/netcfg,)
 	$(TIMESTAMP)
 
-$(call done,debian/installer/libdebian-installer,checkout): debian/installer/debian-libdebian-installer{checkout} | $(call done,debian/installer/debian-libdebian-installer)
+$(call done,debian/installer/libdebian-installer,checkout): debian/installer/debian-libdebian-installer{checkout} | $(call done,debian/installer/libdebian-installer,)
 	$(TIMESTAMP)
 
 $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/debian-installer,checkout)
