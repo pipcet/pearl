@@ -259,7 +259,7 @@ ifeq ($(filter installer,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/installer/installer.cpio: $(BUILD)/debian/installer/netboot-initrd.cpio.gz
 	gunzip < $< > $@
 else
-$(BUILD)/debian/installer/installer.cpio:
+$(BUILD)/debian/installer/installer.cpio: | $(BUILD)/debian/installer/
 	wget -O $@.gz https://github.com/pipcet/debian-installer/releases/latest/download/netboot-initrd.cpio.gz
 	gunzip $@.gz
 endif
