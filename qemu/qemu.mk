@@ -9,7 +9,7 @@ $(call done,qemu,build): $(call done,qemu,configure)
 	$(MAKE) -C $(BUILD)/qemu/source
 	$(TIMESTAMP)
 
-$(call done,qemu,configure): $(call done,qemu,copy)
+$(call done,qemu,configure): $(call done,qemu,copy) | builder/packages/meson{} builder/packages/ninja-build{}
 	(cd $(BUILD)/qemu/source; ./configure --target-list=aarch64-softmmu)
 	$(TIMESTAMP)
 
