@@ -98,8 +98,8 @@ jobs:
     - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/debian.cpio
     - run: touch build/debian/full-installer.cpio.gz
     - run: touch build/debian/full-installer.cpio
-    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
     - run: make build/artifacts/down/installer.cpio.zstd{}
+    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
     - run: make -j13 build/dplusi.tar.zstd{artifact}
   debian-nobootloader:
     name: debian-nobootloader
