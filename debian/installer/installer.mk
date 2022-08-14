@@ -237,3 +237,6 @@ $(BUILD)/debian/installer/netboot-initrd.cpio.gz: $(BUILD)/debian/installer/netb
 	sudo tar -C $(BUILD)/debian/installer/netboot -xzvf $<
 	cp $(BUILD)/debian/installer/netboot/debian-installer/arm64/initrd.gz $@
 	sudo rm -rf $(BUILD)/debian/installer/netboot
+
+$(BUILD)/debian/installer/installer.cpio: $(BUILD)/debian/installer/netboot-initrd.cpio.gz
+	gunzip < $< > $@
