@@ -8,7 +8,7 @@ $(BUILD)/artifact-timestamp:
 	touch $@
 	sleep 1
 
-$(BUILD)/artifacts/done/artifact-init:
+$(BUILD)/artifacts/done/artifact-init: | $(BUILD)/artifacts/done/
 	bash g/github/artifact-init
 	$(TIMESTAMP)
 
