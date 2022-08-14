@@ -134,7 +134,7 @@ $(BUILD)/debian/installer/packages/netcfg.tar: $(call done,debian/installer/netc
 $(BUILD)/debian/installer/packages/libdebian-installer.tar: $(call done,debian/installer/libdebian-installer,checkout) | $(BUILD)/debian/installer/packages/libdebian-installer/
 	tar -C $(BUILD)/debian/installer/debian-libdebian-installer -cvf $@
 
-$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
+$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/debian/installer/packages/nobootloader.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
@@ -145,7 +145,7 @@ $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
 	rm -f tmp
 
-$(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/packages/partman-auto/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/partman-auto/
+$(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/packages/partman-auto/script.bash $(BUILD)/debian/installer/packages/partman-auto.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/partman-auto/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
@@ -156,7 +156,7 @@ $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
 	rm -f tmp
 
-$(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/packages/user-setup/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/user-setup/
+$(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/packages/user-setup/script.bash $(BUILD)/debian/installer/packages/user-setup.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/user-setup/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
@@ -167,7 +167,7 @@ $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/pa
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
 	rm -f tmp
 
-$(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packages/netcfg/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/netcfg/
+$(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packages/netcfg/script.bash $(BUILD)/debian/installer/packages/netcfg.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/netcfg/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
@@ -178,7 +178,7 @@ $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packag
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
 	rm -f tmp
 
-$(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/installer/packages/libdebian-installer/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/libdebian-installer/
+$(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/installer/packages/libdebian-installer/script.bash $(BUILD)/debian/installer/packages/libdebian-installer.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/libdebian-installer/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
@@ -189,7 +189,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
 	rm -f tmp
 
-$(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup-udeb netcfg-static nobootloader libdebian-installer4-udeb)
+$(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup netcfg nobootloader libdebian-installer)
 	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
 
 $(BUILD)/debian/installer/sources.cpio: $(BUILD)/debian/installer/debian-installer.tar $(BUILD)/debian/installer/packages.tar
