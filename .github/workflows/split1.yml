@@ -62,8 +62,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
     - run: make -j13 build/glibc.tar.zstd{artifact}
@@ -79,8 +77,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
     - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
@@ -96,8 +92,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
       env:
@@ -112,8 +106,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
     - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
@@ -129,8 +121,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
       env:
@@ -145,8 +135,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make -j13 done/toolchain/gcc/checkout!
     - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/toolchain/gcc/libgcc/install
@@ -260,8 +248,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -281,8 +267,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -302,15 +286,13 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/emacs/install
     - run: make -j13 build/emacs.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   perl:
     name: perl
     runs-on: ubuntu-latest
@@ -321,8 +303,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
@@ -340,15 +320,13 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/openssl/install
     - run: make -j13 build/openssl.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   busybox:
     name: busybox
     runs-on: ubuntu-latest
@@ -359,15 +337,13 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/busybox/install
     - run: make -j13 build/busybox.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   lvm2:
     name: lvm2
     runs-on: ubuntu-latest
@@ -378,15 +354,13 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/lvm2/install
     - run: make -j13 build/lvm2.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   wpa_supplicant:
     name: wpa_supplicant
     runs-on: ubuntu-latest
@@ -397,15 +371,13 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/wpa_supplicant/install
     - run: make -j13 build/wpa_supplicant.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   installer:
     name: installer
     runs-on: ubuntu-latest
@@ -443,8 +415,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
     - run: make build/artifacts/down/libgcc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
@@ -465,7 +435,7 @@ jobs:
     - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
@@ -501,8 +471,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make build/artifacts/down/libgcc.tar.zstd{}
@@ -559,8 +527,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
@@ -605,8 +571,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/qemu.tar.zstd{}
@@ -639,8 +603,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl-debian.image{}
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
