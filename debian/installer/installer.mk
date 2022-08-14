@@ -120,19 +120,19 @@ $(BUILD)/debian/installer/packages/netcfg/script.bash: | $(BUILD)/debian/install
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
 
 $(BUILD)/debian/installer/packages/nobootloader.tar: $(call done,debian/installer/nobootloader,checkout) | $(BUILD)/debian/installer/packages/nobootloader/
-	tar -C $(BUILD)/debian/installer/debian-nobootloader -cvf $@
+	tar -C $(BUILD)/debian/installer/debian-nobootloader -cvf $@ .
 
 $(BUILD)/debian/installer/packages/partman-auto.tar: $(call done,debian/installer/partman-auto,checkout) | $(BUILD)/debian/installer/packages/partman-auto/
-	tar -C $(BUILD)/debian/installer/debian-partman-auto -cvf $@
+	tar -C $(BUILD)/debian/installer/debian-partman-auto -cvf $@ .
 
 $(BUILD)/debian/installer/packages/user-setup.tar: $(call done,debian/installer/user-setup,checkout) | $(BUILD)/debian/installer/packages/user-setup/
-	tar -C $(BUILD)/debian/installer/debian-user-setup -cvf $@
+	tar -C $(BUILD)/debian/installer/debian-user-setup -cvf $@ .
 
 $(BUILD)/debian/installer/packages/netcfg.tar: $(call done,debian/installer/netcfg,checkout) | $(BUILD)/debian/installer/packages/netcfg/
-	tar -C $(BUILD)/debian/installer/debian-netcfg -cvf $@
+	tar -C $(BUILD)/debian/installer/debian-netcfg -cvf $@ .
 
 $(BUILD)/debian/installer/packages/libdebian-installer.tar: $(call done,debian/installer/libdebian-installer,checkout) | $(BUILD)/debian/installer/packages/libdebian-installer/
-	tar -C $(BUILD)/debian/installer/debian-libdebian-installer -cvf $@
+	tar -C $(BUILD)/debian/installer/debian-libdebian-installer -cvf $@ .
 
 $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/debian/installer/packages/nobootloader.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
