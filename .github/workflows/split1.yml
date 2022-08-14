@@ -36,6 +36,8 @@ jobs:
     - run: make -j13 done/userspace/glibc/checkout!
     - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: make -j13 build/libgcc.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   qemu:
     name: qemu
     runs-on: ubuntu-latest
@@ -79,6 +81,8 @@ jobs:
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: touch build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
     - run: make -j13 build/debian.cpio.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
@@ -102,6 +106,8 @@ jobs:
     - run: make build/artifacts/down/installer.cpio.zstd{}
     - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
     - run: make -j13 build/dplusi.tar.zstd{artifact}
+      env:
+        ARTIFACTS: debian.cpio.zstd installer.cpio.zstd
   debian-nobootloader:
     name: debian-nobootloader
     runs-on: ubuntu-latest
@@ -179,6 +185,8 @@ jobs:
     - run: make build/artifacts/down/netcfg.udeb.zstd{}
     - run: zstd -d < build/artifacts/down/netcfg.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
     - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
+      env:
+        ARTIFACTS: partman-auto.udeb.zstd netcfg.udeb.zstd user-setup.udeb.zstd libdebian-installer.udeb.zstd nobootloader.udeb.zstd
   glibc:
     name: glibc
     runs-on: ubuntu-latest
@@ -195,6 +203,8 @@ jobs:
     - run: rm -rf done/userspace/glibc/checkout
     - run: make -j13 done/userspace/glibc/install
     - run: make -j13 build/glibc.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   emacs:
     name: emacs
     runs-on: ubuntu-latest
@@ -213,6 +223,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/emacs/install
     - run: make -j13 build/emacs.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   perl:
     name: perl
     runs-on: ubuntu-latest
@@ -231,6 +243,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/perl/install
     - run: make -j13 build/perl.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   openssl:
     name: openssl
     runs-on: ubuntu-latest
@@ -249,6 +263,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/openssl/install
     - run: make -j13 build/openssl.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   busybox:
     name: busybox
     runs-on: ubuntu-latest
@@ -267,6 +283,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/busybox/install
     - run: make -j13 build/busybox.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   lvm2:
     name: lvm2
     runs-on: ubuntu-latest
@@ -285,6 +303,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/lvm2/install
     - run: make -j13 build/lvm2.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   wpa_supplicant:
     name: wpa_supplicant
     runs-on: ubuntu-latest
@@ -303,6 +323,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make -j13 done/userspace/wpa_supplicant/install
     - run: make -j13 build/wpa_supplicant.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   rest:
     name: rest
     runs-on: ubuntu-latest
@@ -335,6 +357,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
     - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
+      env:
+        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   linux_image:
     name: linux.image
     runs-on: ubuntu-latest
@@ -350,6 +374,8 @@ jobs:
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
     - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   linux_modules:
     name: linux.modules
     runs-on: ubuntu-latest
@@ -364,6 +390,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   stage2_image:
     name: stage2.image
     runs-on: ubuntu-latest
@@ -379,6 +407,8 @@ jobs:
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
     - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   stage2_modules:
     name: stage2.modules
     runs-on: ubuntu-latest
@@ -393,6 +423,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   bootloaders:
     name: bootloaders
     runs-on: ubuntu-latest
@@ -407,6 +439,8 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/bootloaders.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   pearl:
     name: pearl
     needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
@@ -464,6 +498,8 @@ jobs:
     - run: rm -rf done/gcc/checkout
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   pearl-debian:
     name: pearl-debian
     needs: [ pearl, dplusi ]
@@ -510,6 +546,8 @@ jobs:
     - run: touch build/dplusi.cpio
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl-debian.image{artifact}
+      env:
+        ARTIFACTS: pearl.tar.zstd dplusi.tar.zstd
   video-uboot:
     name: video-uboot
     needs: [ bootloaders, qemu ]
