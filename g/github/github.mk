@@ -30,11 +30,11 @@ $(BUILD)/artifacts/%/down: | $(BUILD)/artifacts/%/ $(BUILD)/artifacts/done/artif
 	$(TIMESTAMP)
 
 $(BUILD)/artifacts/%/extract: | $(BUILD)/artifacts/%/down $(BUILD)/artifacts/done/artifact-init
-	tar -xf $(BUILD)/artifacts/down/$*
+	tar --exclude=done -xf $(BUILD)/artifacts/down/$*
 	$(TIMESTAMP)
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
-	tar -xf $<
+	tar --exclude=done -xf $<
 	@touch $@
 
 $(BUILD)/daily/extract/%: $(BUILD)/daily/down/% | $(BUILD)/daily/extract/
