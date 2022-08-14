@@ -122,7 +122,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/user-setup-udeb.udeb.zstd{artifact}
+    - run: make -j13 --trace build/debian/installer/packages/user-setup.udeb.zstd{artifact}
   debian-netcfg-static:
     name: debian-netcfg-static
     runs-on: ubuntu-latest
@@ -133,7 +133,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/netcfg-static.udeb.zstd{artifact}
+    - run: make -j13 --trace build/debian/installer/packages/netcfg.udeb.zstd{artifact}
   debian-libdebian-installer:
     name: debian-libdebian-installer
     runs-on: ubuntu-latest
@@ -144,7 +144,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/libdebian-installer4-udeb.udeb.zstd{artifact}
+    - run: make -j13 --trace build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
   installer:
     name: installer
     runs-on: ubuntu-latest
