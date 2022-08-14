@@ -13,7 +13,7 @@ $(PWD)/builder/update:
 	$(PWD)/g/bin/locked --lockfile $(PWD)/builder.lock sudo apt-get -y update
 	$(TIMESTAMP)
 
-$(PWD)/builder/sysctl/overcommit_memory{}:
+$(PWD)/builder/sysctl/overcommit_memory{}: | $(PWD)/builder/sysctl/
 	echo 1 | sudo tee /proc/sys/vm/overcommit_memory
 	$(TIMESTAMP)
 endif
