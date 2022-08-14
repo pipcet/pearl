@@ -190,19 +190,19 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	for a in libdebian-installer4-udeb_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/nobootloader.udeb:
+$(BUILD)/debian/installer/packages/nobootloader.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-nobootloader/releases/latest/download/nobootloader.udeb
 
-$(BUILD)/debian/installer/packages/libdebian-installer.udeb:
+$(BUILD)/debian/installer/packages/libdebian-installer.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-libdebian-installer/releases/latest/download/libdebian-installer4-udeb.udeb
 
-$(BUILD)/debian/installer/packages/partman-auto.udeb:
+$(BUILD)/debian/installer/packages/partman-auto.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-partman-auto/releases/latest/download/partman-auto.udeb
 
-$(BUILD)/debian/installer/packages/netcfg.udeb:
+$(BUILD)/debian/installer/packages/netcfg.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-netcfg/releases/latest/download/netcfg-static.udeb
 
-$(BUILD)/debian/installer/packages/user-setup.udeb:
+$(BUILD)/debian/installer/packages/user-setup.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-user-setup/releases/latest/download/user-setup-udeb.udeb
 endif
 
