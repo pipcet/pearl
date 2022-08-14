@@ -481,8 +481,8 @@ jobs:
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/debian.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/debian.tar.zstd
+    - run: make build/artifacts/down/dplusi.tar.zstd{}
+    - run: tar --skip-old-files -xf build/artifacts/down/dplusi.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make build/artifacts/down/libgcc.tar.zstd{}
