@@ -255,5 +255,11 @@ $(BUILD)/debian/installer/netboot-initrd.cpio.gz: $(BUILD)/debian/installer/netb
 	cp $(BUILD)/debian/installer/netboot/debian-installer/arm64/initrd.gz $@
 	sudo rm -rf $(BUILD)/debian/installer/netboot
 
+ifeq ($(filter installer,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/installer/installer.cpio: $(BUILD)/debian/installer/netboot-initrd.cpio.gz
 	gunzip < $< > $@
+else
+$(BUILD)/debian/installer/installer.cpio:
+	wget -O $@.gz https://github.com/pipcet/debian-installer/releases/latest/download/netboot-initrd.cpio.gz
+	gunzip $@.gz
+endif
