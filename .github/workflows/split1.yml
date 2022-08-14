@@ -118,6 +118,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/nobootloader.udeb.zstd{artifact}
   debian-partman-auto:
     name: debian-partman-auto
@@ -129,6 +132,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/partman-auto.udeb.zstd{artifact}
   debian-user-setup:
     name: debian-user-setup
@@ -140,6 +146,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/user-setup.udeb.zstd{artifact}
   debian-netcfg-static:
     name: debian-netcfg-static
@@ -151,6 +160,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/netcfg.udeb.zstd{artifact}
   debian-libdebian-installer:
     name: debian-libdebian-installer
@@ -162,6 +174,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
   installer:
     name: installer
@@ -173,6 +188,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: make build/artifacts/down/root2.cpio.zstd{}
+    - run: mkdir -p build/debian/debian-rootfs
+    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: mkdir -p build/debian/installer/packages
     - run: make build/artifacts/down/partman-auto.udeb.zstd{}
     - run: zstd -d < build/artifacts/down/partman-auto.udeb.zstd > build/debian/installer/packages/partman-auto.udeb
