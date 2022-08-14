@@ -245,8 +245,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make -j13 --trace build/video/u-boot.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
@@ -262,8 +260,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make -j13 --trace build/video/barebox.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
@@ -398,7 +394,7 @@ jobs:
     - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tarzstd wpa_supplicant.tar.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
@@ -479,7 +475,7 @@ jobs:
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd
   pearl-debian:
     name: pearl-debian
     needs: [ pearl, dplusi ]
