@@ -46,7 +46,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: sudo apt-get install meson ninja-build
     - run: make -j13 build/qemu.tar.zstd{artifact}
   rootfs:
     name: rootfs
