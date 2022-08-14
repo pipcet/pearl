@@ -23,6 +23,16 @@ $(BUILD)/artifacts/down/%{}: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/
 	rm -rf $(patsubst %{},%,$@).new
 	ls -l $(patsubst %{},%,$@)
 
+$(BUILD)/artifacts/%/down: | $(BUILD)/artifacts/%/ $(BUILD)/artifacts/done/artifact-init
+	bash g/github/dl-artifact $*
+	mv $(BUILD)/artifacts/down/$*.new/$* $(BUILD)/artifacts/down/$*
+	rm -rf $(BUILD)/artifacts/down/$*.new
+	$(TIMESTAMP)
+
+$(BUILD)/artifacts/%/extract: | $(BUILD)/artifacts/%/down $(BUILD)/artifacts/done/artifact-init
+	tar -xf $(BUILD)/artifacts/down/$*
+	$(TIMESTAMP)
+
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
 	tar -xf $<
 	@touch $@
