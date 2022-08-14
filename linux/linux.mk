@@ -15,8 +15,29 @@ $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
-$(BUILD)/linux/%.image: $(call done,linux,%/build) | $(BUILD)/linux/%.config
-	$(CP) --reflink=auto $(BUILD)/linux/$*/build/arch/arm64/boot/Image $@
+ifeq ($(filter pearl.image,$(ARTIFACTS)),)
+$(BUILD)/linux/pearl.image: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
+	$(CP) --reflink=auto $(BUILD)/linux/pearl/build/arch/arm64/boot/Image $@
+else
+$(BUILD)/linux/pearl.image: $(BUILD)/artifacts/pearl.image.zstd/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/pearl.image.zstd > $@
+endif
+
+ifeq ($(filter stage2.image,$(ARTIFACTS)),)
+$(BUILD)/linux/stage2.image: $(call done,linux,stage2/build) | $(BUILD)/linux/stage2.config
+	$(CP) --reflink=auto $(BUILD)/linux/stage2/build/arch/arm64/boot/Image $@
+else
+$(BUILD)/linux/stage2.image: $(BUILD)/artifacts/stage2.image.zstd/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/stage2.image.zstd > $@
+endif
+
+ifeq ($(filter linux.image,$(ARTIFACTS)),)
+$(BUILD)/linux/linux.image: $(call done,linux,linux/build) | $(BUILD)/linux/linux.config
+	$(CP) --reflink=auto $(BUILD)/linux/linux/build/arch/arm64/boot/Image $@
+else
+$(BUILD)/linux/linux.image: $(BUILD)/artifacts/linux.image.zstd/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/linux.image.zstd > $@
+endif
 
 $(BUILD)/linux/linux.image.d/sendfile: $(BUILD)/linux/linux.image | $(BUILD)/linux/linux.image.d/
 	echo "#!/bin/sh" > $@
