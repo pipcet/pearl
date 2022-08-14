@@ -74,7 +74,7 @@ $(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/debian-rootfs
 	echo "cd /; find / -xdev | cpio -H newc -o | uuencode root2.cpio > /dev/vda") > $@
 
 ifeq ($(filter rootfs,$(RELEASED_ARTIFACTS)),)
-$(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root1.cpio.gz $(BUILD)/debian/debian-rootfs/root2-script.bash | $(BUILD)/ builder/packages/qemu-system-aarch64{} builder/packages/sharutils builder/sysctl/overcommit_memory{}
+$(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root1.cpio.gz $(BUILD)/debian/debian-rootfs/root2-script.bash | $(BUILD)/ builder/packages/qemu-system-aarch64{} builder/packages/sharutils{} builder/sysctl/overcommit_memory{}
 	dd if=/dev/zero of=tmp bs=1G count=3
 	uuencode script.bash < $(BUILD)/debian/debian-rootfs/root2-script.bash | dd of=tmp conv=notrunc
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root1.cpio.gz -nic user,model=virtio -monitor none -nographic
