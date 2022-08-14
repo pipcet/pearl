@@ -2,7 +2,7 @@
 
 .github-init:
 	bash g/github/artifact-init
-	@touch $@
+	$(TIMESTAMP)
 
 $(BUILD)/artifact-timestamp:
 	touch $@
@@ -10,6 +10,7 @@ $(BUILD)/artifact-timestamp:
 
 $(BUILD)/artifacts/done/artifact-init:
 	bash g/github/artifact-init
+	$(TIMESTAMP)
 
 $(BUILD)/artifacts/down/%: | $(BUILD)/artifacts/down/ $(BUILD)/artifacts/done/artifact-init
 	bash g/github/dl-artifact $*
