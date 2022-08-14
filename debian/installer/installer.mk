@@ -134,6 +134,7 @@ $(BUILD)/debian/installer/packages/netcfg.tar: $(call done,debian/installer/netc
 $(BUILD)/debian/installer/packages/libdebian-installer.tar: $(call done,debian/installer/libdebian-installer,checkout) | $(BUILD)/debian/installer/packages/libdebian-installer/
 	tar --exclude=.git -C debian/installer/debian-libdebian-installer -cvf $@ .
 
+ifeq ($(filter udeb,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/debian/installer/packages/nobootloader.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -188,6 +189,22 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	tar xvf $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
+else
+$(BUILD)/debian/installer/packages/nobootloader.udeb:
+	wget -O $@ https://github.com/pipcet/debian-nobootloader/releases/latest/download/nobootloader.udeb
+
+$(BUILD)/debian/installer/packages/libdebian-installer.udeb:
+	wget -O $@ https://github.com/pipcet/debian-libdebian-installer/releases/latest/download/libdebian-installer4-udeb.udeb
+
+$(BUILD)/debian/installer/packages/partman-auto.udeb:
+	wget -O $@ https://github.com/pipcet/debian-partman-auto/releases/latest/download/partman-auto.udeb
+
+$(BUILD)/debian/installer/packages/netcfg.udeb:
+	wget -O $@ https://github.com/pipcet/debian-netcfg/releases/latest/download/netcfg-static.udeb
+
+$(BUILD)/debian/installer/packages/user-setup.udeb:
+	wget -O $@ https://github.com/pipcet/debian-user-setup/releases/latest/download/user-setup-udeb.udeb
+endif
 
 $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup netcfg nobootloader libdebian-installer)
 	tar -C $(BUILD)/debian/installer/packages -cf $@ $(patsubst $(BUILD)/debian/installer/packages/%,%,$^)
