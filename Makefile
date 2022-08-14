@@ -174,8 +174,13 @@ $(BUILD)/pearl-debian-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUI
 $(BUILD)/pearl-dplusi-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUILD)/dplusi.cpio
 	cat $^ > $@
 
+ifeq ($(filter pearl-debian.image,$(ARTIFACTS)),)
 $(BUILD)/pearl-debian.image: $(BUILD)/pearl-dplusi-uncompressed.macho.zst.image
 	$(COPY)
+else
+$(BUILD)/pearl-debian.image: $(BUILD)/artifacts/down/pearl-debian.image{}
+	$(CP) $(BUILD)/artifacts/down/pearl-debian.image $@
+endif
 
 $(BUILD)/kmutil-script: recovery/bin/kmutil-script
 	$(COPY)
