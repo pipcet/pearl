@@ -172,12 +172,12 @@ jobs:
     - run: zstd -d < build/artifacts/down/partman-auto.udeb.zstd > build/debian/installer/packages/partman-auto.udeb
     - run: make build/artifacts/down/nobootloader.udeb.zstd{}
     - run: zstd -d < build/artifacts/down/nobootloader.udeb.zstd > build/debian/installer/packages/nobootloader.udeb
-    - run: make build/artifacts/down/user-setup-udeb.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/user-setup-udeb.udeb.zstd > build/debian/installer/packages/user-setup-udeb.udeb
-    - run: make build/artifacts/down/libdebian-installer4-udeb.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/libdebian-installer4-udeb.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
-    - run: make build/artifacts/down/netcfg-static.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/netcfg-static.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
+    - run: make build/artifacts/down/user-setup.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/user-setup.udeb.zstd > build/debian/installer/packages/user-setup-udeb.udeb
+    - run: make build/artifacts/down/libdebian-installer.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/libdebian-installer.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
+    - run: make build/artifacts/down/netcfg.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/netcfg.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
     - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
   glibc:
     name: glibc
