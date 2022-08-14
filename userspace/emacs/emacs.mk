@@ -7,7 +7,7 @@ $(call done,userspace/emacs,cross/build): $(call done,userspace/emacs,cross/conf
 	$(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/userspace/emacs/cross/
 	$(TIMESTAMP)
 
-$(call done,userspace/emacs,cross/configure): $(call done,userspace/emacs,cross/copy) | $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install) $(call done,userspace/ncurses,install)
+$(call done,userspace/emacs,cross/configure): $(call done,userspace/emacs,cross/copy) | $(call done,toolchain/gcc,gcc/install) $(call done,userspace/glibc,glibc/install) $(call done,userspace/ncurses,install) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/emacs/cross; $(NATIVE_CODE_ENV) PATH="$(CROSS_PATH):$$PATH" ./configure --target=aarch64-linux-gnu --without-all --without-json --without-x --host=aarch64-linux-gnu CFLAGS="$(CROSS_CFLAGS)" --prefix=/)
 	$(TIMESTAMP)
 
@@ -19,7 +19,7 @@ $(call done,userspace/emacs,native/build): $(call done,userspace/emacs,native/co
 	$(MAKE) -C $(BUILD)/userspace/emacs/native
 	$(TIMESTAMP)
 
-$(call done,userspace/emacs,native/configure): $(call done,userspace/emacs,native/copy)
+$(call done,userspace/emacs,native/configure): $(call done,userspace/emacs,native/copy) | builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/emacs/native; sh autogen.sh)
 	(cd $(BUILD)/userspace/emacs/native; ./configure --without-all --without-x)
 	$(TIMESTAMP)
