@@ -1,7 +1,12 @@
+ifeq ($(filter openssl.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/openssl,install): $(call done,userspace/openssl,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/openssl/build install
 	$(INSTALL_LIBS) userspace/openssl
 	$(TIMESTAMP)
+else
+$(call done,userspace/openssl,install): $(BUILD)/artifacts/openssl.tar.zstd/extract | $(call done,userspace/openssl,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/openssl,build): $(call done,userspace/openssl,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/openssl/build CFLAGS="$(CROSS_CFLAGS)"

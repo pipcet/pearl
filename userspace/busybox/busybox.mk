@@ -12,10 +12,15 @@ $(call done,userspace/busybox,menuconfig): $(call done,userspace/busybox,configu
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build menuconfig
 	$(CP) $(BUILD)/userspace/busybox/build/.config userspace/busybox/busybox.config
 
+ifeq ($(filter busybox.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/busybox,install): $(call done,userspace/busybox,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)" install
 	$(INSTALL_LIBS) userspace/busybox
 	$(TIMESTAMP)
+else
+$(call done,userspace/busybox,install): $(BUILD)/artifacts/busybox.tar.zstd/extract | $(call done,userspace/busybox,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/busybox,build): $(call done,userspace/busybox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/busybox/build CROSS_COMPILE=aarch64-linux-gnu- CFLAGS="$(CROSS_CFLAGS)"

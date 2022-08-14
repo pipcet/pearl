@@ -1,8 +1,13 @@
 DEP_perl += $(call done,userspace/perl,install)
+ifeq ($(filter perl.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/perl,install): $(call done,userspace/perl,build)
 	$(NATIVE_CODE_ENV) $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/perl/build install
 	$(INSTALL_LIBS) userspace/perl
 	$(TIMESTAMP)
+else
+$(call done,userspace/perl,install): $(BUILD)/artifacts/perl.tar.zstd/extract | $(call done,userspace/perl,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/perl,build): $(call done,userspace/perl,configure)
 	$(NATIVE_CODE_ENV) $(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/perl/build

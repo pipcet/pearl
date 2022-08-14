@@ -374,20 +374,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/emacs.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
-    - run: make build/artifacts/down/perl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
-    - run: make build/artifacts/down/openssl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
-    - run: make build/artifacts/down/busybox.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
-    - run: make build/artifacts/down/lvm2.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
-    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
-    - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tarzstd wpa_supplicant.tar.zstd
