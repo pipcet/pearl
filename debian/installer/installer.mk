@@ -142,7 +142,7 @@ $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/nobootloader.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
-	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 
 $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/packages/partman-auto/script.bash $(BUILD)/debian/installer/packages/partman-auto.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/partman-auto/
@@ -153,7 +153,7 @@ $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/partman-auto.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/partman-auto.udeb.tar
-	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 
 $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/packages/user-setup/script.bash $(BUILD)/debian/installer/packages/user-setup.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/user-setup/
@@ -164,7 +164,7 @@ $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/pa
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/user-setup.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/user-setup.udeb.tar
-	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 
 $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packages/netcfg/script.bash $(BUILD)/debian/installer/packages/netcfg.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/netcfg/
@@ -175,7 +175,7 @@ $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packag
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/netcfg.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/netcfg.udeb.tar
-	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 
 $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/installer/packages/libdebian-installer/script.bash $(BUILD)/debian/installer/packages/libdebian-installer.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/libdebian-installer/
@@ -186,7 +186,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar
-	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
+	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 
 $(BUILD)/debian/installer/packages.tar: $(patsubst %,$(BUILD)/debian/installer/packages/%.udeb,partman-auto user-setup netcfg nobootloader libdebian-installer)
