@@ -133,9 +133,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 done/toolchain/gcc/checkout!
-    - run: make -j13 done/userspace/glibc/checkout!
-    - run: make -j13 done/toolchain/gcc/libgcc/install
     - run: make -j13 build/libgcc.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
