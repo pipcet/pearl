@@ -1,6 +1,9 @@
 $(call done,debian/installer/debian-installer,checkout): debian/installer/debian-installer{checkout} | $(call done,debian/installer/debian-installer)
 	$(TIMESTAMP)
 
+$(call done,debian/installer/nobootloader,checkout): debian/installer/debian-nobootloader{checkout} | $(call done,debian/installer/debian-nobootloader)
+	$(TIMESTAMP)
+
 $(BUILD)/debian/installer/debian-installer.tar: $(call done,debian/installer/debian-installer,checkout)
 	tar -C debian/installer -cf $@ debian-installer/
 
@@ -27,10 +30,15 @@ $(BUILD)/debian/installer/packages/nobootloader/script.bash: | $(BUILD)/debian/i
 	echo "cd /root/nobootloader/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
 
+$(BUILD)/debian/installer/packages/nobootloader.tar: $(call done,debian/installer/nobootloader,checkout) | $(BUILD)/debian/installer/packages/nobootloader/
+	tar -C $(BUILD)/debian/installer/debian-nobootloader -cvf $@
+
 $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
-	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
+	dd if=/dev/zero of=tmp2 bs=1G count=1
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/nobootloader.tar | dd conv=notrunc of=tmp
+	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/nobootloader.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
 	for a in *_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; done
