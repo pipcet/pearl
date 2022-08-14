@@ -33,8 +33,13 @@ $(BUILD)/bootloaders/barebox.image.d/sendfile: $(call done,bootloaders/barebox,b
 	echo "kexec -fix barebox.image --dtb=barebox.dtb" >> $@
 	chmod u+x $@
 
+ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(call done,bootloaders/barebox,install): $(call done,bootloaders/barebox,build)
 	$(TIMESTAMP)
+else
+$(call done,bootloaders/barebox,install): $(BUILD)/artifacts/bootloaders.tar.zstd/extract
+	$(TIMESTAMP)
+endif
 
 $(call done,bootloaders/barebox,build): $(call done,bootloaders/barebox,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/barebox/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE)
