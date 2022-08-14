@@ -47,7 +47,7 @@ $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,header
 	$(TIMESTAMP)
 
 else
-$(call done,userspace/glibc,headers/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+$(call done,userspace/glibc,headers/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract | $(call done,userspace/glibc,headers)/
 	$(TIMESTAMP)
 endif
 $(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/configure)

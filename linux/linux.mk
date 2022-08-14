@@ -124,12 +124,41 @@ $(call done,linux,debian/build): $(BUILD)/linux/debian.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-$(BUILD)/linux/%.modules: $(call done,linux,%/configure)
+ifeq ($(filter pearl.modules,$(ARTIFACTS)),)
+$(BUILD)/linux/pearl.modules: $(call done,linux,pearl/configure)
 	rm -rf $@.d
 	$(MKDIR) $@.d
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
-	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/pearl/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/pearl/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
 	$(TAR) -C $@.d -c . -f $@
+else
+$(BUILD)/linux/pearl.modules: $(BUILD)/artifacts/pearl.modules/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/pearl.modules.zstd > $@
+endif
+
+ifeq ($(filter stage2.modules,$(ARTIFACTS)),)
+$(BUILD)/linux/stage2.modules: $(call done,linux,stage2/configure)
+	rm -rf $@.d
+	$(MKDIR) $@.d
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/stage2/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/stage2/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
+	$(TAR) -C $@.d -c . -f $@
+else
+$(BUILD)/linux/stage2.modules: $(BUILD)/artifacts/stage2.modules/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/stage2.modules.zstd > $@
+endif
+
+ifeq ($(filter linux.modules,$(ARTIFACTS)),)
+$(BUILD)/linux/linux.modules: $(call done,linux,linux/configure)
+	rm -rf $@.d
+	$(MKDIR) $@.d
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/linux/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) modules
+	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/linux/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) INSTALL_MOD_PATH=$@.d modules_install
+	$(TAR) -C $@.d -c . -f $@
+else
+$(BUILD)/linux/linux.modules: $(BUILD)/artifacts/linux.modules/down | $(BUILD)/linux/
+	zstd -d < $(BUILD)/artifacts/down/linux.modules.zstd > $@
+endif
 
 $(call done,linux,%/build): $(call done,linux,%/configure)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) Image
