@@ -34,7 +34,7 @@ $(BUILD)/debian/installer/packages/nobootloader/script.bash: | $(BUILD)/debian/i
 	echo "apt-get clean"; \
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
-	echo "mkdir /root/nobootloader; cd /root/nobootloader; tar xvf archive.tar"; \
+	echo "mkdir /root/nobootloader; cd /root/nobootloader; tar xvf ../archive.tar"; \
 	echo "cd /root/nobootloader/; ./debian/rules build"; \
 	echo "cd /root/nobootloader/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
@@ -54,7 +54,7 @@ $(BUILD)/debian/installer/packages/partman-auto/script.bash: | $(BUILD)/debian/i
 	echo "apt-get clean"; \
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
-	echo "mkdir /root/partman-auto; cd /root/partman-auto; tar xvf archive.tar"; \
+	echo "mkdir /root/partman-auto; cd /root/partman-auto; tar xvf ../archive.tar"; \
 	echo "cd /root/partman-auto/; ./debian/rules build"; \
 	echo "cd /root/partman-auto/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
@@ -74,7 +74,7 @@ $(BUILD)/debian/installer/packages/user-setup/script.bash: | $(BUILD)/debian/ins
 	echo "apt-get clean"; \
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
-	echo "mkdir /root/user-setup; cd /root/user-setup; tar xvf archive.tar"; \
+	echo "mkdir /root/user-setup; cd /root/user-setup; tar xvf ../archive.tar"; \
 	echo "cd /root/user-setup/; ./debian/rules build"; \
 	echo "cd /root/user-setup/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
@@ -94,7 +94,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer/script.bash: | $(BUILD)/d
 	echo "apt-get clean"; \
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
-	echo "mkdir /root/libdebian-installer; cd /root/libdebian-installer; tar xvf archive.tar"; \
+	echo "mkdir /root/libdebian-installer; cd /root/libdebian-installer; tar xvf ../archive.tar"; \
 	echo "cd /root/libdebian-installer/; ./debian/rules build"; \
 	echo "cd /root/libdebian-installer/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
@@ -114,7 +114,7 @@ $(BUILD)/debian/installer/packages/netcfg/script.bash: | $(BUILD)/debian/install
 	echo "apt-get clean"; \
 	echo "mknod /dev/vdb b 254 16"; \
 	echo "(cd /root; uudecode -o archive.tar < /dev/vdb)"; \
-	echo "mkdir /root/netcfg; cd /root/netcfg; tar xvf archive.tar"; \
+	echo "mkdir /root/netcfg; cd /root/netcfg; tar xvf ../archive.tar"; \
 	echo "cd /root/netcfg/; ./debian/rules build"; \
 	echo "cd /root/netcfg/; ./debian/rules binary"; \
 	echo "cd /root; tar cv *.udeb | uuencode packages.tar > /dev/vda") > $@
