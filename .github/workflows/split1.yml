@@ -73,7 +73,6 @@ jobs:
       uses: ./g/github/env/
     - run: sudo apt-get update
     - run: sudo apt-get -y dist-upgrade
-    - run: sudo apt-get install qemu-system-aarch64
     - run: make build/artifacts/down/root2.cpio.zstd{}
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
