@@ -1,9 +1,5 @@
 # GitHub integration
 
-.github-init:
-	bash g/github/artifact-init
-	$(TIMESTAMP)
-
 $(BUILD)/artifact-timestamp:
 	touch $@
 	sleep 1
@@ -53,29 +49,29 @@ $(BUILD)/daily/down/%: | $(BUILD)/daily/down/
 	for id in $$(curl -sSL "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets" | jq ".[] | if .name == \"$(notdir $*)\" then .id else 0 end"); do [ $$id != "0" ] && curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/assets/$$id"; echo deleted; done
 	curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)"; curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)" --upload-file $*; curl -sSL -XPATCH -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/44921644/assets?name=$(notdir $*)" --upload-file $*
 
-$(BUILD)/artifacts{push}: .github-init
+$(BUILD)/artifacts{push}: $(BUILD)/artifacts/done/artifact-init
 	(cd $(BUILD)/artifacts/up; for file in *; do name=$$(basename "$$file"); (cd $(PWD); bash g/github/ul-artifact "$$name" "$(BUILD)/artifacts/up/$$name") && rm -f "$(BUILD)/artifacts/up/$$name"; done)
 
-$(BUILD)/%{artifact}: $(BUILD)/% .github-init
+$(BUILD)/%{artifact}: $(BUILD)/% $(BUILD)/artifacts/done/artifact-init
 	$(MKDIR) $(BUILD)/artifacts/up
 	$(CP) $< $(BUILD)/artifacts/up
 	$(MAKE) $(BUILD)/artifacts{push}
 
-$(BUILD)/%{release}: $(BUILD)/% .github-init
+$(BUILD)/%{release}: $(BUILD)/% $(BUILD)/artifacts/done/artifact-init
 	$(MKDIR) $(BUILD)/release
 	$(CP) $< $(BUILD)/release
 
-$(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
+$(BUILD)/github-releases{list}: $(BUILD)/artifacts/done/artifact-init | $(BUILD)/github-releases/
 	curl -sSL https://api.github.com/repos/$$GITHUB_REPOSITORY/releases?per_page=100 | jq '.[] | [(.).tag_name,(.).id] | .[]' | while read tag; do read id; echo $$id > $(BUILD)/github-releases/$$tag; done
 	curl -sSL https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/tags/latest | jq '.[.tag_name,.id] | .[]' | while read tag; do read id; echo $$id > $(BUILD)/github-releases/$$tag; done
 	ls -l $(BUILD)/github-releases/
 
-%{upload-release}: .github-init | g/github/release/
+%{upload-release}: $(BUILD)/artifacts/done/artifact-init | g/github/release/
 	while ! test -e $(BUILD)/github-releases/'"'"$*"'"'; do sleep 10; $(MAKE) $(BUILD)/github-releases{list}; done
 	for name in $$(cd $(BUILD)/release; ls *); do for id in $$(jq ".[] | if .name == \"$$name\" then .id else 0 end" < github/assets/$*.json); do [ $$id != "0" ] && curl -sSL -XDELETE -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases/assets/$$id"; echo; done; done
 	(for name in $(BUILD)/release/*; do bname=$$(basename "$$name"); curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" --header "Content-Type: application/octet-stream" "https://uploads.github.com/repos/$$GITHUB_REPOSITORY/releases/$$(cat $(BUILD)/github-releases/\"$*\")/assets?name=$$bname" --upload-file $$name; echo; done)
 
-{release}: .github-init | github/ g/github/
+{release}: $(BUILD)/artifacts/done/artifact-init | github/ g/github/
 	this_release_date="$$(date --iso)"; \
 	node ./g/github/release.js $$this_release_date $$this_release_date > github/release.json; \
 	curl -sSL -XPOST -H "Authorization: token $$GITHUB_TOKEN" "https://api.github.com/repos/$$GITHUB_REPOSITORY/releases" --data '@github/release.json'; \
@@ -84,10 +80,10 @@ $(BUILD)/github-releases{list}: .github-init | $(BUILD)/github-releases/
 %{checkout}:
 	(cd $*; $(PWD)/g/bin/locked --lockfile $(PWD)/git.lock git submodule update --depth=1 --single-branch --init --recursive .)
 
-$(BUILD)/released/%: .github-init | github/ g/github/
+$(BUILD)/released/%: $(BUILD)/artifacts/done/artifact-init | github/ g/github/
 	$(MKDIR) $(dir $(BUILD)/released/$*)
 	wget -O $@ https://github.com/$(word 1,$(subst /, ,$*))/$(word 2,$(subst /, ,$*))/releases/latest/download/$(word 3,$(subst /, ,$*))
 
-$(BUILD)/released/%{}: .github-init | github/ g/github/
+$(BUILD)/released/%{}: $(BUILD)/artifacts/done/artifact-init | github/ g/github/
 	$(MKDIR) $(dir $(BUILD)/released/$*)
 	wget -O $(patsubst %{},%,$@) https://github.com/$(word 1,$(subst /, ,$*))/$(word 2,$(subst /, ,$*))/releases/latest/download/$(word 3,$(subst /, ,$*))
