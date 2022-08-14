@@ -30,10 +30,10 @@ $(call done,qemu,checkout): | $(call done,qemu,)
 	($(BUILD)/qemu/install/usr/local/bin/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -monitor unix:$@,server,wait=off -chardev socket,path=$*.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0 -device usb-kbd -icount shift=0; rm -f $@ $*.image.gdb) &
 	sleep 5
 
-%/barebox.image.qemu %/barebox.image.gdb: %/barebox.image %/barebox.dtb | $(call done,qemu,install) $(call done,toolchain/binutils-gdb,install)
+%/barebox.image.qemu %/barebox.image.gdb: %/barebox.image %/barebox.dtb | $(call done,qemu,install) $(call done,toolchain/binutils-gdb,install) $(call done,bootloaders/barebox,install)
 	(QEMU_WITH_DTB=1 $(BUILD)/qemu/install/usr/local/bin/qemu-system-aarch64 -m 8196m -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -monitor unix:$@,server,wait=off -chardev socket,path=$*/barebox.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0 -device usb-kbd -icount shift=0 -dtb $*/barebox.dtb; rm -f $@ $*/barebox.image.gdb) &
 	sleep 5
 
-%/u-boot.image.qemu: %/u-boot.image %/barebox.dtb | $(call done,qemu,install) $(call done,toolchain/binutils-gdb,install)
+%/u-boot.image.qemu: %/u-boot.image %/barebox.dtb | $(call done,qemu,install) $(call done,toolchain/binutils-gdb,install) $(call done,bootloaders/u-boot,install)
 	(QEMU_WITH_DTB=1 $(BUILD)/qemu/install/usr/local/bin/qemu-system-aarch64 -m 12g -cpu max -machine virt -kernel $< -S -d unimp -device ramfb -monitor unix:$@,server,wait=off -chardev socket,path=$*/u-boot.image.gdb,server=on,wait=on,id=gdb0 -gdb chardev:gdb0 -device usb-kbd -icount shift=0 -dtb $*/barebox.dtb; rm -f $@ $*/u-boot.image.gdb) &
 	sleep 5
