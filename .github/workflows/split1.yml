@@ -640,7 +640,7 @@ jobs:
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl-debian.image{}
-    - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian-uncompressed.macho.zst.image
+    - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian.image
     - run: make build/artifacts/down/qemu.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: sudo apt-get install ffmpeg netpbm socat
