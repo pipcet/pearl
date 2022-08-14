@@ -7,7 +7,7 @@ $(call done,userspace/procps,build): $(call done,userspace/procps,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/procps/build
 	$(TIMESTAMP)
 
-$(call done,userspace/procps,configure): $(call done,userspace/procps,copy) | $(call deps,glibc ncurses)
+$(call done,userspace/procps,configure): $(call done,userspace/procps,copy) | $(call deps,glibc ncurses) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/procps/build; $(WITH_CROSS_PATH) sh autogen.sh)
 	(cd $(BUILD)/userspace/procps/build; $(WITH_CROSS_PATH) ./configure --target=aarch64-linux-gnu --host=aarch64-linux-gnu --prefix=/ CFLAGS="$(CROSS_CFLAGS)" PKG_CONFIG_PATH="$(BUILD)/pearl/install/lib/pkgconfig")
 	$(TIMESTAMP)
