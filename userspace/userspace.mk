@@ -26,7 +26,7 @@ include userspace/zlib/zlib.mk
 include userspace/zsh/zsh.mk
 include userspace/zstd/zstd.mk
 
-$(call done,userspace,%): $(foreach module,$(userspace-modules),$(call done,userspace/$(module),%)) | $(call done,userspace,)
+$(call done,userspace,%): $(foreach module,$(userspace-modules),$(call done,userspace/$(module),%)) | $(call done,userspace,) builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	$(TIMESTAMP)
 
 SECTARGETS += $(call done,userspace,build)

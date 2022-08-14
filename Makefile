@@ -175,7 +175,7 @@ $(BUILD)/pearl-dplusi-uncompressed.macho: $(BUILD)/linux/pearl.image.macho $(BUI
 	cat $^ > $@
 
 ifeq ($(filter pearl-debian.image,$(ARTIFACTS)),)
-$(BUILD)/pearl-debian.image: $(BUILD)/pearl-dplusi-uncompressed.macho.zst.image
+$(BUILD)/pearl-debian.image: $(BUILD)/pearl-dplusi-uncompressed.macho.zst.image | builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	$(COPY)
 else
 $(BUILD)/pearl-debian.image: $(BUILD)/artifacts/down/pearl-debian.image{}

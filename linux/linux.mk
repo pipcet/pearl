@@ -115,7 +115,7 @@ $(call done,linux,%/build): $(call done,linux,%/configure)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) dtbs
 	$(TIMESTAMP)
 
-$(call done,linux,%/configure): $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install) $(BUILD)/linux/%.config
+$(call done,linux,%/configure): $(call done,linux,%/copy) | $(call done,toolchain/gcc,gcc/install) $(BUILD)/linux/%.config builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	$(CP) $(BUILD)/linux/$*.config $(BUILD)/linux/$*/build/.config
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/$*/build ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) olddefconfig
 	$(TIMESTAMP)
