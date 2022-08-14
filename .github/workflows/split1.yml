@@ -250,8 +250,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make -j13 --trace build/video/u-boot.mp4{artifact}
@@ -269,8 +267,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
     - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: make -j13 --trace build/video/barebox.mp4{artifact}
@@ -573,8 +569,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
     - run: mkdir -p done/linux/pearl
@@ -593,6 +587,8 @@ jobs:
     - run: touch build/linux/pearl.config
     - run: touch build/linux/pearl.image
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd
   video-debian:
     name: video-debian
     needs: [ pearl-debian, qemu ]
@@ -605,8 +601,6 @@ jobs:
       uses: ./g/github/env/
     - run: make build/artifacts/down/pearl-debian.image{}
     - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian.image
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd pearl-debian.image qemu.tar.zstd
