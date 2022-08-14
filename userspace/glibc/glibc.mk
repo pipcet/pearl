@@ -8,7 +8,7 @@ $(call done,userspace/glibc,glibc/build): $(call done,userspace/glibc,glibc/conf
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build CXX=""
 	$(TIMESTAMP)
 
-$(call done,userspace/glibc,glibc/configure): $(call done,userspace/glibc,glibc/copy) | $(call done,linux,headers/install) $(call done,toolchain/gcc,gcc/install) $(BUILD)/userspace/glibc/glibc/build/
+$(call done,userspace/glibc,glibc/configure): $(call done,userspace/glibc,glibc/copy) | $(call done,linux,headers/install) $(call done,toolchain/gcc,gcc/install) $(BUILD)/userspace/glibc/glibc/build/ builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	(cd $(BUILD)/userspace/glibc/glibc/build; $(WITH_CROSS_PATH) ../source/configure --host=aarch64-linux-gnu --target=aarch64-linux-gnu --disable-werror --prefix=/ CFLAGS="$(CROSS_CFLAGS) -Wno-error=array-bounds" CXX="" --with-headers=$(BUILD)/pearl/install/usr/include/)
 	$(TIMESTAMP)
 
