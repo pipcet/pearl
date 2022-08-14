@@ -90,8 +90,15 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make build/artifacts/down/debian.cpio.zstd{}
-    - run: mkdir -p build/debian
-    - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/installer.cpio
+    - run: mkdir -p build/debian/debootstrap
+    - run: touch build/debian/debootstrap/stage1.tar
+    - run: touch build/debian/debootstrap/stage15.tar
+    - run: touch build/debian/debootstrap/stage15.tar
+    - run: touch build/debian/debootstrap/stage15.cpio
+    - run: touch build/debian/debootstrap/stage2.cpio
+    - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/debian.cpio
+    - run: touch build/debian/full-installer.cpio.gz
+    - run: touch build/debian/full-installer.cpio
     - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
     - run: make build/artifacts/down/installer.cpio.zstd{}
     - run: make -j13 build/dplusi.tar.zstd{artifact}
