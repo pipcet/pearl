@@ -76,10 +76,33 @@ jobs:
     - run: make build/artifacts/down/root2.cpio.zstd{}
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
-    - run: touch build/qemu-kernel build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
-    - run: make -j13 build/debian.tar.zstd{artifact}
-  installer:
-    name: installer
+    - run: touch build/debian/debian-rootfs/root0.cpio build/debian/debian-rootfs/root1.cpio.gz build/debian/debian-rootfs/root2-script.bash build/debian/debian-rootfs/root2.cpio
+    - run: make -j13 build/debian.cpio.zstd{artifact}
+  dplusi:
+    name: dplusi
+    runs-on: ubuntu-latest
+    needs: [ debian, installer ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/artifacts/down/debian.cpio.zstd{}
+    - run: mkdir -p build/debian/debootstrap
+    - run: touch build/debian/debootstrap/stage1.tar
+    - run: touch build/debian/debootstrap/stage15.tar
+    - run: touch build/debian/debootstrap/stage15.tar
+    - run: touch build/debian/debootstrap/stage15.cpio
+    - run: touch build/debian/debootstrap/stage2.cpio
+    - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/debian.cpio
+    - run: touch build/debian/full-installer.cpio.gz
+    - run: touch build/debian/full-installer.cpio
+    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
+    - run: make build/artifacts/down/installer.cpio.zstd{}
+    - run: make -j13 build/dplusi.tar.zstd{artifact}
+  debian-nobootloader:
+    name: debian-nobootloader
     runs-on: ubuntu-latest
     needs: [ rootfs ]
     steps:
@@ -88,7 +111,73 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/netboot-initrd.cpio.gz{artifact}
+    - run: make -j13 --trace build/debian/installer/packages/nobootloader.udeb.zstd{artifact}
+  debian-partman-auto:
+    name: debian-partman-auto
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/packages/partman-auto.udeb.zstd{artifact}
+  debian-user-setup:
+    name: debian-user-setup
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/packages/user-setup.udeb.zstd{artifact}
+  debian-netcfg-static:
+    name: debian-netcfg-static
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/packages/netcfg.udeb.zstd{artifact}
+  debian-libdebian-installer:
+    name: debian-libdebian-installer
+    runs-on: ubuntu-latest
+    needs: [ rootfs ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
+  installer:
+    name: installer
+    runs-on: ubuntu-latest
+    needs: [ debian-partman-auto, debian-netcfg-static, debian-user-setup, debian-libdebian-installer, debian-nobootloader ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: mkdir -p build/debian/installer/packages
+    - run: make build/artifacts/down/partman-auto.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/partman-auto.udeb.zstd > build/debian/installer/packages/partman-auto.udeb
+    - run: make build/artifacts/down/nobootloader.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/nobootloader.udeb.zstd > build/debian/installer/packages/nobootloader.udeb
+    - run: make build/artifacts/down/user-setup-udeb.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/user-setup-udeb.udeb.zstd > build/debian/installer/packages/user-setup-udeb.udeb
+    - run: make build/artifacts/down/libdebian-installer4-udeb.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/libdebian-installer4-udeb.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
+    - run: make build/artifacts/down/netcfg-static.udeb.zstd{}
+    - run: zstd -d < build/artifacts/down/netcfg-static.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
+    - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
   glibc:
     name: glibc
     runs-on: ubuntu-latest
@@ -133,6 +222,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
+    - run: sudo apt-get install qemu-user qemu-user-static binfmt-support autopoint gettext libtool-bin
     - run: make build/artifacts/down/toolchain.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: rm -rf done/userspace/glibc/checkout
@@ -375,7 +465,7 @@ jobs:
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
   pearl-debian:
     name: pearl-debian
-    needs: [ pearl, debian ]
+    needs: [ pearl, dplusi ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -416,9 +506,8 @@ jobs:
     - run: touch done/linux/pearl/build
     - run: touch build/linux/pearl.image
     - run: touch build/debian.cpio
+    - run: touch build/dplusi.cpio
     - run: make zstd/zstd{checkout}
-    - run: make -j13 --trace build/pearl-debian-uncompressed.macho.zst.image
-    - run: mv build/pearl-debian-uncompressed.macho.zst.image build/pearl-debian.image
     - run: make -j13 --trace build/pearl-debian.image{artifact}
   video-uboot:
     name: video-uboot
