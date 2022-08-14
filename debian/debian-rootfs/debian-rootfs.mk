@@ -52,7 +52,7 @@ $(BUILD)/debian/debian-rootfs/root0.cpio: | $(BUILD)/debian/debian-rootfs/ $(cal
 	sudo chmod u+x $(BUILD)/debian/debian-rootfs/di-debootstrap/init $(BUILD)/debian/debian-rootfs/di-debootstrap/init2
 	(cd $(BUILD)/debian/debian-rootfs/di-debootstrap; sudo chown root.root .; sudo find . | sudo cpio -H newc -o) > $@
 
-$(BUILD)/debian/debian-rootfs/root1.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root0.cpio | $(BUILD)/ builder/packages/qemu-system-aarch64{} builder/packages/sharutils
+$(BUILD)/debian/debian-rootfs/root1.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root0.cpio | $(BUILD)/ builder/packages/qemu-system-aarch64{} builder/packages/sharutils{}
 	dd if=/dev/zero of=tmp bs=1G count=3
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root0.cpio -nic user,model=virtio -monitor none -smp 8 -nographic
 	uudecode -o $@ < tmp
