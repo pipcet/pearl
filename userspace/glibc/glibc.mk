@@ -38,6 +38,7 @@ $(call done,userspace/glibc,stage1/copy): | $(call done,userspace/glibc,checkout
 	$(COPY_SAUNA) $(PWD)/userspace/glibc/glibc/* $(BUILD)/userspace/glibc/stage1/source/
 	$(TIMESTAMP)
 
+ifeq ($(filter toolchain.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,headers/build) $(call done,pearl,install/mkdir)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/headers/build DESTDIR=$(call install,userspace/glibc/headers) install-headers
 	$(MKDIR) $(call install,userspace/glibc/headers)/include/gnu/
@@ -45,6 +46,10 @@ $(call done,userspace/glibc,headers/install): $(call done,userspace/glibc,header
 	$(INSTALL_LIBS) userspace/glibc headers
 	$(TIMESTAMP)
 
+else
+$(call done,userspace/glibc,headers/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+	$(TIMESTAMP)
+endif
 $(call done,userspace/glibc,headers/build): $(call done,userspace/glibc,headers/configure)
 	$(TIMESTAMP)
 
