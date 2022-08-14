@@ -138,7 +138,7 @@ $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
-	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/nobootloader.tar | dd conv=notrunc of=tmp
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/nobootloader.tar | dd conv=notrunc of=tmp2
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/nobootloader.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
@@ -149,7 +149,7 @@ $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
-	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/partman-auto.tar | dd conv=notrunc of=tmp
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/partman-auto.tar | dd conv=notrunc of=tmp2
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/partman-auto.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/partman-auto.udeb.tar
@@ -160,7 +160,7 @@ $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/pa
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
-	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/user-setup.tar | dd conv=notrunc of=tmp
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/user-setup.tar | dd conv=notrunc of=tmp2
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/user-setup.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/user-setup.udeb.tar
@@ -171,7 +171,7 @@ $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packag
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
-	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/netcfg.tar | dd conv=notrunc of=tmp
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/netcfg.tar | dd conv=notrunc of=tmp2
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/netcfg.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/netcfg.udeb.tar
@@ -182,7 +182,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
 	dd if=/dev/zero of=tmp2 bs=1G count=1
-	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/libdebian-installer.tar | dd conv=notrunc of=tmp
+	uuencode /dev/stdout < $(BUILD)/debian/installer/packages/libdebian-installer.tar | dd conv=notrunc of=tmp2
 	qemu-system-aarch64 -drive if=virtio,index=0,media=disk,driver=raw,file=tmp -drive if=virtio,index=1,media=disk,driver=raw,file=tmp2 -machine virt -cpu max -kernel $(BUILD)/qemu-kernel -m 7g -serial stdio -initrd $(BUILD)/debian/debian-rootfs/root2.cpio.gz -nic user,model=virtio -monitor none -nographic
 	uudecode -o $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar < tmp
 	tar xvf $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar
