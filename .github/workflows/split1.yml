@@ -62,8 +62,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make -j13 done/userspace/glibc/install
     - run: make -j13 build/glibc.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
