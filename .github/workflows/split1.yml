@@ -376,7 +376,7 @@ jobs:
       uses: ./g/github/env/
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tarzstd wpa_supplicant.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
