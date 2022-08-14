@@ -71,7 +71,7 @@ $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio
 else
 $(BUILD)/debian.cpio: $(BUILD)/
 	wget -O $@.zstd https://github.com/pipcet/pearl-debian/releases/latest/download/debian.cpio.zstd
-	zstd -d < $@.zstd > $@
+	zstd --ultra --long=31 -d < $@.zstd > $@
 endif
 
 $(BUILD)/dplusi.cpio: $(BUILD)/debian.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
