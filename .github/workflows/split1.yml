@@ -243,8 +243,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
     - run: make -j13 --trace build/video/u-boot.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
