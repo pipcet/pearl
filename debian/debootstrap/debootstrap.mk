@@ -65,8 +65,14 @@ $(BUILD)/debian/installer: debian/injected/bin/installer
 	$(CP) $< $@
 	chmod u+x $@
 
+ifeq ($(filter debian,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio
 	$(COPY)
+else
+$(BUILD)/debian.cpio: $(BUILD)/
+	wget -O $@.zstd https://github.com/pipcet/pearl-debian/releases/latest/download/debian.cpio.zstd
+	zstd -d < $@.zstd > $@
+endif
 
 $(BUILD)/dplusi.cpio: $(BUILD)/debian.cpio $(BUILD)/debian/installer.cpio $(BUILD)/debian/installer
 	$(MKDIR) $(BUILD)/debian/dplusi.d
