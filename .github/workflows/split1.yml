@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ split1 ]
 env:
-  RELEASED_ARTIFACTS: toolchain rootfs
+  RELEASED_ARTIFACTS: toolchain rootfs udeb
   BUILDER: 1
 jobs:
   toolchain:
