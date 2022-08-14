@@ -1,8 +1,14 @@
 DEP_glibc += $(call done,userspace/glibc,glibc/install)
+ifeq ($(filter toolchain.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/glibc,glibc/install): $(call done,userspace/glibc,glibc/build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build DESTDIR=$(call install,userspace/glibc/glibc) CXX="" install
 	$(INSTALL_LIBS) userspace/glibc
 	$(TIMESTAMP)
+
+else
+$(call done,userspace/glibc,glibc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/glibc,glibc/build): $(call done,userspace/glibc,glibc/configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/glibc/glibc/build CXX=""
