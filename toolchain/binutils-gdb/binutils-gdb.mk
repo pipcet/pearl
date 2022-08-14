@@ -1,6 +1,11 @@
+ifeq ($(filter toolchain.tar.zstd,$(ARTIFACTS)),)
 $(call done,toolchain/binutils-gdb,install): $(call done,toolchain/binutils-gdb,build) | $(call done,pearl/install,mkdir)
 	$(MAKE) -C $(BUILD)/toolchain/binutils-gdb/source install
 	$(TIMESTAMP)
+else
+$(call done,toolchain/binutils-gdb,install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+	$(TIMESTAMP)
+endif
 
 $(BUILD)/toolchain/binutils-gdb.tar: $(call done,toolchain/binutils-gdb,build)
 	tar -C $(BUILD)/toolchain/binutils-gdb -cf $@ done source
