@@ -6,7 +6,7 @@ $(call done,qemu,install): $(call done,qemu,build)
 	$(MAKE) -C $(BUILD)/qemu/source DESTDIR=$(BUILD)/qemu/install install
 	$(TIMESTAMP)
 else
-$(call done,qemu,install): $(BUILD)/artifacts/qemu.tar.zstd/extract
+$(call done,qemu,install): $(BUILD)/artifacts/qemu.tar.zstd/extract | $(call done,qemu,)/
 	$(TIMESTAMP)
 endif
 
