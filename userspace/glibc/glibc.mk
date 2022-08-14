@@ -6,7 +6,7 @@ $(call done,userspace/glibc,glibc/install): $(call done,userspace/glibc,glibc/bu
 	$(TIMESTAMP)
 
 else
-$(call done,userspace/glibc,glibc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+$(call done,userspace/glibc,glibc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract | $(call done,userspace/glibc,glibc)/
 	$(TIMESTAMP)
 endif
 

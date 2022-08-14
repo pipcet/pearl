@@ -3,7 +3,7 @@ $(call done,toolchain/binutils-gdb,install): $(call done,toolchain/binutils-gdb,
 	$(MAKE) -C $(BUILD)/toolchain/binutils-gdb/source install
 	$(TIMESTAMP)
 else
-$(call done,toolchain/binutils-gdb,install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+$(call done,toolchain/binutils-gdb,install): $(BUILD)/artifacts/toolchain.tar.zstd/extract | $(call done,toolchain/binutils-gdb)/
 	$(TIMESTAMP)
 endif
 

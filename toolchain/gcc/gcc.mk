@@ -5,7 +5,7 @@ $(call done,toolchain/gcc,gcc/install): $(call done,toolchain/gcc,gcc/build) $(c
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/gcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	$(TIMESTAMP)
 else
-$(call done,toolchain/gcc,gcc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract
+$(call done,toolchain/gcc,gcc/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract | $(call done,toolchain/gcc,gcc)/
 	$(TIMESTAMP)
 endif
 
