@@ -15,7 +15,7 @@ $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
-ifeq ($(filter pearl.image,$(ARTIFACTS)),)
+ifeq ($(filter pearl.image.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.image: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
 	$(CP) --reflink=auto $(BUILD)/linux/pearl/build/arch/arm64/boot/Image $@
 else
@@ -23,7 +23,7 @@ $(BUILD)/linux/pearl.image: $(BUILD)/artifacts/pearl.image.zstd/down | $(BUILD)/
 	zstd -d < $(BUILD)/artifacts/down/pearl.image.zstd > $@
 endif
 
-ifeq ($(filter stage2.image,$(ARTIFACTS)),)
+ifeq ($(filter stage2.image.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/stage2.image: $(call done,linux,stage2/build) | $(BUILD)/linux/stage2.config
 	$(CP) --reflink=auto $(BUILD)/linux/stage2/build/arch/arm64/boot/Image $@
 else
@@ -31,7 +31,7 @@ $(BUILD)/linux/stage2.image: $(BUILD)/artifacts/stage2.image.zstd/down | $(BUILD
 	zstd -d < $(BUILD)/artifacts/down/stage2.image.zstd > $@
 endif
 
-ifeq ($(filter linux.image,$(ARTIFACTS)),)
+ifeq ($(filter linux.image.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/linux.image: $(call done,linux,linux/build) | $(BUILD)/linux/linux.config
 	$(CP) --reflink=auto $(BUILD)/linux/linux/build/arch/arm64/boot/Image $@
 else
@@ -124,7 +124,7 @@ $(call done,linux,debian/build): $(BUILD)/linux/debian.cpio
 
 $(BUILD)/linux/pearl.dts: linux/pearl.dts ; $(COPY)
 
-ifeq ($(filter pearl.modules,$(ARTIFACTS)),)
+ifeq ($(filter pearl.modules.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.modules: $(call done,linux,pearl/configure)
 	rm -rf $@.d
 	$(MKDIR) $@.d
@@ -136,7 +136,7 @@ $(BUILD)/linux/pearl.modules: $(BUILD)/artifacts/pearl.modules/down | $(BUILD)/l
 	zstd -d < $(BUILD)/artifacts/down/pearl.modules.zstd > $@
 endif
 
-ifeq ($(filter stage2.modules,$(ARTIFACTS)),)
+ifeq ($(filter stage2.modules.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/stage2.modules: $(call done,linux,stage2/configure)
 	rm -rf $@.d
 	$(MKDIR) $@.d
@@ -148,7 +148,7 @@ $(BUILD)/linux/stage2.modules: $(BUILD)/artifacts/stage2.modules/down | $(BUILD)
 	zstd -d < $(BUILD)/artifacts/down/stage2.modules.zstd > $@
 endif
 
-ifeq ($(filter linux.modules,$(ARTIFACTS)),)
+ifeq ($(filter linux.modules.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/linux.modules: $(call done,linux,linux/configure)
 	rm -rf $@.d
 	$(MKDIR) $@.d
