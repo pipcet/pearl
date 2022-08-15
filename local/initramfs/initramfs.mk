@@ -4,6 +4,7 @@ ifeq ($(filter pearl.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(SYMLINK)
 else
 $(BUILD)/linux/pearl.cpio: $(BUILD)/artifacts/pearl.tar.zstd/extract | $(BUILD)/linux/
+	$(CP) $(BUILD)/initramfs/pearl.cpio $@
 endif
 
 $(BUILD)/linux/debian.cpio: $(BUILD)/initramfs/debian.cpio ; $(SYMLINK)
