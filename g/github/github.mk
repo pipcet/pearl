@@ -27,7 +27,7 @@ $(BUILD)/artifacts/%/down: | $(BUILD)/artifacts/%/ $(BUILD)/artifacts/done/artif
 	$(TIMESTAMP)
 
 $(BUILD)/artifacts/%/extract: | $(BUILD)/artifacts/%/down $(BUILD)/artifacts/done/artifact-init
-	tar --exclude=done -xf $(BUILD)/artifacts/down/$*
+	g/bin/locked --lockfile $(PWD)/extract.lock tar --exclude=done -xf $(BUILD)/artifacts/down/$*
 	$(TIMESTAMP)
 
 $(BUILD)/artifacts/extract/%: $(BUILD)/artifacts/down/% | $(BUILD)/artifacts/extract/
