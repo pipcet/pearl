@@ -9,7 +9,12 @@ $(BUILD)/toolchain.tar: $(BUILD)/released/pipcet/pearl-toolchain/toolchain.tar.z
 	zstd -d < $(BUILD)/released/pipcet/pearl-toolchain/toolchain.tar.zstd > $@
 endif
 
+ifeq ($(filter libgcc,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/libgcc.tar: $(call done,toolchain/gcc,libgcc/install)
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/toolchain $(BUILD)/pearl/install done)
+else
+$(BUILD)/libgcc.tar: $(BUILD)/released/pipcet/pearl-toolchain/libgcc.tar.zstd{}
+	zstd -d < $(BUILD)/released/pipcet/pearl-toolchain/libgcc.tar.zstd > $@
+endif
 
 SECTARGETS += $(BUILD)/toolchain.tar
