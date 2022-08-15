@@ -7,6 +7,7 @@ $(BUILD)/linux/pearl.cpio: $(BUILD)/artifacts/pearl.tar.zstd/extract | $(BUILD)/
 endif
 
 $(BUILD)/linux/debian.cpio: $(BUILD)/initramfs/debian.cpio ; $(SYMLINK)
+$(BUILD)/initramfs/%/: ; $(MKDIR) $@
 $(BUILD)/initramfs/%: local/initramfs/% ; $(COPY)
 $(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec $(call done,userspace,install) local/initramfs/build-cpiospec.pl
 	$(MKDIR) $(dir $@)
