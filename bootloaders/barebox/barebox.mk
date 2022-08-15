@@ -37,7 +37,7 @@ ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(call done,bootloaders/barebox,install): $(call done,bootloaders/barebox,build)
 	$(TIMESTAMP)
 else
-$(call done,bootloaders/barebox,install): $(BUILD)/artifacts/bootloaders.tar.zstd/extract
+$(call done,bootloaders/barebox,install): $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(call done,bootloaders/barebox,)/
 	$(TIMESTAMP)
 endif
 
