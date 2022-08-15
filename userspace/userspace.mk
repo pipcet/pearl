@@ -64,6 +64,6 @@ $(BUILD)/wpa_supplicant.tar: $(call done,userspace/wpa_supplicant,install)
 	$(MKDIR) $(BUILD)/pearl/userspace
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
 
-$(BUILD)/rest.tar: $(call done,userspace,install)
+$(BUILD)/rest.tar: $(foreach module,$(filter-out emacs lvm2 busybox wpa_supplicant openssl perl,$(userspace-modules)),$(call done,userspace/$(module),install)) | builder/packages/qemu-user{} builder/packages/qemu-user-static{} builder/packages/binfmt-support{} builder/packages/autopoint{} builder/packages/gettext{} builder/packages/libtool-bin{}
 	$(MKDIR) $(BUILD)/pearl/userspace
-	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace done)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/pearl/install $(BUILD)/pearl/userspace)
