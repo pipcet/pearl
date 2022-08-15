@@ -66,8 +66,13 @@ $(BUILD)/debian/installer: debian/injected/bin/installer
 	chmod u+x $@
 
 ifeq ($(filter debian,$(RELEASED_ARTIFACTS)),)
+ifeq ($(filter debian.cpio.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian.cpio: $(BUILD)/debian/debootstrap/stage2.cpio
 	$(COPY)
+else
+$(BUILD)/debian.cpio: $(BUILD)/artifacts/debian.cpio.zstd/down | $(BUILD)/
+	zstd -d --ultra --long=31 -d < $(BUILD)/artifacts/down/debian.cpio.zstd > $@
+endif
 else
 $(BUILD)/debian.cpio: $(BUILD)/
 	wget -O $@.zstd https://github.com/pipcet/pearl-debian/releases/latest/download/debian.cpio.zstd
