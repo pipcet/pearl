@@ -150,6 +150,8 @@ else
 $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/artifacts/nobootloader.udeb.zstd/down
 	zstd -d < $(BUILD)/artifacts/down/nobootloader.udeb.zstd > $@
 endif
+
+ifeq ($(filter partman-auto.udeb.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/packages/partman-auto/script.bash $(BUILD)/debian/installer/packages/partman-auto.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/partman-auto/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -160,7 +162,12 @@ $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/
 	tar xvf $(BUILD)/debian/installer/packages/partman-auto.udeb.tar
 	for a in partman-auto_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
+else
+$(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/artifacts/partman-auto.udeb.zstd/down
+	zstd -d < $(BUILD)/artifacts/down/partman-auto.udeb.zstd > $@
+endif
 
+ifeq ($(filter user-setup.udeb.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/packages/user-setup/script.bash $(BUILD)/debian/installer/packages/user-setup.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/user-setup/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -171,7 +178,12 @@ $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/pa
 	tar xvf $(BUILD)/debian/installer/packages/user-setup.udeb.tar
 	for a in user-setup-udeb_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
+else
+$(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/artifacts/user-setup.udeb.zstd/down
+	zstd -d < $(BUILD)/artifacts/down/user-setup.udeb.zstd > $@
+endif
 
+ifeq ($(filter netcfg.udeb.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packages/netcfg/script.bash $(BUILD)/debian/installer/packages/netcfg.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/netcfg/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -182,7 +194,12 @@ $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packag
 	tar xvf $(BUILD)/debian/installer/packages/netcfg.udeb.tar
 	for a in netcfg-static_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
+else
+$(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/artifacts/netcfg.udeb.zstd/down
+	zstd -d < $(BUILD)/artifacts/down/netcfg.udeb.zstd > $@
+endif
 
+ifeq ($(filter libdebian-installer.udeb.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/installer/packages/libdebian-installer/script.bash $(BUILD)/debian/installer/packages/libdebian-installer.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/libdebian-installer/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -193,6 +210,10 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	tar xvf $(BUILD)/debian/installer/packages/libdebian-installer.udeb.tar
 	for a in libdebian-installer4-udeb_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
+else
+$(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/artifacts/libdebian-installer.udeb.zstd/down
+	zstd -d < $(BUILD)/artifacts/down/libdebian-installer.udeb.zstd > $@
+endif
 else
 $(BUILD)/debian/installer/packages/nobootloader.udeb: | $(BUILD)/debian/installer/packages/
 	wget -O $@ https://github.com/pipcet/debian-nobootloader/releases/latest/download/nobootloader.udeb
