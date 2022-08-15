@@ -38,7 +38,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/debian-rootfs/root2.cpio.zstd{artifact}
+    - run: make -j13 build/debian/debian-rootfs/root2.cpio.zstd{artifact}
   bootloaders:
     name: bootloaders
     runs-on: ubuntu-latest
@@ -75,7 +75,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/linux/linux.image.zstd{artifact} build/linux/linux.dtbs.zstd{artifact}
+    - run: make -j13 build/linux/linux.image.zstd{artifact} build/linux/linux.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   linux_modules:
@@ -88,7 +88,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
+    - run: make -j13 build/linux/linux.modules.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   stage2_image:
@@ -101,7 +101,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact} build/linux/stage2.dtbs.zstd{artifact}
+    - run: make -j13 build/linux/stage2.image.zstd{artifact} build/linux/stage2.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   stage2_modules:
@@ -114,7 +114,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
+    - run: make -j13 build/linux/stage2.modules.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   libgcc:
@@ -127,7 +127,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/libgcc.tar.zstd{artifact}
+    - run: make -j13 build/libgcc.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   debian:
@@ -153,7 +153,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/nobootloader.udeb.zstd{artifact}
+    - run: make -j13 build/debian/installer/packages/nobootloader.udeb.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
   debian-partman-auto:
@@ -166,7 +166,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/partman-auto.udeb.zstd{artifact}
+    - run: make -j13 build/debian/installer/packages/partman-auto.udeb.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
   debian-user-setup:
@@ -179,7 +179,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/user-setup.udeb.zstd{artifact}
+    - run: make -j13 build/debian/installer/packages/user-setup.udeb.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
   debian-netcfg-static:
@@ -192,7 +192,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/netcfg.udeb.zstd{artifact}
+    - run: make -j13 build/debian/installer/packages/netcfg.udeb.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
   debian-libdebian-installer:
@@ -205,7 +205,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
+    - run: make -j13 build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
   video-uboot:
@@ -218,7 +218,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/video/u-boot.mp4{artifact}
+    - run: make -j13 build/video/u-boot.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
   video-barebox:
@@ -231,7 +231,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/video/barebox.mp4{artifact}
+    - run: make -j13 build/video/barebox.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
   emacs:
@@ -322,7 +322,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
+    - run: make -j13 build/debian/installer/installer.cpio.zstd{artifact}
       env:
         ARTIFACTS: partman-auto.udeb.zstd netcfg.udeb.zstd user-setup.udeb.zstd libdebian-installer.udeb.zstd nobootloader.udeb.zstd
   rest:
@@ -361,7 +361,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/pearl.tar.zstd{artifact}
+    - run: make -j13 build/pearl.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd rest.tar.zstd bootloaders.tar.zstd
   pearl-debian:
@@ -374,7 +374,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/pearl-debian.image{artifact}
+    - run: make -j13 build/pearl-debian.image{artifact}
       env:
         ARTIFACTS: pearl.tar.zstd dplusi.tar.zstd
   video-pearl:
@@ -387,7 +387,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/video/pearl.mp4{artifact}
+    - run: make -j13 build/video/pearl.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd linux.image.zstd pearl.tar.zstd
   video-debian:
@@ -400,6 +400,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
+    - run: make -j13 build/video/pearl-debian.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd pearl-debian.image qemu.tar.zstd
