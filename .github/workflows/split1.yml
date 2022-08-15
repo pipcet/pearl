@@ -521,7 +521,7 @@ jobs:
     - run: touch build/linux/pearl.image
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd linux.image.zstd
   video-debian:
     name: video-debian
     needs: [ pearl-debian, qemu ]
