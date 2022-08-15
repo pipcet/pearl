@@ -47,7 +47,7 @@ $(BUILD)/bootloaders/u-boot.image: $(call done,bootloaders/u-boot,install)
 	cat < $(BUILD)/bootloaders/u-boot/build/u-boot.bin > $@
 
 ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
-$(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,install)
+$(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,build)
 	$(TIMESTAMP)
 else
 $(call done,bootloaders/u-boot,install): $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(call done,bootloaders/u-boot,)/
