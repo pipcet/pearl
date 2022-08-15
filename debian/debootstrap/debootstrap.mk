@@ -74,7 +74,7 @@ $(BUILD)/debian.cpio: $(BUILD)/artifacts/debian.cpio.zstd/down | $(BUILD)/
 	zstd -d --ultra --long=31 -d < $(BUILD)/artifacts/down/debian.cpio.zstd > $@
 endif
 else
-$(BUILD)/debian.cpio: $(BUILD)/
+$(BUILD)/debian.cpio: | $(BUILD)/
 	wget -O $@.zstd https://github.com/pipcet/pearl-debian/releases/latest/download/debian.cpio.zstd
 	zstd --ultra --long=31 -d < $@.zstd > $@
 endif
