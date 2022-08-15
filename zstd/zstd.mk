@@ -1,9 +1,12 @@
 #	for a in zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c; do aarch64-linux-gnu-gcc -mgeneral-regs-only -static -DPAYLOAD_SIZE=$$(wc -c < zstd/payload) -Wl,--script=zstd/zstd.lds -O3 -Wall -fno-exceptions -fpie -mstrict-align -S -o $$a.s -ffreestanding -fno-builtin-functions -nostdlib -fno-inline $$a; done
 
-$(BUILD)/zstd/zstdlib.elf: zstd/payload zstd/zstdmain.c | $(BUILD)/zstd/
+$(BUILD)/zstd/zstdlib.elf: zstd/payload zstd/zstdmain.c | $(BUILD)/zstd/ $(call done,zstd,checkout)
 	$(WITH_CROSS_PATH) aarch64-linux-gnu-gcc $(CROSS_CFLAGS) -mgeneral-regs-only -ggdb -g3 -static -DPAYLOAD_SIZE=$$(wc -c < zstd/payload) -Wl,--script=zstd/zstd.lds -O3 -Wall -fno-exceptions -fpie -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c zstd/chickens.S # -flto -fomit-frame-pointer -Os -fPIC
 #zstd/zstdlib.elf: zstd/zstd.c
 #	aarch64-linux-gnu-gcc -DPAYLOAD_SIZE=$$(wc -c < zstd/payload) -Wl,--script=zstd/zstd.lds -fPIC -Os -flto  -Wall -fno-exceptions -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstd.c # -flto -fomit-frame-pointer -Os -fPIC 
+
+$(call done,zstd,checkout): zstd/zstd{checkout}
+	$(TIMESTAMP)
 
 $(BUILD)/zstd/zstdlib: $(BUILD)/zstd/zstdlib.elf
 	$(WITH_CROSS_PATH) aarch64-linux-gnu-objcopy -j.text -Obinary $< $@
@@ -27,7 +30,7 @@ $(BUILD)/zstd/zstdout: $(BUILD)/zstd/zstdlib zstd/payload
 %.macho.zst.size: %.macho.zst
 	wc -c < $< > $@
 
-%.macho.zstlib.elf: %.macho.zst.size %.macho.size %.macho.real.size zstd/zstdmain.c | $(BUILD)/zstd/
+%.macho.zstlib.elf: %.macho.zst.size %.macho.size %.macho.real.size zstd/zstdmain.c | $(BUILD)/zstd/ $(call done,zstd,checkout)
 #	about 38 billion instructions executed:
 #	 $(WITH_CROSS_PATH) aarch64-linux-gnu-gcc -mgeneral-regs-only -ggdb -g3 -static -DTOTAL_UNCOMPRESSED_SIZE=$$(cat $*.macho.size) -DUNCOMPRESSED_SIZE=$$(cat $*.macho.real.size) -DCOMPRESSED_SIZE=$$(cat $<) -Wl,--script=zstd/zstd.lds -O3 -Wall -fno-exceptions -fpie -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c zstd/chickens.S # -flto -fomit-frame-pointer -Os -fPIC
 	$(WITH_CROSS_PATH) aarch64-linux-gnu-gcc $(CROSS_CFLAGS) -mgeneral-regs-only -ggdb -g3 -static -DTOTAL_UNCOMPRESSED_SIZE=$$(cat $*.macho.size) -DUNCOMPRESSED_SIZE=$$(cat $*.macho.real.size) -DCOMPRESSED_SIZE=$$(cat $<) -Wl,--script=zstd/zstd.lds -O3 -Wall -flto -fno-exceptions -fpie -mstrict-align -o $@ -ffreestanding -nostdlib zstd/zstdmain.c zstd/zstd/lib/decompress/*.c zstd/zstd/lib/common/*.c zstd/chickens.S zstd/zstdlib.c
