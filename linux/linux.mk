@@ -179,9 +179,14 @@ $(call done,linux,%/copy): | $(call done,linux,checkout) $(call done,linux,%/) $
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/$*/build/
 	$(TIMESTAMP)
 
+ifeq ($(filter toolchain.tar.zstd,$(ARTIFACTS)),)
 $(call done,linux,headers/install): $(call done,linux,headers/copy) $(call done,pearl,install/mkdir)
 	PATH="$(CROSS_PATH):$$PATH" $(MAKE) -C $(BUILD)/linux/headers/source ARCH=arm64 CROSS_COMPILE=$(CROSS_COMPILE) O=$(BUILD)/linux/headers/o INSTALL_HDR_PATH=$(BUILD)/pearl/install headers_install
 	$(TIMESTAMP)
+else
+$(call done,linux,headers/install): $(BUILD)/artifacts/toolchain.tar.zstd/extract | $(call done,linux,headers)/
+	$(TIMESTAMP)
+endif
 
 $(call done,linux,headers/copy): | $(call done,linux,checkout) $(call done,linux,headers/) $(BUILD)/linux/headers/source/
 	$(COPY_SAUNA) $(PWD)/linux/linux/* $(BUILD)/linux/headers/source/
