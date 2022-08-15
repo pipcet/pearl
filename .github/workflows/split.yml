@@ -18,24 +18,6 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make -j13 build/toolchain.tar.zstd{artifact}
-  libgcc:
-    name: libgcc
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make -j13 done/toolchain/gcc/checkout!
-    - run: make -j13 done/userspace/glibc/checkout!
-    - run: make -j13 done/toolchain/gcc/libgcc/install
-    - run: make -j13 build/libgcc.tar.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
   qemu:
     name: qemu
     runs-on: ubuntu-latest
@@ -56,6 +38,101 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: make -j13 --trace build/debian/debian-rootfs/root2.cpio.zstd{artifact}
+  bootloaders:
+    name: bootloaders
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make build/bootloaders.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  glibc:
+    name: glibc
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/glibc.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  linux_image:
+    name: linux.image
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/linux.image.zstd{artifact} build/linux/linux.dtbs.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  linux_modules:
+    name: linux.modules
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  stage2_image:
+    name: stage2.image
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact} build/linux/stage2.dtbs.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  stage2_modules:
+    name: stage2.modules
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: rm -rf done/linux
+    - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
+  libgcc:
+    name: libgcc
+    runs-on: ubuntu-latest
+    needs: [ toolchain ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/libgcc.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
   debian:
     name: debian
     runs-on: ubuntu-latest
@@ -73,31 +150,6 @@ jobs:
     - run: make -j13 build/debian.cpio.zstd{artifact}
       env:
         ARTIFACTS: root2.cpio.zstd
-  dplusi:
-    name: dplusi
-    runs-on: ubuntu-latest
-    needs: [ debian, installer ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/debian.cpio.zstd{}
-    - run: mkdir -p build/debian/debootstrap
-    - run: touch build/debian/debootstrap/stage1.tar
-    - run: touch build/debian/debootstrap/stage15.tar
-    - run: touch build/debian/debootstrap/stage15.tar
-    - run: touch build/debian/debootstrap/stage15.cpio
-    - run: touch build/debian/debootstrap/stage2.cpio
-    - run: zstd -d < build/artifacts/down/debian.cpio.zstd > build/debian/debian.cpio
-    - run: touch build/debian/full-installer.cpio.gz
-    - run: touch build/debian/full-installer.cpio
-    - run: make build/artifacts/down/installer.cpio.zstd{}
-    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
-    - run: make -j13 build/dplusi.tar.zstd{artifact}
-      env:
-        ARTIFACTS: debian.cpio.zstd installer.cpio.zstd
   debian-nobootloader:
     name: debian-nobootloader
     runs-on: ubuntu-latest
@@ -112,6 +164,8 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/nobootloader.udeb.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
   debian-partman-auto:
     name: debian-partman-auto
     runs-on: ubuntu-latest
@@ -126,6 +180,8 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/partman-auto.udeb.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
   debian-user-setup:
     name: debian-user-setup
     runs-on: ubuntu-latest
@@ -140,6 +196,8 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/user-setup.udeb.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
   debian-netcfg-static:
     name: debian-netcfg-static
     runs-on: ubuntu-latest
@@ -154,6 +212,8 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/netcfg.udeb.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
   debian-libdebian-installer:
     name: debian-libdebian-installer
     runs-on: ubuntu-latest
@@ -168,6 +228,112 @@ jobs:
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/packages/libdebian-installer.udeb.zstd{artifact}
+      env:
+        ARTIFACTS: root2.cpio.zstd
+  video-uboot:
+    name: video-uboot
+    needs: [ bootloaders, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/video/u-boot.mp4{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
+  video-barebox:
+    name: video-barebox
+    needs: [ bootloaders, qemu ]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 --trace build/video/barebox.mp4{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd bootloaders.tar.zst qemu.tar.zstd
+  emacs:
+    name: emacs
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/emacs.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+  perl:
+    name: perl
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/perl.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+  openssl:
+    name: openssl
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/openssl.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+  busybox:
+    name: busybox
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/busybox.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+  lvm2:
+    name: lvm2
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/lvm2.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
+  wpa_supplicant:
+    name: wpa_supplicant
+    runs-on: ubuntu-latest
+    needs: [ glibc ]
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: false
+    - name: Set env variables
+      uses: ./g/github/env/
+    - run: make -j13 build/wpa_supplicant.tar.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
   installer:
     name: installer
     runs-on: ubuntu-latest
@@ -195,137 +361,6 @@ jobs:
     - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
       env:
         ARTIFACTS: partman-auto.udeb.zstd netcfg.udeb.zstd user-setup.udeb.zstd libdebian-installer.udeb.zstd nobootloader.udeb.zstd
-  glibc:
-    name: glibc
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make -j13 done/userspace/glibc/install
-    - run: make -j13 build/glibc.tar.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-  emacs:
-    name: emacs
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/emacs/install
-    - run: make -j13 build/emacs.tar.zstd{artifact}
-      env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
-  perl:
-    name: perl
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/perl/install
-    - run: make -j13 build/perl.tar.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd
-  openssl:
-    name: openssl
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/openssl/install
-    - run: make -j13 build/openssl.tar.zstd{artifact}
-      env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
-  busybox:
-    name: busybox
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/busybox/install
-    - run: make -j13 build/busybox.tar.zstd{artifact}
-      env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
-  lvm2:
-    name: lvm2
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/lvm2/install
-    - run: make -j13 build/lvm2.tar.zstd{artifact}
-      env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
-  wpa_supplicant:
-    name: wpa_supplicant
-    runs-on: ubuntu-latest
-    needs: [ glibc ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make -j13 done/userspace/wpa_supplicant/install
-    - run: make -j13 build/wpa_supplicant.tar.zstd{artifact}
-      env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
   rest:
     name: rest
     runs-on: ubuntu-latest
@@ -336,110 +371,26 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/userspace/glibc/checkout
-    - run: make build/artifacts/down/libgcc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make build/artifacts/down/emacs.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
-    - run: make build/artifacts/down/perl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
-    - run: make build/artifacts/down/openssl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
-    - run: make build/artifacts/down/busybox.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
-    - run: make build/artifacts/down/lvm2.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
-    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
-    - run: rm -rf build/userspace/util-linux done/userspace/util-linux
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: glibc.tar.zstd toolchain.tar.zstd
-  linux_image:
-    name: linux.image
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd
+  dplusi:
+    name: dplusi
     runs-on: ubuntu-latest
-    needs: [ toolchain ]
+    needs: [ debian, installer ]
     steps:
     - uses: actions/checkout@v3
       with:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
-    - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
+    - run: touch build/debian/full-installer.cpio.gz
+    - run: touch build/debian/full-installer.cpio
+    - run: make build/artifacts/down/installer.cpio.zstd{}
+    - run: zstd -d < build/artifacts/down/installer.cpio.zstd > build/debian/installer.cpio
+    - run: make -j13 build/dplusi.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd
-  linux_modules:
-    name: linux.modules
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/linux.modules.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-  stage2_image:
-    name: stage2.image
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
-    - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-  stage2_modules:
-    name: stage2.modules
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/stage2.modules.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-  bootloaders:
-    name: bootloaders
-    runs-on: ubuntu-latest
-    needs: [ toolchain ]
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/bootloaders.tar.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
+        ARTIFACTS: debian.cpio.zstd installer.cpio.zstd
   pearl:
     name: pearl
     needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
@@ -450,8 +401,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/glibc.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
     - run: make build/artifacts/down/libgcc.tar.zstd{}
@@ -485,8 +434,6 @@ jobs:
     - run: tar -xf build/artifacts/down/stage2.dtbs.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
     - run: make -j13 done/linux/checkout!
@@ -497,7 +444,7 @@ jobs:
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd rest.tar.zstd bootloaders.tar.zstd
   pearl-debian:
     name: pearl-debian
     needs: [ pearl, dplusi ]
@@ -508,8 +455,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
@@ -544,44 +489,6 @@ jobs:
     - run: make -j13 --trace build/pearl-debian.image{artifact}
       env:
         ARTIFACTS: pearl.tar.zstd dplusi.tar.zstd
-  video-uboot:
-    name: video-uboot
-    needs: [ bootloaders, qemu ]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: make -j13 --trace build/video/u-boot.mp4{artifact}
-  video-barebox:
-    name: video-barebox
-    needs: [ bootloaders, qemu ]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-      with:
-        submodules: false
-    - name: Set env variables
-      uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
-    - run: make -j13 --trace build/video/barebox.mp4{artifact}
   video-pearl:
     name: video-pearl
     needs: [ pearl, qemu ]
@@ -592,12 +499,8 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
     - run: make build/artifacts/down/pearl.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
     - run: mkdir -p done/linux/pearl
@@ -616,6 +519,8 @@ jobs:
     - run: touch build/linux/pearl.config
     - run: touch build/linux/pearl.image
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd
   video-debian:
     name: video-debian
     needs: [ pearl-debian, qemu ]
@@ -626,12 +531,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/toolchain.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/toolchain.tar.zstd
-    - run: make build/artifacts/down/pearl-debian.image{}
-    - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian.image
-    - run: make build/artifacts/down/qemu.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/qemu.tar.zstd
     - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd pearl-debian.image qemu.tar.zstd
