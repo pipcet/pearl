@@ -95,19 +95,56 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 $(BUILD)/linux/pearl.dtb: | $(call done,linux,pearl/build) $(BUILD)/linux/pearl.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
+ifeq ($(filter linux.dtbs.zstd,$(ARTIFACTS)),)
+$(BUILD)/linux/linux.dtb: | $(call done,linux,linux/build) $(BUILD)/linux/linux.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j313.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
+$(BUILD)/linux/linux-j313.dtb: | $(call done,linux,linux/build) $(BUILD)/linux/linux.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
 
-$(BUILD)/linux/%-j293.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
+$(BUILD)/linux/linux-j293.dtb: | $(call done,linux,linux/build) $(BUILD)/linux/linux.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
 
-$(BUILD)/linux/%-j274.dtb: | $(call done,linux,%/build) $(BUILD)/linux/%.config
+$(BUILD)/linux/linux-j274.dtb: | $(call done,linux,linux/build) $(BUILD)/linux/linux.config
 	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
 
-$(BUILD)/linux/%.dtbs: $(BUILD)/linux/%.dtb $(BUILD)/linux/%-j313.dtb $(BUILD)/linux/%-j293.dtb $(BUILD)/linux/%-j274.dtb
+$(BUILD)/linux/linux.dtbs: $(BUILD)/linux/linux.dtb $(BUILD)/linux/linux-j313.dtb $(BUILD)/linux/linux-j293.dtb $(BUILD)/linux/linux-j274.dtb
+	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$^)
+else
+$(BUILD)/linux/linux.dtb: $(BUILD)/artifacts/linux.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/linux-j313.dtb: $(BUILD)/artifacts/linux.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/linux-j293.dtb: $(BUILD)/artifacts/linux.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/linux-j274.dtb: $(BUILD)/artifacts/linux.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+endif
+
+ifeq ($(filter stage2.dtbs.zstd,$(ARTIFACTS)),)
+$(BUILD)/linux/stage2.dtb: | $(call done,linux,stage2/build) $(BUILD)/linux/stage2.config
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
+
+$(BUILD)/linux/stage2-j313.dtb: | $(call done,linux,stage2/build) $(BUILD)/linux/stage2.config
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j313.dtb $@
+
+$(BUILD)/linux/stage2-j293.dtb: | $(call done,linux,stage2/build) $(BUILD)/linux/stage2.config
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
+
+$(BUILD)/linux/stage2-j274.dtb: | $(call done,linux,stage2/build) $(BUILD)/linux/stage2.config
+	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j274.dtb $@
+else
+$(BUILD)/linux/stage2.dtb: $(BUILD)/artifacts/stage2.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/stage2-j313.dtb: $(BUILD)/artifacts/stage2.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/stage2-j293.dtb: $(BUILD)/artifacts/stage2.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+$(BUILD)/linux/stage2-j274.dtb: $(BUILD)/artifacts/stage2.dtbs.zstd/extract | $(BUILD)/linux/
+	$(TIMESTAMP)
+endif
+
+$(BUILD)/linux/stage2.dtbs: $(BUILD)/linux/stage2.dtb $(BUILD)/linux/stage2-j313.dtb $(BUILD)/linux/stage2-j293.dtb $(BUILD)/linux/stage2-j274.dtb
 	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$^)
 
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
