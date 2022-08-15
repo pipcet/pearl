@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ split1 ]
 env:
-  RELEASED_ARTIFACTS: toolchain rootfs udeb installer debian libgcc
+  RELEASED_ARTIFACTS: toolchain rootfs udeb installer debian
   BUILDER: 1
 jobs:
   toolchain:
