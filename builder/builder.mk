@@ -1,8 +1,8 @@
 ifeq ($(BUILDER),)
-$(PWD)/builder/packages/%{}:
+$(PWD)/builder/packages/%{}: | $(PWD)/builder/packages/
 	$(TIMESTAMP)
 
-$(PWD)/builder/sysctl/%{}:
+$(PWD)/builder/sysctl/%{}: | $(PWD)/builder/sysctl/
 	$(TIMESTAMP)
 else
 $(PWD)/builder/packages/%{}: | $(PWD)/builder/packages/ $(PWD)/builder/update
