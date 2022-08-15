@@ -322,9 +322,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/root2.cpio.zstd{}
-    - run: mkdir -p build/debian/debian-rootfs
-    - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
     - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
       env:
         ARTIFACTS: partman-auto.udeb.zstd netcfg.udeb.zstd user-setup.udeb.zstd libdebian-installer.udeb.zstd nobootloader.udeb.zstd
@@ -364,46 +361,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make build/artifacts/down/libgcc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
-    - run: make build/artifacts/down/emacs.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/emacs.tar.zstd
-    - run: make build/artifacts/down/perl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/perl.tar.zstd
-    - run: make build/artifacts/down/openssl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/openssl.tar.zstd
-    - run: make build/artifacts/down/busybox.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/busybox.tar.zstd
-    - run: make build/artifacts/down/lvm2.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/lvm2.tar.zstd
-    - run: make build/artifacts/down/wpa_supplicant.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/wpa_supplicant.tar.zstd
-    - run: make build/artifacts/down/rest.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/rest.tar.zstd
-    - run: mkdir -p build/linux
-    - run: make build/artifacts/down/linux.image.zstd{}
-    - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
-    - run: make build/artifacts/down/linux.modules.zstd{}
-    - run: zstd -d < build/artifacts/down/linux.modules.zstd > build/linux/linux.modules
-    - run: make build/artifacts/down/stage2.image.zstd{}
-    - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
-    - run: make build/artifacts/down/stage2.modules.zstd{}
-    - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
-    - run: make build/artifacts/down/linux.dtbs.zstd{}
-    - run: tar -xf build/artifacts/down/linux.dtbs.zstd
-    - run: make build/artifacts/down/stage2.dtbs.zstd{}
-    - run: tar -xf build/artifacts/down/stage2.dtbs.zstd
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: mkdir -p done/linux/stage2
-    - run: mkdir -p done/linux/linux
-    - run: make -j13 done/linux/checkout!
-    - run: make -j13 done/linux/stage2/copy!
-    - run: make -j13 done/linux/linux/copy!
-    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install build/linux/linux.image build/linux/linux.modules build/linux/stage2.image build/linux/stage2.modules build/linux/*.dtb
-    - run: rm -rf done/gcc/checkout
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd rest.tar.zstd bootloaders.tar.zstd
@@ -417,36 +374,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/pearl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
-    - run: make build/artifacts/down/bootloaders.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: make build/artifacts/down/dplusi.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/dplusi.tar.zstd
-    - run: make build/artifacts/down/glibc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/glibc.tar.zstd
-    - run: make build/artifacts/down/libgcc.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/libgcc.tar.zstd
-    - run: touch done/linux/stage2/configure
-    - run: touch done/linux/stage2/build
-    - run: touch done/linux/linux/configure
-    - run: touch done/linux/linux/build
-    - run: touch build/linux/pearl.dts.h
-    - run: touch build/linux/pearl.cpio
-    - run: touch done/linux/pearl/build
-    - run: touch build/linux/linux.config
-    - run: touch build/linux/linux.modules
-    - run: touch build/linux/linux.image
-    - run: touch build/linux/stage2.config
-    - run: touch build/linux/stage2.modules
-    - run: touch build/linux/stage2.image
-    - run: touch build/linux/pearl.config
-    - run: touch build/initramfs/pearl.cpio
-    - run: touch build/linux/pearl.cpio
-    - run: touch done/linux/pearl/build
-    - run: touch build/linux/pearl.image
-    - run: touch build/debian.cpio
-    - run: touch build/dplusi.cpio
     - run: make -j13 --trace build/pearl-debian.image{artifact}
       env:
         ARTIFACTS: pearl.tar.zstd dplusi.tar.zstd
