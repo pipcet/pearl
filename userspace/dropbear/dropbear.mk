@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/dropbear,install): $(call done,userspace/dropbear,build)
 	$(WITH_CROSS_PATH) $(MAKE) LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp" install
 	$(INSTALL_LIBS) userspace/dropbear
 	$(TIMESTAMP)
+else
+$(call done,userspace/dropbear,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/dropbear,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/dropbear,build): $(call done,userspace/dropbear,configure)
 	$(WITH_CROSS_PATH) $(MAKE) LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/dropbear/build PROGRAMS="dropbear dbclient scp"

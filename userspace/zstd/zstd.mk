@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/zstd,install): $(call done,userspace/zstd,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zstd/build CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -fPIC" PREFIX=$(call install,userspace/zstd) install
 	$(INSTALL_LIBS) userspace/zstd
 	$(TIMESTAMP)
+else
+$(call done,userspace/zstd,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/zstd,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/zstd,build): $(call done,userspace/zstd,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zstd/build CROSS_COMPILE=aarch64-linux-gnu- CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -fPIC" PREFIX=$(call install,userspace/zstd)

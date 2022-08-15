@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/memtool,install): $(call done,userspace/memtool,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/memtool/build install
 	$(INSTALL_LIBS) userspace/memtool
 	$(TIMESTAMP)
+else
+$(call done,userspace/memtool,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/memtool,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/memtool,build): $(call done,userspace/memtool,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/memtool/build

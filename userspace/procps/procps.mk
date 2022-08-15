@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/procps,install): $(call done,userspace/procps,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/procps/build DESTDIR="$(call install,userspace/procps)" install
 	$(INSTALL_LIBS) userspace/procps
 	$(TIMESTAMP)
+else
+$(call done,userspace/procps,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/procps,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/procps,build): $(call done,userspace/procps,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/procps/build

@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/dtc,install): $(call done,userspace/dtc,build)
 	$(WITH_CROSS_PATH) $(MAKE) CC=aarch64-linux-gnu-gcc PREFIX="$(call install,userspace/dtc)" CFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build install
 	$(INSTALL_LIBS) userspace/dtc
 	$(TIMESTAMP)
+else
+$(call done,userspace/dtc,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/dtc,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/dtc,build): $(call done,userspace/dtc,configure)
 	$(WITH_CROSS_PATH) $(MAKE) PKG_CONFIG=/bin/false CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" PREFIX="$(BUILD)/pearl/install" LDFLAGS="$(CROSS_CFLAGS)" NO_PYTHON=1 -C $(BUILD)/userspace/dtc/build

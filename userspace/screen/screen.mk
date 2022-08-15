@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/screen,install): $(call done,userspace/screen,build)
 	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src DESTDIR="$(call install,userspace/screen)" install
 	$(INSTALL_LIBS) userspace/screen
 	$(TIMESTAMP)
+else
+$(call done,userspace/screen,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/screen,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/screen,build): $(call done,userspace/screen,configure)
 	$(WITH_CROSS_PATH) $(MAKE) CFLAGS="$(CROSS_CFLAGS)" LDFLAGS="$(CROSS_CFLAGS)" -C $(BUILD)/userspace/screen/build/src

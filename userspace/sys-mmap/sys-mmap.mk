@@ -1,7 +1,12 @@
+ifeq ($(filter perl.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/sys-mmap,install): $(call done,userspace/sys-mmap,build)
 	$(WITH_CROSS_PATH) $(WITH_CROSS_CC) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/sys-mmap/build install
 	$(INSTALL_LIBS) userspace/sys-mmap
 	$(TIMESTAMP)
+else
+$(call done,userspace/sys-mmap,install): $(BUILD)/artifacts/perl.tar.zstd/extract | $(call done,userspace/sys-mmap,)/
+	$(TIMESTAMP)
+endif
 
 $(BUILD)/userspace/sys-mmap/sys-mmap.tar: $(call done,userspace/sys-mmap,build)
 	tar -C $(BUILD)/userspace/sys-mmap -cf $@ done build

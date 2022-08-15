@@ -1,8 +1,13 @@
 DEP_zlib += $(call done,userspace/zlib,install)
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/zlib,install): $(call done,userspace/zlib,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zlib/build install
 	$(INSTALL_LIBS) userspace/zlib
 	$(TIMESTAMP)
+else
+$(call done,userspace/zlib,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/zlib,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/zlib,build): $(call done,userspace/zlib,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/zlib/build CFLAGS="$(CROSS_CFLAGS)"

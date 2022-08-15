@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/dialog,install): $(call done,userspace/dialog,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dialog/build install
 	$(INSTALL_LIBS) userspace/dialog
 	$(TIMESTAMP)
+else
+$(call done,userspace/dialog,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/dialog,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/dialog,build): $(call done,userspace/dialog,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/dialog/build

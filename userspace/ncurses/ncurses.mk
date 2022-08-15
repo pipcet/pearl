@@ -1,10 +1,15 @@
 DEP_ncurses += $(call done,userspace/ncurses,install)
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/ncurses,install): $(call done,userspace/ncurses,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/ncurses/build install
 	$(MKDIR) $(call install,userspace/ncurses)/lib/pkgconfig/
 	$(CP) $(call install,userspace/ncurses)/lib/aarch64-linux-gnu/pkgconfig/ncurses.pc $(call install,userspace/ncurses)/lib/pkgconfig/ || $(CP) $(call install,userspace/ncurses)/lib/x86_64-*linux-gnu/pkgconfig/ncurses.pc  $(call install,userspace/ncurses)/lib/pkgconfig/ || true
 	$(INSTALL_LIBS) userspace/ncurses
 	$(TIMESTAMP)
+else
+$(call done,userspace/ncurses,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/ncurses,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/ncurses,build): $(call done,userspace/ncurses,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/ncurses/build

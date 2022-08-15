@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/cryptsetup,install): $(call done,userspace/cryptsetup,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/cryptsetup/build DESTDIR=$(call install,userspace/cryptsetup) install
 	$(INSTALL_LIBS) userspace/cryptsetup
 	$(TIMESTAMP)
+else
+$(call done,userspace/cryptsetup,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/cryptsetup,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/cryptsetup,build): $(call done,userspace/cryptsetup,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/cryptsetup/build

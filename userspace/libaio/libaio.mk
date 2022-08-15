@@ -1,8 +1,13 @@
 DEP_libaio += $(call done,userspace/libaio,install)
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/libaio,install): $(call done,userspace/libaio,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS)" DESTDIR=$(call install,userspace/libaio) install
 	$(INSTALL_LIBS) userspace/libaio
 	$(TIMESTAMP)
+else
+$(call done,userspace/libaio,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/libaio,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/libaio,build): $(call done,userspace/libaio,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libaio/build CC=aarch64-linux-gnu-gcc CFLAGS="$(CROSS_CFLAGS) -I."

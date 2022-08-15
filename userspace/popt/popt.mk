@@ -1,7 +1,12 @@
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/popt,install): $(call done,userspace/popt,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/popt/build DESTDIR="$(call install,userspace/popt)" install
 	$(INSTALL_LIBS) userspace/popt
 	$(TIMESTAMP)
+else
+$(call done,userspace/popt,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/popt,)/
+	$(TIMESTAMP)
+endif
 
 $(BUILD)/userspace/popt/popt.tar: $(call done,userspace/popt,build)
 	tar -C $(BUILD)/userspace/popt -cf $@ done build

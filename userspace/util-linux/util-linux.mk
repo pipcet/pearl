@@ -1,8 +1,13 @@
 DEP_libuuid += $(call done,userspace/libuuid,install)
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/libuuid,install): $(call done,userspace/libuuid,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libuuid/build DESTDIR=$(call install,userspace/libuuid) install
 	$(INSTALL_LIBS) userspace/libuuid
 	$(TIMESTAMP)
+else
+$(call done,userspace/libuuid,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/libuuid,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/libuuid,build): $(call done,userspace/libuuid,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libuuid/build
@@ -20,10 +25,15 @@ $(call done,userspace/libuuid,copy): | $(call done,userspace/util-linux,checkout
 userspace-modules += libuuid
 
 DEP_libblkid += $(call done,userspace/libblkid,install)
+ifeq ($(filter rest.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/libblkid,install): $(call done,userspace/libblkid,build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libblkid/build DESTDIR=$(call install,userspace/libblkid) install
 	$(INSTALL_LIBS) userspace/libblkid
 	$(TIMESTAMP)
+else
+$(call done,userspace/libblkid,install): $(BUILD)/artifacts/rest.tar.zstd/extract | $(call done,userspace/libblkid,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,userspace/libblkid,build): $(call done,userspace/libblkid,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/userspace/libblkid/build

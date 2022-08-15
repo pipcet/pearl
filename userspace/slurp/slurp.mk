@@ -1,7 +1,12 @@
+ifeq ($(filter perl.tar.zstd,$(ARTIFACTS)),)
 $(call done,userspace/slurp,install): $(call done,userspace/slurp,build)
 	$(WITH_CROSS_PATH) $(WITH_QEMU) $(MAKE) -C $(BUILD)/userspace/slurp/build DESTDIR="$(call install,userspace/slurp)" install
 	$(INSTALL_LIBS) userspace/slurp
 	$(TIMESTAMP)
+else
+$(call done,userspace/slurp,install): $(BUILD)/artifacts/perl.tar.zstd/extract | $(call done,userspace/slurp,)/
+	$(TIMESTAMP)
+endif
 
 $(BUILD)/userspace/slurp/slurp.tar: $(call done,userspace/slurp,build)
 	tar -C $(BUILD)/userspace/slurp -cf $@ done build
