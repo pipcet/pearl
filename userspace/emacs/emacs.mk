@@ -4,7 +4,7 @@ $(call done,userspace/emacs,cross/install): $(call done,userspace/emacs,cross/bu
 	$(INSTALL_LIBS) userspace/emacs
 	$(TIMESTAMP)
 else
-$(call done,userspace/emacs,install): $(BUILD)/artifacts/emacs.tar.zstd/extract | $(call done,userspace/emacs,)/
+$(call done,userspace/emacs,cross/install): $(BUILD)/artifacts/emacs.tar.zstd/extract | $(call done,userspace/emacs,)/
 	$(TIMESTAMP)
 endif
 
