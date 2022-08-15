@@ -135,6 +135,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer.tar: $(call done,debian/i
 	tar --exclude=.git -C debian/installer/debian-libdebian-installer -cvf $@ .
 
 ifeq ($(filter udeb,$(RELEASED_ARTIFACTS)),)
+ifeq ($(filter nobootloader.udeb.zstd,$(ARTIFACTS)),)
 $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/packages/nobootloader/script.bash $(BUILD)/debian/installer/packages/nobootloader.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/nobootloader/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
@@ -145,7 +146,10 @@ $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/
 	tar xvf $(BUILD)/debian/installer/packages/nobootloader.udeb.tar
 	for a in nobootloader_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
-
+else
+$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/artifacts/nobootloader.udeb.zstd/down
+	zstd -d < $(BUILD)/artifacts/down/nobootloader.udeb.zstd > $@
+endif
 $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/packages/partman-auto/script.bash $(BUILD)/debian/installer/packages/partman-auto.tar $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root2.cpio.gz builder/packages/sharutils{} builder/packages/qemu-system-aarch64{} | $(BUILD)/debian/installer/packages/partman-auto/
 	dd if=/dev/zero of=tmp bs=128M count=1
 	uuencode /dev/stdout < $< | dd conv=notrunc of=tmp
