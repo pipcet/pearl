@@ -460,28 +460,9 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/pearl.tar.zstd{}
-    - run: tar --skip-old-files -xf build/artifacts/down/pearl.tar.zstd
-    - run: mkdir -p done/linux/stage2
-    - run: mkdir -p done/linux/linux
-    - run: mkdir -p done/linux/pearl
-    - run: mkdir -p build/linux
-    - run: make build/artifacts/down/linux.image.zstd{}
-    - run: zstd -d < build/artifacts/down/linux.image.zstd > build/linux/linux.image
-    - run: make build/artifacts/down/linux.modules.zstd{}
-    - run: zstd -d < build/artifacts/down/linux.modules.zstd > build/linux/linux.modules
-    - run: make build/artifacts/down/stage2.image.zstd{}
-    - run: zstd -d < build/artifacts/down/stage2.image.zstd > build/linux/stage2.image
-    - run: make build/artifacts/down/stage2.modules.zstd{}
-    - run: zstd -d < build/artifacts/down/stage2.modules.zstd > build/linux/stage2.modules
-    - run: touch done/linux/linux/configure done/linux/linux/build done/linux/linux/install done/linux/stage2/configure done/linux/stage2/build done/linux/stage2/install done/linux/pearl/configure done/linux/pearl/build done/linux/pearl/install
-    - run: touch build/linux/linux.config
-    - run: touch build/linux/stage2.config
-    - run: touch build/linux/pearl.config
-    - run: touch build/linux/pearl.image
     - run: make -j13 --trace build/video/pearl.mp4{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd linux.image.zstd
+        ARTIFACTS: toolchain.tar.zstd qemu.tar.zstd linux.image.zstd pearl.tar.zstd
   video-debian:
     name: video-debian
     needs: [ pearl-debian, qemu ]
