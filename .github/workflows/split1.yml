@@ -76,10 +76,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-    - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
+    - run: make -j13 --trace build/linux/linux.image.zstd{artifact} build/linux/linux.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   linux_modules:
@@ -107,10 +104,7 @@ jobs:
     - name: Set env variables
       uses: ./g/github/env/
     - run: rm -rf done/linux
-    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
-      env:
-        ARTIFACTS: toolchain.tar.zstd
-    - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
+    - run: make -j13 --trace build/linux/stage2.image.zstd{artifact} build/linux/stage2.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   stage2_modules:
