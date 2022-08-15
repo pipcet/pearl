@@ -19,7 +19,11 @@ $(call done,bootloaders/m1n1,checkout): | $(call done,bootloaders/m1n1,)
 	$(TIMESTAMP)
 
 $(BUILD)/initramfs/pearl.cpiospec: $(BUILD)/initramfs/pearl/boot/m1n1.macho
+ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/bootloaders/m1n1.macho ; $(COPY)
+else
+$(BUILD)/initramfs/pearl/boot/m1n1.macho: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(BUILD)/initramfs/pearl/boot/
+endif
 
 SECTARGETS += $(BUILD)/initramfs/pearl/boot/m1n1.macho
 SECTARGETS += $(BUILD)/bootloaders/m1n1.macho

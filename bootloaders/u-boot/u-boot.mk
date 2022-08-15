@@ -37,6 +37,7 @@ $(BUILD)/bootloaders/u-boot-plus-grub.dtb: $(BUILD)/bootloaders/u-boot.dtb
 $(BUILD)/bootloaders/u-boot-plus-grub.modules:
 	touch $@
 
+ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/bootloaders/u-boot-plus-grub.image: $(BUILD)/bootloaders/u-boot.image $(BUILD)/bootloaders/grub.efi
 	(cat < $<; cat $(BUILD)/bootloaders/grub.efi) > $@
 
@@ -45,6 +46,16 @@ $(BUILD)/bootloaders/u-boot.dtb: $(call done,bootloaders/u-boot,install)
 
 $(BUILD)/bootloaders/u-boot.image: $(call done,bootloaders/u-boot,install)
 	cat < $(BUILD)/bootloaders/u-boot/build/u-boot.bin > $@
+else
+$(BUILD)/bootloaders/u-boot-plus-grub.image: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(BUILD)/bootloaders/
+	@true
+
+$(BUILD)/bootloaders/u-boot.dtb: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(BUILD)/bootloaders/
+	@true
+
+$(BUILD)/bootloaders/u-boot.image: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(BUILD)/bootloaders/
+	@true
+endif
 
 ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,build)

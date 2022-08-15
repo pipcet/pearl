@@ -11,11 +11,19 @@ bootloaders/barebox/barebox{oldconfig}: bootloaders/barebox/barebox.config stamp
 $(BUILD)/bootloaders/barebox.modules:
 	touch $@
 
+ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/bootloaders/barebox.image: $(call done,bootloaders/barebox,install)
 	$(CP) $(BUILD)/bootloaders/barebox/build/images/barebox-dt-2nd.img $@
 
 $(BUILD)/bootloaders/barebox.dtb: $(call done,bootloaders/barebox,install)
 	$(CP) $(BUILD)/bootloaders/barebox/build/arch/arm/dts/apple-m1-j274.dtb $@
+else
+$(BUILD)/bootloaders/barebox.image: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(BUILD)/bootloaders/
+	@true
+
+$(BUILD)/bootloaders/barebox.dtb: $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(call done,bootloaders/barebox,install)
+	@true
+endif
 
 $(BUILD)/bootloaders/barebox.image.sendfile: $(BUILD)/bootloaders/barebox.dtb
 
