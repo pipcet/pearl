@@ -19,7 +19,7 @@ $(call done,userspace/zstd,copy): | $(call done,userspace/zstd,checkout) $(call 
 	$(COPY_SAUNA) $(PWD)/userspace/zstd/zstd/* $(BUILD)/userspace/zstd/build/
 	$(TIMESTAMP)
 
-$(call done,userspace/zstd,checkout): | $(call done,userspace/zstd,)
+$(call done,userspace/zstd,checkout): | $(call done,userspace/zstd,)/
 	$(MAKE) userspace/zstd/zstd{checkout}
 	$(TIMESTAMP)
 
