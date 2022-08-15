@@ -77,6 +77,8 @@ jobs:
       uses: ./g/github/env/
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/linux.image.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
     - run: make -j13 --trace build/linux/linux.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
@@ -106,6 +108,8 @@ jobs:
       uses: ./g/github/env/
     - run: rm -rf done/linux
     - run: make -j13 --trace build/linux/stage2.image.zstd{artifact}
+      env:
+        ARTIFACTS: toolchain.tar.zstd
     - run: make -j13 --trace build/linux/stage2.dtbs.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
