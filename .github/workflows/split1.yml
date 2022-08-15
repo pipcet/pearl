@@ -328,7 +328,7 @@ jobs:
   rest:
     name: rest
     runs-on: ubuntu-latest
-    needs: [ libgcc, emacs, perl, openssl, busybox, lvm2, wpa_supplicant ]
+    needs: [ libgcc ]
     steps:
     - uses: actions/checkout@v3
       with:
@@ -337,7 +337,7 @@ jobs:
       uses: ./g/github/env/
     - run: make -j13 build/rest.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd
+        ARTIFACTS: toolchain.tar.zstd glibc.tar.zstd libgcc.tar.zstd
   dplusi:
     name: dplusi
     runs-on: ubuntu-latest
@@ -353,7 +353,7 @@ jobs:
         ARTIFACTS: debian.cpio.zstd installer.cpio.zstd
   pearl:
     name: pearl
-    needs: [ rest, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
+    needs: [ rest, emacs, perl, openssl, busybox, lvm2, wpa_supplicant, linux_image, linux_modules, stage2_image, stage2_modules, bootloaders ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
