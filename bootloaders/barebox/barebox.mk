@@ -11,15 +11,15 @@ bootloaders/barebox/barebox{oldconfig}: bootloaders/barebox/barebox.config stamp
 $(BUILD)/bootloaders/barebox.modules:
 	touch $@
 
-$(BUILD)/bootloaders/barebox.image: $(call done,bootloaders/barebox,build)
+$(BUILD)/bootloaders/barebox.image: $(call done,bootloaders/barebox,install)
 	$(CP) $(BUILD)/bootloaders/barebox/build/images/barebox-dt-2nd.img $@
 
-$(BUILD)/bootloaders/barebox.dtb: $(call done,bootloaders/barebox,build)
+$(BUILD)/bootloaders/barebox.dtb: $(call done,bootloaders/barebox,install)
 	$(CP) $(BUILD)/bootloaders/barebox/build/arch/arm/dts/apple-m1-j274.dtb $@
 
 $(BUILD)/bootloaders/barebox.image.sendfile: $(BUILD)/bootloaders/barebox.dtb
 
-$(BUILD)/bootloaders/barebox.image.d/sendfile: $(call done,bootloaders/barebox,build) | $(BUILD)/bootloaders/barebox.image.d/
+$(BUILD)/bootloaders/barebox.image.d/sendfile: $(call done,bootloaders/barebox,install) | $(BUILD)/bootloaders/barebox.image.d/
 	echo "#!/bin/sh" > $@
 	echo "enable-framebuffer &" >> $@
 	echo "echo > /sys/kernel/debug/dcp/trigger &" >> $@
