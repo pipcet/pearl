@@ -73,6 +73,7 @@ $(BUILD)/debian/debian-rootfs/root2-script.bash: | $(BUILD)/debian/debian-rootfs
 	echo "apt-get -y clean"; \
 	echo "cd /; find / -xdev | cpio -H newc -o | uuencode root2.cpio > /dev/vda") > $@
 
+ifeq ($(filter root2.cpio.zstd,$(ARTIFACTS)),)
 ifeq ($(filter rootfs,$(RELEASED_ARTIFACTS)),)
 $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/debian-rootfs/root1.cpio.gz $(BUILD)/debian/debian-rootfs/root2-script.bash | $(BUILD)/ builder/packages/qemu-system-aarch64{} builder/packages/sharutils{} builder/sysctl/overcommit_memory{}
 	dd if=/dev/zero of=tmp bs=1G count=3
@@ -83,4 +84,8 @@ $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/qemu-kernel $(BUILD)/debian/d
 else
 $(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/released/pipcet/debian-rootfs/root1.cpio.gz{} | $(BUILD)/debian/debian-rootfs/
 	gunzip < $(BUILD)/released/pipcet/debian-rootfs/root1.cpio.gz > $@
+endif
+else
+$(BUILD)/debian/debian-rootfs/root2.cpio: $(BUILD)/artifacts/root2.cpio.zstd/down | $(BUILD)/debian/debian-rootfs/
+	zstd -d < $(BUILD)/released/pipcet/debian-rootfs/root2.cpio.zstd > $@
 endif
