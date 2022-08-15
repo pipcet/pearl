@@ -453,7 +453,7 @@ jobs:
     - run: make zstd/zstd{checkout}
     - run: make -j13 --trace build/pearl.tar.zstd{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd
+        ARTIFACTS: toolchain.tar.zstd rest.tar.zstd linux.image.zstd linux.modules.zstd linux.dtbs.zstd stage2.image.zstd stage2.modules.zstd stage2.dtbs.zstd glibc.tar.zstd libgcc.tar.zstd emacs.tar.zstd perl.tar.zstd openssl.tar.zstd busybox.tar.zstd lvm2.tar.zstd wpa_supplicant.tar.zstd rest.tar.zstd bootloaders.tar.zstd
   pearl-debian:
     name: pearl-debian
     needs: [ pearl, dplusi ]
@@ -540,8 +540,6 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make build/artifacts/down/pearl-debian.image{}
-    - run: mv build/artifacts/down/pearl-debian.image build/pearl-debian.image
     - run: make -j13 --trace build/video/pearl-debian.mp4{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd pearl-debian.image qemu.tar.zstd
