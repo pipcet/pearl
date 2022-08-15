@@ -46,8 +46,13 @@ $(BUILD)/bootloaders/u-boot.dtb: $(call done,bootloaders/u-boot,build)
 $(BUILD)/bootloaders/u-boot.image: $(call done,bootloaders/u-boot,build)
 	cat < $(BUILD)/bootloaders/u-boot/build/u-boot.bin > $@
 
+ifeq ($(filter bootloaders.tar.zstd,$(ARTIFACTS)),)
 $(call done,bootloaders/u-boot,install): $(call done,bootloaders/u-boot,build)
 	$(TIMESTAMP)
+else
+$(call done,bootloaders/u-boot,install): $(BUILD)/artifacts/bootloaders.tar.zstd/extract | $(call done,bootloaders/u-boot,)/
+	$(TIMESTAMP)
+endif
 
 $(call done,bootloaders/u-boot,build): $(call done,bootloaders/u-boot,configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/bootloaders/u-boot/build ARCH=arm CROSS_COMPILE=$(CROSS_COMPILE)
