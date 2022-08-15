@@ -18,6 +18,9 @@ $(BUILD)/linux/debian.config: linux/pearl.config
 ifeq ($(filter pearl.image.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.image: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
 	$(CP) --reflink=auto $(BUILD)/linux/pearl/build/arch/arm64/boot/Image $@
+
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
+$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 else
 $(BUILD)/linux/pearl.image: $(BUILD)/artifacts/pearl.image.zstd/down | $(BUILD)/linux/
 	zstd -d < $(BUILD)/artifacts/down/pearl.image.zstd > $@
@@ -144,9 +147,6 @@ endif
 $(BUILD)/linux/stage2.dtbs: $(BUILD)/linux/stage2.dtb $(BUILD)/linux/stage2-j313.dtb $(BUILD)/linux/stage2-j293.dtb $(BUILD)/linux/stage2-j274.dtb
 	tar -C . -cvf $@ $(patsubst $(PWD)/%,%,$^)
 
-$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
-$(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
-
 $(call done,linux,pearl/build): $(BUILD)/linux/pearl.dts.h
 $(call done,linux,pearl/build): $(BUILD)/linux/pearl.cpio
 
@@ -236,7 +236,7 @@ $(BUILD)/linux.tar: $(call done,linux,stage2/build) $(call done,linux,linux/buil
 	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/stage2.image $(BUILD)/linux/stage2.modules $(BUILD)/linux/linux.image $(BUILD)/linux/linux.modules)
 
 $(BUILD)/pearl.tar: $(BUILD)/linux/pearl.image $(call done,linux,pearl/build)
-	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/pearl.image done)
+	tar -C . -cf $@ $(patsubst $(PWD)/%,%,$(BUILD)/linux/pearl.image)
 
 SECTARGETS += $(call done,linux,stage2/build)
 SECTARGETS += build/linux/stage2.image
