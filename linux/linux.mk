@@ -92,9 +92,6 @@ $(BUILD)/linux/%.image.d/sendfile: $(BUILD)/linux/%.image | $(BUILD)/linux/%.ima
 	echo "kexec --mem-min=0x900000000 -fix $*.image --dtb=/sys/firmware/fdt" >> $@
 	chmod u+x $@
 
-$(BUILD)/linux/pearl.dtb: | $(call done,linux,pearl/build) $(BUILD)/linux/pearl.config
-	$(CP) $(BUILD)/linux/$*/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
-
 ifeq ($(filter linux.dtbs.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/linux.dtb: | $(call done,linux,linux/build) $(BUILD)/linux/linux.config
 	$(CP) $(BUILD)/linux/linux/build/arch/arm64/boot/dts/apple/t8103-j293.dtb $@
