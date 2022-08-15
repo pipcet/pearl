@@ -147,7 +147,7 @@ $(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/debian/installer/
 	for a in nobootloader_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/artifacts/nobootloader.udeb.zstd/down
+$(BUILD)/debian/installer/packages/nobootloader.udeb: $(BUILD)/artifacts/nobootloader.udeb.zstd/down | $(BUILD)/debian/installer/packages/
 	zstd -d < $(BUILD)/artifacts/down/nobootloader.udeb.zstd > $@
 endif
 
@@ -163,7 +163,7 @@ $(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/debian/installer/
 	for a in partman-auto_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/artifacts/partman-auto.udeb.zstd/down
+$(BUILD)/debian/installer/packages/partman-auto.udeb: $(BUILD)/artifacts/partman-auto.udeb.zstd/down | $(BUILD)/debian/installer/packages/
 	zstd -d < $(BUILD)/artifacts/down/partman-auto.udeb.zstd > $@
 endif
 
@@ -179,7 +179,7 @@ $(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/debian/installer/pa
 	for a in user-setup-udeb_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/artifacts/user-setup.udeb.zstd/down
+$(BUILD)/debian/installer/packages/user-setup.udeb: $(BUILD)/artifacts/user-setup.udeb.zstd/down | $(BUILD)/debian/installer/packages/
 	zstd -d < $(BUILD)/artifacts/down/user-setup.udeb.zstd > $@
 endif
 
@@ -195,7 +195,7 @@ $(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/debian/installer/packag
 	for a in netcfg-static_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/artifacts/netcfg.udeb.zstd/down
+$(BUILD)/debian/installer/packages/netcfg.udeb: $(BUILD)/artifacts/netcfg.udeb.zstd/down | $(BUILD)/debian/installer/packages/
 	zstd -d < $(BUILD)/artifacts/down/netcfg.udeb.zstd > $@
 endif
 
@@ -211,7 +211,7 @@ $(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/debian/ins
 	for a in libdebian-installer4-udeb_*.udeb; do b=$$(echo "$$a" | sed -e 's/_.*\./\./g'); cp "$$a" "$$b"; cp "$$b" $@; done
 	rm -f tmp
 else
-$(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/artifacts/libdebian-installer.udeb.zstd/down
+$(BUILD)/debian/installer/packages/libdebian-installer.udeb: $(BUILD)/artifacts/libdebian-installer.udeb.zstd/down | $(BUILD)/debian/installer/packages/
 	zstd -d < $(BUILD)/artifacts/down/libdebian-installer.udeb.zstd > $@
 endif
 else

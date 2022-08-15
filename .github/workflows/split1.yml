@@ -325,17 +325,6 @@ jobs:
     - run: make build/artifacts/down/root2.cpio.zstd{}
     - run: mkdir -p build/debian/debian-rootfs
     - run: zstd -d < build/artifacts/down/root2.cpio.zstd > build/debian/debian-rootfs/root2.cpio
-    - run: mkdir -p build/debian/installer/packages
-    - run: make build/artifacts/down/partman-auto.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/partman-auto.udeb.zstd > build/debian/installer/packages/partman-auto.udeb
-    - run: make build/artifacts/down/nobootloader.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/nobootloader.udeb.zstd > build/debian/installer/packages/nobootloader.udeb
-    - run: make build/artifacts/down/user-setup.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/user-setup.udeb.zstd > build/debian/installer/packages/user-setup-udeb.udeb
-    - run: make build/artifacts/down/libdebian-installer.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/libdebian-installer.udeb.zstd > build/debian/installer/packages/libdebian-installer4-udeb.udeb
-    - run: make build/artifacts/down/netcfg.udeb.zstd{}
-    - run: zstd -d < build/artifacts/down/netcfg.udeb.zstd > build/debian/installer/packages/netcfg-static.udeb
     - run: make -j13 --trace build/debian/installer/installer.cpio.zstd{artifact}
       env:
         ARTIFACTS: partman-auto.udeb.zstd netcfg.udeb.zstd user-setup.udeb.zstd libdebian-installer.udeb.zstd nobootloader.udeb.zstd
