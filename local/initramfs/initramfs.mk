@@ -1,6 +1,11 @@
 # XXX this currently makes all files executable
 
+ifeq ($(filter pearl.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.cpio: $(BUILD)/initramfs/pearl.cpio ; $(SYMLINK)
+else
+$(BUILD)/linux/pearl.cpio: $(BUILD)/artifacts/pearl.tar.zstd/extract | $(BUILD)/linux/
+endif
+
 $(BUILD)/linux/debian.cpio: $(BUILD)/initramfs/debian.cpio ; $(SYMLINK)
 $(BUILD)/initramfs/%: local/initramfs/% ; $(COPY)
 $(BUILD)/initramfs/pearl.cpiospec: local/initramfs/pearl.cpiospec $(call done,userspace,install) local/initramfs/build-cpiospec.pl
