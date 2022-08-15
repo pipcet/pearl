@@ -133,7 +133,7 @@ jobs:
         submodules: false
     - name: Set env variables
       uses: ./g/github/env/
-    - run: make -j13 build/libgcc.tar.zstd{artifact}
+    - run: make -j13 --trace build/libgcc.tar.zstd{artifact}
       env:
         ARTIFACTS: toolchain.tar.zstd
   debian:
