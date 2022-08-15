@@ -5,7 +5,7 @@ $(BUILD)/zstd/zstdlib.elf: zstd/payload zstd/zstdmain.c | $(BUILD)/zstd/ $(call 
 #zstd/zstdlib.elf: zstd/zstd.c
 #	aarch64-linux-gnu-gcc -DPAYLOAD_SIZE=$$(wc -c < zstd/payload) -Wl,--script=zstd/zstd.lds -fPIC -Os -flto  -Wall -fno-exceptions -mstrict-align -o $@ -ffreestanding -fno-builtin-functions -nostdlib -fno-inline zstd/zstd.c # -flto -fomit-frame-pointer -Os -fPIC 
 
-$(call done,zstd,checkout): zstd/zstd{checkout}
+$(call done,zstd,checkout): zstd/zstd{checkout} | $(call done,zstd,)/
 	$(TIMESTAMP)
 
 $(BUILD)/zstd/zstdlib: $(BUILD)/zstd/zstdlib.elf
