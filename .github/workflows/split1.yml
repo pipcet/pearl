@@ -443,8 +443,6 @@ jobs:
     - run: tar -xf build/artifacts/down/stage2.dtbs.zstd
     - run: make build/artifacts/down/bootloaders.tar.zstd{}
     - run: tar --skip-old-files -xf build/artifacts/down/bootloaders.tar.zstd
-    - run: touch --reference=done/bootloaders/barebox/configure bootloaders/barebox/barebox.config
-    - run: touch --reference=done/bootloaders/u-boot/configure bootloaders/u-boot/u-boot.config
     - run: mkdir -p done/linux/stage2
     - run: mkdir -p done/linux/linux
     - run: make -j13 done/linux/checkout!
