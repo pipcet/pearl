@@ -55,7 +55,7 @@ $(BUILD)/artifacts{push}: $(BUILD)/artifacts/done/artifact-init
 $(BUILD)/%{artifact}: $(BUILD)/% $(BUILD)/artifacts/done/artifact-init
 	$(MKDIR) $(BUILD)/artifacts/up
 	$(CP) $< $(BUILD)/artifacts/up
-	$(MAKE) $(BUILD)/artifacts{push}
+	(cd $(BUILD)/artifacts/up; for file in $*; do name=$$(basename "$$file"); (cd $(PWD); bash g/github/ul-artifact "$$name" "$(BUILD)/artifacts/up/$$name") && rm -f "$(BUILD)/artifacts/up/$$name"; done)
 
 $(BUILD)/%{release}: $(BUILD)/% $(BUILD)/artifacts/done/artifact-init
 	$(MKDIR) $(BUILD)/release
