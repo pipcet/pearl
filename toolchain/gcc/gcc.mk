@@ -27,11 +27,16 @@ $(call done,toolchain/gcc,gcc/copy): | $(call done,toolchain/gcc,checkout) $(cal
 $(call done,toolchain/gcc,g++/install): $(call done,toolchain/gcc,libgcc/install) | $(call done,toolchain/gcc,g++/)
 	$(TIMESTAMP)
 
+ifeq ($(filter libgcc.tar.zstd,$(ARTIFACTS)),)
 $(call done,toolchain/gcc,libgcc/install): $(call done,toolchain/gcc,libgcc/build)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/libgcc/build DESTDIR="$(BUILD)/pearl/toolchain" install
 	$(CP) -a $(BUILD)/pearl/toolchain/aarch64-linux-gnu/lib64/libgcc_s.so $(BUILD)/pearl/install/lib
 	$(CP) -a $(BUILD)/pearl/toolchain/aarch64-linux-gnu/lib64/libgcc_s.so.1 $(BUILD)/pearl/install/lib
 	$(TIMESTAMP)
+else
+$(call done,toolchain/gcc,libgcc/install): $(BUILD)/artifacts/libgcc.tar.zstd/extract | $(call done,toolchain/gcc,libgcc/)
+	$(TIMESTAMP)
+endif
 
 $(call done,toolchain/gcc,libgcc/build): $(call done,toolchain/gcc,libgcc/configure)
 	$(WITH_CROSS_PATH) $(MAKE) -C $(BUILD)/toolchain/gcc/libgcc/build
