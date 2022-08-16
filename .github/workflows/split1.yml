@@ -376,7 +376,7 @@ jobs:
       uses: ./g/github/env/
     - run: make -j13 build/pearl-debian.image{artifact}
       env:
-        ARTIFACTS: toolchain.tar.zstd stage2.dtbs.zstd linux.dtbs.zstd pearl.tar.zstd dplusi.tar.zstd pearl.image.zstd
+        ARTIFACTS: toolchain.tar.zstd stage2.dtbs.zstd linux.dtbs.zstd pearl.tar.zstd dplusi.tar.zstd
   video-pearl:
     name: video-pearl
     needs: [ pearl, qemu ]

@@ -15,15 +15,15 @@ $(BUILD)/linux/%.config: linux/%.config ; $(COPY)
 $(BUILD)/linux/debian.config: linux/pearl.config
 	sed -e 's/pearl\.cpio/debian.cpio/g' < $< > $@
 
-ifeq ($(filter pearl.image.zstd,$(ARTIFACTS)),)
+ifeq ($(filter pearl.tar.zstd,$(ARTIFACTS)),)
 $(BUILD)/linux/pearl.image: $(call done,linux,pearl/build) | $(BUILD)/linux/pearl.config
 	$(CP) --reflink=auto $(BUILD)/linux/pearl/build/arch/arm64/boot/Image $@
 
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.dts.h
 $(BUILD)/linux/pearl.image: $(BUILD)/linux/pearl.cpio
 else
-$(BUILD)/linux/pearl.image: $(BUILD)/artifacts/pearl.image.zstd/down | $(BUILD)/linux/
-	zstd -d < $(BUILD)/artifacts/down/pearl.image.zstd > $@
+$(BUILD)/linux/pearl.image: $(BUILD)/artifacts/pearl.tar.zstd/extract | $(BUILD)/linux/
+	@true
 endif
 
 ifeq ($(filter stage2.image.zstd,$(ARTIFACTS)),)
